@@ -13,19 +13,27 @@ import (
 	"strings"
 )
 
-var errNonNilContext = errors.New("context must be non-nil")
+var errNonNilContext = errors.New("Context must be non-nil")
 
 type Client struct {
 	url    string
 	client *http.Client
+
+	common     ClientService
+	Repository Repository
+	Bulk       *BulkService
 }
 
-type repository struct {
-	client *Client
+type ClientService struct {
+	Client *Client
 }
 
 func NewApiClient(ctx context.Context, shopUrl string, credentials OAuthCredentials, httpClient *http.Client) (*Client, error) {
-	shopClient := &Client{shopUrl, httpClient}
+	shopClient := &Client{url: shopUrl, client: httpClient}
+	shopClient.common.Client = shopClient
+
+	shopClient.Repository = NewRepository(shopClient.common)
+	shopClient.Bulk = (*BulkService)(&shopClient.common)
 
 	if err := shopClient.authorize(ctx, shopUrl, credentials); err != nil {
 		return nil, err
@@ -39,7 +47,7 @@ func (c *Client) authorize(ctx context.Context, url string, credentials OAuthCre
 		ctx = context.WithValue(ctx, oauth2.HTTPClient, c.client)
 	}
 
-	tokenSrc, err := credentials.GetTokenSource(ctx, url)
+	tokenSrc, err := credentials.GetTokenSource(ctx, url+"/api/oauth/token")
 	if err != nil {
 		return err
 	}
@@ -59,8 +67,8 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*http.Response,
 	resp, err := c.client.Do(req)
 
 	if err != nil {
-		// If we got an error, and the context has been canceled,
-		// the context's error is probably more useful.
+		// If we got an error, and the Context has been canceled,
+		// the Context's error is probably more useful.
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
@@ -98,8 +106,8 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 }
 
 func (c *Client) NewRequest(context ApiContext, method, urlStr string, body interface{}) (*http.Request, error) {
-	if !strings.HasSuffix(c.url, "/") {
-		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.url)
+	if strings.HasSuffix(c.url, "/") {
+		return nil, fmt.Errorf("BaseURL must not have a trailing slash, but %q does not", c.url)
 	}
 
 	var buf io.ReadWriter
@@ -112,15 +120,15 @@ func (c *Client) NewRequest(context ApiContext, method, urlStr string, body inte
 		}
 	}
 
-	req, err := http.NewRequestWithContext(context.context, method, c.url+urlStr, buf)
+	req, err := http.NewRequestWithContext(context.Context, method, c.url+urlStr, buf)
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("sw-language-id", context.languageId)
-	req.Header.Set("sw-version-id", context.versionId)
+	req.Header.Set("sw-language-id", context.LanguageId)
+	req.Header.Set("sw-version-id", context.VersionId)
 
-	if context.skipFlows {
+	if context.SkipFlows {
 		req.Header.Set("sw-skip-trigger-flow", "1")
 	}
 
@@ -174,22 +182,39 @@ func (r ErrorResponse) Error() string {
 }
 
 type ApiContext struct {
-	context    context.Context
-	languageId string
-	versionId  string
-	skipFlows  bool
+	Context    context.Context
+	LanguageId string
+	VersionId  string
+	SkipFlows  bool
 }
 
 func NewApiContext(ctx context.Context) ApiContext {
 	return ApiContext{
-		context:    ctx,
-		languageId: "2fbb5fe2e29a4d70aa5854ce7ce3e20b",
-		versionId:  "0fa91ce3e96a4bc2be4bd9ce752c3425",
-		skipFlows:  false,
+		Context:    ctx,
+		LanguageId: "2fbb5fe2e29a4d70aa5854ce7ce3e20b",
+		VersionId:  "0fa91ce3e96a4bc2be4bd9ce752c3425",
+		SkipFlows:  false,
 	}
 }
 
 type EntityCollection struct {
 	Total        int64       `json:"total"`
 	Aggregations interface{} `json:"aggregations"`
+}
+
+type SearchIdsResponse struct {
+	Total int      `json:"total"`
+	Data  []string `json:"data"`
+}
+
+func (s SearchIdsResponse) FirstId() string {
+	if len(s.Data) > 0 {
+		return s.Data[0]
+	}
+
+	return ""
+}
+
+type entityDelete struct {
+	Id string `json:"id"`
 }

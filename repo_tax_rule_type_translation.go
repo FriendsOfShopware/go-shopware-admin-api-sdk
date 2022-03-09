@@ -1,0 +1,84 @@
+package go_shopware_admin_sdk
+
+import (
+	"net/http"
+	"time"
+)
+
+type TaxRuleTypeTranslationRepository ClientService
+
+func (t TaxRuleTypeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*TaxRuleTypeTranslationCollection, *http.Response, error) {
+	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/tax-rule-type-translation", criteria)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	uResp := new(TaxRuleTypeTranslationCollection)
+	resp, err := t.Client.Do(ctx.Context, req, uResp)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return uResp, resp, nil
+}
+
+func (t TaxRuleTypeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/tax-rule-type-translation", criteria)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	uResp := new(SearchIdsResponse)
+	resp, err := t.Client.Do(ctx.Context, req, uResp)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return uResp, resp, nil
+}
+
+func (t TaxRuleTypeTranslationRepository) Upsert(ctx ApiContext, entity []TaxRuleTypeTranslation) (*http.Response, error) {
+	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax_rule_type_translation": {
+		Entity:  "tax_rule_type_translation",
+		Action:  "upsert",
+		Payload: entity,
+	}})
+}
+
+func (t TaxRuleTypeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	payload := make([]entityDelete, 0)
+
+	for _, id := range ids {
+		payload = append(payload, entityDelete{Id: id})
+	}
+
+	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax_rule_type_translation": {
+		Entity:  "tax_rule_type_translation",
+		Action:  "delete",
+		Payload: payload,
+	}})
+}
+
+type TaxRuleTypeTranslation struct {
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	TaxRuleTypeId string `json:"taxRuleTypeId,omitempty"`
+
+	LanguageId string `json:"languageId,omitempty"`
+
+	TaxRuleType *TaxRuleType `json:"taxRuleType,omitempty"`
+
+	Language *Language `json:"language,omitempty"`
+
+	TypeName string `json:"typeName,omitempty"`
+}
+
+type TaxRuleTypeTranslationCollection struct {
+	EntityCollection
+
+	Data []TaxRuleTypeTranslation `json:"data"`
+}
