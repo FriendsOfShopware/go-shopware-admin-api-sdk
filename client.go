@@ -22,6 +22,7 @@ type Client struct {
 	common     ClientService
 	Repository Repository
 	Bulk       *BulkService
+	Info       *InfoService
 }
 
 type ClientService struct {
@@ -34,6 +35,7 @@ func NewApiClient(ctx context.Context, shopUrl string, credentials OAuthCredenti
 
 	shopClient.Repository = NewRepository(shopClient.common)
 	shopClient.Bulk = (*BulkService)(&shopClient.common)
+	shopClient.Info = (*InfoService)(&shopClient.common)
 
 	if err := shopClient.authorize(ctx, shopUrl, credentials); err != nil {
 		return nil, err

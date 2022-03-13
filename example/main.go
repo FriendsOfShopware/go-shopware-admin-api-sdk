@@ -27,4 +27,7 @@ func main() {
 	for _, product := range collection.Data {
 		fmt.Println(product.Name)
 	}
+
+	// Get current shopware version
+	fmt.Println(client.Info.Info(apiContext))
 }
