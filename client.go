@@ -19,10 +19,11 @@ type Client struct {
 	url    string
 	client *http.Client
 
-	common     ClientService
-	Repository Repository
-	Bulk       *BulkService
-	Info       *InfoService
+	common           ClientService
+	Repository       Repository
+	Bulk             *BulkService
+	Info             *InfoService
+	ExtensionManager *ExtensionManagerService
 }
 
 type ClientService struct {
@@ -36,6 +37,7 @@ func NewApiClient(ctx context.Context, shopUrl string, credentials OAuthCredenti
 	shopClient.Repository = NewRepository(shopClient.common)
 	shopClient.Bulk = (*BulkService)(&shopClient.common)
 	shopClient.Info = (*InfoService)(&shopClient.common)
+	shopClient.ExtensionManager = (*ExtensionManagerService)(&shopClient.common)
 
 	if err := shopClient.authorize(ctx, shopUrl, credentials); err != nil {
 		return nil, err
