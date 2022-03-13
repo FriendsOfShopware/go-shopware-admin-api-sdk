@@ -30,7 +30,7 @@ func (e ExtensionManagerService) ListAvailableExtensions(ctx ApiContext) (Extens
 	}
 
 	var extensions ExtensionList
-	resp, err := e.Client.Do(ctx.Context, r, extensions)
+	resp, err := e.Client.Do(ctx.Context, r, &extensions)
 
 	if err != nil {
 		return nil, nil, err
