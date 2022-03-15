@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-var errNonNilContext = errors.New("Context must be non-nil")
+var errNonNilContext = errors.New("context must be non-nil")
 
 type Client struct {
 	url    string
