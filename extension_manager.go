@@ -26,7 +26,7 @@ func (e ExtensionManagerService) ListAvailableExtensions(ctx ApiContext) (Extens
 	r, err := e.Client.NewRequest(ctx, http.MethodGet, "/api/_action/extension/installed", nil)
 
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "Refresh")
+		return nil, nil, errors.Wrap(err, "ListAvailableExtensions")
 	}
 
 	var extensions ExtensionList
