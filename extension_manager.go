@@ -61,8 +61,8 @@ func (e ExtensionManagerService) UpdateExtension(ctx ApiContext, extType, name s
 	return e.lifecycleUpdate("UpdateExtension", ctx, fmt.Sprintf("/api/_action/extension/update/%s/%s", extType, name), http.MethodPost)
 }
 
-func (e ExtensionManagerService) DownloadExtension(ctx ApiContext, extType, name string) (*http.Response, error) {
-	return e.lifecycleUpdate("DownloadExtension", ctx, fmt.Sprintf("/api/_action/extension/download/%s/%s", extType, name), http.MethodPost)
+func (e ExtensionManagerService) DownloadExtension(ctx ApiContext, name string) (*http.Response, error) {
+	return e.lifecycleUpdate("DownloadExtension", ctx, fmt.Sprintf("/api/_action/extension/download/%s", name), http.MethodPost)
 }
 
 func (e ExtensionManagerService) ActivateExtension(ctx ApiContext, extType, name string) (*http.Response, error) {
