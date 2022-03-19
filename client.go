@@ -43,6 +43,7 @@ func NewApiClient(ctx context.Context, shopUrl string, credentials OAuthCredenti
 	shopClient.ExtensionManager = (*ExtensionManagerService)(&shopClient.common)
 	shopClient.ThemeManager = (*ThemeManagerService)(&shopClient.common)
 	shopClient.CacheManager = (*CacheManagerService)(&shopClient.common)
+	shopClient.SystemConfigManager = (*SystemConfigService)(&shopClient.common)
 
 	if err := shopClient.authorize(ctx, shopUrl, credentials); err != nil {
 		return nil, err
