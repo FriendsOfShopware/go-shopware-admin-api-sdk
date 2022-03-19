@@ -19,13 +19,14 @@ type Client struct {
 	url    string
 	client *http.Client
 
-	common           ClientService
-	Repository       Repository
-	Bulk             *BulkService
-	Info             *InfoService
-	ExtensionManager *ExtensionManagerService
-	ThemeManager     *ThemeManagerService
-	CacheManager     *CacheManagerService
+	common              ClientService
+	Repository          Repository
+	Bulk                *BulkService
+	Info                *InfoService
+	ExtensionManager    *ExtensionManagerService
+	ThemeManager        *ThemeManagerService
+	CacheManager        *CacheManagerService
+	SystemConfigManager *SystemConfigService
 }
 
 type ClientService struct {
