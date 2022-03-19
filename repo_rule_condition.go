@@ -23,6 +23,42 @@ func (t RuleConditionRepository) Search(ctx ApiContext, criteria Criteria) (*Rul
 	return uResp, resp, nil
 }
 
+func (t RuleConditionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*RuleConditionCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t RuleConditionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/rule-condition", criteria)
 
@@ -62,17 +98,15 @@ func (t RuleConditionRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type RuleCondition struct {
-	Value interface{} `json:"value,omitempty"`
-
-	Position float64 `json:"position,omitempty"`
-
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	Id string `json:"id,omitempty"`
 
-	RuleId string `json:"ruleId,omitempty"`
+	Type string `json:"type,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	Value interface{} `json:"value,omitempty"`
+
+	Parent *RuleCondition `json:"parent,omitempty"`
 
 	Children []RuleCondition `json:"children,omitempty"`
 
@@ -80,11 +114,13 @@ type RuleCondition struct {
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	RuleId string `json:"ruleId,omitempty"`
+
+	ParentId string `json:"parentId,omitempty"`
+
+	Position float64 `json:"position,omitempty"`
 
 	Rule *Rule `json:"rule,omitempty"`
-
-	Parent *RuleCondition `json:"parent,omitempty"`
 }
 
 type RuleConditionCollection struct {

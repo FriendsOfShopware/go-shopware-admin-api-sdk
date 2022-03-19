@@ -23,6 +23,42 @@ func (t MediaFolderRepository) Search(ctx ApiContext, criteria Criteria) (*Media
 	return uResp, resp, nil
 }
 
+func (t MediaFolderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaFolderCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t MediaFolderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media-folder", criteria)
 
@@ -62,35 +98,35 @@ func (t MediaFolderRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type MediaFolder struct {
-	ChildCount float64 `json:"childCount,omitempty"`
-
-	Media []Media `json:"media,omitempty"`
-
 	DefaultFolder *MediaDefaultFolder `json:"defaultFolder,omitempty"`
-
-	Configuration *MediaFolderConfiguration `json:"configuration,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Parent *MediaFolder `json:"parent,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	ParentId string `json:"parentId,omitempty"`
-
-	Children []MediaFolder `json:"children,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	ConfigurationId string `json:"configurationId,omitempty"`
 
 	DefaultFolderId string `json:"defaultFolderId,omitempty"`
 
+	UseParentConfiguration bool `json:"useParentConfiguration,omitempty"`
+
+	Children []MediaFolder `json:"children,omitempty"`
+
+	Media []Media `json:"media,omitempty"`
+
+	Configuration *MediaFolderConfiguration `json:"configuration,omitempty"`
+
 	Name string `json:"name,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Parent *MediaFolder `json:"parent,omitempty"`
+
+	ChildCount float64 `json:"childCount,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	UseParentConfiguration bool `json:"useParentConfiguration,omitempty"`
+	ConfigurationId string `json:"configurationId,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	ParentId string `json:"parentId,omitempty"`
 }
 
 type MediaFolderCollection struct {

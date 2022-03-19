@@ -23,6 +23,42 @@ func (t LandingPageRepository) Search(ctx ApiContext, criteria Criteria) (*Landi
 	return uResp, resp, nil
 }
 
+func (t LandingPageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LandingPageCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t LandingPageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/landing-page", criteria)
 
@@ -62,45 +98,45 @@ func (t LandingPageRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type LandingPage struct {
-	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	VersionId string `json:"versionId,omitempty"`
-
-	Active bool `json:"active,omitempty"`
-
 	Name string `json:"name,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
-
-	Translations []LandingPageTranslation `json:"translations,omitempty"`
-
-	MetaTitle string `json:"metaTitle,omitempty"`
-
-	MetaDescription string `json:"metaDescription,omitempty"`
-
-	Keywords string `json:"keywords,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Tags []Tag `json:"tags,omitempty"`
 
 	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
 	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
 
+	SlotConfig interface{} `json:"slotConfig,omitempty"`
+
+	Translations []LandingPageTranslation `json:"translations,omitempty"`
+
+	Tags []Tag `json:"tags,omitempty"`
+
 	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	VersionId string `json:"versionId,omitempty"`
+
+	MetaTitle string `json:"metaTitle,omitempty"`
+
+	MetaDescription string `json:"metaDescription,omitempty"`
 
 	Url string `json:"url,omitempty"`
 
 	CmsPageId string `json:"cmsPageId,omitempty"`
 
+	Active bool `json:"active,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	Keywords string `json:"keywords,omitempty"`
+
 	CmsPage *CmsPage `json:"cmsPage,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type LandingPageCollection struct {

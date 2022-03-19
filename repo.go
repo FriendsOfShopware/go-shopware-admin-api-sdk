@@ -3,413 +3,413 @@ package go_shopware_admin_sdk
 type Repository struct {
 	ClientService
 
-	Currency *CurrencyRepository
-
-	OrderCustomer *OrderCustomerRepository
-
-	PromotionSetgroupRule *PromotionSetgroupRuleRepository
-
-	Webhook *WebhookRepository
-
-	AppCmsBlockTranslation *AppCmsBlockTranslationRepository
-
-	CategoryTranslation *CategoryTranslationRepository
-
-	ProductManufacturerTranslation *ProductManufacturerTranslationRepository
-
-	Promotion *PromotionRepository
-
-	App *AppRepository
-
-	Locale *LocaleRepository
-
-	LandingPageTranslation *LandingPageTranslationRepository
-
-	Language *LanguageRepository
-
-	PluginTranslation *PluginTranslationRepository
-
-	SalesChannelCurrency *SalesChannelCurrencyRepository
-
-	SalesChannelTranslation *SalesChannelTranslationRepository
-
-	SalesChannelTypeTranslation *SalesChannelTypeTranslationRepository
-
-	AppActionButton *AppActionButtonRepository
-
-	CustomerGroupTranslation *CustomerGroupTranslationRepository
-
-	ShippingMethodTranslation *ShippingMethodTranslationRepository
-
-	StateMachine *StateMachineRepository
-
-	ProductProperty *ProductPropertyRepository
-
-	ProductSearchConfig *ProductSearchConfigRepository
-
-	PropertyGroupTranslation *PropertyGroupTranslationRepository
-
-	RuleCondition *RuleConditionRepository
-
-	StateMachineState *StateMachineStateRepository
-
-	CmsSection *CmsSectionRepository
-
-	PaymentMethod *PaymentMethodRepository
-
-	PropertyGroupOptionTranslation *PropertyGroupOptionTranslationRepository
-
-	ProductReview *ProductReviewRepository
-
-	ProductStreamMapping *ProductStreamMappingRepository
-
-	WebhookEventLog *WebhookEventLogRepository
-
-	MediaTranslation *MediaTranslationRepository
-
-	OrderAddress *OrderAddressRepository
-
-	MediaThumbnailSize *MediaThumbnailSizeRepository
-
-	AppTemplate *AppTemplateRepository
-
-	Flow *FlowRepository
-
-	SalesChannelType *SalesChannelTypeRepository
+	LandingPageTag *LandingPageTagRepository
 
 	VersionCommit *VersionCommitRepository
 
-	NumberRangeSalesChannel *NumberRangeSalesChannelRepository
+	AppTranslation *AppTranslationRepository
 
-	Product *ProductRepository
+	CmsPageTranslation *CmsPageTranslationRepository
 
-	EventActionSalesChannel *EventActionSalesChannelRepository
+	DeadMessage *DeadMessageRepository
 
-	ImportExportProfileTranslation *ImportExportProfileTranslationRepository
+	IntegrationRole *IntegrationRoleRepository
 
-	MailHeaderFooterTranslation *MailHeaderFooterTranslationRepository
+	MainCategory *MainCategoryRepository
 
-	ProductStreamFilter *ProductStreamFilterRepository
+	MediaTranslation *MediaTranslationRepository
 
-	PropertyGroupOption *PropertyGroupOptionRepository
+	ProductConfiguratorSetting *ProductConfiguratorSettingRepository
 
-	SalesChannelDomain *SalesChannelDomainRepository
+	ScheduledTask *ScheduledTaskRepository
 
-	AppActionButtonTranslation *AppActionButtonTranslationRepository
+	AclUserRole *AclUserRoleRepository
 
-	CustomFieldSetRelation *CustomFieldSetRelationRepository
+	App *AppRepository
 
-	SalutationTranslation *SalutationTranslationRepository
+	ImportExportFile *ImportExportFileRepository
 
-	ShippingMethodTag *ShippingMethodTagRepository
+	LocaleTranslation *LocaleTranslationRepository
 
-	DocumentTypeTranslation *DocumentTypeTranslationRepository
+	UserConfig *UserConfigRepository
 
-	MediaThumbnail *MediaThumbnailRepository
+	PropertyGroup *PropertyGroupRepository
 
-	ProductCustomFieldSet *ProductCustomFieldSetRepository
+	Tag *TagRepository
+
+	TaxRuleTypeTranslation *TaxRuleTypeTranslationRepository
+
+	Language *LanguageRepository
+
+	MailTemplate *MailTemplateRepository
+
+	MediaDefaultFolder *MediaDefaultFolderRepository
+
+	ProductOption *ProductOptionRepository
+
+	StateMachineState *StateMachineStateRepository
+
+	PaymentMethodTranslation *PaymentMethodTranslationRepository
+
+	ProductCategory *ProductCategoryRepository
+
+	PropertyGroupOptionTranslation *PropertyGroupOptionTranslationRepository
+
+	SalesChannelAnalytics *SalesChannelAnalyticsRepository
+
+	ThemeSalesChannel *ThemeSalesChannelRepository
+
+	DeliveryTime *DeliveryTimeRepository
+
+	Notification *NotificationRepository
+
+	NumberRangeTranslation *NumberRangeTranslationRepository
 
 	ProductKeywordDictionary *ProductKeywordDictionaryRepository
 
-	Script *ScriptRepository
+	ProductReview *ProductReviewRepository
 
-	CustomerRecovery *CustomerRecoveryRepository
+	ShippingMethodPrice *ShippingMethodPriceRepository
 
-	DocumentBaseConfig *DocumentBaseConfigRepository
+	EventAction *EventActionRepository
+
+	LandingPage *LandingPageRepository
+
+	ProductCrossSelling *ProductCrossSellingRepository
 
 	ProductCrossSellingAssignedProducts *ProductCrossSellingAssignedProductsRepository
 
+	ProductProperty *ProductPropertyRepository
+
+	Script *ScriptRepository
+
+	WebhookEventLog *WebhookEventLogRepository
+
+	CustomFieldSet *CustomFieldSetRepository
+
+	DocumentBaseConfigSalesChannel *DocumentBaseConfigSalesChannelRepository
+
+	PluginTranslation *PluginTranslationRepository
+
 	ProductPrice *ProductPriceRepository
+
+	PromotionDiscountPrices *PromotionDiscountPricesRepository
+
+	PromotionIndividualCode *PromotionIndividualCodeRepository
+
+	SalesChannelPaymentMethod *SalesChannelPaymentMethodRepository
+
+	SalesChannelType *SalesChannelTypeRepository
+
+	MediaFolder *MediaFolderRepository
+
+	ProductSortingTranslation *ProductSortingTranslationRepository
+
+	ProductTranslation *ProductTranslationRepository
+
+	PromotionCartRule *PromotionCartRuleRepository
+
+	Snippet *SnippetRepository
+
+	StateMachineHistory *StateMachineHistoryRepository
+
+	TaxRule *TaxRuleRepository
+
+	Country *CountryRepository
+
+	CustomerWishlist *CustomerWishlistRepository
+
+	DocumentType *DocumentTypeRepository
+
+	PromotionDiscountRule *PromotionDiscountRuleRepository
+
+	PromotionTranslation *PromotionTranslationRepository
 
 	SalesChannelCountry *SalesChannelCountryRepository
 
 	SystemConfig *SystemConfigRepository
 
-	TaxRuleTypeTranslation *TaxRuleTypeTranslationRepository
-
-	CmsPage *CmsPageRepository
-
-	NumberRangeType *NumberRangeTypeRepository
-
-	LogEntry *LogEntryRepository
-
-	PromotionCartRule *PromotionCartRuleRepository
-
-	SeoUrlTemplate *SeoUrlTemplateRepository
-
-	ShippingMethodPrice *ShippingMethodPriceRepository
-
-	Notification *NotificationRepository
-
-	ProductCrossSellingTranslation *ProductCrossSellingTranslationRepository
-
-	NumberRange *NumberRangeRepository
-
-	OrderDelivery *OrderDeliveryRepository
-
-	ProductCategory *ProductCategoryRepository
-
-	ProductSortingTranslation *ProductSortingTranslationRepository
-
-	DeliveryTimeTranslation *DeliveryTimeTranslationRepository
-
-	NewsletterRecipientTag *NewsletterRecipientTagRepository
-
-	MailHeaderFooter *MailHeaderFooterRepository
-
-	ScheduledTask *ScheduledTaskRepository
-
-	Theme *ThemeRepository
-
-	AppPaymentMethod *AppPaymentMethodRepository
-
-	CustomerAddress *CustomerAddressRepository
-
-	Rule *RuleRepository
-
-	Version *VersionRepository
-
-	MessageQueueStats *MessageQueueStatsRepository
-
-	OrderTransaction *OrderTransactionRepository
-
-	OrderDeliveryPosition *OrderDeliveryPositionRepository
-
-	ProductOption *ProductOptionRepository
-
-	ShippingMethod *ShippingMethodRepository
-
-	Unit *UnitRepository
-
-	User *UserRepository
-
-	EventAction *EventActionRepository
-
-	LocaleTranslation *LocaleTranslationRepository
-
-	Media *MediaRepository
-
-	MediaFolderConfigurationMediaThumbnailSize *MediaFolderConfigurationMediaThumbnailSizeRepository
-
-	ProductTag *ProductTagRepository
-
-	ProductTranslation *ProductTranslationRepository
-
-	PromotionSalesChannel *PromotionSalesChannelRepository
-
-	DocumentBaseConfigSalesChannel *DocumentBaseConfigSalesChannelRepository
-
-	EventActionRule *EventActionRuleRepository
-
-	CustomFieldSet *CustomFieldSetRepository
-
-	Integration *IntegrationRepository
-
-	ProductMedia *ProductMediaRepository
-
-	ProductStream *ProductStreamRepository
-
-	ProductStreamTranslation *ProductStreamTranslationRepository
-
-	PromotionPersonaRule *PromotionPersonaRuleRepository
-
-	AclRole *AclRoleRepository
-
-	CountryState *CountryStateRepository
-
-	StateMachineStateTranslation *StateMachineStateTranslationRepository
-
-	TaxRuleType *TaxRuleTypeRepository
-
-	ThemeSalesChannel *ThemeSalesChannelRepository
-
-	VersionCommitData *VersionCommitDataRepository
-
-	SalesChannel *SalesChannelRepository
-
-	SnippetSet *SnippetSetRepository
-
-	ProductSorting *ProductSortingRepository
-
-	SalesChannelShippingMethod *SalesChannelShippingMethodRepository
-
-	AppCmsBlock *AppCmsBlockRepository
-
-	Country *CountryRepository
-
-	SalesChannelAnalytics *SalesChannelAnalyticsRepository
-
-	TaxRule *TaxRuleRepository
-
-	DeliveryTime *DeliveryTimeRepository
-
-	MainCategory *MainCategoryRepository
-
-	DocumentType *DocumentTypeRepository
-
-	MailTemplateMedia *MailTemplateMediaRepository
-
-	ProductFeatureSetTranslation *ProductFeatureSetTranslationRepository
-
-	Tag *TagRepository
-
-	UserRecovery *UserRecoveryRepository
-
-	CmsPageTranslation *CmsPageTranslationRepository
-
-	CustomField *CustomFieldRepository
-
-	CustomerGroupRegistrationSalesChannels *CustomerGroupRegistrationSalesChannelsRepository
-
-	MailTemplateTypeTranslation *MailTemplateTypeTranslationRepository
-
-	NumberRangeState *NumberRangeStateRepository
-
-	Plugin *PluginRepository
-
-	ProductCrossSelling *ProductCrossSellingRepository
-
-	ProductExport *ProductExportRepository
-
-	Category *CategoryRepository
-
-	CmsSlotTranslation *CmsSlotTranslationRepository
-
-	ProductSearchKeyword *ProductSearchKeywordRepository
-
-	PropertyGroup *PropertyGroupRepository
-
-	NumberRangeTranslation *NumberRangeTranslationRepository
-
-	ProductFeatureSet *ProductFeatureSetRepository
-
-	PromotionIndividualCode *PromotionIndividualCodeRepository
-
-	PromotionTranslation *PromotionTranslationRepository
-
-	StateMachineTranslation *StateMachineTranslationRepository
-
-	ThemeMedia *ThemeMediaRepository
-
-	CountryTranslation *CountryTranslationRepository
-
-	LandingPage *LandingPageRepository
-
-	UserAccessKey *UserAccessKeyRepository
-
-	Document *DocumentRepository
-
-	IntegrationRole *IntegrationRoleRepository
-
-	MailTemplateType *MailTemplateTypeRepository
-
-	Order *OrderRepository
-
-	PaymentMethodTranslation *PaymentMethodTranslationRepository
-
-	PromotionDiscount *PromotionDiscountRepository
-
-	CountryStateTranslation *CountryStateTranslationRepository
-
-	CustomerGroup *CustomerGroupRepository
-
-	PromotionSetgroup *PromotionSetgroupRepository
-
-	UnitTranslation *UnitTranslationRepository
+	CmsSlot *CmsSlotRepository
 
 	MailTemplateTranslation *MailTemplateTranslationRepository
 
-	ProductCategoryTree *ProductCategoryTreeRepository
+	OrderTransaction *OrderTransactionRepository
 
-	ProductSearchConfigField *ProductSearchConfigFieldRepository
+	ProductStreamFilter *ProductStreamFilterRepository
 
-	SeoUrl *SeoUrlRepository
-
-	AclUserRole *AclUserRoleRepository
-
-	ImportExportProfile *ImportExportProfileRepository
-
-	OrderLineItem *OrderLineItemRepository
-
-	ProductManufacturer *ProductManufacturerRepository
-
-	CurrencyTranslation *CurrencyTranslationRepository
-
-	CustomerWishlist *CustomerWishlistRepository
-
-	MediaTag *MediaTagRepository
-
-	PromotionOrderRule *PromotionOrderRuleRepository
-
-	SalesChannelLanguage *SalesChannelLanguageRepository
-
-	Salutation *SalutationRepository
-
-	Snippet *SnippetRepository
-
-	Tax *TaxRepository
-
-	CustomerWishlistProduct *CustomerWishlistProductRepository
-
-	ImportExportLog *ImportExportLogRepository
-
-	DeadMessage *DeadMessageRepository
-
-	LandingPageTag *LandingPageTagRepository
-
-	MediaDefaultFolder *MediaDefaultFolderRepository
-
-	NumberRangeTypeTranslation *NumberRangeTypeTranslationRepository
-
-	ProductVisibility *ProductVisibilityRepository
-
-	StateMachineTransition *StateMachineTransitionRepository
-
-	AppTranslation *AppTranslationRepository
+	ProductStreamTranslation *ProductStreamTranslationRepository
 
 	CategoryTag *CategoryTagRepository
 
-	ImportExportFile *ImportExportFileRepository
-
-	MailTemplate *MailTemplateRepository
-
-	MediaFolderConfiguration *MediaFolderConfigurationRepository
-
-	SalesChannelPaymentMethod *SalesChannelPaymentMethodRepository
-
-	StateMachineHistory *StateMachineHistoryRepository
-
-	ThemeTranslation *ThemeTranslationRepository
-
 	CurrencyCountryRounding *CurrencyCountryRoundingRepository
 
-	CustomerTag *CustomerTagRepository
+	NumberRangeSalesChannel *NumberRangeSalesChannelRepository
 
-	LandingPageSalesChannel *LandingPageSalesChannelRepository
+	OrderDelivery *OrderDeliveryRepository
 
-	OrderTag *OrderTagRepository
+	LandingPageTranslation *LandingPageTranslationRepository
 
-	ProductConfiguratorSetting *ProductConfiguratorSettingRepository
+	MailTemplateTypeTranslation *MailTemplateTypeTranslationRepository
 
-	PromotionDiscountPrices *PromotionDiscountPricesRepository
+	ProductMedia *ProductMediaRepository
 
 	PromotionPersonaCustomer *PromotionPersonaCustomerRepository
 
-	UserConfig *UserConfigRepository
+	CmsSlotTranslation *CmsSlotTranslationRepository
 
-	CmsSlot *CmsSlotRepository
+	CustomerRecovery *CustomerRecoveryRepository
 
-	Customer *CustomerRepository
+	DocumentBaseConfig *DocumentBaseConfigRepository
 
-	MediaFolder *MediaFolderRepository
+	DocumentTypeTranslation *DocumentTypeTranslationRepository
 
-	NewsletterRecipient *NewsletterRecipientRepository
+	Tax *TaxRepository
 
-	PromotionDiscountRule *PromotionDiscountRuleRepository
+	NumberRangeTypeTranslation *NumberRangeTypeTranslationRepository
+
+	OrderDeliveryPosition *OrderDeliveryPositionRepository
+
+	SalesChannelShippingMethod *SalesChannelShippingMethodRepository
+
+	Version *VersionRepository
 
 	CmsBlock *CmsBlockRepository
 
+	CustomField *CustomFieldRepository
+
+	CustomerWishlistProduct *CustomerWishlistProductRepository
+
+	NumberRangeType *NumberRangeTypeRepository
+
+	MediaFolderConfiguration *MediaFolderConfigurationRepository
+
+	PromotionSalesChannel *PromotionSalesChannelRepository
+
+	Rule *RuleRepository
+
+	ProductFeatureSet *ProductFeatureSetRepository
+
+	ThemeMedia *ThemeMediaRepository
+
+	SnippetSet *SnippetSetRepository
+
+	Category *CategoryRepository
+
+	CmsPage *CmsPageRepository
+
+	MailTemplateMedia *MailTemplateMediaRepository
+
+	PromotionPersonaRule *PromotionPersonaRuleRepository
+
 	FlowSequence *FlowSequenceRepository
+
+	ProductManufacturer *ProductManufacturerRepository
+
+	Promotion *PromotionRepository
+
+	PromotionDiscount *PromotionDiscountRepository
+
+	AppActionButtonTranslation *AppActionButtonTranslationRepository
+
+	CountryStateTranslation *CountryStateTranslationRepository
+
+	CountryTranslation *CountryTranslationRepository
+
+	Flow *FlowRepository
+
+	OrderCustomer *OrderCustomerRepository
+
+	PromotionSetgroup *PromotionSetgroupRepository
+
+	Theme *ThemeRepository
+
+	AclRole *AclRoleRepository
+
+	CustomerTag *CustomerTagRepository
+
+	Integration *IntegrationRepository
+
+	NumberRange *NumberRangeRepository
+
+	SalesChannelCurrency *SalesChannelCurrencyRepository
+
+	ShippingMethod *ShippingMethodRepository
+
+	UserAccessKey *UserAccessKeyRepository
+
+	LogEntry *LogEntryRepository
+
+	NewsletterRecipient *NewsletterRecipientRepository
+
+	Plugin *PluginRepository
+
+	SalesChannel *SalesChannelRepository
+
+	ThemeTranslation *ThemeTranslationRepository
+
+	CountryState *CountryStateRepository
+
+	CurrencyTranslation *CurrencyTranslationRepository
+
+	NewsletterRecipientTag *NewsletterRecipientTagRepository
+
+	ProductSearchConfigField *ProductSearchConfigFieldRepository
+
+	User *UserRepository
+
+	ImportExportProfileTranslation *ImportExportProfileTranslationRepository
+
+	ProductFeatureSetTranslation *ProductFeatureSetTranslationRepository
+
+	PromotionOrderRule *PromotionOrderRuleRepository
+
+	SalutationTranslation *SalutationTranslationRepository
+
+	SalesChannelTypeTranslation *SalesChannelTypeTranslationRepository
+
+	TaxRuleType *TaxRuleTypeRepository
+
+	VersionCommitData *VersionCommitDataRepository
+
+	AppActionButton *AppActionButtonRepository
+
+	CustomerAddress *CustomerAddressRepository
+
+	MailTemplateType *MailTemplateTypeRepository
+
+	PaymentMethod *PaymentMethodRepository
+
+	ImportExportProfile *ImportExportProfileRepository
+
+	MailHeaderFooterTranslation *MailHeaderFooterTranslationRepository
+
+	MediaTag *MediaTagRepository
+
+	OrderLineItem *OrderLineItemRepository
+
+	AppCmsBlockTranslation *AppCmsBlockTranslationRepository
+
+	CmsSection *CmsSectionRepository
+
+	CustomerGroupRegistrationSalesChannels *CustomerGroupRegistrationSalesChannelsRepository
+
+	DeliveryTimeTranslation *DeliveryTimeTranslationRepository
+
+	ProductSearchConfig *ProductSearchConfigRepository
+
+	PropertyGroupTranslation *PropertyGroupTranslationRepository
+
+	ShippingMethodTag *ShippingMethodTagRepository
+
+	StateMachine *StateMachineRepository
+
+	MediaThumbnailSize *MediaThumbnailSizeRepository
+
+	ProductCrossSellingTranslation *ProductCrossSellingTranslationRepository
+
+	ProductTag *ProductTagRepository
+
+	SalesChannelLanguage *SalesChannelLanguageRepository
+
+	CategoryTranslation *CategoryTranslationRepository
+
+	CustomFieldSetRelation *CustomFieldSetRelationRepository
+
+	CustomerGroup *CustomerGroupRepository
+
+	CustomerGroupTranslation *CustomerGroupTranslationRepository
+
+	StateMachineTranslation *StateMachineTranslationRepository
+
+	ImportExportLog *ImportExportLogRepository
+
+	LandingPageSalesChannel *LandingPageSalesChannelRepository
+
+	ProductSearchKeyword *ProductSearchKeywordRepository
+
+	Webhook *WebhookRepository
+
+	RuleCondition *RuleConditionRepository
+
+	AppPaymentMethod *AppPaymentMethodRepository
+
+	MediaFolderConfigurationMediaThumbnailSize *MediaFolderConfigurationMediaThumbnailSizeRepository
+
+	MessageQueueStats *MessageQueueStatsRepository
+
+	OrderAddress *OrderAddressRepository
+
+	UserRecovery *UserRecoveryRepository
+
+	Customer *CustomerRepository
+
+	ProductCategoryTree *ProductCategoryTreeRepository
+
+	PropertyGroupOption *PropertyGroupOptionRepository
+
+	UnitTranslation *UnitTranslationRepository
+
+	SalesChannelDomain *SalesChannelDomainRepository
+
+	Unit *UnitRepository
+
+	AppTemplate *AppTemplateRepository
+
+	Media *MediaRepository
+
+	ProductStream *ProductStreamRepository
+
+	ProductStreamMapping *ProductStreamMappingRepository
+
+	PromotionSetgroupRule *PromotionSetgroupRuleRepository
+
+	Locale *LocaleRepository
+
+	MailHeaderFooter *MailHeaderFooterRepository
+
+	OrderTag *OrderTagRepository
+
+	Product *ProductRepository
+
+	ProductVisibility *ProductVisibilityRepository
+
+	EventActionSalesChannel *EventActionSalesChannelRepository
+
+	MediaThumbnail *MediaThumbnailRepository
+
+	ProductExport *ProductExportRepository
+
+	ProductManufacturerTranslation *ProductManufacturerTranslationRepository
+
+	StateMachineStateTranslation *StateMachineStateTranslationRepository
+
+	AppCmsBlock *AppCmsBlockRepository
+
+	NumberRangeState *NumberRangeStateRepository
+
+	SalesChannelTranslation *SalesChannelTranslationRepository
+
+	ShippingMethodTranslation *ShippingMethodTranslationRepository
+
+	ProductCustomFieldSet *ProductCustomFieldSetRepository
+
+	ProductSorting *ProductSortingRepository
+
+	Salutation *SalutationRepository
+
+	SeoUrl *SeoUrlRepository
+
+	Currency *CurrencyRepository
+
+	Document *DocumentRepository
+
+	EventActionRule *EventActionRuleRepository
+
+	Order *OrderRepository
+
+	SeoUrlTemplate *SeoUrlTemplateRepository
+
+	StateMachineTransition *StateMachineTransitionRepository
 }
 
 func NewRepository(client ClientService) Repository {
@@ -417,413 +417,413 @@ func NewRepository(client ClientService) Repository {
 		ClientService: client,
 	}
 
-	repo.Currency = (*CurrencyRepository)(&client)
-
-	repo.OrderCustomer = (*OrderCustomerRepository)(&client)
-
-	repo.PromotionSetgroupRule = (*PromotionSetgroupRuleRepository)(&client)
-
-	repo.Webhook = (*WebhookRepository)(&client)
-
-	repo.AppCmsBlockTranslation = (*AppCmsBlockTranslationRepository)(&client)
-
-	repo.CategoryTranslation = (*CategoryTranslationRepository)(&client)
-
-	repo.ProductManufacturerTranslation = (*ProductManufacturerTranslationRepository)(&client)
-
-	repo.Promotion = (*PromotionRepository)(&client)
-
-	repo.App = (*AppRepository)(&client)
-
-	repo.Locale = (*LocaleRepository)(&client)
-
-	repo.LandingPageTranslation = (*LandingPageTranslationRepository)(&client)
-
-	repo.Language = (*LanguageRepository)(&client)
-
-	repo.PluginTranslation = (*PluginTranslationRepository)(&client)
-
-	repo.SalesChannelCurrency = (*SalesChannelCurrencyRepository)(&client)
-
-	repo.SalesChannelTranslation = (*SalesChannelTranslationRepository)(&client)
-
-	repo.SalesChannelTypeTranslation = (*SalesChannelTypeTranslationRepository)(&client)
-
-	repo.AppActionButton = (*AppActionButtonRepository)(&client)
-
-	repo.CustomerGroupTranslation = (*CustomerGroupTranslationRepository)(&client)
-
-	repo.ShippingMethodTranslation = (*ShippingMethodTranslationRepository)(&client)
-
-	repo.StateMachine = (*StateMachineRepository)(&client)
-
-	repo.ProductProperty = (*ProductPropertyRepository)(&client)
-
-	repo.ProductSearchConfig = (*ProductSearchConfigRepository)(&client)
-
-	repo.PropertyGroupTranslation = (*PropertyGroupTranslationRepository)(&client)
-
-	repo.RuleCondition = (*RuleConditionRepository)(&client)
-
-	repo.StateMachineState = (*StateMachineStateRepository)(&client)
-
-	repo.CmsSection = (*CmsSectionRepository)(&client)
-
-	repo.PaymentMethod = (*PaymentMethodRepository)(&client)
-
-	repo.PropertyGroupOptionTranslation = (*PropertyGroupOptionTranslationRepository)(&client)
-
-	repo.ProductReview = (*ProductReviewRepository)(&client)
-
-	repo.ProductStreamMapping = (*ProductStreamMappingRepository)(&client)
-
-	repo.WebhookEventLog = (*WebhookEventLogRepository)(&client)
-
-	repo.MediaTranslation = (*MediaTranslationRepository)(&client)
-
-	repo.OrderAddress = (*OrderAddressRepository)(&client)
-
-	repo.MediaThumbnailSize = (*MediaThumbnailSizeRepository)(&client)
-
-	repo.AppTemplate = (*AppTemplateRepository)(&client)
-
-	repo.Flow = (*FlowRepository)(&client)
-
-	repo.SalesChannelType = (*SalesChannelTypeRepository)(&client)
+	repo.LandingPageTag = (*LandingPageTagRepository)(&client)
 
 	repo.VersionCommit = (*VersionCommitRepository)(&client)
 
-	repo.NumberRangeSalesChannel = (*NumberRangeSalesChannelRepository)(&client)
+	repo.AppTranslation = (*AppTranslationRepository)(&client)
 
-	repo.Product = (*ProductRepository)(&client)
+	repo.CmsPageTranslation = (*CmsPageTranslationRepository)(&client)
 
-	repo.EventActionSalesChannel = (*EventActionSalesChannelRepository)(&client)
+	repo.DeadMessage = (*DeadMessageRepository)(&client)
 
-	repo.ImportExportProfileTranslation = (*ImportExportProfileTranslationRepository)(&client)
+	repo.IntegrationRole = (*IntegrationRoleRepository)(&client)
 
-	repo.MailHeaderFooterTranslation = (*MailHeaderFooterTranslationRepository)(&client)
+	repo.MainCategory = (*MainCategoryRepository)(&client)
 
-	repo.ProductStreamFilter = (*ProductStreamFilterRepository)(&client)
+	repo.MediaTranslation = (*MediaTranslationRepository)(&client)
 
-	repo.PropertyGroupOption = (*PropertyGroupOptionRepository)(&client)
+	repo.ProductConfiguratorSetting = (*ProductConfiguratorSettingRepository)(&client)
 
-	repo.SalesChannelDomain = (*SalesChannelDomainRepository)(&client)
+	repo.ScheduledTask = (*ScheduledTaskRepository)(&client)
 
-	repo.AppActionButtonTranslation = (*AppActionButtonTranslationRepository)(&client)
+	repo.AclUserRole = (*AclUserRoleRepository)(&client)
 
-	repo.CustomFieldSetRelation = (*CustomFieldSetRelationRepository)(&client)
+	repo.App = (*AppRepository)(&client)
 
-	repo.SalutationTranslation = (*SalutationTranslationRepository)(&client)
+	repo.ImportExportFile = (*ImportExportFileRepository)(&client)
 
-	repo.ShippingMethodTag = (*ShippingMethodTagRepository)(&client)
+	repo.LocaleTranslation = (*LocaleTranslationRepository)(&client)
 
-	repo.DocumentTypeTranslation = (*DocumentTypeTranslationRepository)(&client)
+	repo.UserConfig = (*UserConfigRepository)(&client)
 
-	repo.MediaThumbnail = (*MediaThumbnailRepository)(&client)
+	repo.PropertyGroup = (*PropertyGroupRepository)(&client)
 
-	repo.ProductCustomFieldSet = (*ProductCustomFieldSetRepository)(&client)
+	repo.Tag = (*TagRepository)(&client)
+
+	repo.TaxRuleTypeTranslation = (*TaxRuleTypeTranslationRepository)(&client)
+
+	repo.Language = (*LanguageRepository)(&client)
+
+	repo.MailTemplate = (*MailTemplateRepository)(&client)
+
+	repo.MediaDefaultFolder = (*MediaDefaultFolderRepository)(&client)
+
+	repo.ProductOption = (*ProductOptionRepository)(&client)
+
+	repo.StateMachineState = (*StateMachineStateRepository)(&client)
+
+	repo.PaymentMethodTranslation = (*PaymentMethodTranslationRepository)(&client)
+
+	repo.ProductCategory = (*ProductCategoryRepository)(&client)
+
+	repo.PropertyGroupOptionTranslation = (*PropertyGroupOptionTranslationRepository)(&client)
+
+	repo.SalesChannelAnalytics = (*SalesChannelAnalyticsRepository)(&client)
+
+	repo.ThemeSalesChannel = (*ThemeSalesChannelRepository)(&client)
+
+	repo.DeliveryTime = (*DeliveryTimeRepository)(&client)
+
+	repo.Notification = (*NotificationRepository)(&client)
+
+	repo.NumberRangeTranslation = (*NumberRangeTranslationRepository)(&client)
 
 	repo.ProductKeywordDictionary = (*ProductKeywordDictionaryRepository)(&client)
 
-	repo.Script = (*ScriptRepository)(&client)
+	repo.ProductReview = (*ProductReviewRepository)(&client)
 
-	repo.CustomerRecovery = (*CustomerRecoveryRepository)(&client)
+	repo.ShippingMethodPrice = (*ShippingMethodPriceRepository)(&client)
 
-	repo.DocumentBaseConfig = (*DocumentBaseConfigRepository)(&client)
+	repo.EventAction = (*EventActionRepository)(&client)
+
+	repo.LandingPage = (*LandingPageRepository)(&client)
+
+	repo.ProductCrossSelling = (*ProductCrossSellingRepository)(&client)
 
 	repo.ProductCrossSellingAssignedProducts = (*ProductCrossSellingAssignedProductsRepository)(&client)
 
+	repo.ProductProperty = (*ProductPropertyRepository)(&client)
+
+	repo.Script = (*ScriptRepository)(&client)
+
+	repo.WebhookEventLog = (*WebhookEventLogRepository)(&client)
+
+	repo.CustomFieldSet = (*CustomFieldSetRepository)(&client)
+
+	repo.DocumentBaseConfigSalesChannel = (*DocumentBaseConfigSalesChannelRepository)(&client)
+
+	repo.PluginTranslation = (*PluginTranslationRepository)(&client)
+
 	repo.ProductPrice = (*ProductPriceRepository)(&client)
+
+	repo.PromotionDiscountPrices = (*PromotionDiscountPricesRepository)(&client)
+
+	repo.PromotionIndividualCode = (*PromotionIndividualCodeRepository)(&client)
+
+	repo.SalesChannelPaymentMethod = (*SalesChannelPaymentMethodRepository)(&client)
+
+	repo.SalesChannelType = (*SalesChannelTypeRepository)(&client)
+
+	repo.MediaFolder = (*MediaFolderRepository)(&client)
+
+	repo.ProductSortingTranslation = (*ProductSortingTranslationRepository)(&client)
+
+	repo.ProductTranslation = (*ProductTranslationRepository)(&client)
+
+	repo.PromotionCartRule = (*PromotionCartRuleRepository)(&client)
+
+	repo.Snippet = (*SnippetRepository)(&client)
+
+	repo.StateMachineHistory = (*StateMachineHistoryRepository)(&client)
+
+	repo.TaxRule = (*TaxRuleRepository)(&client)
+
+	repo.Country = (*CountryRepository)(&client)
+
+	repo.CustomerWishlist = (*CustomerWishlistRepository)(&client)
+
+	repo.DocumentType = (*DocumentTypeRepository)(&client)
+
+	repo.PromotionDiscountRule = (*PromotionDiscountRuleRepository)(&client)
+
+	repo.PromotionTranslation = (*PromotionTranslationRepository)(&client)
 
 	repo.SalesChannelCountry = (*SalesChannelCountryRepository)(&client)
 
 	repo.SystemConfig = (*SystemConfigRepository)(&client)
 
-	repo.TaxRuleTypeTranslation = (*TaxRuleTypeTranslationRepository)(&client)
-
-	repo.CmsPage = (*CmsPageRepository)(&client)
-
-	repo.NumberRangeType = (*NumberRangeTypeRepository)(&client)
-
-	repo.LogEntry = (*LogEntryRepository)(&client)
-
-	repo.PromotionCartRule = (*PromotionCartRuleRepository)(&client)
-
-	repo.SeoUrlTemplate = (*SeoUrlTemplateRepository)(&client)
-
-	repo.ShippingMethodPrice = (*ShippingMethodPriceRepository)(&client)
-
-	repo.Notification = (*NotificationRepository)(&client)
-
-	repo.ProductCrossSellingTranslation = (*ProductCrossSellingTranslationRepository)(&client)
-
-	repo.NumberRange = (*NumberRangeRepository)(&client)
-
-	repo.OrderDelivery = (*OrderDeliveryRepository)(&client)
-
-	repo.ProductCategory = (*ProductCategoryRepository)(&client)
-
-	repo.ProductSortingTranslation = (*ProductSortingTranslationRepository)(&client)
-
-	repo.DeliveryTimeTranslation = (*DeliveryTimeTranslationRepository)(&client)
-
-	repo.NewsletterRecipientTag = (*NewsletterRecipientTagRepository)(&client)
-
-	repo.MailHeaderFooter = (*MailHeaderFooterRepository)(&client)
-
-	repo.ScheduledTask = (*ScheduledTaskRepository)(&client)
-
-	repo.Theme = (*ThemeRepository)(&client)
-
-	repo.AppPaymentMethod = (*AppPaymentMethodRepository)(&client)
-
-	repo.CustomerAddress = (*CustomerAddressRepository)(&client)
-
-	repo.Rule = (*RuleRepository)(&client)
-
-	repo.Version = (*VersionRepository)(&client)
-
-	repo.MessageQueueStats = (*MessageQueueStatsRepository)(&client)
-
-	repo.OrderTransaction = (*OrderTransactionRepository)(&client)
-
-	repo.OrderDeliveryPosition = (*OrderDeliveryPositionRepository)(&client)
-
-	repo.ProductOption = (*ProductOptionRepository)(&client)
-
-	repo.ShippingMethod = (*ShippingMethodRepository)(&client)
-
-	repo.Unit = (*UnitRepository)(&client)
-
-	repo.User = (*UserRepository)(&client)
-
-	repo.EventAction = (*EventActionRepository)(&client)
-
-	repo.LocaleTranslation = (*LocaleTranslationRepository)(&client)
-
-	repo.Media = (*MediaRepository)(&client)
-
-	repo.MediaFolderConfigurationMediaThumbnailSize = (*MediaFolderConfigurationMediaThumbnailSizeRepository)(&client)
-
-	repo.ProductTag = (*ProductTagRepository)(&client)
-
-	repo.ProductTranslation = (*ProductTranslationRepository)(&client)
-
-	repo.PromotionSalesChannel = (*PromotionSalesChannelRepository)(&client)
-
-	repo.DocumentBaseConfigSalesChannel = (*DocumentBaseConfigSalesChannelRepository)(&client)
-
-	repo.EventActionRule = (*EventActionRuleRepository)(&client)
-
-	repo.CustomFieldSet = (*CustomFieldSetRepository)(&client)
-
-	repo.Integration = (*IntegrationRepository)(&client)
-
-	repo.ProductMedia = (*ProductMediaRepository)(&client)
-
-	repo.ProductStream = (*ProductStreamRepository)(&client)
-
-	repo.ProductStreamTranslation = (*ProductStreamTranslationRepository)(&client)
-
-	repo.PromotionPersonaRule = (*PromotionPersonaRuleRepository)(&client)
-
-	repo.AclRole = (*AclRoleRepository)(&client)
-
-	repo.CountryState = (*CountryStateRepository)(&client)
-
-	repo.StateMachineStateTranslation = (*StateMachineStateTranslationRepository)(&client)
-
-	repo.TaxRuleType = (*TaxRuleTypeRepository)(&client)
-
-	repo.ThemeSalesChannel = (*ThemeSalesChannelRepository)(&client)
-
-	repo.VersionCommitData = (*VersionCommitDataRepository)(&client)
-
-	repo.SalesChannel = (*SalesChannelRepository)(&client)
-
-	repo.SnippetSet = (*SnippetSetRepository)(&client)
-
-	repo.ProductSorting = (*ProductSortingRepository)(&client)
-
-	repo.SalesChannelShippingMethod = (*SalesChannelShippingMethodRepository)(&client)
-
-	repo.AppCmsBlock = (*AppCmsBlockRepository)(&client)
-
-	repo.Country = (*CountryRepository)(&client)
-
-	repo.SalesChannelAnalytics = (*SalesChannelAnalyticsRepository)(&client)
-
-	repo.TaxRule = (*TaxRuleRepository)(&client)
-
-	repo.DeliveryTime = (*DeliveryTimeRepository)(&client)
-
-	repo.MainCategory = (*MainCategoryRepository)(&client)
-
-	repo.DocumentType = (*DocumentTypeRepository)(&client)
-
-	repo.MailTemplateMedia = (*MailTemplateMediaRepository)(&client)
-
-	repo.ProductFeatureSetTranslation = (*ProductFeatureSetTranslationRepository)(&client)
-
-	repo.Tag = (*TagRepository)(&client)
-
-	repo.UserRecovery = (*UserRecoveryRepository)(&client)
-
-	repo.CmsPageTranslation = (*CmsPageTranslationRepository)(&client)
-
-	repo.CustomField = (*CustomFieldRepository)(&client)
-
-	repo.CustomerGroupRegistrationSalesChannels = (*CustomerGroupRegistrationSalesChannelsRepository)(&client)
-
-	repo.MailTemplateTypeTranslation = (*MailTemplateTypeTranslationRepository)(&client)
-
-	repo.NumberRangeState = (*NumberRangeStateRepository)(&client)
-
-	repo.Plugin = (*PluginRepository)(&client)
-
-	repo.ProductCrossSelling = (*ProductCrossSellingRepository)(&client)
-
-	repo.ProductExport = (*ProductExportRepository)(&client)
-
-	repo.Category = (*CategoryRepository)(&client)
-
-	repo.CmsSlotTranslation = (*CmsSlotTranslationRepository)(&client)
-
-	repo.ProductSearchKeyword = (*ProductSearchKeywordRepository)(&client)
-
-	repo.PropertyGroup = (*PropertyGroupRepository)(&client)
-
-	repo.NumberRangeTranslation = (*NumberRangeTranslationRepository)(&client)
-
-	repo.ProductFeatureSet = (*ProductFeatureSetRepository)(&client)
-
-	repo.PromotionIndividualCode = (*PromotionIndividualCodeRepository)(&client)
-
-	repo.PromotionTranslation = (*PromotionTranslationRepository)(&client)
-
-	repo.StateMachineTranslation = (*StateMachineTranslationRepository)(&client)
-
-	repo.ThemeMedia = (*ThemeMediaRepository)(&client)
-
-	repo.CountryTranslation = (*CountryTranslationRepository)(&client)
-
-	repo.LandingPage = (*LandingPageRepository)(&client)
-
-	repo.UserAccessKey = (*UserAccessKeyRepository)(&client)
-
-	repo.Document = (*DocumentRepository)(&client)
-
-	repo.IntegrationRole = (*IntegrationRoleRepository)(&client)
-
-	repo.MailTemplateType = (*MailTemplateTypeRepository)(&client)
-
-	repo.Order = (*OrderRepository)(&client)
-
-	repo.PaymentMethodTranslation = (*PaymentMethodTranslationRepository)(&client)
-
-	repo.PromotionDiscount = (*PromotionDiscountRepository)(&client)
-
-	repo.CountryStateTranslation = (*CountryStateTranslationRepository)(&client)
-
-	repo.CustomerGroup = (*CustomerGroupRepository)(&client)
-
-	repo.PromotionSetgroup = (*PromotionSetgroupRepository)(&client)
-
-	repo.UnitTranslation = (*UnitTranslationRepository)(&client)
+	repo.CmsSlot = (*CmsSlotRepository)(&client)
 
 	repo.MailTemplateTranslation = (*MailTemplateTranslationRepository)(&client)
 
-	repo.ProductCategoryTree = (*ProductCategoryTreeRepository)(&client)
+	repo.OrderTransaction = (*OrderTransactionRepository)(&client)
 
-	repo.ProductSearchConfigField = (*ProductSearchConfigFieldRepository)(&client)
+	repo.ProductStreamFilter = (*ProductStreamFilterRepository)(&client)
 
-	repo.SeoUrl = (*SeoUrlRepository)(&client)
-
-	repo.AclUserRole = (*AclUserRoleRepository)(&client)
-
-	repo.ImportExportProfile = (*ImportExportProfileRepository)(&client)
-
-	repo.OrderLineItem = (*OrderLineItemRepository)(&client)
-
-	repo.ProductManufacturer = (*ProductManufacturerRepository)(&client)
-
-	repo.CurrencyTranslation = (*CurrencyTranslationRepository)(&client)
-
-	repo.CustomerWishlist = (*CustomerWishlistRepository)(&client)
-
-	repo.MediaTag = (*MediaTagRepository)(&client)
-
-	repo.PromotionOrderRule = (*PromotionOrderRuleRepository)(&client)
-
-	repo.SalesChannelLanguage = (*SalesChannelLanguageRepository)(&client)
-
-	repo.Salutation = (*SalutationRepository)(&client)
-
-	repo.Snippet = (*SnippetRepository)(&client)
-
-	repo.Tax = (*TaxRepository)(&client)
-
-	repo.CustomerWishlistProduct = (*CustomerWishlistProductRepository)(&client)
-
-	repo.ImportExportLog = (*ImportExportLogRepository)(&client)
-
-	repo.DeadMessage = (*DeadMessageRepository)(&client)
-
-	repo.LandingPageTag = (*LandingPageTagRepository)(&client)
-
-	repo.MediaDefaultFolder = (*MediaDefaultFolderRepository)(&client)
-
-	repo.NumberRangeTypeTranslation = (*NumberRangeTypeTranslationRepository)(&client)
-
-	repo.ProductVisibility = (*ProductVisibilityRepository)(&client)
-
-	repo.StateMachineTransition = (*StateMachineTransitionRepository)(&client)
-
-	repo.AppTranslation = (*AppTranslationRepository)(&client)
+	repo.ProductStreamTranslation = (*ProductStreamTranslationRepository)(&client)
 
 	repo.CategoryTag = (*CategoryTagRepository)(&client)
 
-	repo.ImportExportFile = (*ImportExportFileRepository)(&client)
-
-	repo.MailTemplate = (*MailTemplateRepository)(&client)
-
-	repo.MediaFolderConfiguration = (*MediaFolderConfigurationRepository)(&client)
-
-	repo.SalesChannelPaymentMethod = (*SalesChannelPaymentMethodRepository)(&client)
-
-	repo.StateMachineHistory = (*StateMachineHistoryRepository)(&client)
-
-	repo.ThemeTranslation = (*ThemeTranslationRepository)(&client)
-
 	repo.CurrencyCountryRounding = (*CurrencyCountryRoundingRepository)(&client)
 
-	repo.CustomerTag = (*CustomerTagRepository)(&client)
+	repo.NumberRangeSalesChannel = (*NumberRangeSalesChannelRepository)(&client)
 
-	repo.LandingPageSalesChannel = (*LandingPageSalesChannelRepository)(&client)
+	repo.OrderDelivery = (*OrderDeliveryRepository)(&client)
 
-	repo.OrderTag = (*OrderTagRepository)(&client)
+	repo.LandingPageTranslation = (*LandingPageTranslationRepository)(&client)
 
-	repo.ProductConfiguratorSetting = (*ProductConfiguratorSettingRepository)(&client)
+	repo.MailTemplateTypeTranslation = (*MailTemplateTypeTranslationRepository)(&client)
 
-	repo.PromotionDiscountPrices = (*PromotionDiscountPricesRepository)(&client)
+	repo.ProductMedia = (*ProductMediaRepository)(&client)
 
 	repo.PromotionPersonaCustomer = (*PromotionPersonaCustomerRepository)(&client)
 
-	repo.UserConfig = (*UserConfigRepository)(&client)
+	repo.CmsSlotTranslation = (*CmsSlotTranslationRepository)(&client)
 
-	repo.CmsSlot = (*CmsSlotRepository)(&client)
+	repo.CustomerRecovery = (*CustomerRecoveryRepository)(&client)
 
-	repo.Customer = (*CustomerRepository)(&client)
+	repo.DocumentBaseConfig = (*DocumentBaseConfigRepository)(&client)
 
-	repo.MediaFolder = (*MediaFolderRepository)(&client)
+	repo.DocumentTypeTranslation = (*DocumentTypeTranslationRepository)(&client)
 
-	repo.NewsletterRecipient = (*NewsletterRecipientRepository)(&client)
+	repo.Tax = (*TaxRepository)(&client)
 
-	repo.PromotionDiscountRule = (*PromotionDiscountRuleRepository)(&client)
+	repo.NumberRangeTypeTranslation = (*NumberRangeTypeTranslationRepository)(&client)
+
+	repo.OrderDeliveryPosition = (*OrderDeliveryPositionRepository)(&client)
+
+	repo.SalesChannelShippingMethod = (*SalesChannelShippingMethodRepository)(&client)
+
+	repo.Version = (*VersionRepository)(&client)
 
 	repo.CmsBlock = (*CmsBlockRepository)(&client)
 
+	repo.CustomField = (*CustomFieldRepository)(&client)
+
+	repo.CustomerWishlistProduct = (*CustomerWishlistProductRepository)(&client)
+
+	repo.NumberRangeType = (*NumberRangeTypeRepository)(&client)
+
+	repo.MediaFolderConfiguration = (*MediaFolderConfigurationRepository)(&client)
+
+	repo.PromotionSalesChannel = (*PromotionSalesChannelRepository)(&client)
+
+	repo.Rule = (*RuleRepository)(&client)
+
+	repo.ProductFeatureSet = (*ProductFeatureSetRepository)(&client)
+
+	repo.ThemeMedia = (*ThemeMediaRepository)(&client)
+
+	repo.SnippetSet = (*SnippetSetRepository)(&client)
+
+	repo.Category = (*CategoryRepository)(&client)
+
+	repo.CmsPage = (*CmsPageRepository)(&client)
+
+	repo.MailTemplateMedia = (*MailTemplateMediaRepository)(&client)
+
+	repo.PromotionPersonaRule = (*PromotionPersonaRuleRepository)(&client)
+
 	repo.FlowSequence = (*FlowSequenceRepository)(&client)
+
+	repo.ProductManufacturer = (*ProductManufacturerRepository)(&client)
+
+	repo.Promotion = (*PromotionRepository)(&client)
+
+	repo.PromotionDiscount = (*PromotionDiscountRepository)(&client)
+
+	repo.AppActionButtonTranslation = (*AppActionButtonTranslationRepository)(&client)
+
+	repo.CountryStateTranslation = (*CountryStateTranslationRepository)(&client)
+
+	repo.CountryTranslation = (*CountryTranslationRepository)(&client)
+
+	repo.Flow = (*FlowRepository)(&client)
+
+	repo.OrderCustomer = (*OrderCustomerRepository)(&client)
+
+	repo.PromotionSetgroup = (*PromotionSetgroupRepository)(&client)
+
+	repo.Theme = (*ThemeRepository)(&client)
+
+	repo.AclRole = (*AclRoleRepository)(&client)
+
+	repo.CustomerTag = (*CustomerTagRepository)(&client)
+
+	repo.Integration = (*IntegrationRepository)(&client)
+
+	repo.NumberRange = (*NumberRangeRepository)(&client)
+
+	repo.SalesChannelCurrency = (*SalesChannelCurrencyRepository)(&client)
+
+	repo.ShippingMethod = (*ShippingMethodRepository)(&client)
+
+	repo.UserAccessKey = (*UserAccessKeyRepository)(&client)
+
+	repo.LogEntry = (*LogEntryRepository)(&client)
+
+	repo.NewsletterRecipient = (*NewsletterRecipientRepository)(&client)
+
+	repo.Plugin = (*PluginRepository)(&client)
+
+	repo.SalesChannel = (*SalesChannelRepository)(&client)
+
+	repo.ThemeTranslation = (*ThemeTranslationRepository)(&client)
+
+	repo.CountryState = (*CountryStateRepository)(&client)
+
+	repo.CurrencyTranslation = (*CurrencyTranslationRepository)(&client)
+
+	repo.NewsletterRecipientTag = (*NewsletterRecipientTagRepository)(&client)
+
+	repo.ProductSearchConfigField = (*ProductSearchConfigFieldRepository)(&client)
+
+	repo.User = (*UserRepository)(&client)
+
+	repo.ImportExportProfileTranslation = (*ImportExportProfileTranslationRepository)(&client)
+
+	repo.ProductFeatureSetTranslation = (*ProductFeatureSetTranslationRepository)(&client)
+
+	repo.PromotionOrderRule = (*PromotionOrderRuleRepository)(&client)
+
+	repo.SalutationTranslation = (*SalutationTranslationRepository)(&client)
+
+	repo.SalesChannelTypeTranslation = (*SalesChannelTypeTranslationRepository)(&client)
+
+	repo.TaxRuleType = (*TaxRuleTypeRepository)(&client)
+
+	repo.VersionCommitData = (*VersionCommitDataRepository)(&client)
+
+	repo.AppActionButton = (*AppActionButtonRepository)(&client)
+
+	repo.CustomerAddress = (*CustomerAddressRepository)(&client)
+
+	repo.MailTemplateType = (*MailTemplateTypeRepository)(&client)
+
+	repo.PaymentMethod = (*PaymentMethodRepository)(&client)
+
+	repo.ImportExportProfile = (*ImportExportProfileRepository)(&client)
+
+	repo.MailHeaderFooterTranslation = (*MailHeaderFooterTranslationRepository)(&client)
+
+	repo.MediaTag = (*MediaTagRepository)(&client)
+
+	repo.OrderLineItem = (*OrderLineItemRepository)(&client)
+
+	repo.AppCmsBlockTranslation = (*AppCmsBlockTranslationRepository)(&client)
+
+	repo.CmsSection = (*CmsSectionRepository)(&client)
+
+	repo.CustomerGroupRegistrationSalesChannels = (*CustomerGroupRegistrationSalesChannelsRepository)(&client)
+
+	repo.DeliveryTimeTranslation = (*DeliveryTimeTranslationRepository)(&client)
+
+	repo.ProductSearchConfig = (*ProductSearchConfigRepository)(&client)
+
+	repo.PropertyGroupTranslation = (*PropertyGroupTranslationRepository)(&client)
+
+	repo.ShippingMethodTag = (*ShippingMethodTagRepository)(&client)
+
+	repo.StateMachine = (*StateMachineRepository)(&client)
+
+	repo.MediaThumbnailSize = (*MediaThumbnailSizeRepository)(&client)
+
+	repo.ProductCrossSellingTranslation = (*ProductCrossSellingTranslationRepository)(&client)
+
+	repo.ProductTag = (*ProductTagRepository)(&client)
+
+	repo.SalesChannelLanguage = (*SalesChannelLanguageRepository)(&client)
+
+	repo.CategoryTranslation = (*CategoryTranslationRepository)(&client)
+
+	repo.CustomFieldSetRelation = (*CustomFieldSetRelationRepository)(&client)
+
+	repo.CustomerGroup = (*CustomerGroupRepository)(&client)
+
+	repo.CustomerGroupTranslation = (*CustomerGroupTranslationRepository)(&client)
+
+	repo.StateMachineTranslation = (*StateMachineTranslationRepository)(&client)
+
+	repo.ImportExportLog = (*ImportExportLogRepository)(&client)
+
+	repo.LandingPageSalesChannel = (*LandingPageSalesChannelRepository)(&client)
+
+	repo.ProductSearchKeyword = (*ProductSearchKeywordRepository)(&client)
+
+	repo.Webhook = (*WebhookRepository)(&client)
+
+	repo.RuleCondition = (*RuleConditionRepository)(&client)
+
+	repo.AppPaymentMethod = (*AppPaymentMethodRepository)(&client)
+
+	repo.MediaFolderConfigurationMediaThumbnailSize = (*MediaFolderConfigurationMediaThumbnailSizeRepository)(&client)
+
+	repo.MessageQueueStats = (*MessageQueueStatsRepository)(&client)
+
+	repo.OrderAddress = (*OrderAddressRepository)(&client)
+
+	repo.UserRecovery = (*UserRecoveryRepository)(&client)
+
+	repo.Customer = (*CustomerRepository)(&client)
+
+	repo.ProductCategoryTree = (*ProductCategoryTreeRepository)(&client)
+
+	repo.PropertyGroupOption = (*PropertyGroupOptionRepository)(&client)
+
+	repo.UnitTranslation = (*UnitTranslationRepository)(&client)
+
+	repo.SalesChannelDomain = (*SalesChannelDomainRepository)(&client)
+
+	repo.Unit = (*UnitRepository)(&client)
+
+	repo.AppTemplate = (*AppTemplateRepository)(&client)
+
+	repo.Media = (*MediaRepository)(&client)
+
+	repo.ProductStream = (*ProductStreamRepository)(&client)
+
+	repo.ProductStreamMapping = (*ProductStreamMappingRepository)(&client)
+
+	repo.PromotionSetgroupRule = (*PromotionSetgroupRuleRepository)(&client)
+
+	repo.Locale = (*LocaleRepository)(&client)
+
+	repo.MailHeaderFooter = (*MailHeaderFooterRepository)(&client)
+
+	repo.OrderTag = (*OrderTagRepository)(&client)
+
+	repo.Product = (*ProductRepository)(&client)
+
+	repo.ProductVisibility = (*ProductVisibilityRepository)(&client)
+
+	repo.EventActionSalesChannel = (*EventActionSalesChannelRepository)(&client)
+
+	repo.MediaThumbnail = (*MediaThumbnailRepository)(&client)
+
+	repo.ProductExport = (*ProductExportRepository)(&client)
+
+	repo.ProductManufacturerTranslation = (*ProductManufacturerTranslationRepository)(&client)
+
+	repo.StateMachineStateTranslation = (*StateMachineStateTranslationRepository)(&client)
+
+	repo.AppCmsBlock = (*AppCmsBlockRepository)(&client)
+
+	repo.NumberRangeState = (*NumberRangeStateRepository)(&client)
+
+	repo.SalesChannelTranslation = (*SalesChannelTranslationRepository)(&client)
+
+	repo.ShippingMethodTranslation = (*ShippingMethodTranslationRepository)(&client)
+
+	repo.ProductCustomFieldSet = (*ProductCustomFieldSetRepository)(&client)
+
+	repo.ProductSorting = (*ProductSortingRepository)(&client)
+
+	repo.Salutation = (*SalutationRepository)(&client)
+
+	repo.SeoUrl = (*SeoUrlRepository)(&client)
+
+	repo.Currency = (*CurrencyRepository)(&client)
+
+	repo.Document = (*DocumentRepository)(&client)
+
+	repo.EventActionRule = (*EventActionRuleRepository)(&client)
+
+	repo.Order = (*OrderRepository)(&client)
+
+	repo.SeoUrlTemplate = (*SeoUrlTemplateRepository)(&client)
+
+	repo.StateMachineTransition = (*StateMachineTransitionRepository)(&client)
 
 	return repo
 }

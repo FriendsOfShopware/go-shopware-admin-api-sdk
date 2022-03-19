@@ -23,6 +23,42 @@ func (t ProductCrossSellingTranslationRepository) Search(ctx ApiContext, criteri
 	return uResp, resp, nil
 }
 
+func (t ProductCrossSellingTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductCrossSellingTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductCrossSellingTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-cross-selling-translation", criteria)
 
@@ -62,6 +98,8 @@ func (t ProductCrossSellingTranslationRepository) Delete(ctx ApiContext, ids []s
 }
 
 type ProductCrossSellingTranslation struct {
+	Language *Language `json:"language,omitempty"`
+
 	Name string `json:"name,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
@@ -73,8 +111,6 @@ type ProductCrossSellingTranslation struct {
 	LanguageId string `json:"languageId,omitempty"`
 
 	ProductCrossSelling *ProductCrossSelling `json:"productCrossSelling,omitempty"`
-
-	Language *Language `json:"language,omitempty"`
 }
 
 type ProductCrossSellingTranslationCollection struct {

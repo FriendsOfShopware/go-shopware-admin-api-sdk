@@ -23,6 +23,42 @@ func (t DeadMessageRepository) Search(ctx ApiContext, criteria Criteria) (*DeadM
 	return uResp, resp, nil
 }
 
+func (t DeadMessageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*DeadMessageCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t DeadMessageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/dead-message", criteria)
 
@@ -62,35 +98,35 @@ func (t DeadMessageRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type DeadMessage struct {
-	NextExecutionTime time.Time `json:"nextExecutionTime,omitempty"`
-
-	ScheduledTaskId string `json:"scheduledTaskId,omitempty"`
-
-	ScheduledTask *ScheduledTask `json:"scheduledTask,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	OriginalMessageClass string `json:"originalMessageClass,omitempty"`
-
-	ErrorCount float64 `json:"errorCount,omitempty"`
-
-	Exception string `json:"exception,omitempty"`
-
-	ExceptionFile string `json:"exceptionFile,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	Id string `json:"id,omitempty"`
 
+	SerializedOriginalMessage interface{} `json:"serializedOriginalMessage,omitempty"`
+
+	Exception string `json:"exception,omitempty"`
+
 	ExceptionLine float64 `json:"exceptionLine,omitempty"`
+
+	ScheduledTask *ScheduledTask `json:"scheduledTask,omitempty"`
+
+	OriginalMessageClass string `json:"originalMessageClass,omitempty"`
+
+	ExceptionMessage string `json:"exceptionMessage,omitempty"`
+
+	ExceptionFile string `json:"exceptionFile,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	HandlerClass string `json:"handlerClass,omitempty"`
 
 	Encrypted bool `json:"encrypted,omitempty"`
 
-	ExceptionMessage string `json:"exceptionMessage,omitempty"`
+	ErrorCount float64 `json:"errorCount,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	NextExecutionTime time.Time `json:"nextExecutionTime,omitempty"`
 
-	SerializedOriginalMessage interface{} `json:"serializedOriginalMessage,omitempty"`
+	ScheduledTaskId string `json:"scheduledTaskId,omitempty"`
 }
 
 type DeadMessageCollection struct {

@@ -23,6 +23,42 @@ func (t ProductExportRepository) Search(ctx ApiContext, criteria Criteria) (*Pro
 	return uResp, resp, nil
 }
 
+func (t ProductExportRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductExportCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductExportRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-export", criteria)
 
@@ -62,55 +98,55 @@ func (t ProductExportRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ProductExport struct {
-	PausedSchedule bool `json:"pausedSchedule,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	SalesChannelDomainId string `json:"salesChannelDomainId,omitempty"`
+	StorefrontSalesChannelId string `json:"storefrontSalesChannelId,omitempty"`
 
 	AccessKey string `json:"accessKey,omitempty"`
 
-	GenerateByCronjob bool `json:"generateByCronjob,omitempty"`
+	Interval float64 `json:"interval,omitempty"`
+
+	PausedSchedule bool `json:"pausedSchedule,omitempty"`
 
 	Currency *Currency `json:"currency,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Encoding string `json:"encoding,omitempty"`
+
+	FileFormat string `json:"fileFormat,omitempty"`
+
+	IncludeVariants bool `json:"includeVariants,omitempty"`
+
+	FooterTemplate string `json:"footerTemplate,omitempty"`
+
+	StorefrontSalesChannel *SalesChannel `json:"storefrontSalesChannel,omitempty"`
+
+	SalesChannelDomain *SalesChannelDomain `json:"salesChannelDomain,omitempty"`
+
+	ProductStreamId string `json:"productStreamId,omitempty"`
+
+	SalesChannelDomainId string `json:"salesChannelDomainId,omitempty"`
 
 	CurrencyId string `json:"currencyId,omitempty"`
 
+	GenerateByCronjob bool `json:"generateByCronjob,omitempty"`
+
+	GeneratedAt time.Time `json:"generatedAt,omitempty"`
+
+	SalesChannelId string `json:"salesChannelId,omitempty"`
+
 	FileName string `json:"fileName,omitempty"`
 
-	Interval float64 `json:"interval,omitempty"`
+	HeaderTemplate string `json:"headerTemplate,omitempty"`
 
 	BodyTemplate string `json:"bodyTemplate,omitempty"`
 
 	ProductStream *ProductStream `json:"productStream,omitempty"`
 
-	StorefrontSalesChannel *SalesChannel `json:"storefrontSalesChannel,omitempty"`
-
 	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	Id string `json:"id,omitempty"`
-
-	FileFormat string `json:"fileFormat,omitempty"`
-
-	GeneratedAt time.Time `json:"generatedAt,omitempty"`
-
-	SalesChannelDomain *SalesChannelDomain `json:"salesChannelDomain,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	IncludeVariants bool `json:"includeVariants,omitempty"`
-
-	HeaderTemplate string `json:"headerTemplate,omitempty"`
-
-	FooterTemplate string `json:"footerTemplate,omitempty"`
-
-	ProductStreamId string `json:"productStreamId,omitempty"`
-
-	StorefrontSalesChannelId string `json:"storefrontSalesChannelId,omitempty"`
-
-	Encoding string `json:"encoding,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type ProductExportCollection struct {

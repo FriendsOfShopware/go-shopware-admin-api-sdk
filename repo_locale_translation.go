@@ -23,6 +23,42 @@ func (t LocaleTranslationRepository) Search(ctx ApiContext, criteria Criteria) (
 	return uResp, resp, nil
 }
 
+func (t LocaleTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LocaleTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t LocaleTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/locale-translation", criteria)
 
@@ -62,21 +98,21 @@ func (t LocaleTranslationRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type LocaleTranslation struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
 	Language *Language `json:"language,omitempty"`
+
+	Name string `json:"name,omitempty"`
 
 	LocaleId string `json:"localeId,omitempty"`
 
 	LanguageId string `json:"languageId,omitempty"`
 
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
 	Locale *Locale `json:"locale,omitempty"`
 
-	Name string `json:"name,omitempty"`
-
 	Territory string `json:"territory,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 }

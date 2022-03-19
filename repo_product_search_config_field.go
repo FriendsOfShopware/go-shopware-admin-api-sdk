@@ -23,6 +23,42 @@ func (t ProductSearchConfigFieldRepository) Search(ctx ApiContext, criteria Crit
 	return uResp, resp, nil
 }
 
+func (t ProductSearchConfigFieldRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductSearchConfigFieldCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductSearchConfigFieldRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-search-config-field", criteria)
 
@@ -62,27 +98,27 @@ func (t ProductSearchConfigFieldRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type ProductSearchConfigField struct {
-	Ranking float64 `json:"ranking,omitempty"`
-
-	CustomField *CustomField `json:"customField,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
 	Tokenize bool `json:"tokenize,omitempty"`
 
-	Searchable bool `json:"searchable,omitempty"`
-
-	SearchConfig *ProductSearchConfig `json:"searchConfig,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	SearchConfigId string `json:"searchConfigId,omitempty"`
 
 	CustomFieldId string `json:"customFieldId,omitempty"`
 
 	Field string `json:"field,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Searchable bool `json:"searchable,omitempty"`
+
+	Ranking float64 `json:"ranking,omitempty"`
+
+	SearchConfig *ProductSearchConfig `json:"searchConfig,omitempty"`
+
+	CustomField *CustomField `json:"customField,omitempty"`
 }
 
 type ProductSearchConfigFieldCollection struct {

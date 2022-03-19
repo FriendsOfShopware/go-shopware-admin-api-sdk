@@ -23,6 +23,42 @@ func (t ThemeRepository) Search(ctx ApiContext, criteria Criteria) (*ThemeCollec
 	return uResp, resp, nil
 }
 
+func (t ThemeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ThemeCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ThemeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/theme", criteria)
 
@@ -62,47 +98,47 @@ func (t ThemeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, e
 }
 
 type Theme struct {
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	ChildThemes []Theme `json:"childThemes,omitempty"`
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
 	Media []Media `json:"media,omitempty"`
 
-	PreviewMedia *Media `json:"previewMedia,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	Labels interface{} `json:"labels,omitempty"`
+	HelpTexts interface{} `json:"helpTexts,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	PreviewMediaId string `json:"previewMediaId,omitempty"`
-
 	ParentThemeId string `json:"parentThemeId,omitempty"`
-
-	Translations []ThemeTranslation `json:"translations,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Description string `json:"description,omitempty"`
 
 	BaseConfig interface{} `json:"baseConfig,omitempty"`
 
 	ConfigValues interface{} `json:"configValues,omitempty"`
 
-	Active bool `json:"active,omitempty"`
-
 	TechnicalName string `json:"technicalName,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
+	Description string `json:"description,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
 	Author string `json:"author,omitempty"`
 
-	HelpTexts interface{} `json:"helpTexts,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
+
+	PreviewMedia *Media `json:"previewMedia,omitempty"`
+
+	ChildThemes []Theme `json:"childThemes,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Labels interface{} `json:"labels,omitempty"`
+
+	PreviewMediaId string `json:"previewMediaId,omitempty"`
+
+	Translations []ThemeTranslation `json:"translations,omitempty"`
 }
 
 type ThemeCollection struct {

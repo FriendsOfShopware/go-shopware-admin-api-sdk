@@ -23,6 +23,42 @@ func (t RuleRepository) Search(ctx ApiContext, criteria Criteria) (*RuleCollecti
 	return uResp, resp, nil
 }
 
+func (t RuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*RuleCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t RuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/rule", criteria)
 
@@ -62,51 +98,51 @@ func (t RuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type Rule struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
 	Payload interface{} `json:"payload,omitempty"`
 
-	ProductPrices []ProductPrice `json:"productPrices,omitempty"`
+	ShippingMethodPrices []ShippingMethodPrice `json:"shippingMethodPrices,omitempty"`
 
-	ShippingMethodPriceCalculations []ShippingMethodPrice `json:"shippingMethodPriceCalculations,omitempty"`
-
-	PersonaPromotions []Promotion `json:"personaPromotions,omitempty"`
-
-	OrderPromotions []Promotion `json:"orderPromotions,omitempty"`
-
-	PromotionDiscounts []PromotionDiscount `json:"promotionDiscounts,omitempty"`
+	PromotionSetGroups []PromotionSetgroup `json:"promotionSetGroups,omitempty"`
 
 	EventActions []EventAction `json:"eventActions,omitempty"`
-
-	Name string `json:"name,omitempty"`
-
-	Invalid bool `json:"invalid,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	Conditions []RuleCondition `json:"conditions,omitempty"`
-
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
-
-	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	Priority float64 `json:"priority,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
 	ModuleTypes interface{} `json:"moduleTypes,omitempty"`
 
+	ProductPrices []ProductPrice `json:"productPrices,omitempty"`
+
+	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
+
+	PersonaPromotions []Promotion `json:"personaPromotions,omitempty"`
+
+	OrderPromotions []Promotion `json:"orderPromotions,omitempty"`
+
+	Name string `json:"name,omitempty"`
+
+	Priority float64 `json:"priority,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	ShippingMethodPriceCalculations []ShippingMethodPrice `json:"shippingMethodPriceCalculations,omitempty"`
+
 	FlowSequences []FlowSequence `json:"flowSequences,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	ShippingMethodPrices []ShippingMethodPrice `json:"shippingMethodPrices,omitempty"`
 
 	CartPromotions []Promotion `json:"cartPromotions,omitempty"`
 
-	PromotionSetGroups []PromotionSetgroup `json:"promotionSetGroups,omitempty"`
+	PromotionDiscounts []PromotionDiscount `json:"promotionDiscounts,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Invalid bool `json:"invalid,omitempty"`
+
+	Conditions []RuleCondition `json:"conditions,omitempty"`
+
+	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type RuleCollection struct {

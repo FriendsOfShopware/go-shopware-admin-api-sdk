@@ -23,6 +23,42 @@ func (t OrderDeliveryPositionRepository) Search(ctx ApiContext, criteria Criteri
 	return uResp, resp, nil
 }
 
+func (t OrderDeliveryPositionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderDeliveryPositionCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t OrderDeliveryPositionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-delivery-position", criteria)
 
@@ -62,35 +98,35 @@ func (t OrderDeliveryPositionRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type OrderDeliveryPosition struct {
-	Id string `json:"id,omitempty"`
+	Price interface{} `json:"price,omitempty"`
+
+	TotalPrice float64 `json:"totalPrice,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	OrderDeliveryId string `json:"orderDeliveryId,omitempty"`
 
 	OrderDeliveryVersionId string `json:"orderDeliveryVersionId,omitempty"`
 
-	UnitPrice float64 `json:"unitPrice,omitempty"`
-
-	TotalPrice float64 `json:"totalPrice,omitempty"`
+	Quantity float64 `json:"quantity,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	OrderLineItemVersionId string `json:"orderLineItemVersionId,omitempty"`
-
-	Price interface{} `json:"price,omitempty"`
-
-	OrderLineItem *OrderLineItem `json:"orderLineItem,omitempty"`
+	OrderDelivery *OrderDelivery `json:"orderDelivery,omitempty"`
 
 	VersionId string `json:"versionId,omitempty"`
 
-	Quantity float64 `json:"quantity,omitempty"`
+	OrderLineItemVersionId string `json:"orderLineItemVersionId,omitempty"`
 
-	OrderDelivery *OrderDelivery `json:"orderDelivery,omitempty"`
+	OrderLineItem *OrderLineItem `json:"orderLineItem,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UnitPrice float64 `json:"unitPrice,omitempty"`
 
 	OrderLineItemId string `json:"orderLineItemId,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type OrderDeliveryPositionCollection struct {

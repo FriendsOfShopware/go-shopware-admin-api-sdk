@@ -23,6 +23,42 @@ func (t PaymentMethodRepository) Search(ctx ApiContext, criteria Criteria) (*Pay
 	return uResp, resp, nil
 }
 
+func (t PaymentMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PaymentMethodCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t PaymentMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/payment-method", criteria)
 
@@ -62,61 +98,61 @@ func (t PaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type PaymentMethod struct {
-	AfterOrderEnabled bool `json:"afterOrderEnabled,omitempty"`
-
-	MediaId string `json:"mediaId,omitempty"`
-
-	FormattedHandlerIdentifier string `json:"formattedHandlerIdentifier,omitempty"`
-
-	Asynchronous bool `json:"asynchronous,omitempty"`
-
-	Customers []Customer `json:"customers,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	Position float64 `json:"position,omitempty"`
-
-	Prepared bool `json:"prepared,omitempty"`
-
-	Synchronous bool `json:"synchronous,omitempty"`
-
-	Media *Media `json:"media,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
-
-	HandlerIdentifier string `json:"handlerIdentifier,omitempty"`
-
-	AppPaymentMethod *AppPaymentMethod `json:"appPaymentMethod,omitempty"`
-
-	Description string `json:"description,omitempty"`
+	Name string `json:"name,omitempty"`
 
 	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
 
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	FormattedHandlerIdentifier string `json:"formattedHandlerIdentifier,omitempty"`
+
+	MediaId string `json:"mediaId,omitempty"`
+
+	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
+
+	Prepared bool `json:"prepared,omitempty"`
+
+	Customers []Customer `json:"customers,omitempty"`
+
+	HandlerIdentifier string `json:"handlerIdentifier,omitempty"`
+
+	Asynchronous bool `json:"asynchronous,omitempty"`
+
+	Description string `json:"description,omitempty"`
+
+	Translations []PaymentMethodTranslation `json:"translations,omitempty"`
+
+	Media *Media `json:"media,omitempty"`
+
+	AppPaymentMethod *AppPaymentMethod `json:"appPaymentMethod,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	OrderTransactions []OrderTransaction `json:"orderTransactions,omitempty"`
+	DistinguishableName string `json:"distinguishableName,omitempty"`
+
+	AfterOrderEnabled bool `json:"afterOrderEnabled,omitempty"`
+
+	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+
+	Plugin *Plugin `json:"plugin,omitempty"`
 
 	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
 	PluginId string `json:"pluginId,omitempty"`
 
-	DistinguishableName string `json:"distinguishableName,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	Translations []PaymentMethodTranslation `json:"translations,omitempty"`
+	OrderTransactions []OrderTransaction `json:"orderTransactions,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Name string `json:"name,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Active bool `json:"active,omitempty"`
-
-	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
-
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
-
-	Plugin *Plugin `json:"plugin,omitempty"`
+	Synchronous bool `json:"synchronous,omitempty"`
 }
 
 type PaymentMethodCollection struct {

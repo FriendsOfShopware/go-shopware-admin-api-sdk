@@ -23,6 +23,42 @@ func (t NumberRangeSalesChannelRepository) Search(ctx ApiContext, criteria Crite
 	return uResp, resp, nil
 }
 
+func (t NumberRangeSalesChannelRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NumberRangeSalesChannelCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t NumberRangeSalesChannelRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/number-range-sales-channel", criteria)
 
@@ -62,23 +98,23 @@ func (t NumberRangeSalesChannelRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type NumberRangeSalesChannel struct {
+	SalesChannelId string `json:"salesChannelId,omitempty"`
+
+	NumberRangeTypeId string `json:"numberRangeTypeId,omitempty"`
+
+	NumberRangeType *NumberRangeType `json:"numberRangeType,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
 	NumberRange *NumberRange `json:"numberRange,omitempty"`
 
 	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
-
-	NumberRangeType *NumberRangeType `json:"numberRangeType,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
-
 	NumberRangeId string `json:"numberRangeId,omitempty"`
-
-	SalesChannelId string `json:"salesChannelId,omitempty"`
-
-	NumberRangeTypeId string `json:"numberRangeTypeId,omitempty"`
 }
 
 type NumberRangeSalesChannelCollection struct {

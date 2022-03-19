@@ -23,6 +23,42 @@ func (t CmsSectionRepository) Search(ctx ApiContext, criteria Criteria) (*CmsSec
 	return uResp, resp, nil
 }
 
+func (t CmsSectionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsSectionCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CmsSectionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/cms-section", criteria)
 
@@ -62,45 +98,45 @@ func (t CmsSectionRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type CmsSection struct {
+	Page *CmsPage `json:"page,omitempty"`
+
 	Type string `json:"type,omitempty"`
 
 	MobileBehavior string `json:"mobileBehavior,omitempty"`
 
-	PageId string `json:"pageId,omitempty"`
-
-	Page *CmsPage `json:"page,omitempty"`
+	BackgroundMediaId string `json:"backgroundMediaId,omitempty"`
 
 	CssClass string `json:"cssClass,omitempty"`
 
+	PageId string `json:"pageId,omitempty"`
+
 	BackgroundMedia *Media `json:"backgroundMedia,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Blocks []CmsBlock `json:"blocks,omitempty"`
 
 	VersionId string `json:"versionId,omitempty"`
 
+	Name string `json:"name,omitempty"`
+
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
-
-	Position float64 `json:"position,omitempty"`
+	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
 
 	SizingMode string `json:"sizingMode,omitempty"`
 
 	BackgroundColor string `json:"backgroundColor,omitempty"`
 
-	BackgroundMediaMode string `json:"backgroundMediaMode,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	Locked bool `json:"locked,omitempty"`
 
-	Name string `json:"name,omitempty"`
-
-	BackgroundMediaId string `json:"backgroundMediaId,omitempty"`
-
-	Blocks []CmsBlock `json:"blocks,omitempty"`
+	BackgroundMediaMode string `json:"backgroundMediaMode,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Position float64 `json:"position,omitempty"`
 }
 
 type CmsSectionCollection struct {

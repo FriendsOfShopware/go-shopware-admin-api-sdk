@@ -23,6 +23,42 @@ func (t ProductStreamTranslationRepository) Search(ctx ApiContext, criteria Crit
 	return uResp, resp, nil
 }
 
+func (t ProductStreamTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductStreamTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductStreamTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-stream-translation", criteria)
 
@@ -62,23 +98,23 @@ func (t ProductStreamTranslationRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type ProductStreamTranslation struct {
-	Language *Language `json:"language,omitempty"`
-
-	Description string `json:"description,omitempty"`
+	Name string `json:"name,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
+	ProductStreamId string `json:"productStreamId,omitempty"`
+
 	LanguageId string `json:"languageId,omitempty"`
 
-	ProductStream *ProductStream `json:"productStream,omitempty"`
-
-	Name string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	ProductStreamId string `json:"productStreamId,omitempty"`
+	ProductStream *ProductStream `json:"productStream,omitempty"`
+
+	Language *Language `json:"language,omitempty"`
 }
 
 type ProductStreamTranslationCollection struct {

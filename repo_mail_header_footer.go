@@ -23,6 +23,42 @@ func (t MailHeaderFooterRepository) Search(ctx ApiContext, criteria Criteria) (*
 	return uResp, resp, nil
 }
 
+func (t MailHeaderFooterRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MailHeaderFooterCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t MailHeaderFooterRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/mail-header-footer", criteria)
 
@@ -62,31 +98,31 @@ func (t MailHeaderFooterRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type MailHeaderFooter struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	Description string `json:"description,omitempty"`
-
 	HeaderPlain string `json:"headerPlain,omitempty"`
 
 	FooterHtml string `json:"footerHtml,omitempty"`
 
-	FooterPlain string `json:"footerPlain,omitempty"`
+	Translations []MailHeaderFooterTranslation `json:"translations,omitempty"`
 
 	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	HeaderHtml string `json:"headerHtml,omitempty"`
 
 	SystemDefault bool `json:"systemDefault,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
-	HeaderHtml string `json:"headerHtml,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Translations []MailHeaderFooterTranslation `json:"translations,omitempty"`
+	FooterPlain string `json:"footerPlain,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	Translated interface{} `json:"translated,omitempty"`
+
+	Id string `json:"id,omitempty"`
 }
 
 type MailHeaderFooterCollection struct {

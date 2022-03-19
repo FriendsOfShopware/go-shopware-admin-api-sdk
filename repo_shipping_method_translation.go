@@ -23,6 +23,42 @@ func (t ShippingMethodTranslationRepository) Search(ctx ApiContext, criteria Cri
 	return uResp, resp, nil
 }
 
+func (t ShippingMethodTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ShippingMethodTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ShippingMethodTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/shipping-method-translation", criteria)
 
@@ -62,25 +98,25 @@ func (t ShippingMethodTranslationRepository) Delete(ctx ApiContext, ids []string
 }
 
 type ShippingMethodTranslation struct {
-	LanguageId string `json:"languageId,omitempty"`
-
-	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
-
 	Language *Language `json:"language,omitempty"`
-
-	Name string `json:"name,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
 	TrackingUrl string `json:"trackingUrl,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ShippingMethodId string `json:"shippingMethodId,omitempty"`
+
+	LanguageId string `json:"languageId,omitempty"`
+
+	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
+
+	Name string `json:"name,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	ShippingMethodId string `json:"shippingMethodId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ShippingMethodTranslationCollection struct {

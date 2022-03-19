@@ -23,6 +23,42 @@ func (t FlowRepository) Search(ctx ApiContext, criteria Criteria) (*FlowCollecti
 	return uResp, resp, nil
 }
 
+func (t FlowRepository) SearchAll(ctx ApiContext, criteria Criteria) (*FlowCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t FlowRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/flow", criteria)
 
@@ -62,19 +98,7 @@ func (t FlowRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type Flow struct {
-	Id string `json:"id,omitempty"`
-
 	EventName string `json:"eventName,omitempty"`
-
-	Invalid bool `json:"invalid,omitempty"`
-
-	Sequences []FlowSequence `json:"sequences,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Name string `json:"name,omitempty"`
-
-	Priority float64 `json:"priority,omitempty"`
 
 	Payload interface{} `json:"payload,omitempty"`
 
@@ -82,9 +106,21 @@ type Flow struct {
 
 	Description string `json:"description,omitempty"`
 
+	Sequences []FlowSequence `json:"sequences,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Priority float64 `json:"priority,omitempty"`
+
+	Invalid bool `json:"invalid,omitempty"`
+
 	CustomFields interface{} `json:"customFields,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Name string `json:"name,omitempty"`
 }
 
 type FlowCollection struct {

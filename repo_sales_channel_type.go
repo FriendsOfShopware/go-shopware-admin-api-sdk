@@ -23,6 +23,42 @@ func (t SalesChannelTypeRepository) Search(ctx ApiContext, criteria Criteria) (*
 	return uResp, resp, nil
 }
 
+func (t SalesChannelTypeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SalesChannelTypeCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t SalesChannelTypeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/sales-channel-type", criteria)
 
@@ -62,33 +98,33 @@ func (t SalesChannelTypeRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type SalesChannelType struct {
-	Id string `json:"id,omitempty"`
-
-	Description string `json:"description,omitempty"`
-
 	CustomFields interface{} `json:"customFields,omitempty"`
+
+	DescriptionLong string `json:"descriptionLong,omitempty"`
+
+	IconName string `json:"iconName,omitempty"`
+
+	ScreenshotUrls interface{} `json:"screenshotUrls,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CoverUrl string `json:"coverUrl,omitempty"`
+	Id string `json:"id,omitempty"`
+
+	Description string `json:"description,omitempty"`
 
 	Manufacturer string `json:"manufacturer,omitempty"`
 
 	Translations []SalesChannelTypeTranslation `json:"translations,omitempty"`
 
-	IconName string `json:"iconName,omitempty"`
-
-	DescriptionLong string `json:"descriptionLong,omitempty"`
-
 	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
 	Translated interface{} `json:"translated,omitempty"`
 
-	ScreenshotUrls interface{} `json:"screenshotUrls,omitempty"`
+	CoverUrl string `json:"coverUrl,omitempty"`
 
 	Name string `json:"name,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type SalesChannelTypeCollection struct {

@@ -23,6 +23,42 @@ func (t ShippingMethodPriceRepository) Search(ctx ApiContext, criteria Criteria)
 	return uResp, resp, nil
 }
 
+func (t ShippingMethodPriceRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ShippingMethodPriceCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ShippingMethodPriceRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/shipping-method-price", criteria)
 
@@ -62,33 +98,33 @@ func (t ShippingMethodPriceRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ShippingMethodPrice struct {
-	Id string `json:"id,omitempty"`
-
 	ShippingMethodId string `json:"shippingMethodId,omitempty"`
-
-	Calculation float64 `json:"calculation,omitempty"`
-
-	CurrencyPrice interface{} `json:"currencyPrice,omitempty"`
-
-	Rule *Rule `json:"rule,omitempty"`
-
-	QuantityStart float64 `json:"quantityStart,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	QuantityEnd float64 `json:"quantityEnd,omitempty"`
 
 	RuleId string `json:"ruleId,omitempty"`
 
-	CalculationRuleId string `json:"calculationRuleId,omitempty"`
+	Calculation float64 `json:"calculation,omitempty"`
+
+	QuantityStart float64 `json:"quantityStart,omitempty"`
 
 	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	QuantityEnd float64 `json:"quantityEnd,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	CalculationRuleId string `json:"calculationRuleId,omitempty"`
+
+	Rule *Rule `json:"rule,omitempty"`
+
 	CalculationRule *Rule `json:"calculationRule,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	CurrencyPrice interface{} `json:"currencyPrice,omitempty"`
 }
 
 type ShippingMethodPriceCollection struct {

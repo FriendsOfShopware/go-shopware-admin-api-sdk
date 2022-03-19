@@ -22,6 +22,42 @@ func (t SalesChannelShippingMethodRepository) Search(ctx ApiContext, criteria Cr
 	return uResp, resp, nil
 }
 
+func (t SalesChannelShippingMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SalesChannelShippingMethodCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t SalesChannelShippingMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/sales-channel-shipping-method", criteria)
 
@@ -61,13 +97,13 @@ func (t SalesChannelShippingMethodRepository) Delete(ctx ApiContext, ids []strin
 }
 
 type SalesChannelShippingMethod struct {
+	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
+
 	SalesChannelId string `json:"salesChannelId,omitempty"`
 
 	ShippingMethodId string `json:"shippingMethodId,omitempty"`
 
 	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
-
-	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 }
 
 type SalesChannelShippingMethodCollection struct {

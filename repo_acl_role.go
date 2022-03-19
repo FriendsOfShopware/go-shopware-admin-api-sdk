@@ -23,6 +23,42 @@ func (t AclRoleRepository) Search(ctx ApiContext, criteria Criteria) (*AclRoleCo
 	return uResp, resp, nil
 }
 
+func (t AclRoleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AclRoleCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t AclRoleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/acl-role", criteria)
 
@@ -62,23 +98,23 @@ func (t AclRoleRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type AclRole struct {
+	Users []User `json:"users,omitempty"`
+
+	App *App `json:"app,omitempty"`
+
+	Integrations []Integration `json:"integrations,omitempty"`
+
 	Id string `json:"id,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
 	Privileges interface{} `json:"privileges,omitempty"`
 
-	DeletedAt time.Time `json:"deletedAt,omitempty"`
-
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
-	Users []User `json:"users,omitempty"`
-
-	App *App `json:"app,omitempty"`
-
-	Integrations []Integration `json:"integrations,omitempty"`
+	DeletedAt time.Time `json:"deletedAt,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 }

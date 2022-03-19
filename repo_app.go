@@ -23,6 +23,42 @@ func (t AppRepository) Search(ctx ApiContext, criteria Criteria) (*AppCollection
 	return uResp, resp, nil
 }
 
+func (t AppRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t AppRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app", criteria)
 
@@ -62,75 +98,75 @@ func (t AppRepository) Delete(ctx ApiContext, ids []string) (*http.Response, err
 }
 
 type App struct {
-	Name string `json:"name,omitempty"`
-
-	Privacy string `json:"privacy,omitempty"`
-
-	AclRole *AclRole `json:"aclRole,omitempty"`
-
-	Translations []AppTranslation `json:"translations,omitempty"`
-
-	AclRoleId string `json:"aclRoleId,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	License string `json:"license,omitempty"`
-
-	Modules interface{} `json:"modules,omitempty"`
-
-	Icon string `json:"icon,omitempty"`
-
-	MainModule interface{} `json:"mainModule,omitempty"`
-
-	Description string `json:"description,omitempty"`
-
 	Copyright string `json:"copyright,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	IconRaw interface{} `json:"iconRaw,omitempty"`
 
-	ActionButtons []AppActionButton `json:"actionButtons,omitempty"`
+	Integration *Integration `json:"integration,omitempty"`
+
+	Templates []AppTemplate `json:"templates,omitempty"`
+
+	Webhooks []Webhook `json:"webhooks,omitempty"`
+
+	Scripts []Script `json:"scripts,omitempty"`
 
 	Active bool `json:"active,omitempty"`
 
 	Configurable bool `json:"configurable,omitempty"`
 
-	Label string `json:"label,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
 	Version string `json:"version,omitempty"`
 
-	IntegrationId string `json:"integrationId,omitempty"`
+	Translations []AppTranslation `json:"translations,omitempty"`
 
-	Templates []AppTemplate `json:"templates,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Scripts []Script `json:"scripts,omitempty"`
+	AclRole *AclRole `json:"aclRole,omitempty"`
 
-	Webhooks []Webhook `json:"webhooks,omitempty"`
+	CmsBlocks []AppCmsBlock `json:"cmsBlocks,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	PrivacyPolicyExtensions string `json:"privacyPolicyExtensions,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CustomFieldSets []CustomFieldSet `json:"customFieldSets,omitempty"`
+	Icon string `json:"icon,omitempty"`
+
+	MainModule interface{} `json:"mainModule,omitempty"`
 
 	Cookies interface{} `json:"cookies,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Integration *Integration `json:"integration,omitempty"`
+	IntegrationId string `json:"integrationId,omitempty"`
 
 	PaymentMethods []AppPaymentMethod `json:"paymentMethods,omitempty"`
 
-	CmsBlocks []AppCmsBlock `json:"cmsBlocks,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Author string `json:"author,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	IconRaw interface{} `json:"iconRaw,omitempty"`
+	Privacy string `json:"privacy,omitempty"`
+
+	CustomFieldSets []CustomFieldSet `json:"customFieldSets,omitempty"`
+
+	Path string `json:"path,omitempty"`
 
 	AppSecret string `json:"appSecret,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Label string `json:"label,omitempty"`
+
+	ActionButtons []AppActionButton `json:"actionButtons,omitempty"`
+
+	License string `json:"license,omitempty"`
+
+	Modules interface{} `json:"modules,omitempty"`
+
+	PrivacyPolicyExtensions string `json:"privacyPolicyExtensions,omitempty"`
+
+	AclRoleId string `json:"aclRoleId,omitempty"`
+
+	Author string `json:"author,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
 }
 
 type AppCollection struct {

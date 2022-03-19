@@ -23,6 +23,42 @@ func (t CmsSlotRepository) Search(ctx ApiContext, criteria Criteria) (*CmsSlotCo
 	return uResp, resp, nil
 }
 
+func (t CmsSlotRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsSlotCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CmsSlotRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/cms-slot", criteria)
 
@@ -64,33 +100,33 @@ func (t CmsSlotRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 type CmsSlot struct {
 	CmsBlockVersionId string `json:"cmsBlockVersionId,omitempty"`
 
-	Id string `json:"id,omitempty"`
-
-	Block *CmsBlock `json:"block,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
 	VersionId string `json:"versionId,omitempty"`
-
-	Translations []CmsSlotTranslation `json:"translations,omitempty"`
-
-	BlockId string `json:"blockId,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
 
 	Slot string `json:"slot,omitempty"`
 
-	Data interface{} `json:"data,omitempty"`
+	BlockId string `json:"blockId,omitempty"`
+
+	Locked bool `json:"locked,omitempty"`
 
 	Config interface{} `json:"config,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
 	Type string `json:"type,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	Data interface{} `json:"data,omitempty"`
+
+	Block *CmsBlock `json:"block,omitempty"`
+
+	Translations []CmsSlotTranslation `json:"translations,omitempty"`
 }
 
 type CmsSlotCollection struct {

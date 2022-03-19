@@ -23,6 +23,42 @@ func (t PromotionDiscountPricesRepository) Search(ctx ApiContext, criteria Crite
 	return uResp, resp, nil
 }
 
+func (t PromotionDiscountPricesRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionDiscountPricesCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t PromotionDiscountPricesRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-discount-prices", criteria)
 
@@ -62,6 +98,12 @@ func (t PromotionDiscountPricesRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type PromotionDiscountPrices struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	DiscountId string `json:"discountId,omitempty"`
+
 	CurrencyId string `json:"currencyId,omitempty"`
 
 	Price float64 `json:"price,omitempty"`
@@ -71,12 +113,6 @@ type PromotionDiscountPrices struct {
 	Currency *Currency `json:"currency,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	DiscountId string `json:"discountId,omitempty"`
 }
 
 type PromotionDiscountPricesCollection struct {

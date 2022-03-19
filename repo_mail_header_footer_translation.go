@@ -23,6 +23,42 @@ func (t MailHeaderFooterTranslationRepository) Search(ctx ApiContext, criteria C
 	return uResp, resp, nil
 }
 
+func (t MailHeaderFooterTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MailHeaderFooterTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t MailHeaderFooterTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/mail-header-footer-translation", criteria)
 
@@ -62,29 +98,29 @@ func (t MailHeaderFooterTranslationRepository) Delete(ctx ApiContext, ids []stri
 }
 
 type MailHeaderFooterTranslation struct {
-	MailHeaderFooterId string `json:"mailHeaderFooterId,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	HeaderPlain string `json:"headerPlain,omitempty"`
 
 	FooterHtml string `json:"footerHtml,omitempty"`
 
 	FooterPlain string `json:"footerPlain,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	MailHeaderFooterId string `json:"mailHeaderFooterId,omitempty"`
 
 	MailHeaderFooter *MailHeaderFooter `json:"mailHeaderFooter,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
-
 	Name string `json:"name,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Language *Language `json:"language,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	LanguageId string `json:"languageId,omitempty"`
 
 	HeaderHtml string `json:"headerHtml,omitempty"`
-
-	HeaderPlain string `json:"headerPlain,omitempty"`
 }
 
 type MailHeaderFooterTranslationCollection struct {

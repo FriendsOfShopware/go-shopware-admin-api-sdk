@@ -23,6 +23,42 @@ func (t ProductStreamRepository) Search(ctx ApiContext, criteria Criteria) (*Pro
 	return uResp, resp, nil
 }
 
+func (t ProductStreamRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductStreamCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductStreamRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-stream", criteria)
 
@@ -62,33 +98,33 @@ func (t ProductStreamRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ProductStream struct {
-	Invalid bool `json:"invalid,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	ProductCrossSellings []ProductCrossSelling `json:"productCrossSellings,omitempty"`
 
-	ProductExports []ProductExport `json:"productExports,omitempty"`
+	Description string `json:"description,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	Translated interface{} `json:"translated,omitempty"`
 
-	Id string `json:"id,omitempty"`
-
 	ApiFilter interface{} `json:"apiFilter,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Invalid bool `json:"invalid,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
 	Translations []ProductStreamTranslation `json:"translations,omitempty"`
 
 	Filters []ProductStreamFilter `json:"filters,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ProductExports []ProductExport `json:"productExports,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Name string `json:"name,omitempty"`
 
 	Categories []Category `json:"categories,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ProductStreamCollection struct {

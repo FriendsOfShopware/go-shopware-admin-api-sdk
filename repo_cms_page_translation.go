@@ -23,6 +23,42 @@ func (t CmsPageTranslationRepository) Search(ctx ApiContext, criteria Criteria) 
 	return uResp, resp, nil
 }
 
+func (t CmsPageTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsPageTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CmsPageTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/cms-page-translation", criteria)
 
@@ -64,21 +100,21 @@ func (t CmsPageTranslationRepository) Delete(ctx ApiContext, ids []string) (*htt
 type CmsPageTranslation struct {
 	CmsPageId string `json:"cmsPageId,omitempty"`
 
+	LanguageId string `json:"languageId,omitempty"`
+
+	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
+
+	CmsPage *CmsPage `json:"cmsPage,omitempty"`
+
 	Language *Language `json:"language,omitempty"`
+
+	Name string `json:"name,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
-
-	Name string `json:"name,omitempty"`
-
-	LanguageId string `json:"languageId,omitempty"`
-
-	CmsPage *CmsPage `json:"cmsPage,omitempty"`
 }
 
 type CmsPageTranslationCollection struct {

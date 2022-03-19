@@ -23,6 +23,42 @@ func (t DocumentBaseConfigRepository) Search(ctx ApiContext, criteria Criteria) 
 	return uResp, resp, nil
 }
 
+func (t DocumentBaseConfigRepository) SearchAll(ctx ApiContext, criteria Criteria) (*DocumentBaseConfigCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t DocumentBaseConfigRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/document-base-config", criteria)
 
@@ -62,35 +98,35 @@ func (t DocumentBaseConfigRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type DocumentBaseConfig struct {
-	Id string `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	FilenameSuffix string `json:"filenameSuffix,omitempty"`
+	FilenamePrefix string `json:"filenamePrefix,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Global bool `json:"global,omitempty"`
 
 	DocumentNumber string `json:"documentNumber,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	Logo *Media `json:"logo,omitempty"`
-
-	LogoId string `json:"logoId,omitempty"`
 
 	Config interface{} `json:"config,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	DocumentType *DocumentType `json:"documentType,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
 	SalesChannels []DocumentBaseConfigSalesChannel `json:"salesChannels,omitempty"`
 
+	Id string `json:"id,omitempty"`
+
 	DocumentTypeId string `json:"documentTypeId,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	DocumentType *DocumentType `json:"documentType,omitempty"`
 
-	FilenamePrefix string `json:"filenamePrefix,omitempty"`
+	LogoId string `json:"logoId,omitempty"`
 
-	Global bool `json:"global,omitempty"`
+	FilenameSuffix string `json:"filenameSuffix,omitempty"`
+
+	Logo *Media `json:"logo,omitempty"`
 }
 
 type DocumentBaseConfigCollection struct {

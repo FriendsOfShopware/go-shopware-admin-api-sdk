@@ -23,6 +23,42 @@ func (t MediaThumbnailRepository) Search(ctx ApiContext, criteria Criteria) (*Me
 	return uResp, resp, nil
 }
 
+func (t MediaThumbnailRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaThumbnailCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t MediaThumbnailRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media-thumbnail", criteria)
 
@@ -62,23 +98,23 @@ func (t MediaThumbnailRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type MediaThumbnail struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	MediaId string `json:"mediaId,omitempty"`
-
-	Height float64 `json:"height,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Width float64 `json:"width,omitempty"`
-
 	Url string `json:"url,omitempty"`
 
 	Media *Media `json:"media,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	MediaId string `json:"mediaId,omitempty"`
+
+	Width float64 `json:"width,omitempty"`
+
+	Height float64 `json:"height,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type MediaThumbnailCollection struct {

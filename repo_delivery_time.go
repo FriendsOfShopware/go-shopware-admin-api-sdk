@@ -23,6 +23,42 @@ func (t DeliveryTimeRepository) Search(ctx ApiContext, criteria Criteria) (*Deli
 	return uResp, resp, nil
 }
 
+func (t DeliveryTimeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*DeliveryTimeCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t DeliveryTimeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/delivery-time", criteria)
 
@@ -64,27 +100,27 @@ func (t DeliveryTimeRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 type DeliveryTime struct {
 	Name string `json:"name,omitempty"`
 
-	Unit string `json:"unit,omitempty"`
-
-	Translations []DeliveryTimeTranslation `json:"translations,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
 	Min float64 `json:"min,omitempty"`
 
 	Max float64 `json:"max,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
+	Translated interface{} `json:"translated,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Unit string `json:"unit,omitempty"`
+
 	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
 
 	Products []Product `json:"products,omitempty"`
 
+	Translations []DeliveryTimeTranslation `json:"translations,omitempty"`
+
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type DeliveryTimeCollection struct {

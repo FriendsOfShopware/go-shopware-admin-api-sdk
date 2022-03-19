@@ -23,6 +23,42 @@ func (t MailTemplateTypeRepository) Search(ctx ApiContext, criteria Criteria) (*
 	return uResp, resp, nil
 }
 
+func (t MailTemplateTypeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MailTemplateTypeCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t MailTemplateTypeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/mail-template-type", criteria)
 
@@ -64,15 +100,15 @@ func (t MailTemplateTypeRepository) Delete(ctx ApiContext, ids []string) (*http.
 type MailTemplateType struct {
 	Translations []MailTemplateTypeTranslation `json:"translations,omitempty"`
 
+	MailTemplates []MailTemplate `json:"mailTemplates,omitempty"`
+
+	TemplateData interface{} `json:"templateData,omitempty"`
+
 	TechnicalName string `json:"technicalName,omitempty"`
 
 	AvailableEntities interface{} `json:"availableEntities,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
-
-	MailTemplates []MailTemplate `json:"mailTemplates,omitempty"`
-
-	TemplateData interface{} `json:"templateData,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 

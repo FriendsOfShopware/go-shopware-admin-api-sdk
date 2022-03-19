@@ -22,6 +22,42 @@ func (t LandingPageTagRepository) Search(ctx ApiContext, criteria Criteria) (*La
 	return uResp, resp, nil
 }
 
+func (t LandingPageTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LandingPageTagCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t LandingPageTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/landing-page-tag", criteria)
 
@@ -61,15 +97,15 @@ func (t LandingPageTagRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type LandingPageTag struct {
-	LandingPageId string `json:"landingPageId,omitempty"`
-
-	LandingPageVersionId string `json:"landingPageVersionId,omitempty"`
-
 	TagId string `json:"tagId,omitempty"`
 
 	LandingPage *LandingPage `json:"landingPage,omitempty"`
 
 	Tag *Tag `json:"tag,omitempty"`
+
+	LandingPageId string `json:"landingPageId,omitempty"`
+
+	LandingPageVersionId string `json:"landingPageVersionId,omitempty"`
 }
 
 type LandingPageTagCollection struct {

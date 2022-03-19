@@ -23,6 +23,42 @@ func (t CustomFieldSetRepository) Search(ctx ApiContext, criteria Criteria) (*Cu
 	return uResp, resp, nil
 }
 
+func (t CustomFieldSetRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomFieldSetCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CustomFieldSetRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/custom-field-set", criteria)
 
@@ -62,9 +98,15 @@ func (t CustomFieldSetRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type CustomFieldSet struct {
+	CustomFields []CustomField `json:"customFields,omitempty"`
+
 	Products []Product `json:"products,omitempty"`
 
 	App *App `json:"app,omitempty"`
+
+	Name string `json:"name,omitempty"`
+
+	Active bool `json:"active,omitempty"`
 
 	Global bool `json:"global,omitempty"`
 
@@ -72,21 +114,15 @@ type CustomFieldSet struct {
 
 	AppId string `json:"appId,omitempty"`
 
-	CustomFields []CustomField `json:"customFields,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Config interface{} `json:"config,omitempty"`
 
 	Relations []CustomFieldSetRelation `json:"relations,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	Name string `json:"name,omitempty"`
-
-	Config interface{} `json:"config,omitempty"`
-
-	Active bool `json:"active,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type CustomFieldSetCollection struct {

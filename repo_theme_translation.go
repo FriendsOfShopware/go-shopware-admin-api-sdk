@@ -23,6 +23,42 @@ func (t ThemeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*
 	return uResp, resp, nil
 }
 
+func (t ThemeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ThemeTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ThemeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/theme-translation", criteria)
 
@@ -62,25 +98,25 @@ func (t ThemeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type ThemeTranslation struct {
-	Description string `json:"description,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Theme *Theme `json:"theme,omitempty"`
 
 	Language *Language `json:"language,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
-
-	Theme *Theme `json:"theme,omitempty"`
-
-	Labels interface{} `json:"labels,omitempty"`
+	Description string `json:"description,omitempty"`
 
 	HelpTexts interface{} `json:"helpTexts,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
+	Labels interface{} `json:"labels,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
 	ThemeId string `json:"themeId,omitempty"`
+
+	LanguageId string `json:"languageId,omitempty"`
 }
 
 type ThemeTranslationCollection struct {

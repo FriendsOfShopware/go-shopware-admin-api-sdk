@@ -23,6 +23,42 @@ func (t CustomerGroupRepository) Search(ctx ApiContext, criteria Criteria) (*Cus
 	return uResp, resp, nil
 }
 
+func (t CustomerGroupRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomerGroupCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CustomerGroupRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/customer-group", criteria)
 
@@ -62,37 +98,37 @@ func (t CustomerGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type CustomerGroup struct {
-	Name string `json:"name,omitempty"`
-
-	RegistrationTitle string `json:"registrationTitle,omitempty"`
-
-	RegistrationOnlyCompanyRegistration bool `json:"registrationOnlyCompanyRegistration,omitempty"`
-
-	DisplayGross bool `json:"displayGross,omitempty"`
-
 	RegistrationSeoMetaDescription string `json:"registrationSeoMetaDescription,omitempty"`
-
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
 	Translations []CustomerGroupTranslation `json:"translations,omitempty"`
 
 	RegistrationSalesChannels []SalesChannel `json:"registrationSalesChannels,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id string `json:"id,omitempty"`
+
+	Name string `json:"name,omitempty"`
 
 	RegistrationActive bool `json:"registrationActive,omitempty"`
 
+	RegistrationTitle string `json:"registrationTitle,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
 	RegistrationIntroduction string `json:"registrationIntroduction,omitempty"`
 
-	Customers []Customer `json:"customers,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	DisplayGross bool `json:"displayGross,omitempty"`
 
 	Translated interface{} `json:"translated,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	RegistrationOnlyCompanyRegistration bool `json:"registrationOnlyCompanyRegistration,omitempty"`
+
+	Customers []Customer `json:"customers,omitempty"`
+
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type CustomerGroupCollection struct {

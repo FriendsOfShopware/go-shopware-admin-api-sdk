@@ -23,6 +23,42 @@ func (t ProductReviewRepository) Search(ctx ApiContext, criteria Criteria) (*Pro
 	return uResp, resp, nil
 }
 
+func (t ProductReviewRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductReviewCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductReviewRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-review", criteria)
 
@@ -62,19 +98,27 @@ func (t ProductReviewRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ProductReview struct {
+	Status bool `json:"status,omitempty"`
+
 	Comment string `json:"comment,omitempty"`
+
+	Language *Language `json:"language,omitempty"`
+
+	ProductId string `json:"productId,omitempty"`
+
+	LanguageId string `json:"languageId,omitempty"`
+
+	ExternalEmail string `json:"externalEmail,omitempty"`
+
+	ExternalUser string `json:"externalUser,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
+	Id string `json:"id,omitempty"`
+
+	ProductVersionId string `json:"productVersionId,omitempty"`
+
 	SalesChannelId string `json:"salesChannelId,omitempty"`
-
-	Title string `json:"title,omitempty"`
-
-	Content string `json:"content,omitempty"`
-
-	Status bool `json:"status,omitempty"`
-
-	Points float64 `json:"points,omitempty"`
 
 	Product *Product `json:"product,omitempty"`
 
@@ -82,25 +126,17 @@ type ProductReview struct {
 
 	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	CustomerId string `json:"customerId,omitempty"`
 
-	ExternalUser string `json:"externalUser,omitempty"`
+	Content string `json:"content,omitempty"`
 
-	ExternalEmail string `json:"externalEmail,omitempty"`
+	Points float64 `json:"points,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	ProductVersionId string `json:"productVersionId,omitempty"`
-
-	LanguageId string `json:"languageId,omitempty"`
+	Title string `json:"title,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type ProductReviewCollection struct {

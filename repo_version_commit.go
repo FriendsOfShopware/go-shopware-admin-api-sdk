@@ -23,6 +23,42 @@ func (t VersionCommitRepository) Search(ctx ApiContext, criteria Criteria) (*Ver
 	return uResp, resp, nil
 }
 
+func (t VersionCommitRepository) SearchAll(ctx ApiContext, criteria Criteria) (*VersionCommitCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t VersionCommitRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/version-commit", criteria)
 
@@ -62,27 +98,27 @@ func (t VersionCommitRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type VersionCommit struct {
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+	Version *Version `json:"version,omitempty"`
 
-	IsMerge bool `json:"isMerge,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UserId string `json:"userId,omitempty"`
+
+	IntegrationId string `json:"integrationId,omitempty"`
+
+	Message string `json:"message,omitempty"`
 
 	Data []VersionCommitData `json:"data,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	Id string `json:"id,omitempty"`
 
 	VersionId string `json:"versionId,omitempty"`
 
-	IntegrationId string `json:"integrationId,omitempty"`
+	AutoIncrement float64 `json:"autoIncrement,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	UserId string `json:"userId,omitempty"`
-
-	Message string `json:"message,omitempty"`
-
-	Version *Version `json:"version,omitempty"`
+	IsMerge bool `json:"isMerge,omitempty"`
 }
 
 type VersionCommitCollection struct {

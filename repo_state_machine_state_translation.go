@@ -23,6 +23,42 @@ func (t StateMachineStateTranslationRepository) Search(ctx ApiContext, criteria 
 	return uResp, resp, nil
 }
 
+func (t StateMachineStateTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*StateMachineStateTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t StateMachineStateTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/state-machine-state-translation", criteria)
 
@@ -62,8 +98,6 @@ func (t StateMachineStateTranslationRepository) Delete(ctx ApiContext, ids []str
 }
 
 type StateMachineStateTranslation struct {
-	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
-
 	Language *Language `json:"language,omitempty"`
 
 	Name string `json:"name,omitempty"`
@@ -77,6 +111,8 @@ type StateMachineStateTranslation struct {
 	StateMachineStateId string `json:"stateMachineStateId,omitempty"`
 
 	LanguageId string `json:"languageId,omitempty"`
+
+	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
 }
 
 type StateMachineStateTranslationCollection struct {

@@ -23,6 +23,42 @@ func (t CategoryTranslationRepository) Search(ctx ApiContext, criteria Criteria)
 	return uResp, resp, nil
 }
 
+func (t CategoryTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CategoryTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CategoryTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/category-translation", criteria)
 
@@ -62,43 +98,43 @@ func (t CategoryTranslationRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type CategoryTranslation struct {
-	Name string `json:"name,omitempty"`
-
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
-
-	LanguageId string `json:"languageId,omitempty"`
-
-	Language *Language `json:"language,omitempty"`
-
-	CategoryVersionId string `json:"categoryVersionId,omitempty"`
-
-	Keywords string `json:"keywords,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	CategoryId string `json:"categoryId,omitempty"`
-
-	Category *Category `json:"category,omitempty"`
-
-	LinkNewTab bool `json:"linkNewTab,omitempty"`
-
-	MetaTitle string `json:"metaTitle,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Breadcrumb interface{} `json:"breadcrumb,omitempty"`
-
-	LinkType string `json:"linkType,omitempty"`
-
 	InternalLink string `json:"internalLink,omitempty"`
-
-	ExternalLink string `json:"externalLink,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	CategoryVersionId string `json:"categoryVersionId,omitempty"`
+
+	Name string `json:"name,omitempty"`
+
+	LinkType string `json:"linkType,omitempty"`
+
+	LinkNewTab bool `json:"linkNewTab,omitempty"`
+
+	CategoryId string `json:"categoryId,omitempty"`
+
+	Breadcrumb interface{} `json:"breadcrumb,omitempty"`
+
+	SlotConfig interface{} `json:"slotConfig,omitempty"`
+
+	ExternalLink string `json:"externalLink,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	LanguageId string `json:"languageId,omitempty"`
+
+	Category *Category `json:"category,omitempty"`
+
+	MetaTitle string `json:"metaTitle,omitempty"`
+
 	MetaDescription string `json:"metaDescription,omitempty"`
 
+	Keywords string `json:"keywords,omitempty"`
+
 	CustomFields interface{} `json:"customFields,omitempty"`
+
+	Language *Language `json:"language,omitempty"`
 }
 
 type CategoryTranslationCollection struct {

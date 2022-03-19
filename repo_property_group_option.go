@@ -23,6 +23,42 @@ func (t PropertyGroupOptionRepository) Search(ctx ApiContext, criteria Criteria)
 	return uResp, resp, nil
 }
 
+func (t PropertyGroupOptionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PropertyGroupOptionCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t PropertyGroupOptionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/property-group-option", criteria)
 
@@ -62,9 +98,19 @@ func (t PropertyGroupOptionRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type PropertyGroupOption struct {
-	Id string `json:"id,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	ProductConfiguratorSettings []ProductConfiguratorSetting `json:"productConfiguratorSettings,omitempty"`
+
+	Translations []PropertyGroupOptionTranslation `json:"translations,omitempty"`
 
 	ProductProperties []Product `json:"productProperties,omitempty"`
+
+	ProductOptions []Product `json:"productOptions,omitempty"`
+
+	GroupId string `json:"groupId,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
@@ -74,23 +120,13 @@ type PropertyGroupOption struct {
 
 	Position float64 `json:"position,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	Translations []PropertyGroupOptionTranslation `json:"translations,omitempty"`
-
-	ProductConfiguratorSettings []ProductConfiguratorSetting `json:"productConfiguratorSettings,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	GroupId string `json:"groupId,omitempty"`
-
 	ColorHexCode string `json:"colorHexCode,omitempty"`
 
 	Group *PropertyGroup `json:"group,omitempty"`
 
-	ProductOptions []Product `json:"productOptions,omitempty"`
+	Id string `json:"id,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	Translated interface{} `json:"translated,omitempty"`
 }

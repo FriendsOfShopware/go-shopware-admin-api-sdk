@@ -23,6 +23,42 @@ func (t AppActionButtonRepository) Search(ctx ApiContext, criteria Criteria) (*A
 	return uResp, resp, nil
 }
 
+func (t AppActionButtonRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppActionButtonCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t AppActionButtonRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-action-button", criteria)
 
@@ -62,31 +98,31 @@ func (t AppActionButtonRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type AppActionButton struct {
-	Id string `json:"id,omitempty"`
-
-	Entity string `json:"entity,omitempty"`
-
-	Action string `json:"action,omitempty"`
-
 	Translations []AppActionButtonTranslation `json:"translations,omitempty"`
 
-	App *App `json:"app,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
+	Translated interface{} `json:"translated,omitempty"`
+
 	View string `json:"view,omitempty"`
-
-	Url string `json:"url,omitempty"`
-
-	OpenNewTab bool `json:"openNewTab,omitempty"`
 
 	Label string `json:"label,omitempty"`
 
+	Url string `json:"url,omitempty"`
+
+	Action string `json:"action,omitempty"`
+
+	OpenNewTab bool `json:"openNewTab,omitempty"`
+
 	AppId string `json:"appId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	App *App `json:"app,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Entity string `json:"entity,omitempty"`
 }
 
 type AppActionButtonCollection struct {

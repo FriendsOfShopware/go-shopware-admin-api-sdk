@@ -23,6 +23,42 @@ func (t PropertyGroupRepository) Search(ctx ApiContext, criteria Criteria) (*Pro
 	return uResp, resp, nil
 }
 
+func (t PropertyGroupRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PropertyGroupCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t PropertyGroupRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/property-group", criteria)
 
@@ -62,33 +98,33 @@ func (t PropertyGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type PropertyGroup struct {
-	Id string `json:"id,omitempty"`
-
-	DisplayType string `json:"displayType,omitempty"`
-
 	SortingType string `json:"sortingType,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Name string `json:"name,omitempty"`
-
-	Description string `json:"description,omitempty"`
-
-	Filterable bool `json:"filterable,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	VisibleOnProductDetailPage bool `json:"visibleOnProductDetailPage,omitempty"`
+	Filterable bool `json:"filterable,omitempty"`
 
 	Position float64 `json:"position,omitempty"`
 
-	Translations []PropertyGroupTranslation `json:"translations,omitempty"`
-
 	Options []PropertyGroupOption `json:"options,omitempty"`
 
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Description string `json:"description,omitempty"`
+
+	VisibleOnProductDetailPage bool `json:"visibleOnProductDetailPage,omitempty"`
+
 	Translated interface{} `json:"translated,omitempty"`
+
+	DisplayType string `json:"displayType,omitempty"`
+
+	Translations []PropertyGroupTranslation `json:"translations,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type PropertyGroupCollection struct {

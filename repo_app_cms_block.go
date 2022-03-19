@@ -23,6 +23,42 @@ func (t AppCmsBlockRepository) Search(ctx ApiContext, criteria Criteria) (*AppCm
 	return uResp, resp, nil
 }
 
+func (t AppCmsBlockRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppCmsBlockCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t AppCmsBlockRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-cms-block", criteria)
 
@@ -62,29 +98,29 @@ func (t AppCmsBlockRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type AppCmsBlock struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
-
 	Block interface{} `json:"block,omitempty"`
 
 	Template string `json:"template,omitempty"`
 
-	Styles string `json:"styles,omitempty"`
+	Label string `json:"label,omitempty"`
 
 	AppId string `json:"appId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Styles string `json:"styles,omitempty"`
 
 	Translations []AppCmsBlockTranslation `json:"translations,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	Id string `json:"id,omitempty"`
 }
 
 type AppCmsBlockCollection struct {

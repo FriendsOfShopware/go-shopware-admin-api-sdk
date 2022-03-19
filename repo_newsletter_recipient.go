@@ -23,6 +23,42 @@ func (t NewsletterRecipientRepository) Search(ctx ApiContext, criteria Criteria)
 	return uResp, resp, nil
 }
 
+func (t NewsletterRecipientRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NewsletterRecipientCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t NewsletterRecipientRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/newsletter-recipient", criteria)
 
@@ -62,47 +98,47 @@ func (t NewsletterRecipientRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type NewsletterRecipient struct {
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	Email string `json:"email,omitempty"`
 
 	City string `json:"city,omitempty"`
 
-	Hash string `json:"hash,omitempty"`
-
-	LanguageId string `json:"languageId,omitempty"`
-
 	Street string `json:"street,omitempty"`
 
-	ConfirmedAt time.Time `json:"confirmedAt,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Status string `json:"status,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Hash string `json:"hash,omitempty"`
 
 	SalutationId string `json:"salutationId,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
-
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
-
-	Title string `json:"title,omitempty"`
-
-	FirstName string `json:"firstName,omitempty"`
-
-	ZipCode string `json:"zipCode,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
-
-	Language *Language `json:"language,omitempty"`
-
 	Id string `json:"id,omitempty"`
 
-	Email string `json:"email,omitempty"`
+	ZipCode string `json:"zipCode,omitempty"`
+
+	ConfirmedAt time.Time `json:"confirmedAt,omitempty"`
+
+	LanguageId string `json:"languageId,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Title string `json:"title,omitempty"`
+
+	Tags []Tag `json:"tags,omitempty"`
+
+	SalesChannelId string `json:"salesChannelId,omitempty"`
+
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+
+	Status string `json:"status,omitempty"`
 
 	LastName string `json:"lastName,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	Salutation *Salutation `json:"salutation,omitempty"`
+
+	FirstName string `json:"firstName,omitempty"`
 }
 
 type NewsletterRecipientCollection struct {

@@ -23,6 +23,42 @@ func (t ImportExportLogRepository) Search(ctx ApiContext, criteria Criteria) (*I
 	return uResp, resp, nil
 }
 
+func (t ImportExportLogRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ImportExportLogCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ImportExportLogRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/import-export-log", criteria)
 
@@ -62,27 +98,31 @@ func (t ImportExportLogRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type ImportExportLog struct {
+	Profile *ImportExportProfile `json:"profile,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	State string `json:"state,omitempty"`
+
+	User *User `json:"user,omitempty"`
+
+	InvalidRecordsLogId string `json:"invalidRecordsLogId,omitempty"`
+
+	Username string `json:"username,omitempty"`
+
+	FailedImportLog *ImportExportLog `json:"failedImportLog,omitempty"`
+
 	Id string `json:"id,omitempty"`
 
 	UserId string `json:"userId,omitempty"`
 
 	ProfileName string `json:"profileName,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	FileId string `json:"fileId,omitempty"`
-
-	InvalidRecordsLogId string `json:"invalidRecordsLogId,omitempty"`
-
-	User *User `json:"user,omitempty"`
-
-	Profile *ImportExportProfile `json:"profile,omitempty"`
+	Result interface{} `json:"result,omitempty"`
 
 	File *ImportExportFile `json:"file,omitempty"`
 
-	Activity string `json:"activity,omitempty"`
-
-	State string `json:"state,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	Records float64 `json:"records,omitempty"`
 
@@ -90,15 +130,11 @@ type ImportExportLog struct {
 
 	Config interface{} `json:"config,omitempty"`
 
-	Result interface{} `json:"result,omitempty"`
-
 	InvalidRecordsLog *ImportExportLog `json:"invalidRecordsLog,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Activity string `json:"activity,omitempty"`
 
-	Username string `json:"username,omitempty"`
-
-	FailedImportLog *ImportExportLog `json:"failedImportLog,omitempty"`
+	FileId string `json:"fileId,omitempty"`
 }
 
 type ImportExportLogCollection struct {

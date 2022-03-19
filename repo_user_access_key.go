@@ -23,6 +23,42 @@ func (t UserAccessKeyRepository) Search(ctx ApiContext, criteria Criteria) (*Use
 	return uResp, resp, nil
 }
 
+func (t UserAccessKeyRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UserAccessKeyCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t UserAccessKeyRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/user-access-key", criteria)
 
@@ -62,13 +98,13 @@ func (t UserAccessKeyRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type UserAccessKey struct {
+	CustomFields interface{} `json:"customFields,omitempty"`
+
 	User *User `json:"user,omitempty"`
 
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
 	Id string `json:"id,omitempty"`
-
-	UserId string `json:"userId,omitempty"`
-
-	AccessKey string `json:"accessKey,omitempty"`
 
 	SecretAccessKey interface{} `json:"secretAccessKey,omitempty"`
 
@@ -76,11 +112,11 @@ type UserAccessKey struct {
 
 	LastUsageAt time.Time `json:"lastUsageAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
-
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UserId string `json:"userId,omitempty"`
+
+	AccessKey string `json:"accessKey,omitempty"`
 }
 
 type UserAccessKeyCollection struct {

@@ -23,6 +23,42 @@ func (t CurrencyCountryRoundingRepository) Search(ctx ApiContext, criteria Crite
 	return uResp, resp, nil
 }
 
+func (t CurrencyCountryRoundingRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CurrencyCountryRoundingCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CurrencyCountryRoundingRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/currency-country-rounding", criteria)
 
@@ -62,23 +98,23 @@ func (t CurrencyCountryRoundingRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type CurrencyCountryRounding struct {
-	ItemRounding interface{} `json:"itemRounding,omitempty"`
+	CountryId string `json:"countryId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	TotalRounding interface{} `json:"totalRounding,omitempty"`
 
 	Currency *Currency `json:"currency,omitempty"`
 
 	Country *Country `json:"country,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
 	Id string `json:"id,omitempty"`
 
 	CurrencyId string `json:"currencyId,omitempty"`
 
-	CountryId string `json:"countryId,omitempty"`
+	ItemRounding interface{} `json:"itemRounding,omitempty"`
 
-	TotalRounding interface{} `json:"totalRounding,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type CurrencyCountryRoundingCollection struct {

@@ -23,6 +23,42 @@ func (t EventActionRepository) Search(ctx ApiContext, criteria Criteria) (*Event
 	return uResp, resp, nil
 }
 
+func (t EventActionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EventActionCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t EventActionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/event-action", criteria)
 
@@ -62,11 +98,15 @@ func (t EventActionRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type EventAction struct {
+	Active bool `json:"active,omitempty"`
+
+	Title string `json:"title,omitempty"`
+
+	Rules []Rule `json:"rules,omitempty"`
+
 	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
 
 	EventName string `json:"eventName,omitempty"`
 
@@ -74,15 +114,11 @@ type EventAction struct {
 
 	Config interface{} `json:"config,omitempty"`
 
-	Active bool `json:"active,omitempty"`
-
-	Rules []Rule `json:"rules,omitempty"`
-
-	Title string `json:"title,omitempty"`
-
 	CustomFields interface{} `json:"customFields,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
 }
 
 type EventActionCollection struct {

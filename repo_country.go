@@ -23,6 +23,42 @@ func (t CountryRepository) Search(ctx ApiContext, criteria Criteria) (*CountryCo
 	return uResp, resp, nil
 }
 
+func (t CountryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CountryCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CountryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/country", criteria)
 
@@ -62,61 +98,61 @@ func (t CountryRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type Country struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Name string `json:"name,omitempty"`
-
-	ShippingAvailable bool `json:"shippingAvailable,omitempty"`
-
-	DisplayStateInRegistration bool `json:"displayStateInRegistration,omitempty"`
-
-	CustomerTax interface{} `json:"customerTax,omitempty"`
-
-	CompanyTax interface{} `json:"companyTax,omitempty"`
-
-	Translations []CountryTranslation `json:"translations,omitempty"`
-
-	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
-
-	Iso3 string `json:"iso3,omitempty"`
-
-	ForceStateInRegistration bool `json:"forceStateInRegistration,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	VatIdRequired bool `json:"vatIdRequired,omitempty"`
-
-	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
-
-	TaxFree bool `json:"taxFree,omitempty"`
-
-	Active bool `json:"active,omitempty"`
-
-	CompanyTaxFree bool `json:"companyTaxFree,omitempty"`
-
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
-
-	CurrencyCountryRoundings []CurrencyCountryRounding `json:"currencyCountryRoundings,omitempty"`
+	States []CountryState `json:"states,omitempty"`
 
 	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
-	TaxRules []TaxRule `json:"taxRules,omitempty"`
+	CustomerTax interface{} `json:"customerTax,omitempty"`
 
 	Translated interface{} `json:"translated,omitempty"`
 
 	Position float64 `json:"position,omitempty"`
 
+	ShippingAvailable bool `json:"shippingAvailable,omitempty"`
+
+	ForceStateInRegistration bool `json:"forceStateInRegistration,omitempty"`
+
 	CheckVatIdPattern bool `json:"checkVatIdPattern,omitempty"`
 
-	VatIdPattern string `json:"vatIdPattern,omitempty"`
+	TaxFree bool `json:"taxFree,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CompanyTaxFree bool `json:"companyTaxFree,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	VatIdRequired bool `json:"vatIdRequired,omitempty"`
+
+	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
+
+	Id string `json:"id,omitempty"`
 
 	Iso string `json:"iso,omitempty"`
 
-	States []CountryState `json:"states,omitempty"`
+	VatIdPattern string `json:"vatIdPattern,omitempty"`
+
+	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
+
+	CurrencyCountryRoundings []CurrencyCountryRounding `json:"currencyCountryRoundings,omitempty"`
+
+	CompanyTax interface{} `json:"companyTax,omitempty"`
+
+	DisplayStateInRegistration bool `json:"displayStateInRegistration,omitempty"`
+
+	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+
+	Translations []CountryTranslation `json:"translations,omitempty"`
+
+	TaxRules []TaxRule `json:"taxRules,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Name string `json:"name,omitempty"`
+
+	Active bool `json:"active,omitempty"`
+
+	Iso3 string `json:"iso3,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
 }
 
 type CountryCollection struct {

@@ -23,6 +23,42 @@ func (t SalesChannelDomainRepository) Search(ctx ApiContext, criteria Criteria) 
 	return uResp, resp, nil
 }
 
+func (t SalesChannelDomainRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SalesChannelDomainCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t SalesChannelDomainRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/sales-channel-domain", criteria)
 
@@ -62,37 +98,37 @@ func (t SalesChannelDomainRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type SalesChannelDomain struct {
-	LanguageId string `json:"languageId,omitempty"`
-
-	Currency *Currency `json:"currency,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
 	Url string `json:"url,omitempty"`
-
-	Language *Language `json:"language,omitempty"`
-
-	SalesChannelDefaultHreflang *SalesChannel `json:"salesChannelDefaultHreflang,omitempty"`
-
-	ProductExports []ProductExport `json:"productExports,omitempty"`
 
 	HreflangUseOnlyLocale bool `json:"hreflangUseOnlyLocale,omitempty"`
 
-	CurrencyId string `json:"currencyId,omitempty"`
-
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	SnippetSetId string `json:"snippetSetId,omitempty"`
+	CurrencyId string `json:"currencyId,omitempty"`
+
+	Currency *Currency `json:"currency,omitempty"`
 
 	SnippetSet *SnippetSet `json:"snippetSet,omitempty"`
 
+	SalesChannelDefaultHreflang *SalesChannel `json:"salesChannelDefaultHreflang,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	SnippetSetId string `json:"snippetSetId,omitempty"`
+
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
+
+	LanguageId string `json:"languageId,omitempty"`
+
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+
+	Language *Language `json:"language,omitempty"`
+
+	ProductExports []ProductExport `json:"productExports,omitempty"`
 }
 
 type SalesChannelDomainCollection struct {

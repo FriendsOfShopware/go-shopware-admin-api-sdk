@@ -23,6 +23,42 @@ func (t CmsPageRepository) Search(ctx ApiContext, criteria Criteria) (*CmsPageCo
 	return uResp, resp, nil
 }
 
+func (t CmsPageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsPageCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CmsPageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/cms-page", criteria)
 
@@ -62,35 +98,31 @@ func (t CmsPageRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type CmsPage struct {
-	Sections []CmsSection `json:"sections,omitempty"`
+	Translations []CmsPageTranslation `json:"translations,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Products []Product `json:"products,omitempty"`
-
-	Id string `json:"id,omitempty"`
+	Categories []Category `json:"categories,omitempty"`
 
 	VersionId string `json:"versionId,omitempty"`
+
+	Sections []CmsSection `json:"sections,omitempty"`
+
+	HomeSalesChannels []SalesChannel `json:"homeSalesChannels,omitempty"`
+
+	Name string `json:"name,omitempty"`
+
+	Type string `json:"type,omitempty"`
+
+	Entity string `json:"entity,omitempty"`
 
 	Config interface{} `json:"config,omitempty"`
 
 	PreviewMediaId string `json:"previewMediaId,omitempty"`
 
-	Translations []CmsPageTranslation `json:"translations,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	LandingPages []LandingPage `json:"landingPages,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Entity string `json:"entity,omitempty"`
-
-	HomeSalesChannels []SalesChannel `json:"homeSalesChannels,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
-
-	Name string `json:"name,omitempty"`
-
-	Type string `json:"type,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
@@ -98,7 +130,11 @@ type CmsPage struct {
 
 	PreviewMedia *Media `json:"previewMedia,omitempty"`
 
-	Categories []Category `json:"categories,omitempty"`
+	LandingPages []LandingPage `json:"landingPages,omitempty"`
+
+	Products []Product `json:"products,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
 }
 
 type CmsPageCollection struct {

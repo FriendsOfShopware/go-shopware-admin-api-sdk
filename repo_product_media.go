@@ -23,6 +23,42 @@ func (t ProductMediaRepository) Search(ctx ApiContext, criteria Criteria) (*Prod
 	return uResp, resp, nil
 }
 
+func (t ProductMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductMediaCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductMediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-media", criteria)
 
@@ -62,25 +98,25 @@ func (t ProductMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type ProductMedia struct {
-	ProductId string `json:"productId,omitempty"`
-
-	MediaId string `json:"mediaId,omitempty"`
-
-	Position float64 `json:"position,omitempty"`
-
-	Media *Media `json:"media,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
 	Id string `json:"id,omitempty"`
 
 	VersionId string `json:"versionId,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
 	Product *Product `json:"product,omitempty"`
+
+	Media *Media `json:"media,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	ProductId string `json:"productId,omitempty"`
+
+	ProductVersionId string `json:"productVersionId,omitempty"`
+
+	Position float64 `json:"position,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }

@@ -23,6 +23,42 @@ func (t OrderCustomerRepository) Search(ctx ApiContext, criteria Criteria) (*Ord
 	return uResp, resp, nil
 }
 
+func (t OrderCustomerRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderCustomerCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t OrderCustomerRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-customer", criteria)
 
@@ -62,45 +98,45 @@ func (t OrderCustomerRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type OrderCustomer struct {
-	Id string `json:"id,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
+
+	OrderId string `json:"orderId,omitempty"`
 
 	LastName string `json:"lastName,omitempty"`
+
+	Title string `json:"title,omitempty"`
+
+	VatIds interface{} `json:"vatIds,omitempty"`
+
+	Order *Order `json:"order,omitempty"`
+
+	Customer *Customer `json:"customer,omitempty"`
+
+	Salutation *Salutation `json:"salutation,omitempty"`
+
+	RemoteAddress interface{} `json:"remoteAddress,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	CustomerId string `json:"customerId,omitempty"`
+
+	OrderVersionId string `json:"orderVersionId,omitempty"`
+
+	FirstName string `json:"firstName,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	SalutationId string `json:"salutationId,omitempty"`
 
 	Company string `json:"company,omitempty"`
 
 	CustomerNumber string `json:"customerNumber,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
-
-	VersionId string `json:"versionId,omitempty"`
-
-	CustomerId string `json:"customerId,omitempty"`
-
-	OrderId string `json:"orderId,omitempty"`
-
-	Title string `json:"title,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	OrderVersionId string `json:"orderVersionId,omitempty"`
-
-	VatIds interface{} `json:"vatIds,omitempty"`
-
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Customer *Customer `json:"customer,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
 	Email string `json:"email,omitempty"`
-
-	SalutationId string `json:"salutationId,omitempty"`
-
-	FirstName string `json:"firstName,omitempty"`
-
-	Salutation *Salutation `json:"salutation,omitempty"`
-
-	RemoteAddress interface{} `json:"remoteAddress,omitempty"`
 }
 
 type OrderCustomerCollection struct {

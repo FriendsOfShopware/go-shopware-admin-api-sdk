@@ -23,6 +23,42 @@ func (t AppPaymentMethodRepository) Search(ctx ApiContext, criteria Criteria) (*
 	return uResp, resp, nil
 }
 
+func (t AppPaymentMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppPaymentMethodCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t AppPaymentMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-payment-method", criteria)
 
@@ -62,11 +98,7 @@ func (t AppPaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type AppPaymentMethod struct {
-	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
+	AppName string `json:"appName,omitempty"`
 
 	PayUrl string `json:"payUrl,omitempty"`
 
@@ -76,9 +108,9 @@ type AppPaymentMethod struct {
 
 	OriginalMediaId string `json:"originalMediaId,omitempty"`
 
-	PaymentMethodId string `json:"paymentMethodId,omitempty"`
+	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
 
-	AppName string `json:"appName,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	Identifier string `json:"identifier,omitempty"`
 
@@ -86,7 +118,11 @@ type AppPaymentMethod struct {
 
 	OriginalMedia *Media `json:"originalMedia,omitempty"`
 
+	PaymentMethodId string `json:"paymentMethodId,omitempty"`
+
 	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type AppPaymentMethodCollection struct {

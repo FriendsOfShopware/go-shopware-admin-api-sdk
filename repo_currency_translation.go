@@ -23,6 +23,42 @@ func (t CurrencyTranslationRepository) Search(ctx ApiContext, criteria Criteria)
 	return uResp, resp, nil
 }
 
+func (t CurrencyTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CurrencyTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CurrencyTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/currency-translation", criteria)
 
@@ -62,15 +98,9 @@ func (t CurrencyTranslationRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type CurrencyTranslation struct {
-	Name string `json:"name,omitempty"`
-
-	CurrencyId string `json:"currencyId,omitempty"`
-
-	Currency *Currency `json:"currency,omitempty"`
-
-	Language *Language `json:"language,omitempty"`
-
 	ShortName string `json:"shortName,omitempty"`
+
+	Name string `json:"name,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
@@ -78,7 +108,13 @@ type CurrencyTranslation struct {
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
+	CurrencyId string `json:"currencyId,omitempty"`
+
 	LanguageId string `json:"languageId,omitempty"`
+
+	Language *Language `json:"language,omitempty"`
+
+	Currency *Currency `json:"currency,omitempty"`
 }
 
 type CurrencyTranslationCollection struct {

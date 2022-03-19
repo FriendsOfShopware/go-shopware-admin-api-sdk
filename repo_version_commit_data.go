@@ -23,6 +23,42 @@ func (t VersionCommitDataRepository) Search(ctx ApiContext, criteria Criteria) (
 	return uResp, resp, nil
 }
 
+func (t VersionCommitDataRepository) SearchAll(ctx ApiContext, criteria Criteria) (*VersionCommitDataCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t VersionCommitDataRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/version-commit-data", criteria)
 
@@ -62,29 +98,29 @@ func (t VersionCommitDataRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type VersionCommitData struct {
-	Payload interface{} `json:"payload,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	Id string `json:"id,omitempty"`
-
-	VersionCommitId string `json:"versionCommitId,omitempty"`
-
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
-
-	Action string `json:"action,omitempty"`
-
-	EntityId interface{} `json:"entityId,omitempty"`
 
 	Commit *VersionCommit `json:"commit,omitempty"`
 
 	UserId string `json:"userId,omitempty"`
 
+	EntityName string `json:"entityName,omitempty"`
+
+	Payload interface{} `json:"payload,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	VersionCommitId string `json:"versionCommitId,omitempty"`
+
 	IntegrationId string `json:"integrationId,omitempty"`
 
-	EntityName string `json:"entityName,omitempty"`
+	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+
+	EntityId interface{} `json:"entityId,omitempty"`
+
+	Action string `json:"action,omitempty"`
 }
 
 type VersionCommitDataCollection struct {

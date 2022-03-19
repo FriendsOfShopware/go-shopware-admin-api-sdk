@@ -23,6 +23,42 @@ func (t CurrencyRepository) Search(ctx ApiContext, criteria Criteria) (*Currency
 	return uResp, resp, nil
 }
 
+func (t CurrencyRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CurrencyCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CurrencyRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/currency", criteria)
 
@@ -62,51 +98,51 @@ func (t CurrencyRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 }
 
 type Currency struct {
-	ProductExports []ProductExport `json:"productExports,omitempty"`
-
 	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
-
-	IsoCode string `json:"isoCode,omitempty"`
-
-	Orders []Order `json:"orders,omitempty"`
-
-	PromotionDiscountPrices []PromotionDiscountPrices `json:"promotionDiscountPrices,omitempty"`
-
-	Translations []CurrencyTranslation `json:"translations,omitempty"`
-
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
-
-	SalesChannelDomains []SalesChannelDomain `json:"salesChannelDomains,omitempty"`
-
-	TotalRounding interface{} `json:"totalRounding,omitempty"`
-
-	Id string `json:"id,omitempty"`
 
 	Factor float64 `json:"factor,omitempty"`
 
-	Name string `json:"name,omitempty"`
-
-	CountryRoundings []CurrencyCountryRounding `json:"countryRoundings,omitempty"`
-
-	Symbol string `json:"symbol,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
 	IsSystemDefault bool `json:"isSystemDefault,omitempty"`
 
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	ProductExports []ProductExport `json:"productExports,omitempty"`
+
 	ItemRounding interface{} `json:"itemRounding,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	IsoCode string `json:"isoCode,omitempty"`
+
+	ShortName string `json:"shortName,omitempty"`
+
+	Name string `json:"name,omitempty"`
+
+	SalesChannelDomains []SalesChannelDomain `json:"salesChannelDomains,omitempty"`
+
+	CountryRoundings []CurrencyCountryRounding `json:"countryRoundings,omitempty"`
 
 	TaxFreeFrom float64 `json:"taxFreeFrom,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ShortName string `json:"shortName,omitempty"`
+	Translations []CurrencyTranslation `json:"translations,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Orders []Order `json:"orders,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+
+	PromotionDiscountPrices []PromotionDiscountPrices `json:"promotionDiscountPrices,omitempty"`
+
+	TotalRounding interface{} `json:"totalRounding,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Symbol string `json:"symbol,omitempty"`
+
+	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
 }
 
 type CurrencyCollection struct {

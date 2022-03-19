@@ -23,6 +23,42 @@ func (t CountryStateRepository) Search(ctx ApiContext, criteria Criteria) (*Coun
 	return uResp, resp, nil
 }
 
+func (t CountryStateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CountryStateCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CountryStateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/country-state", criteria)
 
@@ -62,33 +98,33 @@ func (t CountryStateRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type CountryState struct {
-	Id string `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Active bool `json:"active,omitempty"`
+
+	Translations []CountryStateTranslation `json:"translations,omitempty"`
+
+	Id string `json:"id,omitempty"`
 
 	CountryId string `json:"countryId,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
+	Country *Country `json:"country,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	ShortCode string `json:"shortCode,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Translations []CountryStateTranslation `json:"translations,omitempty"`
+	ShortCode string `json:"shortCode,omitempty"`
 
 	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
 	Translated interface{} `json:"translated,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Active bool `json:"active,omitempty"`
-
-	Country *Country `json:"country,omitempty"`
+	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
 }
 
 type CountryStateCollection struct {

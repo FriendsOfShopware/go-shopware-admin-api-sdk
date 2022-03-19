@@ -23,6 +23,42 @@ func (t TaxRuleRepository) Search(ctx ApiContext, criteria Criteria) (*TaxRuleCo
 	return uResp, resp, nil
 }
 
+func (t TaxRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TaxRuleCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t TaxRuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/tax-rule", criteria)
 
@@ -62,17 +98,15 @@ func (t TaxRuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type TaxRule struct {
-	TaxId string `json:"taxId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	TaxRate float64 `json:"taxRate,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	TaxRuleTypeId string `json:"taxRuleTypeId,omitempty"`
 
-	CountryId string `json:"countryId,omitempty"`
+	TaxRate float64 `json:"taxRate,omitempty"`
 
-	Data interface{} `json:"data,omitempty"`
+	TaxId string `json:"taxId,omitempty"`
 
 	Type *TaxRuleType `json:"type,omitempty"`
 
@@ -80,9 +114,11 @@ type TaxRule struct {
 
 	Tax *Tax `json:"tax,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CountryId string `json:"countryId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Data interface{} `json:"data,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type TaxRuleCollection struct {

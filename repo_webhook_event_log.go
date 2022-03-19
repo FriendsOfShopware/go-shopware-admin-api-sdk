@@ -23,6 +23,42 @@ func (t WebhookEventLogRepository) Search(ctx ApiContext, criteria Criteria) (*W
 	return uResp, resp, nil
 }
 
+func (t WebhookEventLogRepository) SearchAll(ctx ApiContext, criteria Criteria) (*WebhookEventLogCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t WebhookEventLogRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/webhook-event-log", criteria)
 
@@ -62,39 +98,39 @@ func (t WebhookEventLogRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type WebhookEventLog struct {
-	WebhookName string `json:"webhookName,omitempty"`
+	ResponseContent interface{} `json:"responseContent,omitempty"`
 
-	Timestamp float64 `json:"timestamp,omitempty"`
-
-	ProcessingTime float64 `json:"processingTime,omitempty"`
-
-	AppVersion string `json:"appVersion,omitempty"`
+	Url string `json:"url,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	AppName string `json:"appName,omitempty"`
+
+	AppVersion string `json:"appVersion,omitempty"`
 
 	ResponseReasonPhrase string `json:"responseReasonPhrase,omitempty"`
 
-	RequestContent interface{} `json:"requestContent,omitempty"`
-
-	ResponseContent interface{} `json:"responseContent,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
 	ResponseStatusCode float64 `json:"responseStatusCode,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	AppName string `json:"appName,omitempty"`
-
-	EventName string `json:"eventName,omitempty"`
+	SerializedWebhookMessage interface{} `json:"serializedWebhookMessage,omitempty"`
 
 	DeliveryStatus string `json:"deliveryStatus,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	Timestamp float64 `json:"timestamp,omitempty"`
 
-	SerializedWebhookMessage interface{} `json:"serializedWebhookMessage,omitempty"`
+	ProcessingTime float64 `json:"processingTime,omitempty"`
+
+	RequestContent interface{} `json:"requestContent,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	WebhookName string `json:"webhookName,omitempty"`
+
+	EventName string `json:"eventName,omitempty"`
 }
 
 type WebhookEventLogCollection struct {

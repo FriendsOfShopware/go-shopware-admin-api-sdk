@@ -23,6 +23,42 @@ func (t MediaFolderConfigurationRepository) Search(ctx ApiContext, criteria Crit
 	return uResp, resp, nil
 }
 
+func (t MediaFolderConfigurationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaFolderConfigurationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t MediaFolderConfigurationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media-folder-configuration", criteria)
 
@@ -62,29 +98,29 @@ func (t MediaFolderConfigurationRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type MediaFolderConfiguration struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
 	NoAssociation bool `json:"noAssociation,omitempty"`
 
-	MediaThumbnailSizes []MediaThumbnailSize `json:"mediaThumbnailSizes,omitempty"`
+	MediaThumbnailSizesRo interface{} `json:"mediaThumbnailSizesRo,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	KeepAspectRatio bool `json:"keepAspectRatio,omitempty"`
+
+	CreateThumbnails bool `json:"createThumbnails,omitempty"`
+
+	ThumbnailQuality float64 `json:"thumbnailQuality,omitempty"`
 
 	Private bool `json:"private,omitempty"`
 
 	MediaFolders []MediaFolder `json:"mediaFolders,omitempty"`
 
-	MediaThumbnailSizesRo interface{} `json:"mediaThumbnailSizesRo,omitempty"`
+	MediaThumbnailSizes []MediaThumbnailSize `json:"mediaThumbnailSizes,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CreateThumbnails bool `json:"createThumbnails,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	KeepAspectRatio bool `json:"keepAspectRatio,omitempty"`
-
-	ThumbnailQuality float64 `json:"thumbnailQuality,omitempty"`
+	Id string `json:"id,omitempty"`
 }
 
 type MediaFolderConfigurationCollection struct {

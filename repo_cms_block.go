@@ -23,6 +23,42 @@ func (t CmsBlockRepository) Search(ctx ApiContext, criteria Criteria) (*CmsBlock
 	return uResp, resp, nil
 }
 
+func (t CmsBlockRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsBlockCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CmsBlockRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/cms-block", criteria)
 
@@ -62,31 +98,27 @@ func (t CmsBlockRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 }
 
 type CmsBlock struct {
-	Section *CmsSection `json:"section,omitempty"`
-
-	CmsSectionVersionId string `json:"cmsSectionVersionId,omitempty"`
-
 	SectionPosition string `json:"sectionPosition,omitempty"`
-
-	Type string `json:"type,omitempty"`
-
-	Name string `json:"name,omitempty"`
 
 	MarginBottom string `json:"marginBottom,omitempty"`
 
-	MarginRight string `json:"marginRight,omitempty"`
-
 	CssClass string `json:"cssClass,omitempty"`
 
+	BackgroundMedia *Media `json:"backgroundMedia,omitempty"`
+
 	SectionId string `json:"sectionId,omitempty"`
+
+	Section *CmsSection `json:"section,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
 	Id string `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
 	MarginTop string `json:"marginTop,omitempty"`
+
+	BackgroundMediaMode string `json:"backgroundMediaMode,omitempty"`
 
 	MarginLeft string `json:"marginLeft,omitempty"`
 
@@ -94,19 +126,23 @@ type CmsBlock struct {
 
 	BackgroundMediaId string `json:"backgroundMediaId,omitempty"`
 
+	Slots []CmsSlot `json:"slots,omitempty"`
+
 	VersionId string `json:"versionId,omitempty"`
+
+	CmsSectionVersionId string `json:"cmsSectionVersionId,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Type string `json:"type,omitempty"`
+
 	Locked bool `json:"locked,omitempty"`
 
-	BackgroundMediaMode string `json:"backgroundMediaMode,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	BackgroundMedia *Media `json:"backgroundMedia,omitempty"`
-
-	Slots []CmsSlot `json:"slots,omitempty"`
-
-	Position float64 `json:"position,omitempty"`
+	MarginRight string `json:"marginRight,omitempty"`
 }
 
 type CmsBlockCollection struct {

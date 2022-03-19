@@ -23,6 +23,42 @@ func (t ProductPriceRepository) Search(ctx ApiContext, criteria Criteria) (*Prod
 	return uResp, resp, nil
 }
 
+func (t ProductPriceRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductPriceCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductPriceRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-price", criteria)
 
@@ -62,7 +98,23 @@ func (t ProductPriceRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type ProductPrice struct {
+	VersionId string `json:"versionId,omitempty"`
+
+	RuleId string `json:"ruleId,omitempty"`
+
+	Product *Product `json:"product,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
 	ProductId string `json:"productId,omitempty"`
+
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
 	Price interface{} `json:"price,omitempty"`
 
@@ -70,23 +122,7 @@ type ProductPrice struct {
 
 	QuantityEnd float64 `json:"quantityEnd,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
-
 	Rule *Rule `json:"rule,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	ProductVersionId string `json:"productVersionId,omitempty"`
-
-	RuleId string `json:"ruleId,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	VersionId string `json:"versionId,omitempty"`
 }
 
 type ProductPriceCollection struct {

@@ -23,6 +23,42 @@ func (t NumberRangeTypeTranslationRepository) Search(ctx ApiContext, criteria Cr
 	return uResp, resp, nil
 }
 
+func (t NumberRangeTypeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NumberRangeTypeTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t NumberRangeTypeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/number-range-type-translation", criteria)
 
@@ -62,6 +98,10 @@ func (t NumberRangeTypeTranslationRepository) Delete(ctx ApiContext, ids []strin
 }
 
 type NumberRangeTypeTranslation struct {
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
 	NumberRangeTypeId string `json:"numberRangeTypeId,omitempty"`
 
 	LanguageId string `json:"languageId,omitempty"`
@@ -73,10 +113,6 @@ type NumberRangeTypeTranslation struct {
 	TypeName string `json:"typeName,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type NumberRangeTypeTranslationCollection struct {

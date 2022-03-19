@@ -22,6 +22,42 @@ func (t PromotionDiscountRuleRepository) Search(ctx ApiContext, criteria Criteri
 	return uResp, resp, nil
 }
 
+func (t PromotionDiscountRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionDiscountRuleCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t PromotionDiscountRuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-discount-rule", criteria)
 
@@ -61,13 +97,13 @@ func (t PromotionDiscountRuleRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type PromotionDiscountRule struct {
+	RuleId string `json:"ruleId,omitempty"`
+
 	Discount *PromotionDiscount `json:"discount,omitempty"`
 
 	Rule *Rule `json:"rule,omitempty"`
 
 	DiscountId string `json:"discountId,omitempty"`
-
-	RuleId string `json:"ruleId,omitempty"`
 }
 
 type PromotionDiscountRuleCollection struct {

@@ -23,6 +23,42 @@ func (t NumberRangeTypeRepository) Search(ctx ApiContext, criteria Criteria) (*N
 	return uResp, resp, nil
 }
 
+func (t NumberRangeTypeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NumberRangeTypeCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t NumberRangeTypeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/number-range-type", criteria)
 
@@ -62,25 +98,25 @@ func (t NumberRangeTypeRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type NumberRangeType struct {
-	TypeName string `json:"typeName,omitempty"`
-
-	NumberRanges []NumberRange `json:"numberRanges,omitempty"`
-
 	Translations []NumberRangeTypeTranslation `json:"translations,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
 	Id string `json:"id,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	TypeName string `json:"typeName,omitempty"`
 
 	Global bool `json:"global,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	NumberRanges []NumberRange `json:"numberRanges,omitempty"`
 
 	NumberRangeSalesChannels []NumberRangeSalesChannel `json:"numberRangeSalesChannels,omitempty"`
+
+	TechnicalName string `json:"technicalName,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	Translated interface{} `json:"translated,omitempty"`
 }

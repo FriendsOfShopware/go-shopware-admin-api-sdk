@@ -23,6 +23,42 @@ func (t UserRepository) Search(ctx ApiContext, criteria Criteria) (*UserCollecti
 	return uResp, resp, nil
 }
 
+func (t UserRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UserCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t UserRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/user", criteria)
 
@@ -62,63 +98,63 @@ func (t UserRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type User struct {
-	LocaleId string `json:"localeId,omitempty"`
-
-	LastName string `json:"lastName,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	Locale *Locale `json:"locale,omitempty"`
-
-	ImportExportLogEntries []ImportExportLog `json:"importExportLogEntries,omitempty"`
-
-	AclRoles []AclRole `json:"aclRoles,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Active bool `json:"active,omitempty"`
-
-	StateMachineHistoryEntries []StateMachineHistory `json:"stateMachineHistoryEntries,omitempty"`
-
-	RecoveryUser *UserRecovery `json:"recoveryUser,omitempty"`
-
-	CreatedNotifications []Notification `json:"createdNotifications,omitempty"`
-
-	AvatarMedia *Media `json:"avatarMedia,omitempty"`
+	FirstName string `json:"firstName,omitempty"`
 
 	AccessKeys []UserAccessKey `json:"accessKeys,omitempty"`
 
-	Configs []UserConfig `json:"configs,omitempty"`
-
-	Title string `json:"title,omitempty"`
+	Password interface{} `json:"password,omitempty"`
 
 	Email string `json:"email,omitempty"`
 
-	Media []Media `json:"media,omitempty"`
-
-	Username string `json:"username,omitempty"`
-
 	LastUpdatedPasswordAt time.Time `json:"lastUpdatedPasswordAt,omitempty"`
-
-	UpdatedOrders []Order `json:"updatedOrders,omitempty"`
-
-	AvatarId string `json:"avatarId,omitempty"`
-
-	Password interface{} `json:"password,omitempty"`
-
-	FirstName string `json:"firstName,omitempty"`
-
-	Admin bool `json:"admin,omitempty"`
-
-	CreatedOrders []Order `json:"createdOrders,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	TimeZone string `json:"timeZone,omitempty"`
 
-	StoreToken string `json:"storeToken,omitempty"`
+	AvatarMedia *Media `json:"avatarMedia,omitempty"`
+
+	LocaleId string `json:"localeId,omitempty"`
+
+	AvatarId string `json:"avatarId,omitempty"`
+
+	Username string `json:"username,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Configs []UserConfig `json:"configs,omitempty"`
+
+	RecoveryUser *UserRecovery `json:"recoveryUser,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedOrders []Order `json:"updatedOrders,omitempty"`
 
 	Id string `json:"id,omitempty"`
+
+	Admin bool `json:"admin,omitempty"`
+
+	StoreToken string `json:"storeToken,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	AclRoles []AclRole `json:"aclRoles,omitempty"`
+
+	StateMachineHistoryEntries []StateMachineHistory `json:"stateMachineHistoryEntries,omitempty"`
+
+	ImportExportLogEntries []ImportExportLog `json:"importExportLogEntries,omitempty"`
+
+	CreatedNotifications []Notification `json:"createdNotifications,omitempty"`
+
+	Title string `json:"title,omitempty"`
+
+	Locale *Locale `json:"locale,omitempty"`
+
+	Media []Media `json:"media,omitempty"`
+
+	CreatedOrders []Order `json:"createdOrders,omitempty"`
+
+	LastName string `json:"lastName,omitempty"`
+
+	Active bool `json:"active,omitempty"`
 }
 
 type UserCollection struct {

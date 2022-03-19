@@ -23,6 +23,42 @@ func (t NumberRangeRepository) Search(ctx ApiContext, criteria Criteria) (*Numbe
 	return uResp, resp, nil
 }
 
+func (t NumberRangeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NumberRangeCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t NumberRangeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/number-range", criteria)
 
@@ -62,35 +98,35 @@ func (t NumberRangeRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type NumberRange struct {
+	NumberRangeSalesChannels []NumberRangeSalesChannel `json:"numberRangeSalesChannels,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	Pattern string `json:"pattern,omitempty"`
+
 	CustomFields interface{} `json:"customFields,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
-
-	Global bool `json:"global,omitempty"`
-
-	Start float64 `json:"start,omitempty"`
+	TypeId string `json:"typeId,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
-	Translations []NumberRangeTranslation `json:"translations,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
-
-	Description string `json:"description,omitempty"`
+	Start float64 `json:"start,omitempty"`
 
 	Type *NumberRangeType `json:"type,omitempty"`
 
-	NumberRangeSalesChannels []NumberRangeSalesChannel `json:"numberRangeSalesChannels,omitempty"`
-
-	TypeId string `json:"typeId,omitempty"`
-
-	Pattern string `json:"pattern,omitempty"`
-
 	State *NumberRangeState `json:"state,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	Description string `json:"description,omitempty"`
+
+	Global bool `json:"global,omitempty"`
+
+	Translations []NumberRangeTranslation `json:"translations,omitempty"`
 }
 
 type NumberRangeCollection struct {

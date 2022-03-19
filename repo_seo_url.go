@@ -23,6 +23,42 @@ func (t SeoUrlRepository) Search(ctx ApiContext, criteria Criteria) (*SeoUrlColl
 	return uResp, resp, nil
 }
 
+func (t SeoUrlRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SeoUrlCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t SeoUrlRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/seo-url", criteria)
 
@@ -62,37 +98,37 @@ func (t SeoUrlRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 }
 
 type SeoUrl struct {
-	IsCanonical bool `json:"isCanonical,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	Url string `json:"url,omitempty"`
-
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
-
-	SeoPathInfo string `json:"seoPathInfo,omitempty"`
+	RouteName string `json:"routeName,omitempty"`
 
 	PathInfo string `json:"pathInfo,omitempty"`
 
-	IsDeleted bool `json:"isDeleted,omitempty"`
+	SeoPathInfo string `json:"seoPathInfo,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	LanguageId string `json:"languageId,omitempty"`
 
 	IsModified bool `json:"isModified,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	IsDeleted bool `json:"isDeleted,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
-
-	ForeignKey string `json:"foreignKey,omitempty"`
-
-	RouteName string `json:"routeName,omitempty"`
+	Url string `json:"url,omitempty"`
 
 	Language *Language `json:"language,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
 	Id string `json:"id,omitempty"`
+
+	ForeignKey string `json:"foreignKey,omitempty"`
+
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+
+	IsCanonical bool `json:"isCanonical,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type SeoUrlCollection struct {

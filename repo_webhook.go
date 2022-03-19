@@ -23,6 +23,42 @@ func (t WebhookRepository) Search(ctx ApiContext, criteria Criteria) (*WebhookCo
 	return uResp, resp, nil
 }
 
+func (t WebhookRepository) SearchAll(ctx ApiContext, criteria Criteria) (*WebhookCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t WebhookRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/webhook", criteria)
 
@@ -62,25 +98,25 @@ func (t WebhookRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type Webhook struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	Url string `json:"url,omitempty"`
-
 	Active bool `json:"active,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
 	App *App `json:"app,omitempty"`
+
+	Id string `json:"id,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
 	EventName string `json:"eventName,omitempty"`
 
+	Url string `json:"url,omitempty"`
+
 	ErrorCount float64 `json:"errorCount,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type WebhookCollection struct {

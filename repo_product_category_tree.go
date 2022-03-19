@@ -22,6 +22,42 @@ func (t ProductCategoryTreeRepository) Search(ctx ApiContext, criteria Criteria)
 	return uResp, resp, nil
 }
 
+func (t ProductCategoryTreeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductCategoryTreeCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductCategoryTreeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-category-tree", criteria)
 
@@ -61,8 +97,6 @@ func (t ProductCategoryTreeRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductCategoryTree struct {
-	CategoryVersionId string `json:"categoryVersionId,omitempty"`
-
 	Product *Product `json:"product,omitempty"`
 
 	Category *Category `json:"category,omitempty"`
@@ -72,6 +106,8 @@ type ProductCategoryTree struct {
 	ProductVersionId string `json:"productVersionId,omitempty"`
 
 	CategoryId string `json:"categoryId,omitempty"`
+
+	CategoryVersionId string `json:"categoryVersionId,omitempty"`
 }
 
 type ProductCategoryTreeCollection struct {

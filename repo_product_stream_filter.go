@@ -23,6 +23,42 @@ func (t ProductStreamFilterRepository) Search(ctx ApiContext, criteria Criteria)
 	return uResp, resp, nil
 }
 
+func (t ProductStreamFilterRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductStreamFilterCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ProductStreamFilterRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-stream-filter", criteria)
 
@@ -62,35 +98,35 @@ func (t ProductStreamFilterRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductStreamFilter struct {
-	Operator string `json:"operator,omitempty"`
+	Value string `json:"value,omitempty"`
 
 	Parameters interface{} `json:"parameters,omitempty"`
 
-	ProductStream *ProductStream `json:"productStream,omitempty"`
+	Parent *ProductStreamFilter `json:"parent,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	Field string `json:"field,omitempty"`
 
 	Queries []ProductStreamFilter `json:"queries,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
+
+	ProductStreamId string `json:"productStreamId,omitempty"`
+
+	Operator string `json:"operator,omitempty"`
+
+	ProductStream *ProductStream `json:"productStream,omitempty"`
+
+	ParentId string `json:"parentId,omitempty"`
+
+	Type string `json:"type,omitempty"`
 
 	Position float64 `json:"position,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	ProductStreamId string `json:"productStreamId,omitempty"`
-
-	ParentId string `json:"parentId,omitempty"`
-
-	Field string `json:"field,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	Type string `json:"type,omitempty"`
-
-	Value string `json:"value,omitempty"`
-
-	Parent *ProductStreamFilter `json:"parent,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ProductStreamFilterCollection struct {

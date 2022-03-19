@@ -23,6 +23,42 @@ func (t StateMachineStateRepository) Search(ctx ApiContext, criteria Criteria) (
 	return uResp, resp, nil
 }
 
+func (t StateMachineStateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*StateMachineStateCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t StateMachineStateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/state-machine-state", criteria)
 
@@ -62,39 +98,39 @@ func (t StateMachineStateRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type StateMachineState struct {
-	OrderTransactions []OrderTransaction `json:"orderTransactions,omitempty"`
-
-	ToStateMachineHistoryEntries []StateMachineHistory `json:"toStateMachineHistoryEntries,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
+	StateMachineId string `json:"stateMachineId,omitempty"`
 
 	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Id string `json:"id,omitempty"`
-
 	Name string `json:"name,omitempty"`
 
+	FromStateMachineHistoryEntries []StateMachineHistory `json:"fromStateMachineHistoryEntries,omitempty"`
+
+	TechnicalName string `json:"technicalName,omitempty"`
+
 	StateMachine *StateMachine `json:"stateMachine,omitempty"`
+
+	Translations []StateMachineStateTranslation `json:"translations,omitempty"`
+
+	Orders []Order `json:"orders,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Id string `json:"id,omitempty"`
 
 	FromStateMachineTransitions []StateMachineTransition `json:"fromStateMachineTransitions,omitempty"`
 
 	ToStateMachineTransitions []StateMachineTransition `json:"toStateMachineTransitions,omitempty"`
 
-	Translations []StateMachineStateTranslation `json:"translations,omitempty"`
+	OrderTransactions []OrderTransaction `json:"orderTransactions,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
-
-	StateMachineId string `json:"stateMachineId,omitempty"`
-
-	Orders []Order `json:"orders,omitempty"`
-
-	FromStateMachineHistoryEntries []StateMachineHistory `json:"fromStateMachineHistoryEntries,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
+	ToStateMachineHistoryEntries []StateMachineHistory `json:"toStateMachineHistoryEntries,omitempty"`
 }
 
 type StateMachineStateCollection struct {

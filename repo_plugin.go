@@ -23,6 +23,42 @@ func (t PluginRepository) Search(ctx ApiContext, criteria Criteria) (*PluginColl
 	return uResp, resp, nil
 }
 
+func (t PluginRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PluginCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t PluginRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/plugin", criteria)
 
@@ -62,27 +98,33 @@ func (t PluginRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 }
 
 type Plugin struct {
-	ManagedByComposer bool `json:"managedByComposer,omitempty"`
-
 	Changelog interface{} `json:"changelog,omitempty"`
 
 	Translated interface{} `json:"translated,omitempty"`
-
-	Version string `json:"version,omitempty"`
 
 	UpgradedAt time.Time `json:"upgradedAt,omitempty"`
 
 	IconRaw interface{} `json:"iconRaw,omitempty"`
 
+	Description string `json:"description,omitempty"`
+
+	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
+
+	Active bool `json:"active,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Autoload interface{} `json:"autoload,omitempty"`
+
+	License string `json:"license,omitempty"`
+
 	Icon string `json:"icon,omitempty"`
 
 	Label string `json:"label,omitempty"`
-
-	BaseClass string `json:"baseClass,omitempty"`
-
-	ComposerName string `json:"composerName,omitempty"`
-
-	Active bool `json:"active,omitempty"`
 
 	ManufacturerLink string `json:"manufacturerLink,omitempty"`
 
@@ -90,33 +132,27 @@ type Plugin struct {
 
 	Author string `json:"author,omitempty"`
 
-	SupportLink string `json:"supportLink,omitempty"`
+	Copyright string `json:"copyright,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Version string `json:"version,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	InstalledAt time.Time `json:"installedAt,omitempty"`
 
-	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
-
-	Id string `json:"id,omitempty"`
+	BaseClass string `json:"baseClass,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Autoload interface{} `json:"autoload,omitempty"`
-
-	Copyright string `json:"copyright,omitempty"`
-
-	UpgradeVersion string `json:"upgradeVersion,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ComposerName string `json:"composerName,omitempty"`
 
 	Path string `json:"path,omitempty"`
 
-	License string `json:"license,omitempty"`
+	SupportLink string `json:"supportLink,omitempty"`
 
-	InstalledAt time.Time `json:"installedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	ManagedByComposer bool `json:"managedByComposer,omitempty"`
+
+	UpgradeVersion string `json:"upgradeVersion,omitempty"`
 }
 
 type PluginCollection struct {

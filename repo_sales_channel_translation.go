@@ -23,6 +23,42 @@ func (t SalesChannelTranslationRepository) Search(ctx ApiContext, criteria Crite
 	return uResp, resp, nil
 }
 
+func (t SalesChannelTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SalesChannelTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t SalesChannelTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/sales-channel-translation", criteria)
 
@@ -62,33 +98,33 @@ func (t SalesChannelTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type SalesChannelTranslation struct {
+	Name string `json:"name,omitempty"`
+
+	Language *Language `json:"language,omitempty"`
+
+	HomeSlotConfig interface{} `json:"homeSlotConfig,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	SalesChannelId string `json:"salesChannelId,omitempty"`
+
+	HomeMetaTitle string `json:"homeMetaTitle,omitempty"`
+
 	HomeMetaDescription string `json:"homeMetaDescription,omitempty"`
+
+	HomeKeywords string `json:"homeKeywords,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
+	LanguageId string `json:"languageId,omitempty"`
+
 	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
-
-	HomeName string `json:"homeName,omitempty"`
-
-	HomeMetaTitle string `json:"homeMetaTitle,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	Name string `json:"name,omitempty"`
-
-	HomeSlotConfig interface{} `json:"homeSlotConfig,omitempty"`
-
-	HomeKeywords string `json:"homeKeywords,omitempty"`
-
-	Language *Language `json:"language,omitempty"`
 
 	HomeEnabled bool `json:"homeEnabled,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
-
-	LanguageId string `json:"languageId,omitempty"`
+	HomeName string `json:"homeName,omitempty"`
 }
 
 type SalesChannelTranslationCollection struct {

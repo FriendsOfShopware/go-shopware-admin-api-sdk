@@ -23,6 +23,42 @@ func (t CategoryRepository) Search(ctx ApiContext, criteria Criteria) (*Category
 	return uResp, resp, nil
 }
 
+func (t CategoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CategoryCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t CategoryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/category", criteria)
 
@@ -62,101 +98,101 @@ func (t CategoryRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 }
 
 type Category struct {
-	ChildCount float64 `json:"childCount,omitempty"`
+	AutoIncrement float64 `json:"autoIncrement,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	MetaTitle string `json:"metaTitle,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	ServiceSalesChannels []SalesChannel `json:"serviceSalesChannels,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	InternalLink string `json:"internalLink,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
 	Keywords string `json:"keywords,omitempty"`
 
-	Translations []CategoryTranslation `json:"translations,omitempty"`
-
-	AfterCategoryId string `json:"afterCategoryId,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	ServiceSalesChannels []SalesChannel `json:"serviceSalesChannels,omitempty"`
-
-	MetaTitle string `json:"metaTitle,omitempty"`
-
-	Parent *Category `json:"parent,omitempty"`
-
-	Tags []Tag `json:"tags,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
-
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
-
-	FooterSalesChannels []SalesChannel `json:"footerSalesChannels,omitempty"`
-
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
-
-	Visible bool `json:"visible,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	LinkType string `json:"linkType,omitempty"`
-
-	ExternalLink string `json:"externalLink,omitempty"`
-
-	LinkNewTab bool `json:"linkNewTab,omitempty"`
-
-	Children []Category `json:"children,omitempty"`
-
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
-
-	ParentId string `json:"parentId,omitempty"`
-
-	DisplayNestedProducts bool `json:"displayNestedProducts,omitempty"`
-
-	Breadcrumb interface{} `json:"breadcrumb,omitempty"`
-
-	ProductAssignmentType string `json:"productAssignmentType,omitempty"`
-
-	InternalLink string `json:"internalLink,omitempty"`
-
-	Media *Media `json:"media,omitempty"`
-
-	Products []Product `json:"products,omitempty"`
-
-	NavigationSalesChannels []SalesChannel `json:"navigationSalesChannels,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	CmsPageId string `json:"cmsPageId,omitempty"`
-
-	ProductStreamId string `json:"productStreamId,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
 	AfterCategoryVersionId string `json:"afterCategoryVersionId,omitempty"`
 
+	DisplayNestedProducts bool `json:"displayNestedProducts,omitempty"`
+
+	Name string `json:"name,omitempty"`
+
+	ExternalLink string `json:"externalLink,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	ParentId string `json:"parentId,omitempty"`
+
 	Level float64 `json:"level,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
-
-	NestedProducts []Product `json:"nestedProducts,omitempty"`
+	ProductStream *ProductStream `json:"productStream,omitempty"`
 
 	MainCategories []MainCategory `json:"mainCategories,omitempty"`
 
 	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	LinkType string `json:"linkType,omitempty"`
 
-	ParentVersionId string `json:"parentVersionId,omitempty"`
-
-	Path string `json:"path,omitempty"`
+	Tags []Tag `json:"tags,omitempty"`
 
 	CmsPage *CmsPage `json:"cmsPage,omitempty"`
 
-	ProductStream *ProductStream `json:"productStream,omitempty"`
+	AfterCategoryId string `json:"afterCategoryId,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Path string `json:"path,omitempty"`
+
+	ChildCount float64 `json:"childCount,omitempty"`
+
+	Type string `json:"type,omitempty"`
+
+	ProductAssignmentType string `json:"productAssignmentType,omitempty"`
+
+	NavigationSalesChannels []SalesChannel `json:"navigationSalesChannels,omitempty"`
+
+	LinkNewTab bool `json:"linkNewTab,omitempty"`
+
+	FooterSalesChannels []SalesChannel `json:"footerSalesChannels,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	CmsPageId string `json:"cmsPageId,omitempty"`
+
+	Breadcrumb interface{} `json:"breadcrumb,omitempty"`
+
+	Active bool `json:"active,omitempty"`
+
+	SlotConfig interface{} `json:"slotConfig,omitempty"`
+
+	MetaDescription string `json:"metaDescription,omitempty"`
+
+	Translations []CategoryTranslation `json:"translations,omitempty"`
+
+	Media *Media `json:"media,omitempty"`
+
+	Products []Product `json:"products,omitempty"`
+
+	NestedProducts []Product `json:"nestedProducts,omitempty"`
+
+	ParentVersionId string `json:"parentVersionId,omitempty"`
+
+	MediaId string `json:"mediaId,omitempty"`
+
+	Visible bool `json:"visible,omitempty"`
+
+	Parent *Category `json:"parent,omitempty"`
+
+	Children []Category `json:"children,omitempty"`
+
+	ProductStreamId string `json:"productStreamId,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type CategoryCollection struct {

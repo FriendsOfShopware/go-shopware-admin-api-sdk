@@ -23,6 +23,42 @@ func (t ShippingMethodRepository) Search(ctx ApiContext, criteria Criteria) (*Sh
 	return uResp, resp, nil
 }
 
+func (t ShippingMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ShippingMethodCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t ShippingMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/shipping-method", criteria)
 
@@ -62,6 +98,46 @@ func (t ShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type ShippingMethod struct {
+	TaxType string `json:"taxType,omitempty"`
+
+	TrackingUrl string `json:"trackingUrl,omitempty"`
+
+	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
+
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
+
+	MediaId string `json:"mediaId,omitempty"`
+
+	DeliveryTimeId string `json:"deliveryTimeId,omitempty"`
+
+	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	Media *Media `json:"media,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	DeliveryTime *DeliveryTime `json:"deliveryTime,omitempty"`
+
+	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
+
+	Prices []ShippingMethodPrice `json:"prices,omitempty"`
+
+	Tax *Tax `json:"tax,omitempty"`
+
+	Translations []ShippingMethodTranslation `json:"translations,omitempty"`
+
+	Tags []Tag `json:"tags,omitempty"`
+
 	Name string `json:"name,omitempty"`
 
 	Active bool `json:"active,omitempty"`
@@ -69,46 +145,6 @@ type ShippingMethod struct {
 	TaxId string `json:"taxId,omitempty"`
 
 	Description string `json:"description,omitempty"`
-
-	TaxType string `json:"taxType,omitempty"`
-
-	TrackingUrl string `json:"trackingUrl,omitempty"`
-
-	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	DeliveryTimeId string `json:"deliveryTimeId,omitempty"`
-
-	Translations []ShippingMethodTranslation `json:"translations,omitempty"`
-
-	Prices []ShippingMethodPrice `json:"prices,omitempty"`
-
-	Media *Media `json:"media,omitempty"`
-
-	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
-
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
-
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
-
-	MediaId string `json:"mediaId,omitempty"`
-
-	DeliveryTime *DeliveryTime `json:"deliveryTime,omitempty"`
-
-	Tags []Tag `json:"tags,omitempty"`
-
-	Tax *Tax `json:"tax,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
 }
 
 type ShippingMethodCollection struct {

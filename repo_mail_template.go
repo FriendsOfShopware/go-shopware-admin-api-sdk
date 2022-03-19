@@ -23,6 +23,42 @@ func (t MailTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*Mail
 	return uResp, resp, nil
 }
 
+func (t MailTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MailTemplateCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t MailTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/mail-template", criteria)
 
@@ -62,35 +98,35 @@ func (t MailTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type MailTemplate struct {
-	Description string `json:"description,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
-
-	MailTemplateType *MailTemplateType `json:"mailTemplateType,omitempty"`
-
-	Translated interface{} `json:"translated,omitempty"`
-
-	SystemDefault bool `json:"systemDefault,omitempty"`
-
-	ContentPlain string `json:"contentPlain,omitempty"`
-
-	SenderName string `json:"senderName,omitempty"`
-
-	Media []MailTemplateMedia `json:"media,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
 	Subject string `json:"subject,omitempty"`
 
 	ContentHtml string `json:"contentHtml,omitempty"`
 
-	Translations []MailTemplateTranslation `json:"translations,omitempty"`
+	ContentPlain string `json:"contentPlain,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
+
+	Translated interface{} `json:"translated,omitempty"`
+
+	SystemDefault bool `json:"systemDefault,omitempty"`
 
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
 	MailTemplateTypeId string `json:"mailTemplateTypeId,omitempty"`
+
+	Translations []MailTemplateTranslation `json:"translations,omitempty"`
+
+	Media []MailTemplateMedia `json:"media,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	SenderName string `json:"senderName,omitempty"`
+
+	Description string `json:"description,omitempty"`
+
+	MailTemplateType *MailTemplateType `json:"mailTemplateType,omitempty"`
 }
 
 type MailTemplateCollection struct {

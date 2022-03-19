@@ -23,6 +23,42 @@ func (t PluginTranslationRepository) Search(ctx ApiContext, criteria Criteria) (
 	return uResp, resp, nil
 }
 
+func (t PluginTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PluginTranslationCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t PluginTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/plugin-translation", criteria)
 
@@ -62,29 +98,29 @@ func (t PluginTranslationRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type PluginTranslation struct {
-	Description string `json:"description,omitempty"`
-
-	SupportLink string `json:"supportLink,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
 	PluginId string `json:"pluginId,omitempty"`
-
-	Plugin *Plugin `json:"plugin,omitempty"`
 
 	Language *Language `json:"language,omitempty"`
 
 	Label string `json:"label,omitempty"`
 
-	ManufacturerLink string `json:"manufacturerLink,omitempty"`
+	Description string `json:"description,omitempty"`
 
 	Changelog interface{} `json:"changelog,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
-
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
 	LanguageId string `json:"languageId,omitempty"`
+
+	Plugin *Plugin `json:"plugin,omitempty"`
+
+	ManufacturerLink string `json:"manufacturerLink,omitempty"`
+
+	SupportLink string `json:"supportLink,omitempty"`
 }
 
 type PluginTranslationCollection struct {

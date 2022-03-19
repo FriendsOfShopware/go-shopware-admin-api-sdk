@@ -23,6 +23,42 @@ func (t OrderLineItemRepository) Search(ctx ApiContext, criteria Criteria) (*Ord
 	return uResp, resp, nil
 }
 
+func (t OrderLineItemRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderLineItemCollection, *http.Response, error) {
+	if criteria.Limit == 0 {
+		criteria.Limit = 50
+	}
+
+	if criteria.Page == 0 {
+		criteria.Page = 1
+	}
+
+	c, resp, err := t.Search(ctx, criteria)
+
+	if err != nil {
+		return c, resp, err
+	}
+
+	for {
+		criteria.Page++
+
+		nextC, nextResp, nextErr := t.Search(ctx, criteria)
+
+		if nextErr != nil {
+			return c, nextResp, nextErr
+		}
+
+		if len(nextC.Data) == 0 {
+			break
+		}
+
+		c.Data = append(c.Data, nextC.Data...)
+	}
+
+	c.Total = int64(len(c.Data))
+
+	return c, resp, err
+}
+
 func (t OrderLineItemRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
 	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-line-item", criteria)
 
@@ -62,71 +98,71 @@ func (t OrderLineItemRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type OrderLineItem struct {
-	OrderVersionId string `json:"orderVersionId,omitempty"`
-
-	ParentId string `json:"parentId,omitempty"`
-
-	CoverId string `json:"coverId,omitempty"`
-
-	Good bool `json:"good,omitempty"`
-
-	OrderDeliveryPositions []OrderDeliveryPosition `json:"orderDeliveryPositions,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-
-	OrderId string `json:"orderId,omitempty"`
-
-	Quantity float64 `json:"quantity,omitempty"`
-
-	TotalPrice float64 `json:"totalPrice,omitempty"`
-
-	Type string `json:"type,omitempty"`
-
-	Position float64 `json:"position,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Id string `json:"id,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
 	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Identifier string `json:"identifier,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	Stackable bool `json:"stackable,omitempty"`
+	CoverId string `json:"coverId,omitempty"`
 
-	ParentVersionId string `json:"parentVersionId,omitempty"`
+	ReferencedId string `json:"referencedId,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Order *Order `json:"order,omitempty"`
+
+	OrderVersionId string `json:"orderVersionId,omitempty"`
+
+	Quantity float64 `json:"quantity,omitempty"`
+
+	Position float64 `json:"position,omitempty"`
+
+	Description string `json:"description,omitempty"`
 
 	Price interface{} `json:"price,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Children []OrderLineItem `json:"children,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
-
-	Cover *Media `json:"cover,omitempty"`
-
-	Removable bool `json:"removable,omitempty"`
-
-	CustomFields interface{} `json:"customFields,omitempty"`
+	OrderId string `json:"orderId,omitempty"`
 
 	PriceDefinition interface{} `json:"priceDefinition,omitempty"`
 
 	UnitPrice float64 `json:"unitPrice,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	OrderDeliveryPositions []OrderDeliveryPosition `json:"orderDeliveryPositions,omitempty"`
 
-	ReferencedId string `json:"referencedId,omitempty"`
+	ParentId string `json:"parentId,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
+	Cover *Media `json:"cover,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	Label string `json:"label,omitempty"`
+
+	Type string `json:"type,omitempty"`
+
+	CustomFields interface{} `json:"customFields,omitempty"`
 
 	Parent *OrderLineItem `json:"parent,omitempty"`
 
-	Children []OrderLineItem `json:"children,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+
+	Stackable bool `json:"stackable,omitempty"`
+
+	Id string `json:"id,omitempty"`
+
+	VersionId string `json:"versionId,omitempty"`
+
+	ParentVersionId string `json:"parentVersionId,omitempty"`
+
+	Identifier string `json:"identifier,omitempty"`
+
+	Payload interface{} `json:"payload,omitempty"`
+
+	Good bool `json:"good,omitempty"`
+
+	Removable bool `json:"removable,omitempty"`
+
+	TotalPrice float64 `json:"totalPrice,omitempty"`
 }
 
 type OrderLineItemCollection struct {
