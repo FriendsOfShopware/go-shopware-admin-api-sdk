@@ -115,22 +115,12 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 	return resp, err
 }
 
-func (c *Client) NewRequest(context ApiContext, method, urlStr string, body interface{}) (*http.Request, error) {
+func (c *Client) NewRawRequest(context ApiContext, method, urlStr string, body io.Reader) (*http.Request, error) {
 	if strings.HasSuffix(c.url, "/") {
 		return nil, fmt.Errorf("BaseURL must not have a trailing slash, but %q does not", c.url)
 	}
 
-	var buf io.ReadWriter
-	if body != nil {
-		buf = &bytes.Buffer{}
-		enc := json.NewEncoder(buf)
-		err := enc.Encode(body)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	req, err := http.NewRequestWithContext(context.Context, method, c.url+urlStr, buf)
+	req, err := http.NewRequestWithContext(context.Context, method, c.url+urlStr, body)
 	if err != nil {
 		return nil, err
 	}
@@ -142,11 +132,31 @@ func (c *Client) NewRequest(context ApiContext, method, urlStr string, body inte
 		req.Header.Set("sw-skip-trigger-flow", "1")
 	}
 
+	req.Header.Set("Accept", "application/json")
+
+	return req, nil
+}
+
+func (c *Client) NewRequest(context ApiContext, method, urlStr string, body interface{}) (*http.Request, error) {
+	var buf io.ReadWriter
+	if body != nil {
+		buf = &bytes.Buffer{}
+		enc := json.NewEncoder(buf)
+		err := enc.Encode(body)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	req, err := c.NewRawRequest(context, method, urlStr, buf)
+
+	if err != nil {
+		return nil, err
+	}
+
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
-
-	req.Header.Set("Accept", "application/json")
 
 	return req, nil
 }

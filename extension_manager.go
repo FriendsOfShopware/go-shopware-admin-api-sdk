@@ -98,7 +98,7 @@ func (e ExtensionManagerService) UploadExtension(ctx ApiContext, extensionZip io
 
 	var body io.Reader = &buf
 
-	r, err := e.Client.NewRequest(ctx, http.MethodPost, "/api/_action/extension/upload", body)
+	r, err := e.Client.NewRawRequest(ctx, http.MethodPost, "/api/_action/extension/upload", body)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "UploadExtension")
@@ -140,7 +140,7 @@ func (e ExtensionManagerService) UploadExtensionUpdateToCloud(ctx ApiContext, ex
 
 	var body io.Reader = &buf
 
-	r, err := e.Client.NewRequest(ctx, http.MethodPost, "/api/_action/extension/update-private", body)
+	r, err := e.Client.NewRawRequest(ctx, http.MethodPost, "/api/_action/extension/update-private", body)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "UploadExtension")
