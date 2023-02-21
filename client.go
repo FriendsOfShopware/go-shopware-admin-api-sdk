@@ -16,8 +16,9 @@ import (
 var errNonNilContext = errors.New("context must be non-nil")
 
 type Client struct {
-	url    string
-	client *http.Client
+	url         string
+	client      *http.Client
+	tokenSource oauth2.TokenSource
 
 	common              ClientService
 	Repository          Repository
@@ -57,12 +58,18 @@ func (c *Client) authorize(ctx context.Context, url string, credentials OAuthCre
 		ctx = context.WithValue(ctx, oauth2.HTTPClient, c.client)
 	}
 
-	tokenSrc, err := credentials.GetTokenSource(ctx, url+"/api/oauth/token")
+	var err error
+
+	c.tokenSource, err = credentials.GetTokenSource(ctx, url+"/api/oauth/token")
 	if err != nil {
 		return err
 	}
-	c.client = oauth2.NewClient(ctx, tokenSrc)
+	c.client = oauth2.NewClient(ctx, c.tokenSource)
 	return nil
+}
+
+func (c *Client) Token() oauth2.TokenSource {
+	return c.tokenSource
 }
 
 func (c *Client) newRequest(ctx context.Context, method, path string, body io.Reader) (*http.Request, error) {
