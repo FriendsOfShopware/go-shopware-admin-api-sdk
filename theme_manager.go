@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/pkg/errors"
 	"net/http"
 )
 
@@ -14,7 +13,7 @@ func (m ThemeManagerService) GetConfiguration(ctx ApiContext, themeId string) (*
 	r, err := m.Client.NewRequest(ctx, http.MethodGet, fmt.Sprintf("/api/_action/theme/%s/configuration", themeId), nil)
 
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "GetConfiguration")
+		return nil, nil, fmt.Errorf("cannot get theme configuration %w", err)
 	}
 
 	var result *ThemeConfiguration
@@ -43,7 +42,7 @@ func (m ThemeManagerService) UpdateConfiguration(ctx ApiContext, themeId string,
 	r, err := m.Client.NewRequest(ctx, http.MethodPatch, fmt.Sprintf("/api/_action/theme/%s", themeId), bytes.NewReader(content))
 
 	if err != nil {
-		return nil, errors.Wrap(err, "UpdateConfiguration")
+		return nil, fmt.Errorf("cannot update theme configuration %w", err)
 	}
 
 	return m.Client.BareDo(ctx.Context, r)

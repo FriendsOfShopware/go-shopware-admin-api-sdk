@@ -3,7 +3,6 @@ package go_shopware_admin_sdk
 import (
 	"bytes"
 	"fmt"
-	"github.com/pkg/errors"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -16,7 +15,7 @@ func (e ExtensionManagerService) Refresh(ctx ApiContext) (*http.Response, error)
 	r, err := e.Client.NewRequest(ctx, http.MethodPost, "/api/_action/extension/refresh", nil)
 
 	if err != nil {
-		return nil, errors.Wrap(err, "Refresh")
+		return nil, fmt.Errorf("cannot refresh extension manager %w", err)
 	}
 
 	return e.Client.BareDo(ctx.Context, r)
@@ -26,7 +25,7 @@ func (e ExtensionManagerService) ListAvailableExtensions(ctx ApiContext) (Extens
 	r, err := e.Client.NewRequest(ctx, http.MethodGet, "/api/_action/extension/installed", nil)
 
 	if err != nil {
-		return nil, nil, errors.Wrap(err, "ListAvailableExtensions")
+		return nil, nil, fmt.Errorf("cannot list installed extensions %w", err)
 	}
 
 	var extensions ExtensionList
@@ -43,7 +42,7 @@ func (e ExtensionManagerService) lifecycleUpdate(typeName string, ctx ApiContext
 	r, err := e.Client.NewRequest(ctx, httpMethod, httpUrl, nil)
 
 	if err != nil {
-		return nil, errors.Wrap(err, typeName)
+		return nil, fmt.Errorf("cannot %s %w", typeName, err)
 	}
 
 	return e.Client.BareDo(ctx.Context, r)
@@ -101,7 +100,7 @@ func (e ExtensionManagerService) UploadExtension(ctx ApiContext, extensionZip io
 	r, err := e.Client.NewRawRequest(ctx, http.MethodPost, "/api/_action/extension/upload", body)
 
 	if err != nil {
-		return nil, errors.Wrap(err, "UploadExtension")
+		return nil, fmt.Errorf("cannot upload extension %w", err)
 	}
 
 	r.Header.Set("Content-Type", parts.FormDataContentType())
@@ -143,7 +142,7 @@ func (e ExtensionManagerService) UploadExtensionUpdateToCloud(ctx ApiContext, ex
 	r, err := e.Client.NewRawRequest(ctx, http.MethodPost, "/api/_action/extension/update-private", body)
 
 	if err != nil {
-		return nil, errors.Wrap(err, "UploadExtension")
+		return nil, fmt.Errorf("cannot upload extension update to cloud %w", err)
 	}
 
 	r.Header.Set("Content-Type", parts.FormDataContentType())
