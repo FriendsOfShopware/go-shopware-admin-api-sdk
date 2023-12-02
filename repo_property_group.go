@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t PropertyGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type PropertyGroup struct {
+	Id string `json:"id,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Translations      []PropertyGroupTranslation  `json:"translations,omitempty"`
+	Filterable bool `json:"filterable,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	DisplayType      string  `json:"displayType,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Filterable      bool  `json:"filterable,omitempty"`
+	Translations []PropertyGroupTranslation `json:"translations,omitempty"`
 
-	VisibleOnProductDetailPage      bool  `json:"visibleOnProductDetailPage,omitempty"`
+	DisplayType string `json:"displayType,omitempty"`
 
-	SortingType      string  `json:"sortingType,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Options      []PropertyGroupOption  `json:"options,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	SortingType string `json:"sortingType,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	VisibleOnProductDetailPage bool `json:"visibleOnProductDetailPage,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
+	Options []PropertyGroupOption `json:"options,omitempty"`
 }
 
 type PropertyGroupCollection struct {

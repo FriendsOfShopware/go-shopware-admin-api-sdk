@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type ProductStreamMappingRepository ClientService
@@ -98,17 +97,15 @@ func (t ProductStreamMappingRepository) Delete(ctx ApiContext, ids []string) (*h
 }
 
 type ProductStreamMapping struct {
+	ProductId string `json:"productId,omitempty"`
 
-	ProductStreamId      string  `json:"productStreamId,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	ProductStreamId string `json:"productStreamId,omitempty"`
 
-	ProductStream      *ProductStream  `json:"productStream,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
-
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
-
+	ProductStream *ProductStream `json:"productStream,omitempty"`
 }
 
 type ProductStreamMappingCollection struct {

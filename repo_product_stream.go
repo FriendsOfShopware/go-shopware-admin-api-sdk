@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t ProductStreamRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ProductStream struct {
+	Translations []ProductStreamTranslation `json:"translations,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	ProductCrossSellings []ProductCrossSelling `json:"productCrossSellings,omitempty"`
 
-	Invalid      bool  `json:"invalid,omitempty"`
+	ProductExports []ProductExport `json:"productExports,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Categories []Category `json:"categories,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	ApiFilter interface{} `json:"apiFilter,omitempty"`
 
-	ProductCrossSellings      []ProductCrossSelling  `json:"productCrossSellings,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Filters []ProductStreamFilter `json:"filters,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Translations      []ProductStreamTranslation  `json:"translations,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Filters      []ProductStreamFilter  `json:"filters,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Categories      []Category  `json:"categories,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	ApiFilter      interface{}  `json:"apiFilter,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ProductExports      []ProductExport  `json:"productExports,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	Invalid bool `json:"invalid,omitempty"`
 }
 
 type ProductStreamCollection struct {

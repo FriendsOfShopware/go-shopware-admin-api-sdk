@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t DeliveryTimeTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type DeliveryTimeTranslation struct {
+	DeliveryTime *DeliveryTime `json:"deliveryTime,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	DeliveryTimeId      string  `json:"deliveryTimeId,omitempty"`
+	DeliveryTimeId string `json:"deliveryTimeId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	DeliveryTime      *DeliveryTime  `json:"deliveryTime,omitempty"`
-
+	LanguageId string `json:"languageId,omitempty"`
 }
 
 type DeliveryTimeTranslationCollection struct {

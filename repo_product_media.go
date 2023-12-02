@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t ProductMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type ProductMedia struct {
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	CoverProducts      []Product  `json:"coverProducts,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Media *Media `json:"media,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CoverProducts []Product `json:"coverProducts,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	Id string `json:"id,omitempty"`
 }
 
 type ProductMediaCollection struct {

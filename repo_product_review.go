@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,47 +99,45 @@ func (t ProductReviewRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ProductReview struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	CustomerId      string  `json:"customerId,omitempty"`
+	CustomerId string `json:"customerId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	ExternalUser      string  `json:"externalUser,omitempty"`
+	ExternalEmail string `json:"externalEmail,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
+	Title string `json:"title,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	Points float64 `json:"points,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	ExternalUser string `json:"externalUser,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	Content string `json:"content,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	ExternalEmail      string  `json:"externalEmail,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Content      string  `json:"content,omitempty"`
+	Status bool `json:"status,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Comment string `json:"comment,omitempty"`
 
-	Points      float64  `json:"points,omitempty"`
+	Customer *Customer `json:"customer,omitempty"`
 
-	Status      bool  `json:"status,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Comment      string  `json:"comment,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	Customer      *Customer  `json:"customer,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
+	CustomFields interface{} `json:"customFields,omitempty"`
 }
 
 type ProductReviewCollection struct {

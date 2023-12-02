@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t OrderTransactionRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type OrderTransaction struct {
+	PaymentMethodId string `json:"paymentMethodId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	OrderId      string  `json:"orderId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Order      *Order  `json:"order,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
+	OrderVersionId string `json:"orderVersionId,omitempty"`
 
-	Amount      interface{}  `json:"amount,omitempty"`
+	Order *Order `json:"order,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Captures []OrderTransactionCapture `json:"captures,omitempty"`
 
-	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
+	StateId string `json:"stateId,omitempty"`
 
-	Captures      []OrderTransactionCapture  `json:"captures,omitempty"`
+	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Amount interface{} `json:"amount,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
 
-	OrderVersionId      string  `json:"orderVersionId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	StateId      string  `json:"stateId,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	OrderId string `json:"orderId,omitempty"`
 }
 
 type OrderTransactionCollection struct {

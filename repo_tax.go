@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,27 +99,25 @@ func (t TaxRepository) Delete(ctx ApiContext, ids []string) (*http.Response, err
 }
 
 type Tax struct {
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	TaxRate float64 `json:"taxRate,omitempty"`
 
-	TaxRate      float64  `json:"taxRate,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Rules []TaxRule `json:"rules,omitempty"`
 
-	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Products []Product `json:"products,omitempty"`
 
-	Products      []Product  `json:"products,omitempty"`
+	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
 
-	Rules      []TaxRule  `json:"rules,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type TaxCollection struct {

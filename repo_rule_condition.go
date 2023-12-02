@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t RuleConditionRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type RuleCondition struct {
+	Value interface{} `json:"value,omitempty"`
 
-	Rule      *Rule  `json:"rule,omitempty"`
+	Rule *Rule `json:"rule,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Parent *RuleCondition `json:"parent,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	ScriptId      string  `json:"scriptId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ParentId      string  `json:"parentId,omitempty"`
+	Type string `json:"type,omitempty"`
 
-	Value      interface{}  `json:"value,omitempty"`
+	ScriptId string `json:"scriptId,omitempty"`
 
-	Parent      *RuleCondition  `json:"parent,omitempty"`
+	ParentId string `json:"parentId,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
+	RuleId string `json:"ruleId,omitempty"`
 
-	RuleId      string  `json:"ruleId,omitempty"`
+	Children []RuleCondition `json:"children,omitempty"`
 
-	Children      []RuleCondition  `json:"children,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppScriptCondition *AppScriptCondition `json:"appScriptCondition,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
-
-	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type RuleConditionCollection struct {

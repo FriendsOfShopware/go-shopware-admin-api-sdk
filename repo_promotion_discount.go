@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,39 +99,37 @@ func (t PromotionDiscountRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type PromotionDiscount struct {
+	SorterKey string `json:"sorterKey,omitempty"`
 
-	ApplierKey      string  `json:"applierKey,omitempty"`
+	PromotionDiscountPrices []PromotionDiscountPrices `json:"promotionDiscountPrices,omitempty"`
 
-	PickerKey      string  `json:"pickerKey,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Value      float64  `json:"value,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ConsiderAdvancedRules      bool  `json:"considerAdvancedRules,omitempty"`
+	PromotionId string `json:"promotionId,omitempty"`
 
-	MaxValue      float64  `json:"maxValue,omitempty"`
+	Scope string `json:"scope,omitempty"`
 
-	UsageKey      string  `json:"usageKey,omitempty"`
+	Type string `json:"type,omitempty"`
 
-	PromotionId      string  `json:"promotionId,omitempty"`
+	MaxValue float64 `json:"maxValue,omitempty"`
 
-	Scope      string  `json:"scope,omitempty"`
+	ApplierKey string `json:"applierKey,omitempty"`
 
-	PromotionDiscountPrices      []PromotionDiscountPrices  `json:"promotionDiscountPrices,omitempty"`
+	Promotion *Promotion `json:"promotion,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	DiscountRules []Rule `json:"discountRules,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Value float64 `json:"value,omitempty"`
 
-	DiscountRules      []Rule  `json:"discountRules,omitempty"`
+	ConsiderAdvancedRules bool `json:"considerAdvancedRules,omitempty"`
 
-	Promotion      *Promotion  `json:"promotion,omitempty"`
+	PickerKey string `json:"pickerKey,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
-
-	SorterKey      string  `json:"sorterKey,omitempty"`
-
+	UsageKey string `json:"usageKey,omitempty"`
 }
 
 type PromotionDiscountCollection struct {

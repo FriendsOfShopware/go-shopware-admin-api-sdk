@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t DocumentTypeRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type DocumentType struct {
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Translations []DocumentTypeTranslation `json:"translations,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Documents []Document `json:"documents,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	DocumentBaseConfigs []DocumentBaseConfig `json:"documentBaseConfigs,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Translations      []DocumentTypeTranslation  `json:"translations,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
+	TechnicalName string `json:"technicalName,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	DocumentBaseConfigSalesChannels []DocumentBaseConfigSalesChannel `json:"documentBaseConfigSalesChannels,omitempty"`
 
-	TechnicalName      string  `json:"technicalName,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Documents      []Document  `json:"documents,omitempty"`
-
-	DocumentBaseConfigSalesChannels      []DocumentBaseConfigSalesChannel  `json:"documentBaseConfigSalesChannels,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type DocumentTypeCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,47 +99,45 @@ func (t CmsPageRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type CmsPage struct {
+	Config interface{} `json:"config,omitempty"`
 
-	CssClass      string  `json:"cssClass,omitempty"`
+	Translations []CmsPageTranslation `json:"translations,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Locked      bool  `json:"locked,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	PreviewMediaId      string  `json:"previewMediaId,omitempty"`
+	CssClass string `json:"cssClass,omitempty"`
 
-	Translations      []CmsPageTranslation  `json:"translations,omitempty"`
+	Type string `json:"type,omitempty"`
 
-	PreviewMedia      *Media  `json:"previewMedia,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Categories      []Category  `json:"categories,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Products      []Product  `json:"products,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
+	PreviewMedia *Media `json:"previewMedia,omitempty"`
 
-	Entity      string  `json:"entity,omitempty"`
+	Categories []Category `json:"categories,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	LandingPages []LandingPage `json:"landingPages,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	HomeSalesChannels []SalesChannel `json:"homeSalesChannels,omitempty"`
 
-	LandingPages      []LandingPage  `json:"landingPages,omitempty"`
+	Entity string `json:"entity,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	PreviewMediaId string `json:"previewMediaId,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Products []Product `json:"products,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Sections      []CmsSection  `json:"sections,omitempty"`
+	Locked bool `json:"locked,omitempty"`
 
-	HomeSalesChannels      []SalesChannel  `json:"homeSalesChannels,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
+	Sections []CmsSection `json:"sections,omitempty"`
 }
 
 type CmsPageCollection struct {

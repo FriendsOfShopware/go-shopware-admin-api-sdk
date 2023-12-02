@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,53 +99,51 @@ func (t AppFlowActionRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type AppFlowAction struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	Badge string `json:"badge,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	IconRaw interface{} `json:"iconRaw,omitempty"`
 
-	Badge      string  `json:"badge,omitempty"`
+	Url string `json:"url,omitempty"`
 
-	Parameters      interface{}  `json:"parameters,omitempty"`
+	Delayable bool `json:"delayable,omitempty"`
 
-	Headers      interface{}  `json:"headers,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	IconRaw      interface{}  `json:"iconRaw,omitempty"`
+	SwIcon string `json:"swIcon,omitempty"`
 
-	Headline      string  `json:"headline,omitempty"`
+	Headline string `json:"headline,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Translations []AppFlowActionTranslation `json:"translations,omitempty"`
 
-	FlowSequences      []FlowSequence  `json:"flowSequences,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Headers interface{} `json:"headers,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Requirements interface{} `json:"requirements,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	Icon string `json:"icon,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	Parameters interface{} `json:"parameters,omitempty"`
 
-	Icon      string  `json:"icon,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	SwIcon      string  `json:"swIcon,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	Delayable      bool  `json:"delayable,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	Requirements      interface{}  `json:"requirements,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Translations      []AppFlowActionTranslation  `json:"translations,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
+	FlowSequences []FlowSequence `json:"flowSequences,omitempty"`
 }
 
 type AppFlowActionCollection struct {

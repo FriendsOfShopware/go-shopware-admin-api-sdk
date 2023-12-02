@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t ShippingMethodPriceRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ShippingMethodPrice struct {
+	Calculation float64 `json:"calculation,omitempty"`
 
-	Rule      *Rule  `json:"rule,omitempty"`
+	QuantityEnd float64 `json:"quantityEnd,omitempty"`
 
-	CalculationRule      *Rule  `json:"calculationRule,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	RuleId      string  `json:"ruleId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+	RuleId string `json:"ruleId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CalculationRuleId      string  `json:"calculationRuleId,omitempty"`
+	ShippingMethodId string `json:"shippingMethodId,omitempty"`
 
-	QuantityStart      float64  `json:"quantityStart,omitempty"`
+	QuantityStart float64 `json:"quantityStart,omitempty"`
 
-	CurrencyPrice      interface{}  `json:"currencyPrice,omitempty"`
+	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CalculationRule *Rule `json:"calculationRule,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CalculationRuleId string `json:"calculationRuleId,omitempty"`
 
-	Calculation      float64  `json:"calculation,omitempty"`
+	CurrencyPrice interface{} `json:"currencyPrice,omitempty"`
 
-	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
+	Rule *Rule `json:"rule,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	QuantityEnd      float64  `json:"quantityEnd,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ShippingMethodPriceCollection struct {

@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type MediaTagRepository ClientService
@@ -98,15 +97,13 @@ func (t MediaTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 }
 
 type MediaTag struct {
+	Media *Media `json:"media,omitempty"`
 
-	Tag      *Tag  `json:"tag,omitempty"`
+	Tag *Tag `json:"tag,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
-
-	Media      *Media  `json:"media,omitempty"`
-
+	TagId string `json:"tagId,omitempty"`
 }
 
 type MediaTagCollection struct {

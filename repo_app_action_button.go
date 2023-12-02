@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t AppActionButtonRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type AppActionButton struct {
+	Entity string `json:"entity,omitempty"`
 
-	View      string  `json:"view,omitempty"`
+	Translations []AppActionButtonTranslation `json:"translations,omitempty"`
 
-	Translations      []AppActionButtonTranslation  `json:"translations,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	Action string `json:"action,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	Entity      string  `json:"entity,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	View string `json:"view,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Url string `json:"url,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
-
-	Action      string  `json:"action,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type AppActionButtonCollection struct {

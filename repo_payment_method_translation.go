@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,27 +99,25 @@ func (t PaymentMethodTranslationRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type PaymentMethodTranslation struct {
+	LanguageId string `json:"languageId,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
+	PaymentMethodId string `json:"paymentMethodId,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	DistinguishableName      string  `json:"distinguishableName,omitempty"`
+	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	DistinguishableName string `json:"distinguishableName,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type PaymentMethodTranslationCollection struct {

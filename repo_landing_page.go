@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,47 +99,45 @@ func (t LandingPageRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type LandingPage struct {
+	MetaTitle string `json:"metaTitle,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	MetaDescription string `json:"metaDescription,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Keywords string `json:"keywords,omitempty"`
 
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	CmsPageId string `json:"cmsPageId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CmsPageId      string  `json:"cmsPageId,omitempty"`
+	CmsPage *CmsPage `json:"cmsPage,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
-	MetaDescription      string  `json:"metaDescription,omitempty"`
+	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
 
-	Tags      []Tag  `json:"tags,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Translations      []LandingPageTranslation  `json:"translations,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
+	Url string `json:"url,omitempty"`
 
-	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
+	Translations []LandingPageTranslation `json:"translations,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	Tags []Tag `json:"tags,omitempty"`
 
-	Keywords      string  `json:"keywords,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
+	SlotConfig interface{} `json:"slotConfig,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	MetaTitle      string  `json:"metaTitle,omitempty"`
-
+	VersionId string `json:"versionId,omitempty"`
 }
 
 type LandingPageCollection struct {

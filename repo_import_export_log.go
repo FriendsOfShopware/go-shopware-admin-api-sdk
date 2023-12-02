@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,45 +99,43 @@ func (t ImportExportLogRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type ImportExportLog struct {
+	FailedImportLog *ImportExportLog `json:"failedImportLog,omitempty"`
 
-	Result      interface{}  `json:"result,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	User      *User  `json:"user,omitempty"`
+	State string `json:"state,omitempty"`
 
-	Profile      *ImportExportProfile  `json:"profile,omitempty"`
+	FileId string `json:"fileId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	InvalidRecordsLogId string `json:"invalidRecordsLogId,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Username string `json:"username,omitempty"`
 
-	ProfileId      string  `json:"profileId,omitempty"`
+	Result interface{} `json:"result,omitempty"`
 
-	File      *ImportExportFile  `json:"file,omitempty"`
+	Profile *ImportExportProfile `json:"profile,omitempty"`
 
-	InvalidRecordsLog      *ImportExportLog  `json:"invalidRecordsLog,omitempty"`
+	Records float64 `json:"records,omitempty"`
 
-	Activity      string  `json:"activity,omitempty"`
+	UserId string `json:"userId,omitempty"`
 
-	UserId      string  `json:"userId,omitempty"`
+	ProfileId string `json:"profileId,omitempty"`
 
-	FileId      string  `json:"fileId,omitempty"`
+	ProfileName string `json:"profileName,omitempty"`
 
-	FailedImportLog      *ImportExportLog  `json:"failedImportLog,omitempty"`
+	User *User `json:"user,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Activity string `json:"activity,omitempty"`
 
-	State      string  `json:"state,omitempty"`
+	InvalidRecordsLog *ImportExportLog `json:"invalidRecordsLog,omitempty"`
 
-	Records      float64  `json:"records,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	InvalidRecordsLogId      string  `json:"invalidRecordsLogId,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	Username      string  `json:"username,omitempty"`
+	File *ImportExportFile `json:"file,omitempty"`
 
-	ProfileName      string  `json:"profileName,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type ImportExportLogCollection struct {

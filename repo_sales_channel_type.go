@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t SalesChannelTypeRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type SalesChannelType struct {
+	ScreenshotUrls interface{} `json:"screenshotUrls,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Manufacturer string `json:"manufacturer,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Translations []SalesChannelTypeTranslation `json:"translations,omitempty"`
 
-	CoverUrl      string  `json:"coverUrl,omitempty"`
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
-	IconName      string  `json:"iconName,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Manufacturer      string  `json:"manufacturer,omitempty"`
+	DescriptionLong string `json:"descriptionLong,omitempty"`
 
-	DescriptionLong      string  `json:"descriptionLong,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Translations      []SalesChannelTypeTranslation  `json:"translations,omitempty"`
+	CoverUrl string `json:"coverUrl,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	IconName string `json:"iconName,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	ScreenshotUrls      interface{}  `json:"screenshotUrls,omitempty"`
-
+	Description string `json:"description,omitempty"`
 }
 
 type SalesChannelTypeCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,43 +99,41 @@ func (t ProductCrossSellingRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductCrossSelling struct {
+	Type string `json:"type,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ProductStream *ProductStream `json:"productStream,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	SortDirection string `json:"sortDirection,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Limit float64 `json:"limit,omitempty"`
 
-	SortBy      string  `json:"sortBy,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Limit      float64  `json:"limit,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	SortBy string `json:"sortBy,omitempty"`
 
-	ProductStream      *ProductStream  `json:"productStream,omitempty"`
+	Translations []ProductCrossSellingTranslation `json:"translations,omitempty"`
 
-	ProductStreamId      string  `json:"productStreamId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	AssignedProducts      []ProductCrossSellingAssignedProducts  `json:"assignedProducts,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	SortDirection      string  `json:"sortDirection,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
+	ProductStreamId string `json:"productStreamId,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
-
-	Translations      []ProductCrossSellingTranslation  `json:"translations,omitempty"`
-
+	AssignedProducts []ProductCrossSellingAssignedProducts `json:"assignedProducts,omitempty"`
 }
 
 type ProductCrossSellingCollection struct {

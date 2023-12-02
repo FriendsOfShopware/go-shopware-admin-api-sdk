@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t OrderLineItemDownloadRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type OrderLineItemDownload struct {
+	Id string `json:"id,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	OrderLineItem *OrderLineItem `json:"orderLineItem,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	OrderLineItemId string `json:"orderLineItemId,omitempty"`
 
-	AccessGranted      bool  `json:"accessGranted,omitempty"`
+	OrderLineItemVersionId string `json:"orderLineItemVersionId,omitempty"`
 
-	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	OrderLineItemId      string  `json:"orderLineItemId,omitempty"`
+	AccessGranted bool `json:"accessGranted,omitempty"`
 
-	OrderLineItemVersionId      string  `json:"orderLineItemVersionId,omitempty"`
+	Media *Media `json:"media,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type OrderLineItemDownloadCollection struct {

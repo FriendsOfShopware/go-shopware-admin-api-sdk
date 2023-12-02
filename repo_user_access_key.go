@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t UserAccessKeyRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type UserAccessKey struct {
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	AccessKey string `json:"accessKey,omitempty"`
 
-	AccessKey      string  `json:"accessKey,omitempty"`
+	SecretAccessKey interface{} `json:"secretAccessKey,omitempty"`
 
-	SecretAccessKey      interface{}  `json:"secretAccessKey,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	LastUsageAt      time.Time  `json:"lastUsageAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	UserId string `json:"userId,omitempty"`
 
-	User      *User  `json:"user,omitempty"`
+	LastUsageAt time.Time `json:"lastUsageAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	User *User `json:"user,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	UserId      string  `json:"userId,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type UserAccessKeyCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t NumberRangeTypeRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type NumberRangeType struct {
+	TypeName string `json:"typeName,omitempty"`
 
-	Translations      []NumberRangeTypeTranslation  `json:"translations,omitempty"`
+	Translations []NumberRangeTypeTranslation `json:"translations,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	TypeName      string  `json:"typeName,omitempty"`
+	TechnicalName string `json:"technicalName,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	NumberRanges []NumberRange `json:"numberRanges,omitempty"`
 
-	NumberRanges      []NumberRange  `json:"numberRanges,omitempty"`
+	NumberRangeSalesChannels []NumberRangeSalesChannel `json:"numberRangeSalesChannels,omitempty"`
 
-	NumberRangeSalesChannels      []NumberRangeSalesChannel  `json:"numberRangeSalesChannels,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	TechnicalName      string  `json:"technicalName,omitempty"`
+	Global bool `json:"global,omitempty"`
 
-	Global      bool  `json:"global,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	CustomFields interface{} `json:"customFields,omitempty"`
 }
 
 type NumberRangeTypeCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,33 +99,31 @@ func (t ProductPriceRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type ProductPrice struct {
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Price interface{} `json:"price,omitempty"`
 
-	RuleId      string  `json:"ruleId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	QuantityStart      float64  `json:"quantityStart,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	QuantityEnd float64 `json:"quantityEnd,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	RuleId string `json:"ruleId,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	Rule *Rule `json:"rule,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	Rule      *Rule  `json:"rule,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	QuantityStart float64 `json:"quantityStart,omitempty"`
 
-	Price      interface{}  `json:"price,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	QuantityEnd      float64  `json:"quantityEnd,omitempty"`
-
-	Product      *Product  `json:"product,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ProductPriceCollection struct {

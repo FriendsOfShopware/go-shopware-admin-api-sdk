@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,105 +99,103 @@ func (t MediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, e
 }
 
 type Media struct {
+	CmsPages []CmsPage `json:"cmsPages,omitempty"`
 
-	Path      string  `json:"path,omitempty"`
+	ProductMedia []ProductMedia `json:"productMedia,omitempty"`
 
-	Thumbnails      []MediaThumbnail  `json:"thumbnails,omitempty"`
+	AvatarUsers []User `json:"avatarUsers,omitempty"`
 
-	CmsPages      []CmsPage  `json:"cmsPages,omitempty"`
+	CmsSections []CmsSection `json:"cmsSections,omitempty"`
 
-	Alt      string  `json:"alt,omitempty"`
+	Url string `json:"url,omitempty"`
 
-	User      *User  `json:"user,omitempty"`
+	ThemeMedia []Theme `json:"themeMedia,omitempty"`
 
-	UserId      string  `json:"userId,omitempty"`
+	MediaType interface{} `json:"mediaType,omitempty"`
 
-	MetaData      interface{}  `json:"metaData,omitempty"`
+	Tags []Tag `json:"tags,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	MediaTypeRaw      interface{}  `json:"mediaTypeRaw,omitempty"`
+	UserId string `json:"userId,omitempty"`
 
-	Categories      []Category  `json:"categories,omitempty"`
+	ProductConfiguratorSettings []ProductConfiguratorSetting `json:"productConfiguratorSettings,omitempty"`
 
-	MediaFolder      *MediaFolder  `json:"mediaFolder,omitempty"`
+	OrderLineItemDownloads []OrderLineItemDownload `json:"orderLineItemDownloads,omitempty"`
 
-	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
+	AppShippingMethods []AppShippingMethod `json:"appShippingMethods,omitempty"`
 
-	Documents      []Document  `json:"documents,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	ProductManufacturers      []ProductManufacturer  `json:"productManufacturers,omitempty"`
+	HasFile bool `json:"hasFile,omitempty"`
 
-	ProductMedia      []ProductMedia  `json:"productMedia,omitempty"`
+	Thumbnails []MediaThumbnail `json:"thumbnails,omitempty"`
 
-	MediaFolderId      string  `json:"mediaFolderId,omitempty"`
+	Themes []Theme `json:"themes,omitempty"`
 
-	Private      bool  `json:"private,omitempty"`
+	MediaFolderId string `json:"mediaFolderId,omitempty"`
 
-	Translations      []MediaTranslation  `json:"translations,omitempty"`
+	MediaFolder *MediaFolder `json:"mediaFolder,omitempty"`
 
-	ProductDownloads      []ProductDownload  `json:"productDownloads,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
+	MediaTypeRaw interface{} `json:"mediaTypeRaw,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Translations []MediaTranslation `json:"translations,omitempty"`
 
-	Themes      []Theme  `json:"themes,omitempty"`
+	ProductDownloads []ProductDownload `json:"productDownloads,omitempty"`
 
-	UploadedAt      time.Time  `json:"uploadedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
+	FileExtension string `json:"fileExtension,omitempty"`
 
-	ThumbnailsRo      interface{}  `json:"thumbnailsRo,omitempty"`
+	UploadedAt time.Time `json:"uploadedAt,omitempty"`
 
-	ProductConfiguratorSettings      []ProductConfiguratorSetting  `json:"productConfiguratorSettings,omitempty"`
+	DocumentBaseConfigs []DocumentBaseConfig `json:"documentBaseConfigs,omitempty"`
 
-	ThemeMedia      []Theme  `json:"themeMedia,omitempty"`
+	ThumbnailsRo interface{} `json:"thumbnailsRo,omitempty"`
 
-	MediaType      interface{}  `json:"mediaType,omitempty"`
+	MimeType string `json:"mimeType,omitempty"`
 
-	Tags      []Tag  `json:"tags,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Title string `json:"title,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	AppPaymentMethods []AppPaymentMethod `json:"appPaymentMethods,omitempty"`
 
-	HasFile      bool  `json:"hasFile,omitempty"`
+	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
 
-	OrderLineItemDownloads      []OrderLineItemDownload  `json:"orderLineItemDownloads,omitempty"`
+	OrderLineItems []OrderLineItem `json:"orderLineItems,omitempty"`
 
-	CmsSections      []CmsSection  `json:"cmsSections,omitempty"`
+	CmsBlocks []CmsBlock `json:"cmsBlocks,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	FileName string `json:"fileName,omitempty"`
 
-	FileExtension      string  `json:"fileExtension,omitempty"`
+	Alt string `json:"alt,omitempty"`
 
-	FileName      string  `json:"fileName,omitempty"`
+	Private bool `json:"private,omitempty"`
 
-	MailTemplateMedia      []MailTemplateMedia  `json:"mailTemplateMedia,omitempty"`
+	Categories []Category `json:"categories,omitempty"`
 
-	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
+	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	MetaData interface{} `json:"metaData,omitempty"`
 
-	AvatarUsers      []User  `json:"avatarUsers,omitempty"`
+	ProductManufacturers []ProductManufacturer `json:"productManufacturers,omitempty"`
 
-	PropertyGroupOptions      []PropertyGroupOption  `json:"propertyGroupOptions,omitempty"`
+	MailTemplateMedia []MailTemplateMedia `json:"mailTemplateMedia,omitempty"`
 
-	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+	Documents []Document `json:"documents,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	MimeType      string  `json:"mimeType,omitempty"`
+	FileSize float64 `json:"fileSize,omitempty"`
 
-	FileSize      float64  `json:"fileSize,omitempty"`
+	Path string `json:"path,omitempty"`
 
-	CmsBlocks      []CmsBlock  `json:"cmsBlocks,omitempty"`
+	User *User `json:"user,omitempty"`
 
-	AppPaymentMethods      []AppPaymentMethod  `json:"appPaymentMethods,omitempty"`
-
-	AppShippingMethods      []AppShippingMethod  `json:"appShippingMethods,omitempty"`
-
+	PropertyGroupOptions []PropertyGroupOption `json:"propertyGroupOptions,omitempty"`
 }
 
 type MediaCollection struct {

@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type PromotionOrderRuleRepository ClientService
@@ -98,15 +97,13 @@ func (t PromotionOrderRuleRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type PromotionOrderRule struct {
+	PromotionId string `json:"promotionId,omitempty"`
 
-	PromotionId      string  `json:"promotionId,omitempty"`
+	RuleId string `json:"ruleId,omitempty"`
 
-	RuleId      string  `json:"ruleId,omitempty"`
+	Promotion *Promotion `json:"promotion,omitempty"`
 
-	Promotion      *Promotion  `json:"promotion,omitempty"`
-
-	Rule      *Rule  `json:"rule,omitempty"`
-
+	Rule *Rule `json:"rule,omitempty"`
 }
 
 type PromotionOrderRuleCollection struct {

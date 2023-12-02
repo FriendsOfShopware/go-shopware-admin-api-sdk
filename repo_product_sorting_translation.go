@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,21 +99,19 @@ func (t ProductSortingTranslationRepository) Delete(ctx ApiContext, ids []string
 }
 
 type ProductSortingTranslation struct {
+	Label string `json:"label,omitempty"`
 
-	ProductSortingId      string  `json:"productSortingId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ProductSorting      *ProductSorting  `json:"productSorting,omitempty"`
+	ProductSortingId string `json:"productSortingId,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	ProductSorting *ProductSorting `json:"productSorting,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	Language *Language `json:"language,omitempty"`
 }
 
 type ProductSortingTranslationCollection struct {

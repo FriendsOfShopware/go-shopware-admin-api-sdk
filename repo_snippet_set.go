@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t SnippetSetRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type SnippetSet struct {
+	BaseFile string `json:"baseFile,omitempty"`
 
-	Snippets      []Snippet  `json:"snippets,omitempty"`
+	Iso string `json:"iso,omitempty"`
 
-	SalesChannelDomains      []SalesChannelDomain  `json:"salesChannelDomains,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	BaseFile      string  `json:"baseFile,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Snippets []Snippet `json:"snippets,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	SalesChannelDomains []SalesChannelDomain `json:"salesChannelDomains,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	Iso      string  `json:"iso,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type SnippetSetCollection struct {

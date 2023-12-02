@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,39 +99,37 @@ func (t SalesChannelDomainRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type SalesChannelDomain struct {
+	LanguageId string `json:"languageId,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	SalesChannelDefaultHreflang *SalesChannel `json:"salesChannelDefaultHreflang,omitempty"`
 
-	CurrencyId      string  `json:"currencyId,omitempty"`
+	HreflangUseOnlyLocale bool `json:"hreflangUseOnlyLocale,omitempty"`
 
-	Currency      *Currency  `json:"currency,omitempty"`
+	Currency *Currency `json:"currency,omitempty"`
 
-	HreflangUseOnlyLocale      bool  `json:"hreflangUseOnlyLocale,omitempty"`
+	ProductExports []ProductExport `json:"productExports,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	Url string `json:"url,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	CurrencyId string `json:"currencyId,omitempty"`
 
-	SalesChannelDefaultHreflang      *SalesChannel  `json:"salesChannelDefaultHreflang,omitempty"`
+	SnippetSetId string `json:"snippetSetId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	SnippetSetId      string  `json:"snippetSetId,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	ProductExports      []ProductExport  `json:"productExports,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	SnippetSet *SnippetSet `json:"snippetSet,omitempty"`
 
-	SnippetSet      *SnippetSet  `json:"snippetSet,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type SalesChannelDomainCollection struct {

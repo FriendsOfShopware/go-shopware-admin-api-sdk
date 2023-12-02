@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,41 +99,39 @@ func (t ImportExportProfileRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ImportExportProfile struct {
+	Type string `json:"type,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Enclosure string `json:"enclosure,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	SystemDefault      bool  `json:"systemDefault,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	Enclosure      string  `json:"enclosure,omitempty"`
+	SystemDefault bool `json:"systemDefault,omitempty"`
 
-	UpdateBy      interface{}  `json:"updateBy,omitempty"`
+	FileType string `json:"fileType,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Mapping interface{} `json:"mapping,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	ImportExportLogs []ImportExportLog `json:"importExportLogs,omitempty"`
 
-	ImportExportLogs      []ImportExportLog  `json:"importExportLogs,omitempty"`
+	Translations []ImportExportProfileTranslation `json:"translations,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	SourceEntity      string  `json:"sourceEntity,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Delimiter      string  `json:"delimiter,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Mapping      interface{}  `json:"mapping,omitempty"`
+	SourceEntity string `json:"sourceEntity,omitempty"`
 
-	Translations      []ImportExportProfileTranslation  `json:"translations,omitempty"`
+	Delimiter string `json:"delimiter,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdateBy interface{} `json:"updateBy,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	FileType      string  `json:"fileType,omitempty"`
-
+	Config interface{} `json:"config,omitempty"`
 }
 
 type ImportExportProfileCollection struct {

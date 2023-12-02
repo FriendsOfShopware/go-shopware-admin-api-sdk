@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t PromotionTranslationRepository) Delete(ctx ApiContext, ids []string) (*h
 }
 
 type PromotionTranslation struct {
+	LanguageId string `json:"languageId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Promotion *Promotion `json:"promotion,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	PromotionId      string  `json:"promotionId,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Promotion      *Promotion  `json:"promotion,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
+	PromotionId string `json:"promotionId,omitempty"`
 }
 
 type PromotionTranslationCollection struct {

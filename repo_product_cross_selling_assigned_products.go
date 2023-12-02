@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t ProductCrossSellingAssignedProductsRepository) Delete(ctx ApiContext, id
 }
 
 type ProductCrossSellingAssignedProducts struct {
+	Id string `json:"id,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	CrossSellingId string `json:"crossSellingId,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	CrossSelling      *ProductCrossSelling  `json:"crossSelling,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CrossSelling *ProductCrossSelling `json:"crossSelling,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	CrossSellingId      string  `json:"crossSellingId,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type ProductCrossSellingAssignedProductsCollection struct {

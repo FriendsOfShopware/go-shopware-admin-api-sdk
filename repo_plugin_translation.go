@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t PluginTranslationRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type PluginTranslation struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	ManufacturerLink      string  `json:"manufacturerLink,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	SupportLink      string  `json:"supportLink,omitempty"`
+	ManufacturerLink string `json:"manufacturerLink,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	SupportLink string `json:"supportLink,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Changelog interface{} `json:"changelog,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Plugin      *Plugin  `json:"plugin,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	PluginId string `json:"pluginId,omitempty"`
 
-	Changelog      interface{}  `json:"changelog,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	PluginId      string  `json:"pluginId,omitempty"`
-
+	Plugin *Plugin `json:"plugin,omitempty"`
 }
 
 type PluginTranslationCollection struct {

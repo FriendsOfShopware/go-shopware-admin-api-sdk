@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,83 +99,81 @@ func (t OrderLineItemRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type OrderLineItem struct {
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Stackable      bool  `json:"stackable,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	OrderDeliveryPositions      []OrderDeliveryPosition  `json:"orderDeliveryPositions,omitempty"`
+	UnitPrice float64 `json:"unitPrice,omitempty"`
 
-	PromotionId      string  `json:"promotionId,omitempty"`
+	OrderDeliveryPositions []OrderDeliveryPosition `json:"orderDeliveryPositions,omitempty"`
 
-	CoverId      string  `json:"coverId,omitempty"`
+	PriceDefinition interface{} `json:"priceDefinition,omitempty"`
 
-	Removable      bool  `json:"removable,omitempty"`
+	OrderVersionId string `json:"orderVersionId,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	Payload interface{} `json:"payload,omitempty"`
 
-	Payload      interface{}  `json:"payload,omitempty"`
+	Good bool `json:"good,omitempty"`
 
-	PriceDefinition      interface{}  `json:"priceDefinition,omitempty"`
+	ParentVersionId string `json:"parentVersionId,omitempty"`
 
-	Order      *Order  `json:"order,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Type string `json:"type,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	Identifier      string  `json:"identifier,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Quantity      float64  `json:"quantity,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	PromotionId string `json:"promotionId,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	Stackable bool `json:"stackable,omitempty"`
 
-	Children      []OrderLineItem  `json:"children,omitempty"`
+	States interface{} `json:"states,omitempty"`
 
-	OrderId      string  `json:"orderId,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Cover      *Media  `json:"cover,omitempty"`
+	OrderId string `json:"orderId,omitempty"`
 
-	Parent      *OrderLineItem  `json:"parent,omitempty"`
+	ParentId string `json:"parentId,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	CoverId string `json:"coverId,omitempty"`
 
-	Promotion      *Promotion  `json:"promotion,omitempty"`
+	OrderTransactionCaptureRefundPositions []OrderTransactionCaptureRefundPosition `json:"orderTransactionCaptureRefundPositions,omitempty"`
 
-	Downloads      []OrderLineItemDownload  `json:"downloads,omitempty"`
+	Children []OrderLineItem `json:"children,omitempty"`
 
-	States      interface{}  `json:"states,omitempty"`
+	Cover *Media `json:"cover,omitempty"`
 
-	TotalPrice      float64  `json:"totalPrice,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	ReferencedId string `json:"referencedId,omitempty"`
 
-	ParentVersionId      string  `json:"parentVersionId,omitempty"`
+	Promotion *Promotion `json:"promotion,omitempty"`
 
-	Good      bool  `json:"good,omitempty"`
+	Downloads []OrderLineItemDownload `json:"downloads,omitempty"`
 
-	Price      interface{}  `json:"price,omitempty"`
+	Parent *OrderLineItem `json:"parent,omitempty"`
 
-	UnitPrice      float64  `json:"unitPrice,omitempty"`
+	Quantity float64 `json:"quantity,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Removable bool `json:"removable,omitempty"`
 
-	ParentId      string  `json:"parentId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	ReferencedId      string  `json:"referencedId,omitempty"`
+	Price interface{} `json:"price,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	Order *Order `json:"order,omitempty"`
 
-	OrderTransactionCaptureRefundPositions      []OrderTransactionCaptureRefundPosition  `json:"orderTransactionCaptureRefundPositions,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	OrderVersionId      string  `json:"orderVersionId,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
+	TotalPrice float64 `json:"totalPrice,omitempty"`
 }
 
 type OrderLineItemCollection struct {

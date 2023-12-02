@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,61 +99,59 @@ func (t ShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type ShippingMethod struct {
+	Description string `json:"description,omitempty"`
 
-	DeliveryTimeId      string  `json:"deliveryTimeId,omitempty"`
+	Media *Media `json:"media,omitempty"`
 
-	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
+	TechnicalName string `json:"technicalName,omitempty"`
 
-	Prices      []ShippingMethodPrice  `json:"prices,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Tax      *Tax  `json:"tax,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Tags []Tag `json:"tags,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
 
-	Tags      []Tag  `json:"tags,omitempty"`
+	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
 
-	TechnicalName      string  `json:"technicalName,omitempty"`
+	Prices []ShippingMethodPrice `json:"prices,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	AppShippingMethod *AppShippingMethod `json:"appShippingMethod,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	TaxType      string  `json:"taxType,omitempty"`
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
+	DeliveryTimeId string `json:"deliveryTimeId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	TrackingUrl string `json:"trackingUrl,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Tax *Tax `json:"tax,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	TaxId      string  `json:"taxId,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	DeliveryTime      *DeliveryTime  `json:"deliveryTime,omitempty"`
+	TaxType string `json:"taxType,omitempty"`
 
-	AppShippingMethod      *AppShippingMethod  `json:"appShippingMethod,omitempty"`
+	DeliveryTime *DeliveryTime `json:"deliveryTime,omitempty"`
 
-	TrackingUrl      string  `json:"trackingUrl,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Translations      []ShippingMethodTranslation  `json:"translations,omitempty"`
+	TaxId string `json:"taxId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Translations []ShippingMethodTranslation `json:"translations,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
-
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
-
+	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
 }
 
 type ShippingMethodCollection struct {

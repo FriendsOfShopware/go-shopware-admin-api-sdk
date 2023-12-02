@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t FlowRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type Flow struct {
+	Invalid bool `json:"invalid,omitempty"`
 
-	Priority      float64  `json:"priority,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	AppFlowEventId      string  `json:"appFlowEventId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	AppFlowEvent      *AppFlowEvent  `json:"appFlowEvent,omitempty"`
+	EventName string `json:"eventName,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Sequences []FlowSequence `json:"sequences,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	AppFlowEvent *AppFlowEvent `json:"appFlowEvent,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	EventName      string  `json:"eventName,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Payload      interface{}  `json:"payload,omitempty"`
+	Payload interface{} `json:"payload,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Invalid      bool  `json:"invalid,omitempty"`
+	AppFlowEventId string `json:"appFlowEventId,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Sequences      []FlowSequence  `json:"sequences,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	Priority float64 `json:"priority,omitempty"`
 }
 
 type FlowCollection struct {

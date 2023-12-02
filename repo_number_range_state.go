@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,19 +99,17 @@ func (t NumberRangeStateRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type NumberRangeState struct {
+	Id string `json:"id,omitempty"`
 
-	LastValue      float64  `json:"lastValue,omitempty"`
+	NumberRangeId string `json:"numberRangeId,omitempty"`
 
-	NumberRange      *NumberRange  `json:"numberRange,omitempty"`
+	LastValue float64 `json:"lastValue,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	NumberRange *NumberRange `json:"numberRange,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	NumberRangeId      string  `json:"numberRangeId,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type NumberRangeStateCollection struct {

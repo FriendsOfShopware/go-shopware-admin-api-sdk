@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t NumberRangeSalesChannelRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type NumberRangeSalesChannel struct {
+	NumberRangeTypeId string `json:"numberRangeTypeId,omitempty"`
 
-	NumberRangeId      string  `json:"numberRangeId,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	NumberRange      *NumberRange  `json:"numberRange,omitempty"`
+	NumberRangeType *NumberRangeType `json:"numberRangeType,omitempty"`
 
-	NumberRangeType      *NumberRangeType  `json:"numberRangeType,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	NumberRangeTypeId      string  `json:"numberRangeTypeId,omitempty"`
+	NumberRangeId string `json:"numberRangeId,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
+	NumberRange *NumberRange `json:"numberRange,omitempty"`
 }
 
 type NumberRangeSalesChannelCollection struct {

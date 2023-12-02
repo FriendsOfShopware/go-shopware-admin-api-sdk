@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,41 +99,39 @@ func (t SeoUrlRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 }
 
 type SeoUrl struct {
+	Language *Language `json:"language,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	ForeignKey string `json:"foreignKey,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	RouteName string `json:"routeName,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	PathInfo string `json:"pathInfo,omitempty"`
 
-	RouteName      string  `json:"routeName,omitempty"`
+	SeoPathInfo string `json:"seoPathInfo,omitempty"`
 
-	PathInfo      string  `json:"pathInfo,omitempty"`
+	IsModified bool `json:"isModified,omitempty"`
 
-	IsModified      bool  `json:"isModified,omitempty"`
+	IsValid bool `json:"isValid,omitempty"`
 
-	IsDeleted      bool  `json:"isDeleted,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	IsValid      bool  `json:"isValid,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	SeoPathInfo      string  `json:"seoPathInfo,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	IsCanonical      bool  `json:"isCanonical,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	IsDeleted bool `json:"isDeleted,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	Url string `json:"url,omitempty"`
 
-	ForeignKey      string  `json:"foreignKey,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	IsCanonical bool `json:"isCanonical,omitempty"`
 }
 
 type SeoUrlCollection struct {

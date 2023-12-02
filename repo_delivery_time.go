@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t DeliveryTimeRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type DeliveryTime struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Unit string `json:"unit,omitempty"`
 
-	Min      float64  `json:"min,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Max      float64  `json:"max,omitempty"`
+	Products []Product `json:"products,omitempty"`
 
-	Unit      string  `json:"unit,omitempty"`
+	Translations []DeliveryTimeTranslation `json:"translations,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Products      []Product  `json:"products,omitempty"`
+	Min float64 `json:"min,omitempty"`
 
-	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+	Max float64 `json:"max,omitempty"`
 
-	Translations      []DeliveryTimeTranslation  `json:"translations,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
+	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
 }
 
 type DeliveryTimeCollection struct {

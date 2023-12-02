@@ -3,12 +3,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/iancoleman/strcase"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/iancoleman/strcase"
 )
 
 func main() {
@@ -40,6 +41,7 @@ func main() {
 			FormattedName: strcase.ToCamel(entity.Name),
 			ApiPath:       strings.ReplaceAll(entity.Name, "_", "-"),
 			Fields:        []TplField{},
+			HasTimeField:  entity.HasTimeField(),
 		}
 
 		for name, property := range entity.Properties {
@@ -70,6 +72,7 @@ type EntityRepositoryTplInfo struct {
 	FormattedName string
 	ApiPath       string
 	Fields        []TplField
+	HasTimeField  bool
 }
 
 type TplField struct {
@@ -81,6 +84,16 @@ type TplField struct {
 type Entity struct {
 	Name       string                    `json:"entity"`
 	Properties map[string]EntityProperty `json:"properties"`
+}
+
+func (e Entity) HasTimeField() bool {
+	for _, p := range e.Properties {
+		if p.GetType() == "time.Time" {
+			return true
+		}
+	}
+
+	return false
 }
 
 type EntityProperty struct {

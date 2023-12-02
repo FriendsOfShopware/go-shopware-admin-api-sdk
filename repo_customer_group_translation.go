@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t CustomerGroupTranslationRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type CustomerGroupTranslation struct {
+	RegistrationIntroduction string `json:"registrationIntroduction,omitempty"`
 
-	RegistrationOnlyCompanyRegistration      bool  `json:"registrationOnlyCompanyRegistration,omitempty"`
+	RegistrationOnlyCompanyRegistration bool `json:"registrationOnlyCompanyRegistration,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CustomerGroupId string `json:"customerGroupId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CustomerGroup *CustomerGroup `json:"customerGroup,omitempty"`
 
-	CustomerGroupId      string  `json:"customerGroupId,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	RegistrationIntroduction      string  `json:"registrationIntroduction,omitempty"`
+	RegistrationTitle string `json:"registrationTitle,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	RegistrationSeoMetaDescription string `json:"registrationSeoMetaDescription,omitempty"`
 
-	CustomerGroup      *CustomerGroup  `json:"customerGroup,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	RegistrationTitle      string  `json:"registrationTitle,omitempty"`
-
-	RegistrationSeoMetaDescription      string  `json:"registrationSeoMetaDescription,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type CustomerGroupTranslationCollection struct {

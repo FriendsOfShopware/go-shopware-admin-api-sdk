@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,27 +99,25 @@ func (t ShippingMethodTranslationRepository) Delete(ctx ApiContext, ids []string
 }
 
 type ShippingMethodTranslation struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	TrackingUrl string `json:"trackingUrl,omitempty"`
 
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
-
-	TrackingUrl      string  `json:"trackingUrl,omitempty"`
-
+	ShippingMethodId string `json:"shippingMethodId,omitempty"`
 }
 
 type ShippingMethodTranslationCollection struct {

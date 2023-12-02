@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t TaxProviderTranslationRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type TaxProviderTranslation struct {
+	Name string `json:"name,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	TaxProvider      *TaxProvider  `json:"taxProvider,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	TaxProviderId string `json:"taxProviderId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	TaxProvider *TaxProvider `json:"taxProvider,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	TaxProviderId      string  `json:"taxProviderId,omitempty"`
-
+	Language *Language `json:"language,omitempty"`
 }
 
 type TaxProviderTranslationCollection struct {

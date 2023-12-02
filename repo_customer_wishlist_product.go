@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t CustomerWishlistProductRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type CustomerWishlistProduct struct {
+	Product *Product `json:"product,omitempty"`
 
-	WishlistId      string  `json:"wishlistId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Wishlist      *CustomerWishlist  `json:"wishlist,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	WishlistId string `json:"wishlistId,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
-
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
-
+	Wishlist *CustomerWishlist `json:"wishlist,omitempty"`
 }
 
 type CustomerWishlistProductCollection struct {

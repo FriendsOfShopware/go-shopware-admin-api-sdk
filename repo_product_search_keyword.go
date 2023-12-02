@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t ProductSearchKeywordRepository) Delete(ctx ApiContext, ids []string) (*h
 }
 
 type ProductSearchKeyword struct {
+	LanguageId string `json:"languageId,omitempty"`
 
-	Keyword      string  `json:"keyword,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	Ranking      float64  `json:"ranking,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	Keyword string `json:"keyword,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Ranking float64 `json:"ranking,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	ProductId      string  `json:"productId,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ProductSearchKeywordCollection struct {

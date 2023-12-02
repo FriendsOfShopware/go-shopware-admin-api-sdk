@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t ProductSearchConfigFieldRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type ProductSearchConfigField struct {
+	CustomField *CustomField `json:"customField,omitempty"`
 
-	CustomField      *CustomField  `json:"customField,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CustomFieldId string `json:"customFieldId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Tokenize bool `json:"tokenize,omitempty"`
 
-	SearchConfigId      string  `json:"searchConfigId,omitempty"`
+	Searchable bool `json:"searchable,omitempty"`
 
-	CustomFieldId      string  `json:"customFieldId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	SearchConfig      *ProductSearchConfig  `json:"searchConfig,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	SearchConfigId string `json:"searchConfigId,omitempty"`
 
-	Field      string  `json:"field,omitempty"`
+	Field string `json:"field,omitempty"`
 
-	Tokenize      bool  `json:"tokenize,omitempty"`
+	Ranking float64 `json:"ranking,omitempty"`
 
-	Searchable      bool  `json:"searchable,omitempty"`
-
-	Ranking      float64  `json:"ranking,omitempty"`
-
+	SearchConfig *ProductSearchConfig `json:"searchConfig,omitempty"`
 }
 
 type ProductSearchConfigFieldCollection struct {

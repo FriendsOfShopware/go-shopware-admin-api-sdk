@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,27 +99,25 @@ func (t AclRoleRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type AclRole struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	DeletedAt time.Time `json:"deletedAt,omitempty"`
 
-	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
+	Users []User `json:"users,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Integrations []Integration `json:"integrations,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Privileges      interface{}  `json:"privileges,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Users      []User  `json:"users,omitempty"`
+	Privileges interface{} `json:"privileges,omitempty"`
 
-	Integrations      []Integration  `json:"integrations,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type AclRoleCollection struct {

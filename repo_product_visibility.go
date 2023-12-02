@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t ProductVisibilityRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type ProductVisibility struct {
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Visibility float64 `json:"visibility,omitempty"`
 
-	Visibility      float64  `json:"visibility,omitempty"`
-
-	Product      *Product  `json:"product,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type ProductVisibilityCollection struct {

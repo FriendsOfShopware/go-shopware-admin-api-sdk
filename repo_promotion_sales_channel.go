@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t PromotionSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type PromotionSalesChannel struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Priority      float64  `json:"priority,omitempty"`
+	PromotionId string `json:"promotionId,omitempty"`
 
-	Promotion      *Promotion  `json:"promotion,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	Priority float64 `json:"priority,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Promotion *Promotion `json:"promotion,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	PromotionId      string  `json:"promotionId,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type PromotionSalesChannelCollection struct {

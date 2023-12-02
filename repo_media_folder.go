@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,39 +99,37 @@ func (t MediaFolderRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type MediaFolder struct {
+	Children []MediaFolder `json:"children,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	ChildCount float64 `json:"childCount,omitempty"`
 
-	ChildCount      float64  `json:"childCount,omitempty"`
+	Media []Media `json:"media,omitempty"`
 
-	Media      []Media  `json:"media,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	ParentId string `json:"parentId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Path string `json:"path,omitempty"`
 
-	UseParentConfiguration      bool  `json:"useParentConfiguration,omitempty"`
+	DefaultFolder *MediaDefaultFolder `json:"defaultFolder,omitempty"`
 
-	ConfigurationId      string  `json:"configurationId,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	DefaultFolderId      string  `json:"defaultFolderId,omitempty"`
+	UseParentConfiguration bool `json:"useParentConfiguration,omitempty"`
 
-	Parent      *MediaFolder  `json:"parent,omitempty"`
+	ConfigurationId string `json:"configurationId,omitempty"`
 
-	Children      []MediaFolder  `json:"children,omitempty"`
+	DefaultFolderId string `json:"defaultFolderId,omitempty"`
 
-	Configuration      *MediaFolderConfiguration  `json:"configuration,omitempty"`
+	Parent *MediaFolder `json:"parent,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ParentId      string  `json:"parentId,omitempty"`
+	Configuration *MediaFolderConfiguration `json:"configuration,omitempty"`
 
-	Path      string  `json:"path,omitempty"`
-
-	DefaultFolder      *MediaDefaultFolder  `json:"defaultFolder,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type MediaFolderCollection struct {

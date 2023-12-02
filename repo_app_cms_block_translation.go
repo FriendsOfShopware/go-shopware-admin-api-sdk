@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,21 +99,19 @@ func (t AppCmsBlockTranslationRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type AppCmsBlockTranslation struct {
+	AppCmsBlockId string `json:"appCmsBlockId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppCmsBlock *AppCmsBlock `json:"appCmsBlock,omitempty"`
 
-	AppCmsBlockId      string  `json:"appCmsBlockId,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	AppCmsBlock      *AppCmsBlock  `json:"appCmsBlock,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
-
-	Label      string  `json:"label,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type AppCmsBlockTranslationCollection struct {

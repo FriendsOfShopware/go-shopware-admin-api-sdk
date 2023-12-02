@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t StateMachineTransitionRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type StateMachineTransition struct {
+	StateMachine *StateMachine `json:"stateMachine,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	FromStateId string `json:"fromStateId,omitempty"`
 
-	ActionName      string  `json:"actionName,omitempty"`
+	ToStateId string `json:"toStateId,omitempty"`
 
-	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
+	ToStateMachineState *StateMachineState `json:"toStateMachineState,omitempty"`
 
-	FromStateId      string  `json:"fromStateId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	StateMachineId      string  `json:"stateMachineId,omitempty"`
+	ActionName string `json:"actionName,omitempty"`
 
-	FromStateMachineState      *StateMachineState  `json:"fromStateMachineState,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ToStateId      string  `json:"toStateId,omitempty"`
+	StateMachineId string `json:"stateMachineId,omitempty"`
 
-	ToStateMachineState      *StateMachineState  `json:"toStateMachineState,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
+	FromStateMachineState *StateMachineState `json:"fromStateMachineState,omitempty"`
 }
 
 type StateMachineTransitionCollection struct {

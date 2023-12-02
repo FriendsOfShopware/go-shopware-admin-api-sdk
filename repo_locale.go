@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t LocaleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 }
 
 type Locale struct {
+	Territory string `json:"territory,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Languages []Language `json:"languages,omitempty"`
 
-	Translations      []LocaleTranslation  `json:"translations,omitempty"`
+	Translations []LocaleTranslation `json:"translations,omitempty"`
 
-	Users      []User  `json:"users,omitempty"`
+	Users []User `json:"users,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Code      string  `json:"code,omitempty"`
+	Code string `json:"code,omitempty"`
 
-	Territory      string  `json:"territory,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Languages      []Language  `json:"languages,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	Translated interface{} `json:"translated,omitempty"`
 }
 
 type LocaleCollection struct {

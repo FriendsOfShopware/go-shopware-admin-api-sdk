@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,37 +99,35 @@ func (t OrderDeliveryPositionRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type OrderDeliveryPosition struct {
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	OrderDeliveryVersionId string `json:"orderDeliveryVersionId,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	Price interface{} `json:"price,omitempty"`
 
-	OrderLineItemId      string  `json:"orderLineItemId,omitempty"`
+	Quantity float64 `json:"quantity,omitempty"`
 
-	OrderLineItemVersionId      string  `json:"orderLineItemVersionId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	OrderDelivery      *OrderDelivery  `json:"orderDelivery,omitempty"`
+	OrderLineItemId string `json:"orderLineItemId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	TotalPrice float64 `json:"totalPrice,omitempty"`
 
-	Quantity      float64  `json:"quantity,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Price      interface{}  `json:"price,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	UnitPrice      float64  `json:"unitPrice,omitempty"`
+	OrderLineItemVersionId string `json:"orderLineItemVersionId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	OrderLineItem *OrderLineItem `json:"orderLineItem,omitempty"`
 
-	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	OrderDeliveryId string `json:"orderDeliveryId,omitempty"`
 
-	OrderDeliveryId      string  `json:"orderDeliveryId,omitempty"`
+	UnitPrice float64 `json:"unitPrice,omitempty"`
 
-	OrderDeliveryVersionId      string  `json:"orderDeliveryVersionId,omitempty"`
-
-	TotalPrice      float64  `json:"totalPrice,omitempty"`
-
+	OrderDelivery *OrderDelivery `json:"orderDelivery,omitempty"`
 }
 
 type OrderDeliveryPositionCollection struct {

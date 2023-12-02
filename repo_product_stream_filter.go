@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,37 +99,35 @@ func (t ProductStreamFilterRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductStreamFilter struct {
+	Type string `json:"type,omitempty"`
 
-	Queries      []ProductStreamFilter  `json:"queries,omitempty"`
+	ProductStream *ProductStream `json:"productStream,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
+	ProductStreamId string `json:"productStreamId,omitempty"`
 
-	Field      string  `json:"field,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Parameters      interface{}  `json:"parameters,omitempty"`
+	Parent *ProductStreamFilter `json:"parent,omitempty"`
 
-	Value      string  `json:"value,omitempty"`
+	Queries []ProductStreamFilter `json:"queries,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ParentId string `json:"parentId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ProductStreamId      string  `json:"productStreamId,omitempty"`
+	Value string `json:"value,omitempty"`
 
-	Operator      string  `json:"operator,omitempty"`
+	Field string `json:"field,omitempty"`
 
-	ParentId      string  `json:"parentId,omitempty"`
+	Operator string `json:"operator,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Parameters interface{} `json:"parameters,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	ProductStream      *ProductStream  `json:"productStream,omitempty"`
-
-	Parent      *ProductStreamFilter  `json:"parent,omitempty"`
-
+	Id string `json:"id,omitempty"`
 }
 
 type ProductStreamFilterCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t AppFlowEventRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type AppFlowEvent struct {
+	Name string `json:"name,omitempty"`
 
-	Aware      interface{}  `json:"aware,omitempty"`
+	Aware interface{} `json:"aware,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	Flows []Flow `json:"flows,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Flows      []Flow  `json:"flows,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	App *App `json:"app,omitempty"`
 }
 
 type AppFlowEventCollection struct {

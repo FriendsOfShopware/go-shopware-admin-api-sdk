@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,27 +99,25 @@ func (t PropertyGroupTranslationRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type PropertyGroupTranslation struct {
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	PropertyGroupId      string  `json:"propertyGroupId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	PropertyGroup *PropertyGroup `json:"propertyGroup,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	PropertyGroup      *PropertyGroup  `json:"propertyGroup,omitempty"`
-
+	PropertyGroupId string `json:"propertyGroupId,omitempty"`
 }
 
 type PropertyGroupTranslationCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t MainCategoryRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type MainCategory struct {
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	CategoryVersionId string `json:"categoryVersionId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	CategoryId      string  `json:"categoryId,omitempty"`
+	Category *Category `json:"category,omitempty"`
 
-	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Category      *Category  `json:"category,omitempty"`
+	CategoryId string `json:"categoryId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 }
 
 type MainCategoryCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t ProductSearchConfigRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductSearchConfig struct {
+	Id string `json:"id,omitempty"`
 
-	MinSearchLength      float64  `json:"minSearchLength,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	ExcludedTerms      interface{}  `json:"excludedTerms,omitempty"`
+	ExcludedTerms interface{} `json:"excludedTerms,omitempty"`
 
-	ConfigFields      []ProductSearchConfigField  `json:"configFields,omitempty"`
+	ConfigFields []ProductSearchConfigField `json:"configFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	AndLogic      bool  `json:"andLogic,omitempty"`
+	AndLogic bool `json:"andLogic,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	MinSearchLength float64 `json:"minSearchLength,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
+	Language *Language `json:"language,omitempty"`
 }
 
 type ProductSearchConfigCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t VersionCommitRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type VersionCommit struct {
+	VersionId string `json:"versionId,omitempty"`
 
-	Version      *Version  `json:"version,omitempty"`
+	UserId string `json:"userId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	IsMerge bool `json:"isMerge,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	Data []VersionCommitData `json:"data,omitempty"`
 
-	UserId      string  `json:"userId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	IsMerge      bool  `json:"isMerge,omitempty"`
+	IntegrationId string `json:"integrationId,omitempty"`
 
-	Data      []VersionCommitData  `json:"data,omitempty"`
+	AutoIncrement float64 `json:"autoIncrement,omitempty"`
 
-	IntegrationId      string  `json:"integrationId,omitempty"`
+	Message string `json:"message,omitempty"`
 
-	Message      string  `json:"message,omitempty"`
+	Version *Version `json:"version,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type VersionCommitCollection struct {

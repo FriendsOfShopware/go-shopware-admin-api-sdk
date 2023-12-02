@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type ProductKeywordDictionaryRepository ClientService
@@ -98,17 +97,15 @@ func (t ProductKeywordDictionaryRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type ProductKeywordDictionary struct {
+	Id string `json:"id,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Keyword string `json:"keyword,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	Reversed string `json:"reversed,omitempty"`
 
-	Keyword      string  `json:"keyword,omitempty"`
-
-	Reversed      string  `json:"reversed,omitempty"`
-
+	Language *Language `json:"language,omitempty"`
 }
 
 type ProductKeywordDictionaryCollection struct {

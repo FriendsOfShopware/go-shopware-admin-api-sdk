@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t CurrencyTranslationRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type CurrencyTranslation struct {
+	Name string `json:"name,omitempty"`
 
-	ShortName      string  `json:"shortName,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CurrencyId string `json:"currencyId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Currency      *Currency  `json:"currency,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	ShortName string `json:"shortName,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CurrencyId      string  `json:"currencyId,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
+	Currency *Currency `json:"currency,omitempty"`
 }
 
 type CurrencyTranslationCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t AppShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type AppShippingMethod struct {
+	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	OriginalMediaId string `json:"originalMediaId,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	OriginalMediaId      string  `json:"originalMediaId,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	AppName      string  `json:"appName,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	Identifier      string  `json:"identifier,omitempty"`
+	ShippingMethodId string `json:"shippingMethodId,omitempty"`
 
-	OriginalMedia      *Media  `json:"originalMedia,omitempty"`
+	OriginalMedia *Media `json:"originalMedia,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppName string `json:"appName,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
-
+	Identifier string `json:"identifier,omitempty"`
 }
 
 type AppShippingMethodCollection struct {

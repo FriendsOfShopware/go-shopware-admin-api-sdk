@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t ScriptRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 }
 
 type Script struct {
+	Hook string `json:"hook,omitempty"`
 
-	Script      string  `json:"script,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Script string `json:"script,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	Hook      string  `json:"hook,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
-
-	App      *App  `json:"app,omitempty"`
-
+	Id string `json:"id,omitempty"`
 }
 
 type ScriptCollection struct {

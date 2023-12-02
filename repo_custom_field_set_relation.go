@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,19 +99,17 @@ func (t CustomFieldSetRelationRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type CustomFieldSetRelation struct {
+	CustomFieldSet *CustomFieldSet `json:"customFieldSet,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
+	CustomFieldSetId string `json:"customFieldSetId,omitempty"`
 
-	EntityName      string  `json:"entityName,omitempty"`
-
-	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
-
+	EntityName string `json:"entityName,omitempty"`
 }
 
 type CustomFieldSetRelationCollection struct {

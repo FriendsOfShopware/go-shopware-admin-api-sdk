@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type ThemeMediaRepository ClientService
@@ -98,15 +97,13 @@ func (t ThemeMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type ThemeMedia struct {
+	ThemeId string `json:"themeId,omitempty"`
 
-	ThemeId      string  `json:"themeId,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	Theme *Theme `json:"theme,omitempty"`
 
-	Theme      *Theme  `json:"theme,omitempty"`
-
-	Media      *Media  `json:"media,omitempty"`
-
+	Media *Media `json:"media,omitempty"`
 }
 
 type ThemeMediaCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,37 +99,35 @@ func (t DocumentBaseConfigRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type DocumentBaseConfig struct {
+	Id string `json:"id,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	DocumentTypeId string `json:"documentTypeId,omitempty"`
 
-	Logo      *Media  `json:"logo,omitempty"`
+	FilenameSuffix string `json:"filenameSuffix,omitempty"`
 
-	FilenameSuffix      string  `json:"filenameSuffix,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	DocumentType *DocumentType `json:"documentType,omitempty"`
 
-	DocumentNumber      string  `json:"documentNumber,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Global bool `json:"global,omitempty"`
 
-	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	DocumentNumber string `json:"documentNumber,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	FilenamePrefix      string  `json:"filenamePrefix,omitempty"`
+	LogoId string `json:"logoId,omitempty"`
 
-	Global      bool  `json:"global,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	DocumentType      *DocumentType  `json:"documentType,omitempty"`
+	FilenamePrefix string `json:"filenamePrefix,omitempty"`
 
-	SalesChannels      []DocumentBaseConfigSalesChannel  `json:"salesChannels,omitempty"`
+	Logo *Media `json:"logo,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	LogoId      string  `json:"logoId,omitempty"`
-
+	SalesChannels []DocumentBaseConfigSalesChannel `json:"salesChannels,omitempty"`
 }
 
 type DocumentBaseConfigCollection struct {

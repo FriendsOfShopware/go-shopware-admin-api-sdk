@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t VersionCommitDataRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type VersionCommitData struct {
+	Id string `json:"id,omitempty"`
 
-	UserId      string  `json:"userId,omitempty"`
+	VersionCommitId string `json:"versionCommitId,omitempty"`
 
-	EntityName      string  `json:"entityName,omitempty"`
+	Commit *VersionCommit `json:"commit,omitempty"`
 
-	Payload      interface{}  `json:"payload,omitempty"`
+	UserId string `json:"userId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	AutoIncrement float64 `json:"autoIncrement,omitempty"`
 
-	VersionCommitId      string  `json:"versionCommitId,omitempty"`
+	EntityName string `json:"entityName,omitempty"`
 
-	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
+	EntityId interface{} `json:"entityId,omitempty"`
 
-	EntityId      interface{}  `json:"entityId,omitempty"`
+	Action string `json:"action,omitempty"`
 
-	Action      string  `json:"action,omitempty"`
+	Payload interface{} `json:"payload,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	IntegrationId string `json:"integrationId,omitempty"`
 
-	Commit      *VersionCommit  `json:"commit,omitempty"`
-
-	IntegrationId      string  `json:"integrationId,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type VersionCommitDataCollection struct {

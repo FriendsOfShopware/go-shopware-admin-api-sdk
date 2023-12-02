@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,101 +99,99 @@ func (t OrderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, e
 }
 
 type Order struct {
+	AmountTotal float64 `json:"amountTotal,omitempty"`
 
-	OrderDateTime      time.Time  `json:"orderDateTime,omitempty"`
+	AmountNet float64 `json:"amountNet,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	ItemRounding interface{} `json:"itemRounding,omitempty"`
 
-	Tags      []Tag  `json:"tags,omitempty"`
+	Price interface{} `json:"price,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	DeepLinkCode string `json:"deepLinkCode,omitempty"`
 
-	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
+	CreatedBy *User `json:"createdBy,omitempty"`
 
-	OrderNumber      string  `json:"orderNumber,omitempty"`
+	CurrencyId string `json:"currencyId,omitempty"`
 
-	CurrencyId      string  `json:"currencyId,omitempty"`
+	Currency *Currency `json:"currency,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Addresses []OrderAddress `json:"addresses,omitempty"`
 
-	BillingAddressVersionId      string  `json:"billingAddressVersionId,omitempty"`
+	UpdatedBy *User `json:"updatedBy,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	BillingAddressId string `json:"billingAddressId,omitempty"`
 
-	AmountNet      float64  `json:"amountNet,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	PositionPrice      float64  `json:"positionPrice,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	ShippingTotal      float64  `json:"shippingTotal,omitempty"`
+	AffiliateCode string `json:"affiliateCode,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	StateId string `json:"stateId,omitempty"`
 
-	Transactions      []OrderTransaction  `json:"transactions,omitempty"`
+	Tags []Tag `json:"tags,omitempty"`
 
-	ShippingCosts      interface{}  `json:"shippingCosts,omitempty"`
+	OrderNumber string `json:"orderNumber,omitempty"`
 
-	StateId      string  `json:"stateId,omitempty"`
+	ShippingTotal float64 `json:"shippingTotal,omitempty"`
 
-	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
+	RuleIds interface{} `json:"ruleIds,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	BillingAddress *OrderAddress `json:"billingAddress,omitempty"`
 
-	Currency      *Currency  `json:"currency,omitempty"`
+	Documents []Document `json:"documents,omitempty"`
 
-	OrderDate      time.Time  `json:"orderDate,omitempty"`
+	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
 
-	RuleIds      interface{}  `json:"ruleIds,omitempty"`
+	CreatedById string `json:"createdById,omitempty"`
 
-	CreatedById      string  `json:"createdById,omitempty"`
+	Deliveries []OrderDelivery `json:"deliveries,omitempty"`
 
-	LineItems      []OrderLineItem  `json:"lineItems,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	BillingAddress      *OrderAddress  `json:"billingAddress,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	Deliveries      []OrderDelivery  `json:"deliveries,omitempty"`
+	OrderDateTime time.Time `json:"orderDateTime,omitempty"`
 
-	Documents      []Document  `json:"documents,omitempty"`
+	PositionPrice float64 `json:"positionPrice,omitempty"`
 
-	UpdatedBy      *User  `json:"updatedBy,omitempty"`
+	Source string `json:"source,omitempty"`
 
-	AmountTotal      float64  `json:"amountTotal,omitempty"`
+	LineItems []OrderLineItem `json:"lineItems,omitempty"`
 
-	TaxStatus      string  `json:"taxStatus,omitempty"`
+	Transactions []OrderTransaction `json:"transactions,omitempty"`
 
-	CampaignCode      string  `json:"campaignCode,omitempty"`
+	TotalRounding interface{} `json:"totalRounding,omitempty"`
 
-	OrderCustomer      *OrderCustomer  `json:"orderCustomer,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedById      string  `json:"updatedById,omitempty"`
+	ShippingCosts interface{} `json:"shippingCosts,omitempty"`
 
-	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
+	CampaignCode string `json:"campaignCode,omitempty"`
 
-	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	AffiliateCode      string  `json:"affiliateCode,omitempty"`
+	OrderCustomer *OrderCustomer `json:"orderCustomer,omitempty"`
 
-	CustomerComment      string  `json:"customerComment,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	Source      string  `json:"source,omitempty"`
+	CustomerComment string `json:"customerComment,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	UpdatedById string `json:"updatedById,omitempty"`
 
-	BillingAddressId      string  `json:"billingAddressId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Price      interface{}  `json:"price,omitempty"`
+	AutoIncrement float64 `json:"autoIncrement,omitempty"`
 
-	CurrencyFactor      float64  `json:"currencyFactor,omitempty"`
+	BillingAddressVersionId string `json:"billingAddressVersionId,omitempty"`
 
-	DeepLinkCode      string  `json:"deepLinkCode,omitempty"`
+	OrderDate time.Time `json:"orderDate,omitempty"`
 
-	Addresses      []OrderAddress  `json:"addresses,omitempty"`
+	TaxStatus string `json:"taxStatus,omitempty"`
 
-	CreatedBy      *User  `json:"createdBy,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	CurrencyFactor float64 `json:"currencyFactor,omitempty"`
 }
 
 type OrderCollection struct {

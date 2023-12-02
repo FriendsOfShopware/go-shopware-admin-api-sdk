@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t ProductConfiguratorSettingRepository) Delete(ctx ApiContext, ids []strin
 }
 
 type ProductConfiguratorSetting struct {
+	Id string `json:"id,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Media *Media `json:"media,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	Price      interface{}  `json:"price,omitempty"`
+	OptionId string `json:"optionId,omitempty"`
 
-	Option      *PropertyGroupOption  `json:"option,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	Price interface{} `json:"price,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
+	Option *PropertyGroupOption `json:"option,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	OptionId      string  `json:"optionId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
-
-	Product      *Product  `json:"product,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ProductConfiguratorSettingCollection struct {

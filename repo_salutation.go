@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t SalutationRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type Salutation struct {
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Translations []SalutationTranslation `json:"translations,omitempty"`
 
-	Customers      []Customer  `json:"customers,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	OrderCustomers      []OrderCustomer  `json:"orderCustomers,omitempty"`
+	SalutationKey string `json:"salutationKey,omitempty"`
 
-	Translations      []SalutationTranslation  `json:"translations,omitempty"`
+	DisplayName string `json:"displayName,omitempty"`
 
-	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
+	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
 
-	LetterName      string  `json:"letterName,omitempty"`
+	OrderCustomers []OrderCustomer `json:"orderCustomers,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
+	NewsletterRecipients []NewsletterRecipient `json:"newsletterRecipients,omitempty"`
 
-	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	LetterName string `json:"letterName,omitempty"`
 
-	SalutationKey      string  `json:"salutationKey,omitempty"`
+	Customers []Customer `json:"customers,omitempty"`
 
-	DisplayName      string  `json:"displayName,omitempty"`
+	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type SalutationCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,49 +99,47 @@ func (t NewsletterRecipientRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type NewsletterRecipient struct {
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Status string `json:"status,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
+	LastName string `json:"lastName,omitempty"`
 
-	ZipCode      string  `json:"zipCode,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	Salutation *Salutation `json:"salutation,omitempty"`
 
-	Email      string  `json:"email,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	ConfirmedAt      time.Time  `json:"confirmedAt,omitempty"`
+	Title string `json:"title,omitempty"`
 
-	Tags      []Tag  `json:"tags,omitempty"`
+	ConfirmedAt time.Time `json:"confirmedAt,omitempty"`
 
-	Status      string  `json:"status,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	FirstName      string  `json:"firstName,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	LastName      string  `json:"lastName,omitempty"`
+	Email string `json:"email,omitempty"`
 
-	Street      string  `json:"street,omitempty"`
+	FirstName string `json:"firstName,omitempty"`
 
-	SalutationId      string  `json:"salutationId,omitempty"`
+	ZipCode string `json:"zipCode,omitempty"`
 
-	Salutation      *Salutation  `json:"salutation,omitempty"`
+	City string `json:"city,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Street string `json:"street,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	Hash string `json:"hash,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Tags []Tag `json:"tags,omitempty"`
 
-	City      string  `json:"city,omitempty"`
+	SalutationId string `json:"salutationId,omitempty"`
 
-	Hash      string  `json:"hash,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
+	Id string `json:"id,omitempty"`
 }
 
 type NewsletterRecipientCollection struct {

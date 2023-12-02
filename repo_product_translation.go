@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,41 +99,39 @@ func (t ProductTranslationRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type ProductTranslation struct {
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	MetaTitle      string  `json:"metaTitle,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	MetaDescription string `json:"metaDescription,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	PackUnitPlural      string  `json:"packUnitPlural,omitempty"`
+	CustomSearchKeywords interface{} `json:"customSearchKeywords,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Keywords      string  `json:"keywords,omitempty"`
+	MetaTitle string `json:"metaTitle,omitempty"`
 
-	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
+	PackUnitPlural string `json:"packUnitPlural,omitempty"`
 
-	MetaDescription      string  `json:"metaDescription,omitempty"`
+	PackUnit string `json:"packUnit,omitempty"`
 
-	PackUnit      string  `json:"packUnit,omitempty"`
+	SlotConfig interface{} `json:"slotConfig,omitempty"`
 
-	CustomSearchKeywords      interface{}  `json:"customSearchKeywords,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
+	Keywords string `json:"keywords,omitempty"`
 }
 
 type ProductTranslationCollection struct {

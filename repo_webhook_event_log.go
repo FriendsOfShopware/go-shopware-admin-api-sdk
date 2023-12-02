@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,43 +99,41 @@ func (t WebhookEventLogRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type WebhookEventLog struct {
+	AppVersion string `json:"appVersion,omitempty"`
 
-	OnlyLiveVersion      bool  `json:"onlyLiveVersion,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	SerializedWebhookMessage      interface{}  `json:"serializedWebhookMessage,omitempty"`
+	DeliveryStatus string `json:"deliveryStatus,omitempty"`
 
-	RequestContent      interface{}  `json:"requestContent,omitempty"`
+	ProcessingTime float64 `json:"processingTime,omitempty"`
 
-	ResponseContent      interface{}  `json:"responseContent,omitempty"`
+	RequestContent interface{} `json:"requestContent,omitempty"`
 
-	ResponseStatusCode      float64  `json:"responseStatusCode,omitempty"`
+	ResponseContent interface{} `json:"responseContent,omitempty"`
 
-	ResponseReasonPhrase      string  `json:"responseReasonPhrase,omitempty"`
+	ResponseReasonPhrase string `json:"responseReasonPhrase,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	SerializedWebhookMessage interface{} `json:"serializedWebhookMessage,omitempty"`
 
-	EventName      string  `json:"eventName,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	DeliveryStatus      string  `json:"deliveryStatus,omitempty"`
+	WebhookName string `json:"webhookName,omitempty"`
 
-	AppVersion      string  `json:"appVersion,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	ResponseStatusCode float64 `json:"responseStatusCode,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	AppName string `json:"appName,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Timestamp float64 `json:"timestamp,omitempty"`
 
-	AppName      string  `json:"appName,omitempty"`
+	OnlyLiveVersion bool `json:"onlyLiveVersion,omitempty"`
 
-	WebhookName      string  `json:"webhookName,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	EventName string `json:"eventName,omitempty"`
 
-	Timestamp      float64  `json:"timestamp,omitempty"`
-
-	ProcessingTime      float64  `json:"processingTime,omitempty"`
-
+	Url string `json:"url,omitempty"`
 }
 
 type WebhookEventLogCollection struct {

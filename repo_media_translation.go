@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t MediaTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type MediaTranslation struct {
+	LanguageId string `json:"languageId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Media *Media `json:"media,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Title string `json:"title,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Alt      string  `json:"alt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Alt string `json:"alt,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
-
-	Media      *Media  `json:"media,omitempty"`
-
+	CustomFields interface{} `json:"customFields,omitempty"`
 }
 
 type MediaTranslationCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t ProductDownloadRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type ProductDownload struct {
+	Position float64 `json:"position,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	Product *Product `json:"product,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	Media *Media `json:"media,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ProductDownloadCollection struct {

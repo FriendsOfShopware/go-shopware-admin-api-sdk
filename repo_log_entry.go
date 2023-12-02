@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t LogEntryRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 }
 
 type LogEntry struct {
+	Context interface{} `json:"context,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Extra interface{} `json:"extra,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Message      string  `json:"message,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Level      float64  `json:"level,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Channel      string  `json:"channel,omitempty"`
+	Message string `json:"message,omitempty"`
 
-	Context      interface{}  `json:"context,omitempty"`
+	Level float64 `json:"level,omitempty"`
 
-	Extra      interface{}  `json:"extra,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
+	Channel string `json:"channel,omitempty"`
 }
 
 type LogEntryCollection struct {

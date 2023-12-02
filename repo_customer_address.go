@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,53 +99,51 @@ func (t CustomerAddressRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type CustomerAddress struct {
+	CustomerId string `json:"customerId,omitempty"`
 
-	Company      string  `json:"company,omitempty"`
+	CountryStateId string `json:"countryStateId,omitempty"`
 
-	AdditionalAddressLine1      string  `json:"additionalAddressLine1,omitempty"`
+	SalutationId string `json:"salutationId,omitempty"`
 
-	CountryState      *CountryState  `json:"countryState,omitempty"`
+	Zipcode string `json:"zipcode,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	City string `json:"city,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Company string `json:"company,omitempty"`
 
-	SalutationId      string  `json:"salutationId,omitempty"`
+	Street string `json:"street,omitempty"`
 
-	LastName      string  `json:"lastName,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CountryStateId      string  `json:"countryStateId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Street      string  `json:"street,omitempty"`
+	FirstName string `json:"firstName,omitempty"`
 
-	PhoneNumber      string  `json:"phoneNumber,omitempty"`
+	AdditionalAddressLine1 string `json:"additionalAddressLine1,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	AdditionalAddressLine2 string `json:"additionalAddressLine2,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Country *Country `json:"country,omitempty"`
 
-	Customer      *Customer  `json:"customer,omitempty"`
+	CountryState *CountryState `json:"countryState,omitempty"`
 
-	Country      *Country  `json:"country,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Zipcode      string  `json:"zipcode,omitempty"`
+	LastName string `json:"lastName,omitempty"`
 
-	City      string  `json:"city,omitempty"`
+	Title string `json:"title,omitempty"`
 
-	Department      string  `json:"department,omitempty"`
+	Customer *Customer `json:"customer,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
+	Salutation *Salutation `json:"salutation,omitempty"`
 
-	AdditionalAddressLine2      string  `json:"additionalAddressLine2,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CustomerId      string  `json:"customerId,omitempty"`
+	CountryId string `json:"countryId,omitempty"`
 
-	CountryId      string  `json:"countryId,omitempty"`
+	Department string `json:"department,omitempty"`
 
-	FirstName      string  `json:"firstName,omitempty"`
-
-	Salutation      *Salutation  `json:"salutation,omitempty"`
-
+	PhoneNumber string `json:"phoneNumber,omitempty"`
 }
 
 type CustomerAddressCollection struct {

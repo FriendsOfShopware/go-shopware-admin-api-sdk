@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,21 +99,19 @@ func (t PromotionIndividualCodeRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type PromotionIndividualCode struct {
+	Id string `json:"id,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	PromotionId string `json:"promotionId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Code string `json:"code,omitempty"`
 
-	PromotionId      string  `json:"promotionId,omitempty"`
+	Payload interface{} `json:"payload,omitempty"`
 
-	Code      string  `json:"code,omitempty"`
+	Promotion *Promotion `json:"promotion,omitempty"`
 
-	Payload      interface{}  `json:"payload,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Promotion      *Promotion  `json:"promotion,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type PromotionIndividualCodeCollection struct {

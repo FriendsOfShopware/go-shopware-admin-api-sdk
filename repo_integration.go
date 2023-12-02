@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,33 +99,31 @@ func (t IntegrationRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type Integration struct {
+	LastUsageAt time.Time `json:"lastUsageAt,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	AclRoles      []AclRole  `json:"aclRoles,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AccessKey string `json:"accessKey,omitempty"`
 
-	AccessKey      string  `json:"accessKey,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CreatedNotifications []Notification `json:"createdNotifications,omitempty"`
 
-	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
+	SecretAccessKey interface{} `json:"secretAccessKey,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	SecretAccessKey      interface{}  `json:"secretAccessKey,omitempty"`
+	Admin bool `json:"admin,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	DeletedAt time.Time `json:"deletedAt,omitempty"`
 
-	LastUsageAt      time.Time  `json:"lastUsageAt,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	Admin      bool  `json:"admin,omitempty"`
-
-	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
-
+	AclRoles []AclRole `json:"aclRoles,omitempty"`
 }
 
 type IntegrationCollection struct {

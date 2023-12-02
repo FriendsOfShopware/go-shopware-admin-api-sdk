@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t MailHeaderFooterTranslationRepository) Delete(ctx ApiContext, ids []stri
 }
 
 type MailHeaderFooterTranslation struct {
+	HeaderHtml string `json:"headerHtml,omitempty"`
 
-	FooterHtml      string  `json:"footerHtml,omitempty"`
+	HeaderPlain string `json:"headerPlain,omitempty"`
 
-	FooterPlain      string  `json:"footerPlain,omitempty"`
+	FooterHtml string `json:"footerHtml,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	FooterPlain string `json:"footerPlain,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	HeaderPlain      string  `json:"headerPlain,omitempty"`
+	MailHeaderFooterId string `json:"mailHeaderFooterId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	MailHeaderFooterId      string  `json:"mailHeaderFooterId,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	MailHeaderFooter      *MailHeaderFooter  `json:"mailHeaderFooter,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	MailHeaderFooter *MailHeaderFooter `json:"mailHeaderFooter,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	HeaderHtml      string  `json:"headerHtml,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type MailHeaderFooterTranslationCollection struct {

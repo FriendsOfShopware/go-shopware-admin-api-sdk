@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,21 +99,19 @@ func (t SystemConfigRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type SystemConfig struct {
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	ConfigurationKey string `json:"configurationKey,omitempty"`
 
-	ConfigurationKey      string  `json:"configurationKey,omitempty"`
+	ConfigurationValue interface{} `json:"configurationValue,omitempty"`
 
-	ConfigurationValue      interface{}  `json:"configurationValue,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
-
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 }
 
 type SystemConfigCollection struct {

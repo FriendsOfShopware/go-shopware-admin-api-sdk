@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type CategoryTagRepository ClientService
@@ -98,17 +97,15 @@ func (t CategoryTagRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type CategoryTag struct {
+	Tag *Tag `json:"tag,omitempty"`
 
-	CategoryId      string  `json:"categoryId,omitempty"`
+	CategoryId string `json:"categoryId,omitempty"`
 
-	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
+	CategoryVersionId string `json:"categoryVersionId,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
+	TagId string `json:"tagId,omitempty"`
 
-	Category      *Category  `json:"category,omitempty"`
-
-	Tag      *Tag  `json:"tag,omitempty"`
-
+	Category *Category `json:"category,omitempty"`
 }
 
 type CategoryTagCollection struct {

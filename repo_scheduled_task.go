@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,27 +99,25 @@ func (t ScheduledTaskRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ScheduledTask struct {
+	LastExecutionTime time.Time `json:"lastExecutionTime,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	NextExecutionTime time.Time `json:"nextExecutionTime,omitempty"`
 
-	Status      string  `json:"status,omitempty"`
+	DefaultRunInterval float64 `json:"defaultRunInterval,omitempty"`
 
-	DefaultRunInterval      float64  `json:"defaultRunInterval,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	LastExecutionTime      time.Time  `json:"lastExecutionTime,omitempty"`
+	RunInterval float64 `json:"runInterval,omitempty"`
 
-	NextExecutionTime      time.Time  `json:"nextExecutionTime,omitempty"`
+	Status string `json:"status,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	ScheduledTaskClass string `json:"scheduledTaskClass,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ScheduledTaskClass      string  `json:"scheduledTaskClass,omitempty"`
-
-	RunInterval      float64  `json:"runInterval,omitempty"`
-
+	Name string `json:"name,omitempty"`
 }
 
 type ScheduledTaskCollection struct {

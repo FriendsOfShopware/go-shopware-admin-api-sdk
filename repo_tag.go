@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,33 +99,31 @@ func (t TagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, err
 }
 
 type Tag struct {
+	Products []Product `json:"products,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Categories []Category `json:"categories,omitempty"`
 
-	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+	Orders []Order `json:"orders,omitempty"`
 
-	LandingPages      []LandingPage  `json:"landingPages,omitempty"`
+	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
 
-	Products      []Product  `json:"products,omitempty"`
+	LandingPages []LandingPage `json:"landingPages,omitempty"`
 
-	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
+	Rules []Rule `json:"rules,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Media []Media `json:"media,omitempty"`
 
-	Media      []Media  `json:"media,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Customers      []Customer  `json:"customers,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Rules      []Rule  `json:"rules,omitempty"`
+	Customers []Customer `json:"customers,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	NewsletterRecipients []NewsletterRecipient `json:"newsletterRecipients,omitempty"`
 
-	Categories      []Category  `json:"categories,omitempty"`
-
-	Orders      []Order  `json:"orders,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type TagCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t AppTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type AppTemplate struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Template string `json:"template,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Path string `json:"path,omitempty"`
 
-	Template      string  `json:"template,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	Path      string  `json:"path,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
-
-	App      *App  `json:"app,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type AppTemplateCollection struct {

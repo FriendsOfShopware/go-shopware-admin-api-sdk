@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,19 +99,17 @@ func (t AppAdministrationSnippetRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type AppAdministrationSnippet struct {
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	LocaleId      string  `json:"localeId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Value string `json:"value,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	Value      string  `json:"value,omitempty"`
-
-	AppId      string  `json:"appId,omitempty"`
-
+	LocaleId string `json:"localeId,omitempty"`
 }
 
 type AppAdministrationSnippetCollection struct {

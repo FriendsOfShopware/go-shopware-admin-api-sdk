@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,19 +99,17 @@ func (t CustomerRecoveryRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type CustomerRecovery struct {
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Hash      string  `json:"hash,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CustomerId      string  `json:"customerId,omitempty"`
+	Hash string `json:"hash,omitempty"`
 
-	Customer      *Customer  `json:"customer,omitempty"`
+	CustomerId string `json:"customerId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	Customer *Customer `json:"customer,omitempty"`
 }
 
 type CustomerRecoveryCollection struct {

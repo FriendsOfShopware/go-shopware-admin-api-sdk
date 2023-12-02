@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t StateMachineTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type StateMachineTranslation struct {
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	StateMachineId      string  `json:"stateMachineId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	StateMachineId string `json:"stateMachineId,omitempty"`
 
-	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	StateMachine *StateMachine `json:"stateMachine,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	CustomFields interface{} `json:"customFields,omitempty"`
 }
 
 type StateMachineTranslationCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,73 +99,71 @@ func (t PromotionRepository) Delete(ctx ApiContext, ids []string) (*http.Respons
 }
 
 type Promotion struct {
+	ValidUntil time.Time `json:"validUntil,omitempty"`
 
-	MaxRedemptionsGlobal      float64  `json:"maxRedemptionsGlobal,omitempty"`
+	UseIndividualCodes bool `json:"useIndividualCodes,omitempty"`
 
-	IndividualCodePattern      string  `json:"individualCodePattern,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Setgroups      []PromotionSetgroup  `json:"setgroups,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	OrderRules      []Rule  `json:"orderRules,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Translations      []PromotionTranslation  `json:"translations,omitempty"`
+	ValidFrom time.Time `json:"validFrom,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Discounts []PromotionDiscount `json:"discounts,omitempty"`
 
-	ValidFrom      time.Time  `json:"validFrom,omitempty"`
+	Exclusive bool `json:"exclusive,omitempty"`
 
-	ValidUntil      time.Time  `json:"validUntil,omitempty"`
+	UseSetGroups bool `json:"useSetGroups,omitempty"`
 
-	PersonaCustomers      []Customer  `json:"personaCustomers,omitempty"`
+	PreventCombination bool `json:"preventCombination,omitempty"`
 
-	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
+	Setgroups []PromotionSetgroup `json:"setgroups,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Priority      float64  `json:"priority,omitempty"`
+	PersonaCustomers []Customer `json:"personaCustomers,omitempty"`
 
-	Code      string  `json:"code,omitempty"`
+	MaxRedemptionsPerCustomer float64 `json:"maxRedemptionsPerCustomer,omitempty"`
 
-	ExclusionIds      interface{}  `json:"exclusionIds,omitempty"`
+	MaxRedemptionsGlobal float64 `json:"maxRedemptionsGlobal,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Code string `json:"code,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	OrderRules []Rule `json:"orderRules,omitempty"`
 
-	MaxRedemptionsPerCustomer      float64  `json:"maxRedemptionsPerCustomer,omitempty"`
+	OrderLineItems []OrderLineItem `json:"orderLineItems,omitempty"`
 
-	OrdersPerCustomerCount      interface{}  `json:"ordersPerCustomerCount,omitempty"`
+	ExclusionIds interface{} `json:"exclusionIds,omitempty"`
 
-	SalesChannels      []PromotionSalesChannel  `json:"salesChannels,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	UseIndividualCodes      bool  `json:"useIndividualCodes,omitempty"`
+	CustomerRestriction bool `json:"customerRestriction,omitempty"`
 
-	CustomerRestriction      bool  `json:"customerRestriction,omitempty"`
+	PersonaRules []Rule `json:"personaRules,omitempty"`
 
-	PersonaRules      []Rule  `json:"personaRules,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	IndividualCodePattern string `json:"individualCodePattern,omitempty"`
 
-	UseCodes      bool  `json:"useCodes,omitempty"`
+	OrderCount float64 `json:"orderCount,omitempty"`
 
-	PreventCombination      bool  `json:"preventCombination,omitempty"`
+	OrdersPerCustomerCount interface{} `json:"ordersPerCustomerCount,omitempty"`
 
-	OrderCount      float64  `json:"orderCount,omitempty"`
+	IndividualCodes []PromotionIndividualCode `json:"individualCodes,omitempty"`
 
-	IndividualCodes      []PromotionIndividualCode  `json:"individualCodes,omitempty"`
+	Translations []PromotionTranslation `json:"translations,omitempty"`
 
-	Exclusive      bool  `json:"exclusive,omitempty"`
+	Priority float64 `json:"priority,omitempty"`
 
-	UseSetGroups      bool  `json:"useSetGroups,omitempty"`
+	SalesChannels []PromotionSalesChannel `json:"salesChannels,omitempty"`
 
-	Discounts      []PromotionDiscount  `json:"discounts,omitempty"`
+	CartRules []Rule `json:"cartRules,omitempty"`
 
-	CartRules      []Rule  `json:"cartRules,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
+	UseCodes bool `json:"useCodes,omitempty"`
 }
 
 type PromotionCollection struct {

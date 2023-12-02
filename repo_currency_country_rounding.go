@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t CurrencyCountryRoundingRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type CurrencyCountryRounding struct {
+	CurrencyId string `json:"currencyId,omitempty"`
 
-	CountryId      string  `json:"countryId,omitempty"`
+	Currency *Currency `json:"currency,omitempty"`
 
-	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Currency      *Currency  `json:"currency,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Country      *Country  `json:"country,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CountryId string `json:"countryId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ItemRounding interface{} `json:"itemRounding,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	TotalRounding interface{} `json:"totalRounding,omitempty"`
 
-	CurrencyId      string  `json:"currencyId,omitempty"`
-
-	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
-
+	Country *Country `json:"country,omitempty"`
 }
 
 type CurrencyCountryRoundingCollection struct {

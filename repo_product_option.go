@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type ProductOptionRepository ClientService
@@ -98,17 +97,15 @@ func (t ProductOptionRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ProductOption struct {
+	Option *PropertyGroupOption `json:"option,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	ProductId string `json:"productId,omitempty"`
 
-	OptionId      string  `json:"optionId,omitempty"`
+	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	OptionId string `json:"optionId,omitempty"`
 
-	Option      *PropertyGroupOption  `json:"option,omitempty"`
-
-	ProductId      string  `json:"productId,omitempty"`
-
+	Product *Product `json:"product,omitempty"`
 }
 
 type ProductOptionCollection struct {

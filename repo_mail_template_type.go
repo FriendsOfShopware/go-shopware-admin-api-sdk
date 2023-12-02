@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t MailTemplateTypeRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type MailTemplateType struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	TechnicalName      string  `json:"technicalName,omitempty"`
+	MailTemplates []MailTemplate `json:"mailTemplates,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	AvailableEntities interface{} `json:"availableEntities,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Translations []MailTemplateTypeTranslation `json:"translations,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	TemplateData interface{} `json:"templateData,omitempty"`
 
-	AvailableEntities      interface{}  `json:"availableEntities,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Translations      []MailTemplateTypeTranslation  `json:"translations,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	MailTemplates      []MailTemplate  `json:"mailTemplates,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	TemplateData      interface{}  `json:"templateData,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
+	TechnicalName string `json:"technicalName,omitempty"`
 }
 
 type MailTemplateTypeCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t NumberRangeTypeTranslationRepository) Delete(ctx ApiContext, ids []strin
 }
 
 type NumberRangeTypeTranslation struct {
+	NumberRangeType *NumberRangeType `json:"numberRangeType,omitempty"`
 
-	NumberRangeTypeId      string  `json:"numberRangeTypeId,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	TypeName string `json:"typeName,omitempty"`
 
-	NumberRangeType      *NumberRangeType  `json:"numberRangeType,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	TypeName      string  `json:"typeName,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	NumberRangeTypeId string `json:"numberRangeTypeId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	LanguageId string `json:"languageId,omitempty"`
 }
 
 type NumberRangeTypeTranslationCollection struct {

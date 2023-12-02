@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,69 +99,67 @@ func (t UserRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type User struct {
+	Id string `json:"id,omitempty"`
 
-	Email      string  `json:"email,omitempty"`
+	TimeZone string `json:"timeZone,omitempty"`
 
-	Username      string  `json:"username,omitempty"`
+	AvatarMedia *Media `json:"avatarMedia,omitempty"`
 
-	Password      interface{}  `json:"password,omitempty"`
+	CreatedOrders []Order `json:"createdOrders,omitempty"`
 
-	FirstName      string  `json:"firstName,omitempty"`
+	UpdatedOrders []Order `json:"updatedOrders,omitempty"`
 
-	Configs      []UserConfig  `json:"configs,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	StoreToken      string  `json:"storeToken,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	UpdatedOrders      []Order  `json:"updatedOrders,omitempty"`
+	Title string `json:"title,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Email string `json:"email,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ImportExportLogEntries []ImportExportLog `json:"importExportLogEntries,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CreatedCustomers []Customer `json:"createdCustomers,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
+	Admin bool `json:"admin,omitempty"`
 
-	Admin      bool  `json:"admin,omitempty"`
+	LastUpdatedPasswordAt time.Time `json:"lastUpdatedPasswordAt,omitempty"`
 
-	Locale      *Locale  `json:"locale,omitempty"`
+	StoreToken string `json:"storeToken,omitempty"`
 
-	AvatarId      string  `json:"avatarId,omitempty"`
+	LocaleId string `json:"localeId,omitempty"`
 
-	StateMachineHistoryEntries      []StateMachineHistory  `json:"stateMachineHistoryEntries,omitempty"`
+	Username string `json:"username,omitempty"`
 
-	AvatarMedia      *Media  `json:"avatarMedia,omitempty"`
+	FirstName string `json:"firstName,omitempty"`
 
-	AccessKeys      []UserAccessKey  `json:"accessKeys,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	ImportExportLogEntries      []ImportExportLog  `json:"importExportLogEntries,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	UpdatedCustomers      []Customer  `json:"updatedCustomers,omitempty"`
+	AvatarId string `json:"avatarId,omitempty"`
 
-	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
+	Media []Media `json:"media,omitempty"`
 
-	LocaleId      string  `json:"localeId,omitempty"`
+	AccessKeys []UserAccessKey `json:"accessKeys,omitempty"`
 
-	LastName      string  `json:"lastName,omitempty"`
+	RecoveryUser *UserRecovery `json:"recoveryUser,omitempty"`
 
-	TimeZone      string  `json:"timeZone,omitempty"`
+	UpdatedCustomers []Customer `json:"updatedCustomers,omitempty"`
 
-	AclRoles      []AclRole  `json:"aclRoles,omitempty"`
+	CreatedNotifications []Notification `json:"createdNotifications,omitempty"`
 
-	CreatedOrders      []Order  `json:"createdOrders,omitempty"`
+	Password interface{} `json:"password,omitempty"`
 
-	CreatedCustomers      []Customer  `json:"createdCustomers,omitempty"`
+	Configs []UserConfig `json:"configs,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	AclRoles []AclRole `json:"aclRoles,omitempty"`
 
-	LastUpdatedPasswordAt      time.Time  `json:"lastUpdatedPasswordAt,omitempty"`
+	LastName string `json:"lastName,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Locale *Locale `json:"locale,omitempty"`
 
-	Media      []Media  `json:"media,omitempty"`
-
-	RecoveryUser      *UserRecovery  `json:"recoveryUser,omitempty"`
-
+	StateMachineHistoryEntries []StateMachineHistory `json:"stateMachineHistoryEntries,omitempty"`
 }
 
 type UserCollection struct {

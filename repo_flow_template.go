@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,17 +99,15 @@ func (t FlowTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type FlowTemplate struct {
+	Id string `json:"id,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type FlowTemplateCollection struct {

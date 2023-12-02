@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type PromotionPersonaCustomerRepository ClientService
@@ -98,15 +97,13 @@ func (t PromotionPersonaCustomerRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type PromotionPersonaCustomer struct {
+	Promotion *Promotion `json:"promotion,omitempty"`
 
-	PromotionId      string  `json:"promotionId,omitempty"`
+	Customer *Customer `json:"customer,omitempty"`
 
-	CustomerId      string  `json:"customerId,omitempty"`
+	PromotionId string `json:"promotionId,omitempty"`
 
-	Promotion      *Promotion  `json:"promotion,omitempty"`
-
-	Customer      *Customer  `json:"customer,omitempty"`
-
+	CustomerId string `json:"customerId,omitempty"`
 }
 
 type PromotionPersonaCustomerCollection struct {

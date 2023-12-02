@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t MailTemplateTypeTranslationRepository) Delete(ctx ApiContext, ids []stri
 }
 
 type MailTemplateTypeTranslation struct {
+	Name string `json:"name,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	MailTemplateTypeId      string  `json:"mailTemplateTypeId,omitempty"`
+	MailTemplateTypeId string `json:"mailTemplateTypeId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	MailTemplateType      *MailTemplateType  `json:"mailTemplateType,omitempty"`
+	MailTemplateType *MailTemplateType `json:"mailTemplateType,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
+	Language *Language `json:"language,omitempty"`
 }
 
 type MailTemplateTypeTranslationCollection struct {

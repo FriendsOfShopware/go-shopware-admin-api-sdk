@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t DocumentTypeTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type DocumentTypeTranslation struct {
+	Language *Language `json:"language,omitempty"`
 
-	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	DocumentType      *DocumentType  `json:"documentType,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	DocumentTypeId string `json:"documentTypeId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	DocumentType *DocumentType `json:"documentType,omitempty"`
 }
 
 type DocumentTypeTranslationCollection struct {

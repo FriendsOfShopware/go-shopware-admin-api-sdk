@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,33 +99,31 @@ func (t CustomFieldSetRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type CustomFieldSet struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	Global      bool  `json:"global,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Relations []CustomFieldSetRelation `json:"relations,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	Products []Product `json:"products,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Global bool `json:"global,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	CustomFields      []CustomField  `json:"customFields,omitempty"`
+	CustomFields []CustomField `json:"customFields,omitempty"`
 
-	Relations      []CustomFieldSetRelation  `json:"relations,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Products      []Product  `json:"products,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
+	Name string `json:"name,omitempty"`
 }
 
 type CustomFieldSetCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,51 +99,49 @@ func (t ThemeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, e
 }
 
 type Theme struct {
+	Name string `json:"name,omitempty"`
 
-	ConfigValues      interface{}  `json:"configValues,omitempty"`
+	Author string `json:"author,omitempty"`
 
-	Translations      []ThemeTranslation  `json:"translations,omitempty"`
+	ThemeJson interface{} `json:"themeJson,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	Labels      interface{}  `json:"labels,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	HelpTexts      interface{}  `json:"helpTexts,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	PreviewMediaId      string  `json:"previewMediaId,omitempty"`
+	ParentThemeId string `json:"parentThemeId,omitempty"`
 
-	ParentThemeId      string  `json:"parentThemeId,omitempty"`
+	ConfigValues interface{} `json:"configValues,omitempty"`
 
-	ThemeJson      interface{}  `json:"themeJson,omitempty"`
+	Media []Media `json:"media,omitempty"`
 
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	DependentThemes      []Theme  `json:"dependentThemes,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	BaseConfig interface{} `json:"baseConfig,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	DependentThemes []Theme `json:"dependentThemes,omitempty"`
 
-	Author      string  `json:"author,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	BaseConfig      interface{}  `json:"baseConfig,omitempty"`
+	Translations []ThemeTranslation `json:"translations,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	PreviewMedia *Media `json:"previewMedia,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	TechnicalName string `json:"technicalName,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Media      []Media  `json:"media,omitempty"`
+	Labels interface{} `json:"labels,omitempty"`
 
-	PreviewMedia      *Media  `json:"previewMedia,omitempty"`
+	HelpTexts interface{} `json:"helpTexts,omitempty"`
 
-	TechnicalName      string  `json:"technicalName,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
+	PreviewMediaId string `json:"previewMediaId,omitempty"`
 }
 
 type ThemeCollection struct {

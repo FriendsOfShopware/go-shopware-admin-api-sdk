@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type RuleTagRepository ClientService
@@ -98,15 +97,13 @@ func (t RuleTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type RuleTag struct {
+	RuleId string `json:"ruleId,omitempty"`
 
-	RuleId      string  `json:"ruleId,omitempty"`
+	TagId string `json:"tagId,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
+	Rule *Rule `json:"rule,omitempty"`
 
-	Rule      *Rule  `json:"rule,omitempty"`
-
-	Tag      *Tag  `json:"tag,omitempty"`
-
+	Tag *Tag `json:"tag,omitempty"`
 }
 
 type RuleTagCollection struct {

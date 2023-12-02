@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t MediaFolderConfigurationRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type MediaFolderConfiguration struct {
+	CreateThumbnails bool `json:"createThumbnails,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	KeepAspectRatio bool `json:"keepAspectRatio,omitempty"`
 
-	KeepAspectRatio      bool  `json:"keepAspectRatio,omitempty"`
+	ThumbnailQuality float64 `json:"thumbnailQuality,omitempty"`
 
-	MediaThumbnailSizes      []MediaThumbnailSize  `json:"mediaThumbnailSizes,omitempty"`
+	NoAssociation bool `json:"noAssociation,omitempty"`
 
-	MediaThumbnailSizesRo      interface{}  `json:"mediaThumbnailSizesRo,omitempty"`
+	MediaFolders []MediaFolder `json:"mediaFolders,omitempty"`
 
-	Private      bool  `json:"private,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	NoAssociation      bool  `json:"noAssociation,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	MediaFolders      []MediaFolder  `json:"mediaFolders,omitempty"`
+	MediaThumbnailSizes []MediaThumbnailSize `json:"mediaThumbnailSizes,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	MediaThumbnailSizesRo interface{} `json:"mediaThumbnailSizesRo,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CreateThumbnails      bool  `json:"createThumbnails,omitempty"`
-
-	ThumbnailQuality      float64  `json:"thumbnailQuality,omitempty"`
-
+	Private bool `json:"private,omitempty"`
 }
 
 type MediaFolderConfigurationCollection struct {

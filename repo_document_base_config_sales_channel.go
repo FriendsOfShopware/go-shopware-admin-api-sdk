@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t DocumentBaseConfigSalesChannelRepository) Delete(ctx ApiContext, ids []s
 }
 
 type DocumentBaseConfigSalesChannel struct {
+	Id string `json:"id,omitempty"`
 
-	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
+	DocumentTypeId string `json:"documentTypeId,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	DocumentBaseConfig *DocumentBaseConfig `json:"documentBaseConfig,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	DocumentBaseConfigId string `json:"documentBaseConfigId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	DocumentBaseConfigId      string  `json:"documentBaseConfigId,omitempty"`
+	DocumentType *DocumentType `json:"documentType,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	DocumentType      *DocumentType  `json:"documentType,omitempty"`
-
-	DocumentBaseConfig      *DocumentBaseConfig  `json:"documentBaseConfig,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type DocumentBaseConfigSalesChannelCollection struct {

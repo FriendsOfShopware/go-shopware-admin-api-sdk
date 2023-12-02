@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t CustomFieldRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type CustomField struct {
+	AllowCustomerWrite bool `json:"allowCustomerWrite,omitempty"`
 
-	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
+	AllowCartExpose bool `json:"allowCartExpose,omitempty"`
 
-	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
+	ProductSearchConfigFields []ProductSearchConfigField `json:"productSearchConfigFields,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
+	CustomFieldSetId string `json:"customFieldSetId,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Type string `json:"type,omitempty"`
 
-	AllowCartExpose      bool  `json:"allowCartExpose,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	ProductSearchConfigFields      []ProductSearchConfigField  `json:"productSearchConfigFields,omitempty"`
+	CustomFieldSet *CustomFieldSet `json:"customFieldSet,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
-
-	AllowCustomerWrite      bool  `json:"allowCustomerWrite,omitempty"`
-
+	Name string `json:"name,omitempty"`
 }
 
 type CustomFieldCollection struct {

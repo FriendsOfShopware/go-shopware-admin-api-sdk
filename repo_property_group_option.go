@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,39 +99,37 @@ func (t PropertyGroupOptionRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type PropertyGroupOption struct {
+	Group *PropertyGroup `json:"group,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	ProductConfiguratorSettings []ProductConfiguratorSetting `json:"productConfiguratorSettings,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ProductProperties []Product `json:"productProperties,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
+	GroupId string `json:"groupId,omitempty"`
 
-	ProductOptions      []Product  `json:"productOptions,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	Media *Media `json:"media,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Group      *PropertyGroup  `json:"group,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Translations      []PropertyGroupOptionTranslation  `json:"translations,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	ProductProperties      []Product  `json:"productProperties,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Translations []PropertyGroupOptionTranslation `json:"translations,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	ColorHexCode string `json:"colorHexCode,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	ProductConfiguratorSettings      []ProductConfiguratorSetting  `json:"productConfiguratorSettings,omitempty"`
+	ProductOptions []Product `json:"productOptions,omitempty"`
 
-	GroupId      string  `json:"groupId,omitempty"`
-
-	ColorHexCode      string  `json:"colorHexCode,omitempty"`
-
+	Translated interface{} `json:"translated,omitempty"`
 }
 
 type PropertyGroupOptionCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,37 +99,35 @@ func (t AppScriptConditionRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type AppScriptCondition struct {
+	RuleConditions []RuleCondition `json:"ruleConditions,omitempty"`
 
-	Translations      []AppScriptConditionTranslation  `json:"translations,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Identifier      string  `json:"identifier,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Group      string  `json:"group,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Script      string  `json:"script,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	RuleConditions      []RuleCondition  `json:"ruleConditions,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	Group string `json:"group,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Script string `json:"script,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	Constraints interface{} `json:"constraints,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Translations []AppScriptConditionTranslation `json:"translations,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	Constraints      interface{}  `json:"constraints,omitempty"`
-
+	Translated interface{} `json:"translated,omitempty"`
 }
 
 type AppScriptConditionCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,29 +99,27 @@ func (t WebhookRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type Webhook struct {
+	Url string `json:"url,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	ErrorCount float64 `json:"errorCount,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	OnlyLiveVersion      bool  `json:"onlyLiveVersion,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	EventName string `json:"eventName,omitempty"`
 
-	EventName      string  `json:"eventName,omitempty"`
+	OnlyLiveVersion bool `json:"onlyLiveVersion,omitempty"`
 
-	ErrorCount      float64  `json:"errorCount,omitempty"`
-
-	Active      bool  `json:"active,omitempty"`
-
+	Active bool `json:"active,omitempty"`
 }
 
 type WebhookCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,37 +99,35 @@ func (t TaxProviderRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type TaxProvider struct {
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Priority float64 `json:"priority,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	Priority      float64  `json:"priority,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	ProcessUrl string `json:"processUrl,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Identifier      string  `json:"identifier,omitempty"`
+	Translations []TaxProviderTranslation `json:"translations,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
 
-	ProcessUrl      string  `json:"processUrl,omitempty"`
-
-	Translations      []TaxProviderTranslation  `json:"translations,omitempty"`
-
+	Translated interface{} `json:"translated,omitempty"`
 }
 
 type TaxProviderCollection struct {

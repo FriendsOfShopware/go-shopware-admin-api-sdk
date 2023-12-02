@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,19 +99,17 @@ func (t MediaDefaultFolderRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type MediaDefaultFolder struct {
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Entity      string  `json:"entity,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Folder      *MediaFolder  `json:"folder,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Entity string `json:"entity,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	Folder *MediaFolder `json:"folder,omitempty"`
 }
 
 type MediaDefaultFolderCollection struct {

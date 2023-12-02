@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t PromotionDiscountPricesRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type PromotionDiscountPrices struct {
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CurrencyId      string  `json:"currencyId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Price      float64  `json:"price,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	PromotionDiscount      *PromotionDiscount  `json:"promotionDiscount,omitempty"`
+	DiscountId string `json:"discountId,omitempty"`
 
-	Currency      *Currency  `json:"currency,omitempty"`
+	CurrencyId string `json:"currencyId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Price float64 `json:"price,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	PromotionDiscount *PromotionDiscount `json:"promotionDiscount,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	DiscountId      string  `json:"discountId,omitempty"`
-
+	Currency *Currency `json:"currency,omitempty"`
 }
 
 type PromotionDiscountPricesCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,21 +99,19 @@ func (t TaxRuleTypeTranslationRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type TaxRuleTypeTranslation struct {
+	TaxRuleTypeId string `json:"taxRuleTypeId,omitempty"`
 
-	TypeName      string  `json:"typeName,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	TaxRuleType *TaxRuleType `json:"taxRuleType,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	TaxRuleTypeId      string  `json:"taxRuleTypeId,omitempty"`
+	TypeName string `json:"typeName,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	TaxRuleType      *TaxRuleType  `json:"taxRuleType,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type TaxRuleTypeTranslationCollection struct {

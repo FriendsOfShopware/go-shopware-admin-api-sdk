@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,95 +99,93 @@ func (t AppRepository) Delete(ctx ApiContext, ids []string) (*http.Response, err
 }
 
 type App struct {
+	Active bool `json:"active,omitempty"`
 
-	Integration      *Integration  `json:"integration,omitempty"`
+	IconRaw interface{} `json:"iconRaw,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Modules interface{} `json:"modules,omitempty"`
 
-	Author      string  `json:"author,omitempty"`
+	AllowedHosts interface{} `json:"allowedHosts,omitempty"`
 
-	AppSecret      string  `json:"appSecret,omitempty"`
+	Translations []AppTranslation `json:"translations,omitempty"`
 
-	MainModule      interface{}  `json:"mainModule,omitempty"`
+	AppShippingMethods []AppShippingMethod `json:"appShippingMethods,omitempty"`
 
-	AclRoleId      string  `json:"aclRoleId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	ScriptConditions      []AppScriptCondition  `json:"scriptConditions,omitempty"`
+	Author string `json:"author,omitempty"`
 
-	AppShippingMethods      []AppShippingMethod  `json:"appShippingMethods,omitempty"`
+	Privacy string `json:"privacy,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Templates []AppTemplate `json:"templates,omitempty"`
 
-	FlowEvents      []AppFlowEvent  `json:"flowEvents,omitempty"`
+	PaymentMethods []AppPaymentMethod `json:"paymentMethods,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	AclRole *AclRole `json:"aclRole,omitempty"`
 
-	License      string  `json:"license,omitempty"`
+	Version string `json:"version,omitempty"`
 
-	Icon      string  `json:"icon,omitempty"`
+	Icon string `json:"icon,omitempty"`
 
-	Modules      interface{}  `json:"modules,omitempty"`
+	MainModule interface{} `json:"mainModule,omitempty"`
 
-	AllowedHosts      interface{}  `json:"allowedHosts,omitempty"`
+	Cookies interface{} `json:"cookies,omitempty"`
 
-	Scripts      []Script  `json:"scripts,omitempty"`
+	IntegrationId string `json:"integrationId,omitempty"`
 
-	FlowActions      []AppFlowAction  `json:"flowActions,omitempty"`
+	Integration *Integration `json:"integration,omitempty"`
 
-	Privacy      string  `json:"privacy,omitempty"`
+	AclRoleId string `json:"aclRoleId,omitempty"`
 
-	IconRaw      interface{}  `json:"iconRaw,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Translations      []AppTranslation  `json:"translations,omitempty"`
+	PrivacyPolicyExtensions string `json:"privacyPolicyExtensions,omitempty"`
 
-	AclRole      *AclRole  `json:"aclRole,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Path string `json:"path,omitempty"`
 
-	PrivacyPolicyExtensions      string  `json:"privacyPolicyExtensions,omitempty"`
+	License string `json:"license,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	AppSecret string `json:"appSecret,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	BaseAppUrl string `json:"baseAppUrl,omitempty"`
 
-	Configurable      bool  `json:"configurable,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	AllowDisable      bool  `json:"allowDisable,omitempty"`
+	ActionButtons []AppActionButton `json:"actionButtons,omitempty"`
 
-	TemplateLoadPriority      float64  `json:"templateLoadPriority,omitempty"`
+	Scripts []Script `json:"scripts,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	TaxProviders []TaxProvider `json:"taxProviders,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	ScriptConditions []AppScriptCondition `json:"scriptConditions,omitempty"`
 
-	Webhooks      []Webhook  `json:"webhooks,omitempty"`
+	CmsBlocks []AppCmsBlock `json:"cmsBlocks,omitempty"`
 
-	PaymentMethods      []AppPaymentMethod  `json:"paymentMethods,omitempty"`
+	Copyright string `json:"copyright,omitempty"`
 
-	CmsBlocks      []AppCmsBlock  `json:"cmsBlocks,omitempty"`
+	Configurable bool `json:"configurable,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	TemplateLoadPriority float64 `json:"templateLoadPriority,omitempty"`
 
-	Version      string  `json:"version,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	Cookies      interface{}  `json:"cookies,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	BaseAppUrl      string  `json:"baseAppUrl,omitempty"`
+	Webhooks []Webhook `json:"webhooks,omitempty"`
 
-	CustomFieldSets      []CustomFieldSet  `json:"customFieldSets,omitempty"`
+	FlowEvents []AppFlowEvent `json:"flowEvents,omitempty"`
 
-	ActionButtons      []AppActionButton  `json:"actionButtons,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Templates      []AppTemplate  `json:"templates,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Path      string  `json:"path,omitempty"`
+	AllowDisable bool `json:"allowDisable,omitempty"`
 
-	Copyright      string  `json:"copyright,omitempty"`
+	CustomFieldSets []CustomFieldSet `json:"customFieldSets,omitempty"`
 
-	IntegrationId      string  `json:"integrationId,omitempty"`
-
-	TaxProviders      []TaxProvider  `json:"taxProviders,omitempty"`
-
+	FlowActions []AppFlowAction `json:"flowActions,omitempty"`
 }
 
 type AppCollection struct {

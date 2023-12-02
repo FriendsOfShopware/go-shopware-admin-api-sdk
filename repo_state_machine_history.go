@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,37 +99,35 @@ func (t StateMachineHistoryRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type StateMachineHistory struct {
+	Id string `json:"id,omitempty"`
 
-	TransitionActionName      string  `json:"transitionActionName,omitempty"`
+	FromStateId string `json:"fromStateId,omitempty"`
 
-	User      *User  `json:"user,omitempty"`
+	ToStateId string `json:"toStateId,omitempty"`
 
-	ReferencedId      string  `json:"referencedId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	User *User `json:"user,omitempty"`
 
-	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	FromStateMachineState      *StateMachineState  `json:"fromStateMachineState,omitempty"`
+	ToStateMachineState *StateMachineState `json:"toStateMachineState,omitempty"`
 
-	UserId      string  `json:"userId,omitempty"`
+	ReferencedVersionId string `json:"referencedVersionId,omitempty"`
 
-	ReferencedVersionId      string  `json:"referencedVersionId,omitempty"`
+	UserId string `json:"userId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ReferencedId string `json:"referencedId,omitempty"`
 
-	EntityName      string  `json:"entityName,omitempty"`
+	StateMachineId string `json:"stateMachineId,omitempty"`
 
-	FromStateId      string  `json:"fromStateId,omitempty"`
+	StateMachine *StateMachine `json:"stateMachine,omitempty"`
 
-	StateMachineId      string  `json:"stateMachineId,omitempty"`
+	EntityName string `json:"entityName,omitempty"`
 
-	ToStateId      string  `json:"toStateId,omitempty"`
+	FromStateMachineState *StateMachineState `json:"fromStateMachineState,omitempty"`
 
-	ToStateMachineState      *StateMachineState  `json:"toStateMachineState,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
+	TransitionActionName string `json:"transitionActionName,omitempty"`
 }
 
 type StateMachineHistoryCollection struct {

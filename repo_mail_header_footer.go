@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,33 +99,31 @@ func (t MailHeaderFooterRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type MailHeaderFooter struct {
+	Id string `json:"id,omitempty"`
 
-	FooterHtml      string  `json:"footerHtml,omitempty"`
+	HeaderHtml string `json:"headerHtml,omitempty"`
 
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	Translations []MailHeaderFooterTranslation `json:"translations,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	SystemDefault      bool  `json:"systemDefault,omitempty"`
+	HeaderPlain string `json:"headerPlain,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	FooterHtml string `json:"footerHtml,omitempty"`
 
-	Translations      []MailHeaderFooterTranslation  `json:"translations,omitempty"`
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
-	HeaderHtml      string  `json:"headerHtml,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	FooterPlain      string  `json:"footerPlain,omitempty"`
+	SystemDefault bool `json:"systemDefault,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	HeaderPlain      string  `json:"headerPlain,omitempty"`
-
+	FooterPlain string `json:"footerPlain,omitempty"`
 }
 
 type MailHeaderFooterCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,23 +99,21 @@ func (t ProductFeatureSetTranslationRepository) Delete(ctx ApiContext, ids []str
 }
 
 type ProductFeatureSetTranslation struct {
+	ProductFeatureSet *ProductFeatureSet `json:"productFeatureSet,omitempty"`
 
-	ProductFeatureSet      *ProductFeatureSet  `json:"productFeatureSet,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ProductFeatureSetId string `json:"productFeatureSetId,omitempty"`
 
-	ProductFeatureSetId      string  `json:"productFeatureSetId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
+	LanguageId string `json:"languageId,omitempty"`
 }
 
 type ProductFeatureSetTranslationCollection struct {

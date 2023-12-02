@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,33 +99,31 @@ func (t OrderTransactionCaptureRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type OrderTransactionCapture struct {
+	StateId string `json:"stateId,omitempty"`
 
-	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
+	Refunds []OrderTransactionCaptureRefund `json:"refunds,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	OrderTransactionId      string  `json:"orderTransactionId,omitempty"`
+	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
 
-	StateId      string  `json:"stateId,omitempty"`
+	Transaction *OrderTransaction `json:"transaction,omitempty"`
 
-	Transaction      *OrderTransaction  `json:"transaction,omitempty"`
+	OrderTransactionId string `json:"orderTransactionId,omitempty"`
 
-	Refunds      []OrderTransactionCaptureRefund  `json:"refunds,omitempty"`
+	OrderTransactionVersionId string `json:"orderTransactionVersionId,omitempty"`
 
-	ExternalReference      string  `json:"externalReference,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Amount      interface{}  `json:"amount,omitempty"`
+	ExternalReference string `json:"externalReference,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Amount interface{} `json:"amount,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	OrderTransactionVersionId      string  `json:"orderTransactionVersionId,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type OrderTransactionCaptureCollection struct {

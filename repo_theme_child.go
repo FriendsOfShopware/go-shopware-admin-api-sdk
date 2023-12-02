@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type ThemeChildRepository ClientService
@@ -98,15 +97,13 @@ func (t ThemeChildRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type ThemeChild struct {
+	ChildId string `json:"childId,omitempty"`
 
-	ParentId      string  `json:"parentId,omitempty"`
+	ParentTheme *Theme `json:"parentTheme,omitempty"`
 
-	ChildId      string  `json:"childId,omitempty"`
+	ChildTheme *Theme `json:"childTheme,omitempty"`
 
-	ParentTheme      *Theme  `json:"parentTheme,omitempty"`
-
-	ChildTheme      *Theme  `json:"childTheme,omitempty"`
-
+	ParentId string `json:"parentId,omitempty"`
 }
 
 type ThemeChildCollection struct {

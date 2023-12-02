@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,17 +99,15 @@ func (t VersionRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type Version struct {
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Commits      []VersionCommit  `json:"commits,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Commits []VersionCommit `json:"commits,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type VersionCollection struct {

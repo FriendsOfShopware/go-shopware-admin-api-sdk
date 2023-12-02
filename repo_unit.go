@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t UnitRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type Unit struct {
+	Id string `json:"id,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Products      []Product  `json:"products,omitempty"`
+	Products []Product `json:"products,omitempty"`
 
-	Translations      []UnitTranslation  `json:"translations,omitempty"`
+	Translations []UnitTranslation `json:"translations,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ShortCode string `json:"shortCode,omitempty"`
 
-	ShortCode      string  `json:"shortCode,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
+	Translated interface{} `json:"translated,omitempty"`
 }
 
 type UnitCollection struct {

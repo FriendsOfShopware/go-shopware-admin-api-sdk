@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,27 +99,25 @@ func (t AppTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type AppTranslation struct {
+	App *App `json:"app,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Label string `json:"label,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	PrivacyPolicyExtensions string `json:"privacyPolicyExtensions,omitempty"`
 
-	PrivacyPolicyExtensions      string  `json:"privacyPolicyExtensions,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	AppId      string  `json:"appId,omitempty"`
-
+	Language *Language `json:"language,omitempty"`
 }
 
 type AppTranslationCollection struct {

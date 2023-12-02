@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t CmsPageTranslationRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type CmsPageTranslation struct {
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
 
-	CmsPageId      string  `json:"cmsPageId,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
+	CmsPageId string `json:"cmsPageId,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
-
-	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
-
+	CmsPage *CmsPage `json:"cmsPage,omitempty"`
 }
 
 type CmsPageTranslationCollection struct {

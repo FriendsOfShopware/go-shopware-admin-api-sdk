@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,21 +99,19 @@ func (t AppScriptConditionTranslationRepository) Delete(ctx ApiContext, ids []st
 }
 
 type AppScriptConditionTranslation struct {
+	AppScriptConditionId string `json:"appScriptConditionId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
+	AppScriptCondition *AppScriptCondition `json:"appScriptCondition,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	AppScriptConditionId      string  `json:"appScriptConditionId,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type AppScriptConditionTranslationCollection struct {

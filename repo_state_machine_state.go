@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,45 +99,43 @@ func (t StateMachineStateRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type StateMachineState struct {
+	Name string `json:"name,omitempty"`
 
-	StateMachineId      string  `json:"stateMachineId,omitempty"`
+	StateMachine *StateMachine `json:"stateMachine,omitempty"`
 
-	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
+	ToStateMachineTransitions []StateMachineTransition `json:"toStateMachineTransitions,omitempty"`
 
-	FromStateMachineTransitions      []StateMachineTransition  `json:"fromStateMachineTransitions,omitempty"`
+	OrderTransactionCaptures []OrderTransactionCapture `json:"orderTransactionCaptures,omitempty"`
 
-	Orders      []Order  `json:"orders,omitempty"`
+	OrderTransactionCaptureRefunds []OrderTransactionCaptureRefund `json:"orderTransactionCaptureRefunds,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	ToStateMachineHistoryEntries []StateMachineHistory `json:"toStateMachineHistoryEntries,omitempty"`
 
-	TechnicalName      string  `json:"technicalName,omitempty"`
+	Orders []Order `json:"orders,omitempty"`
 
-	OrderTransactions      []OrderTransaction  `json:"orderTransactions,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	OrderTransactionCaptures      []OrderTransactionCapture  `json:"orderTransactionCaptures,omitempty"`
+	StateMachineId string `json:"stateMachineId,omitempty"`
 
-	ToStateMachineHistoryEntries      []StateMachineHistory  `json:"toStateMachineHistoryEntries,omitempty"`
+	FromStateMachineTransitions []StateMachineTransition `json:"fromStateMachineTransitions,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Translations []StateMachineStateTranslation `json:"translations,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
 
-	FromStateMachineHistoryEntries      []StateMachineHistory  `json:"fromStateMachineHistoryEntries,omitempty"`
+	TechnicalName string `json:"technicalName,omitempty"`
 
-	ToStateMachineTransitions      []StateMachineTransition  `json:"toStateMachineTransitions,omitempty"`
+	OrderTransactions []OrderTransaction `json:"orderTransactions,omitempty"`
 
-	Translations      []StateMachineStateTranslation  `json:"translations,omitempty"`
+	FromStateMachineHistoryEntries []StateMachineHistory `json:"fromStateMachineHistoryEntries,omitempty"`
 
-	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	OrderTransactionCaptureRefunds      []OrderTransactionCaptureRefund  `json:"orderTransactionCaptureRefunds,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
+	Translated interface{} `json:"translated,omitempty"`
 }
 
 type StateMachineStateCollection struct {

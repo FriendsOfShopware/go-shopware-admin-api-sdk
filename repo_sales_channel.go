@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,165 +99,163 @@ func (t SalesChannelRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type SalesChannel struct {
+	ServiceCategory *Category `json:"serviceCategory,omitempty"`
 
-	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
+	MailHeaderFooter *MailHeaderFooter `json:"mailHeaderFooter,omitempty"`
 
-	Orders      []Order  `json:"orders,omitempty"`
+	ShippingMethodId string `json:"shippingMethodId,omitempty"`
 
-	LandingPages      []LandingPage  `json:"landingPages,omitempty"`
+	ServiceCategoryId string `json:"serviceCategoryId,omitempty"`
 
-	Wishlists      []CustomerWishlist  `json:"wishlists,omitempty"`
+	AccessKey string `json:"accessKey,omitempty"`
 
-	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
+	Maintenance bool `json:"maintenance,omitempty"`
 
-	ShortName      string  `json:"shortName,omitempty"`
+	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
 
-	Languages      []Language  `json:"languages,omitempty"`
+	HomeCmsPageId string `json:"homeCmsPageId,omitempty"`
 
-	PaymentMethodIds      interface{}  `json:"paymentMethodIds,omitempty"`
+	Wishlists []CustomerWishlist `json:"wishlists,omitempty"`
 
-	Country      *Country  `json:"country,omitempty"`
+	TypeId string `json:"typeId,omitempty"`
 
-	SystemConfigs      []SystemConfig  `json:"systemConfigs,omitempty"`
+	MailHeaderFooterId string `json:"mailHeaderFooterId,omitempty"`
 
-	MailHeaderFooter      *MailHeaderFooter  `json:"mailHeaderFooter,omitempty"`
+	HreflangDefaultDomainId string `json:"hreflangDefaultDomainId,omitempty"`
 
-	SeoUrlTemplates      []SeoUrlTemplate  `json:"seoUrlTemplates,omitempty"`
+	BoundCustomers []Customer `json:"boundCustomers,omitempty"`
 
-	FooterCategoryId      string  `json:"footerCategoryId,omitempty"`
+	Themes []Theme `json:"themes,omitempty"`
 
-	MainCategories      []MainCategory  `json:"mainCategories,omitempty"`
+	NavigationCategoryDepth float64 `json:"navigationCategoryDepth,omitempty"`
 
-	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
+	ShortName string `json:"shortName,omitempty"`
 
-	NavigationCategoryVersionId      string  `json:"navigationCategoryVersionId,omitempty"`
+	MaintenanceIpWhitelist interface{} `json:"maintenanceIpWhitelist,omitempty"`
 
-	ServiceCategoryId      string  `json:"serviceCategoryId,omitempty"`
+	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
 
-	ServiceCategoryVersionId      string  `json:"serviceCategoryVersionId,omitempty"`
+	FooterCategoryId string `json:"footerCategoryId,omitempty"`
 
-	Countries      []Country  `json:"countries,omitempty"`
+	HreflangDefaultDomain *SalesChannelDomain `json:"hreflangDefaultDomain,omitempty"`
 
-	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
+	Currency *Currency `json:"currency,omitempty"`
 
-	BoundCustomers      []Customer  `json:"boundCustomers,omitempty"`
+	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
 
-	CurrencyId      string  `json:"currencyId,omitempty"`
+	Configuration interface{} `json:"configuration,omitempty"`
 
-	Themes      []Theme  `json:"themes,omitempty"`
+	Translations []SalesChannelTranslation `json:"translations,omitempty"`
 
-	NavigationCategoryDepth      float64  `json:"navigationCategoryDepth,omitempty"`
+	HomeMetaDescription string `json:"homeMetaDescription,omitempty"`
 
-	Translations      []SalesChannelTranslation  `json:"translations,omitempty"`
+	CustomerGroupsRegistrations []CustomerGroup `json:"customerGroupsRegistrations,omitempty"`
 
-	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+	PaymentMethodId string `json:"paymentMethodId,omitempty"`
 
-	AnalyticsId      string  `json:"analyticsId,omitempty"`
+	Countries []Country `json:"countries,omitempty"`
 
-	HreflangDefaultDomainId      string  `json:"hreflangDefaultDomainId,omitempty"`
+	Country *Country `json:"country,omitempty"`
 
-	Currency      *Currency  `json:"currency,omitempty"`
+	NewsletterRecipients []NewsletterRecipient `json:"newsletterRecipients,omitempty"`
 
-	HomeCmsPageId      string  `json:"homeCmsPageId,omitempty"`
+	PromotionSalesChannels []PromotionSalesChannel `json:"promotionSalesChannels,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ProductExports []ProductExport `json:"productExports,omitempty"`
 
-	FooterCategoryVersionId      string  `json:"footerCategoryVersionId,omitempty"`
+	Domains []SalesChannelDomain `json:"domains,omitempty"`
 
-	Domains      []SalesChannelDomain  `json:"domains,omitempty"`
+	ProductVisibilities []ProductVisibility `json:"productVisibilities,omitempty"`
 
-	DocumentBaseConfigSalesChannels      []DocumentBaseConfigSalesChannel  `json:"documentBaseConfigSalesChannels,omitempty"`
+	CustomerGroupId string `json:"customerGroupId,omitempty"`
 
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+	ServiceCategoryVersionId string `json:"serviceCategoryVersionId,omitempty"`
 
-	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	HomeMetaTitle      string  `json:"homeMetaTitle,omitempty"`
+	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 
-	HomeKeywords      string  `json:"homeKeywords,omitempty"`
+	Orders []Order `json:"orders,omitempty"`
 
-	HreflangDefaultDomain      *SalesChannelDomain  `json:"hreflangDefaultDomain,omitempty"`
+	Customers []Customer `json:"customers,omitempty"`
 
-	CustomerGroupId      string  `json:"customerGroupId,omitempty"`
+	MainCategories []MainCategory `json:"mainCategories,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	TaxCalculationType      string  `json:"taxCalculationType,omitempty"`
+	HomeCmsPageVersionId string `json:"homeCmsPageVersionId,omitempty"`
 
-	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
+	HomeCmsPage *CmsPage `json:"homeCmsPage,omitempty"`
 
-	CustomerGroupsRegistrations      []CustomerGroup  `json:"customerGroupsRegistrations,omitempty"`
+	DocumentBaseConfigSalesChannels []DocumentBaseConfigSalesChannel `json:"documentBaseConfigSalesChannels,omitempty"`
 
-	CountryId      string  `json:"countryId,omitempty"`
+	SeoUrlTemplates []SeoUrlTemplate `json:"seoUrlTemplates,omitempty"`
 
-	HreflangActive      bool  `json:"hreflangActive,omitempty"`
+	FooterCategoryVersionId string `json:"footerCategoryVersionId,omitempty"`
 
-	ProductReviews      []ProductReview  `json:"productReviews,omitempty"`
+	HreflangActive bool `json:"hreflangActive,omitempty"`
 
-	Analytics      *SalesChannelAnalytics  `json:"analytics,omitempty"`
+	FooterCategory *Category `json:"footerCategory,omitempty"`
 
-	MailHeaderFooterId      string  `json:"mailHeaderFooterId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Configuration      interface{}  `json:"configuration,omitempty"`
+	NavigationCategoryId string `json:"navigationCategoryId,omitempty"`
 
-	MaintenanceIpWhitelist      interface{}  `json:"maintenanceIpWhitelist,omitempty"`
+	Currencies []Currency `json:"currencies,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	HomeSlotConfig interface{} `json:"homeSlotConfig,omitempty"`
 
-	HomeSlotConfig      interface{}  `json:"homeSlotConfig,omitempty"`
+	HomeEnabled bool `json:"homeEnabled,omitempty"`
 
-	HomeName      string  `json:"homeName,omitempty"`
+	Analytics *SalesChannelAnalytics `json:"analytics,omitempty"`
 
-	NumberRangeSalesChannels      []NumberRangeSalesChannel  `json:"numberRangeSalesChannels,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CurrencyId string `json:"currencyId,omitempty"`
 
-	NavigationCategoryId      string  `json:"navigationCategoryId,omitempty"`
+	PaymentMethodIds interface{} `json:"paymentMethodIds,omitempty"`
 
-	Type      *SalesChannelType  `json:"type,omitempty"`
+	HomeMetaTitle string `json:"homeMetaTitle,omitempty"`
 
-	Customers      []Customer  `json:"customers,omitempty"`
+	HomeKeywords string `json:"homeKeywords,omitempty"`
 
-	HomeMetaDescription      string  `json:"homeMetaDescription,omitempty"`
+	TaxCalculationType string `json:"taxCalculationType,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	NavigationCategory *Category `json:"navigationCategory,omitempty"`
 
-	Currencies      []Currency  `json:"currencies,omitempty"`
+	NumberRangeSalesChannels []NumberRangeSalesChannel `json:"numberRangeSalesChannels,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CustomerGroup      *CustomerGroup  `json:"customerGroup,omitempty"`
+	AnalyticsId string `json:"analyticsId,omitempty"`
 
-	HomeCmsPageVersionId      string  `json:"homeCmsPageVersionId,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	HomeCmsPage      *CmsPage  `json:"homeCmsPage,omitempty"`
+	Languages []Language `json:"languages,omitempty"`
 
-	HomeEnabled      bool  `json:"homeEnabled,omitempty"`
+	Type *SalesChannelType `json:"type,omitempty"`
 
-	NavigationCategory      *Category  `json:"navigationCategory,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	CustomerGroup *CustomerGroup `json:"customerGroup,omitempty"`
 
-	ProductExports      []ProductExport  `json:"productExports,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	ProductVisibilities      []ProductVisibility  `json:"productVisibilities,omitempty"`
+	LandingPages []LandingPage `json:"landingPages,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	CountryId string `json:"countryId,omitempty"`
 
-	PromotionSalesChannels      []PromotionSalesChannel  `json:"promotionSalesChannels,omitempty"`
+	NavigationCategoryVersionId string `json:"navigationCategoryVersionId,omitempty"`
 
-	AccessKey      string  `json:"accessKey,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Maintenance      bool  `json:"maintenance,omitempty"`
+	HomeName string `json:"homeName,omitempty"`
 
-	FooterCategory      *Category  `json:"footerCategory,omitempty"`
+	SystemConfigs []SystemConfig `json:"systemConfigs,omitempty"`
 
-	ServiceCategory      *Category  `json:"serviceCategory,omitempty"`
-
-	TypeId      string  `json:"typeId,omitempty"`
-
+	ProductReviews []ProductReview `json:"productReviews,omitempty"`
 }
 
 type SalesChannelCollection struct {

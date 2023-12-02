@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type SalesChannelLanguageRepository ClientService
@@ -98,15 +97,13 @@ func (t SalesChannelLanguageRepository) Delete(ctx ApiContext, ids []string) (*h
 }
 
 type SalesChannelLanguage struct {
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
+	Language *Language `json:"language,omitempty"`
 }
 
 type SalesChannelLanguageCollection struct {

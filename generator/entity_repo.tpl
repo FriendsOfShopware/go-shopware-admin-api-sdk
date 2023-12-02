@@ -2,7 +2,9 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+{{if .HasTimeField}}
 	"time"
+{{end}}
 )
 
 type {{ .FormattedName }}Repository ClientService

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t CountryStateRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type CountryState struct {
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CountryId      string  `json:"countryId,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	ShortCode      string  `json:"shortCode,omitempty"`
+	Translations []CountryStateTranslation `json:"translations,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	CountryId string `json:"countryId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	ShortCode string `json:"shortCode,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Country      *Country  `json:"country,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Translations      []CountryStateTranslation  `json:"translations,omitempty"`
+	Country *Country `json:"country,omitempty"`
 
-	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
-
-	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type CountryStateCollection struct {

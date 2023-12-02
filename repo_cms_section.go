@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,49 +99,47 @@ func (t CmsSectionRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type CmsSection struct {
+	Visibility interface{} `json:"visibility,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
+	BackgroundMedia *Media `json:"backgroundMedia,omitempty"`
 
-	SizingMode      string  `json:"sizingMode,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	BackgroundColor      string  `json:"backgroundColor,omitempty"`
+	MobileBehavior string `json:"mobileBehavior,omitempty"`
 
-	PageId      string  `json:"pageId,omitempty"`
+	BackgroundMediaId string `json:"backgroundMediaId,omitempty"`
 
-	Visibility      interface{}  `json:"visibility,omitempty"`
+	BackgroundMediaMode string `json:"backgroundMediaMode,omitempty"`
 
-	Blocks      []CmsBlock  `json:"blocks,omitempty"`
+	SizingMode string `json:"sizingMode,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Blocks []CmsBlock `json:"blocks,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Page      *CmsPage  `json:"page,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
+	Type string `json:"type,omitempty"`
 
-	Locked      bool  `json:"locked,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	BackgroundMediaId      string  `json:"backgroundMediaId,omitempty"`
+	Locked bool `json:"locked,omitempty"`
 
-	BackgroundMediaMode      string  `json:"backgroundMediaMode,omitempty"`
+	PageId string `json:"pageId,omitempty"`
 
-	BackgroundMedia      *Media  `json:"backgroundMedia,omitempty"`
+	Page *CmsPage `json:"page,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	MobileBehavior      string  `json:"mobileBehavior,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CssClass      string  `json:"cssClass,omitempty"`
+	BackgroundColor string `json:"backgroundColor,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
+	CssClass string `json:"cssClass,omitempty"`
 }
 
 type CmsSectionCollection struct {

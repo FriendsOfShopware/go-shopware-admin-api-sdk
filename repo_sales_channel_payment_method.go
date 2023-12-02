@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type SalesChannelPaymentMethodRepository ClientService
@@ -98,15 +97,13 @@ func (t SalesChannelPaymentMethodRepository) Delete(ctx ApiContext, ids []string
 }
 
 type SalesChannelPaymentMethod struct {
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	PaymentMethodId string `json:"paymentMethodId,omitempty"`
 
-	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
-
-	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
-
+	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
 }
 
 type SalesChannelPaymentMethodCollection struct {

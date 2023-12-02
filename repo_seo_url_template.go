@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,27 +99,25 @@ func (t SeoUrlTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type SeoUrlTemplate struct {
+	IsValid bool `json:"isValid,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	RouteName      string  `json:"routeName,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	IsValid      bool  `json:"isValid,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	EntityName string `json:"entityName,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	EntityName      string  `json:"entityName,omitempty"`
+	RouteName string `json:"routeName,omitempty"`
 
-	Template      string  `json:"template,omitempty"`
+	Template string `json:"template,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	Id string `json:"id,omitempty"`
 }
 
 type SeoUrlTemplateCollection struct {

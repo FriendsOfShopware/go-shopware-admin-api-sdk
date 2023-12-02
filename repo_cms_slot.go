@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,39 +99,37 @@ func (t CmsSlotRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type CmsSlot struct {
+	Type string `json:"type,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CmsBlockVersionId string `json:"cmsBlockVersionId,omitempty"`
 
-	Type      string  `json:"type,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Slot      string  `json:"slot,omitempty"`
+	Block *CmsBlock `json:"block,omitempty"`
 
-	Block      *CmsBlock  `json:"block,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Translations      []CmsSlotTranslation  `json:"translations,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	CmsBlockVersionId      string  `json:"cmsBlockVersionId,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Slot string `json:"slot,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Data interface{} `json:"data,omitempty"`
 
-	Data      interface{}  `json:"data,omitempty"`
+	Translations []CmsSlotTranslation `json:"translations,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Locked bool `json:"locked,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	BlockId string `json:"blockId,omitempty"`
 
-	Locked      bool  `json:"locked,omitempty"`
+	FieldConfig interface{} `json:"fieldConfig,omitempty"`
 
-	BlockId      string  `json:"blockId,omitempty"`
-
-	FieldConfig      interface{}  `json:"fieldConfig,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type CmsSlotCollection struct {

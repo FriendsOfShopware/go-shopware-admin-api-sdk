@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t CmsSlotTranslationRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type CmsSlotTranslation struct {
+	Config interface{} `json:"config,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CmsSlotId string `json:"cmsSlotId,omitempty"`
 
-	CmsSlotId      string  `json:"cmsSlotId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	CmsSlotVersionId      string  `json:"cmsSlotVersionId,omitempty"`
+	CmsSlot *CmsSlot `json:"cmsSlot,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	CmsSlot      *CmsSlot  `json:"cmsSlot,omitempty"`
-
+	CmsSlotVersionId string `json:"cmsSlotVersionId,omitempty"`
 }
 
 type CmsSlotTranslationCollection struct {

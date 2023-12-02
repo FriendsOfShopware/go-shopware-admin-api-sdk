@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t LandingPageTranslationRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type LandingPageTranslation struct {
+	LandingPage *LandingPage `json:"landingPage,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	SlotConfig interface{} `json:"slotConfig,omitempty"`
 
-	LandingPageId      string  `json:"landingPageId,omitempty"`
+	Keywords string `json:"keywords,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
+	LandingPageVersionId string `json:"landingPageVersionId,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	MetaTitle string `json:"metaTitle,omitempty"`
 
-	MetaTitle      string  `json:"metaTitle,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
+	LandingPageId string `json:"landingPageId,omitempty"`
 
-	Keywords      string  `json:"keywords,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Url string `json:"url,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	MetaDescription string `json:"metaDescription,omitempty"`
 
-	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
-
-	MetaDescription      string  `json:"metaDescription,omitempty"`
-
+	LanguageId string `json:"languageId,omitempty"`
 }
 
 type LandingPageTranslationCollection struct {

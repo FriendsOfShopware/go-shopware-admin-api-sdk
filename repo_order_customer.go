@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,47 +99,45 @@ func (t OrderCustomerRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type OrderCustomer struct {
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CustomerId      string  `json:"customerId,omitempty"`
+	OrderId string `json:"orderId,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
+	Title string `json:"title,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	VatIds interface{} `json:"vatIds,omitempty"`
 
-	Company      string  `json:"company,omitempty"`
+	Customer *Customer `json:"customer,omitempty"`
 
-	VatIds      interface{}  `json:"vatIds,omitempty"`
+	Salutation *Salutation `json:"salutation,omitempty"`
 
-	CustomerNumber      string  `json:"customerNumber,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Order      *Order  `json:"order,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Customer      *Customer  `json:"customer,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	OrderId      string  `json:"orderId,omitempty"`
+	Email string `json:"email,omitempty"`
 
-	Email      string  `json:"email,omitempty"`
+	SalutationId string `json:"salutationId,omitempty"`
 
-	SalutationId      string  `json:"salutationId,omitempty"`
+	LastName string `json:"lastName,omitempty"`
 
-	Salutation      *Salutation  `json:"salutation,omitempty"`
+	CustomerNumber string `json:"customerNumber,omitempty"`
 
-	RemoteAddress      interface{}  `json:"remoteAddress,omitempty"`
+	Order *Order `json:"order,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	OrderVersionId      string  `json:"orderVersionId,omitempty"`
+	CustomerId string `json:"customerId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	OrderVersionId string `json:"orderVersionId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	FirstName string `json:"firstName,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Company string `json:"company,omitempty"`
 
-	FirstName      string  `json:"firstName,omitempty"`
-
-	LastName      string  `json:"lastName,omitempty"`
-
+	RemoteAddress interface{} `json:"remoteAddress,omitempty"`
 }
 
 type OrderCustomerCollection struct {

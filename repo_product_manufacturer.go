@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,33 +99,31 @@ func (t ProductManufacturerRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductManufacturer struct {
+	Link string `json:"link,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Description string `json:"description,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	Media *Media `json:"media,omitempty"`
 
-	Link      string  `json:"link,omitempty"`
+	Products []Product `json:"products,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Translations []ProductManufacturerTranslation `json:"translations,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	MediaId string `json:"mediaId,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Products      []Product  `json:"products,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	Translations      []ProductManufacturerTranslation  `json:"translations,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type ProductManufacturerCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,25 +99,23 @@ func (t ImportExportFileRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type ImportExportFile struct {
+	Path string `json:"path,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	ExpireDate time.Time `json:"expireDate,omitempty"`
 
-	Path      string  `json:"path,omitempty"`
+	Size float64 `json:"size,omitempty"`
 
-	Log      *ImportExportLog  `json:"log,omitempty"`
+	Log *ImportExportLog `json:"log,omitempty"`
 
-	AccessToken      string  `json:"accessToken,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	OriginalName      string  `json:"originalName,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ExpireDate      time.Time  `json:"expireDate,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Size      float64  `json:"size,omitempty"`
+	OriginalName string `json:"originalName,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	AccessToken string `json:"accessToken,omitempty"`
 }
 
 type ImportExportFileCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,71 +99,69 @@ func (t CountryRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type Country struct {
+	Translations []CountryTranslation `json:"translations,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Position float64 `json:"position,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	VatIdPattern string `json:"vatIdPattern,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
 
-	CheckAdvancedPostalCodePattern      bool  `json:"checkAdvancedPostalCodePattern,omitempty"`
+	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
 
-	CurrencyCountryRoundings      []CurrencyCountryRounding  `json:"currencyCountryRoundings,omitempty"`
+	CurrencyCountryRoundings []CurrencyCountryRounding `json:"currencyCountryRoundings,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Iso3      string  `json:"iso3,omitempty"`
+	Iso3 string `json:"iso3,omitempty"`
 
-	ForceStateInRegistration      bool  `json:"forceStateInRegistration,omitempty"`
+	ForceStateInRegistration bool `json:"forceStateInRegistration,omitempty"`
 
-	VatIdRequired      bool  `json:"vatIdRequired,omitempty"`
+	CompanyTax interface{} `json:"companyTax,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CheckPostalCodePattern bool `json:"checkPostalCodePattern,omitempty"`
 
-	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
+	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
 
-	ShippingAvailable      bool  `json:"shippingAvailable,omitempty"`
+	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
 
-	PostalCodeRequired      bool  `json:"postalCodeRequired,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	Translations      []CountryTranslation  `json:"translations,omitempty"`
+	Active bool `json:"active,omitempty"`
 
-	Iso      string  `json:"iso,omitempty"`
+	TaxRules []TaxRule `json:"taxRules,omitempty"`
 
-	CompanyTax      interface{}  `json:"companyTax,omitempty"`
+	AddressFormat interface{} `json:"addressFormat,omitempty"`
 
-	States      []CountryState  `json:"states,omitempty"`
+	Translated interface{} `json:"translated,omitempty"`
 
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	DisplayStateInRegistration bool `json:"displayStateInRegistration,omitempty"`
 
-	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
+	PostalCodeRequired bool `json:"postalCodeRequired,omitempty"`
 
-	TaxRules      []TaxRule  `json:"taxRules,omitempty"`
+	AdvancedPostalCodePattern string `json:"advancedPostalCodePattern,omitempty"`
 
-	CheckPostalCodePattern      bool  `json:"checkPostalCodePattern,omitempty"`
+	Iso string `json:"iso,omitempty"`
 
-	AdvancedPostalCodePattern      string  `json:"advancedPostalCodePattern,omitempty"`
+	VatIdRequired bool `json:"vatIdRequired,omitempty"`
 
-	AddressFormat      interface{}  `json:"addressFormat,omitempty"`
+	CustomerTax interface{} `json:"customerTax,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	DefaultPostalCodePattern string `json:"defaultPostalCodePattern,omitempty"`
 
-	DisplayStateInRegistration      bool  `json:"displayStateInRegistration,omitempty"`
+	States []CountryState `json:"states,omitempty"`
 
-	CheckVatIdPattern      bool  `json:"checkVatIdPattern,omitempty"`
+	CheckVatIdPattern bool `json:"checkVatIdPattern,omitempty"`
 
-	VatIdPattern      string  `json:"vatIdPattern,omitempty"`
+	CheckAdvancedPostalCodePattern bool `json:"checkAdvancedPostalCodePattern,omitempty"`
 
-	CustomerTax      interface{}  `json:"customerTax,omitempty"`
+	ShippingAvailable bool `json:"shippingAvailable,omitempty"`
 
-	DefaultPostalCodePattern      string  `json:"defaultPostalCodePattern,omitempty"`
-
-	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type CountryCollection struct {

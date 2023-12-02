@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type NewsletterRecipientTagRepository ClientService
@@ -98,15 +97,13 @@ func (t NewsletterRecipientTagRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type NewsletterRecipientTag struct {
+	NewsletterRecipientId string `json:"newsletterRecipientId,omitempty"`
 
-	NewsletterRecipientId      string  `json:"newsletterRecipientId,omitempty"`
+	TagId string `json:"tagId,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
+	NewsletterRecipient *NewsletterRecipient `json:"newsletterRecipient,omitempty"`
 
-	NewsletterRecipient      *NewsletterRecipient  `json:"newsletterRecipient,omitempty"`
-
-	Tag      *Tag  `json:"tag,omitempty"`
-
+	Tag *Tag `json:"tag,omitempty"`
 }
 
 type NewsletterRecipientTagCollection struct {

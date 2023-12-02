@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type ShippingMethodTagRepository ClientService
@@ -98,15 +97,13 @@ func (t ShippingMethodTagRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type ShippingMethodTag struct {
+	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+	Tag *Tag `json:"tag,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
+	ShippingMethodId string `json:"shippingMethodId,omitempty"`
 
-	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
-
-	Tag      *Tag  `json:"tag,omitempty"`
-
+	TagId string `json:"tagId,omitempty"`
 }
 
 type ShippingMethodTagCollection struct {

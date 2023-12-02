@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,41 +99,39 @@ func (t AppPaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type AppPaymentMethod struct {
+	AppName string `json:"appName,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	App *App `json:"app,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	OriginalMedia *Media `json:"originalMedia,omitempty"`
 
-	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
+	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
 
-	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
+	PaymentMethodId string `json:"paymentMethodId,omitempty"`
 
-	Identifier      string  `json:"identifier,omitempty"`
+	PayUrl string `json:"payUrl,omitempty"`
 
-	ValidateUrl      string  `json:"validateUrl,omitempty"`
+	FinalizeUrl string `json:"finalizeUrl,omitempty"`
 
-	CaptureUrl      string  `json:"captureUrl,omitempty"`
+	ValidateUrl string `json:"validateUrl,omitempty"`
 
-	RefundUrl      string  `json:"refundUrl,omitempty"`
+	RecurringUrl string `json:"recurringUrl,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	FinalizeUrl      string  `json:"finalizeUrl,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	PayUrl      string  `json:"payUrl,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	RecurringUrl      string  `json:"recurringUrl,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
 
-	OriginalMediaId      string  `json:"originalMediaId,omitempty"`
+	CaptureUrl string `json:"captureUrl,omitempty"`
 
-	OriginalMedia      *Media  `json:"originalMedia,omitempty"`
+	RefundUrl string `json:"refundUrl,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	AppName      string  `json:"appName,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
+	OriginalMediaId string `json:"originalMediaId,omitempty"`
 }
 
 type AppPaymentMethodCollection struct {

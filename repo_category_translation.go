@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,45 +99,43 @@ func (t CategoryTranslationRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type CategoryTranslation struct {
+	Description string `json:"description,omitempty"`
 
-	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	LinkType      string  `json:"linkType,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Breadcrumb interface{} `json:"breadcrumb,omitempty"`
 
-	Category      *Category  `json:"category,omitempty"`
+	MetaTitle string `json:"metaTitle,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ExternalLink      string  `json:"externalLink,omitempty"`
+	CategoryId string `json:"categoryId,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Category *Category `json:"category,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	CategoryVersionId string `json:"categoryVersionId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	SlotConfig interface{} `json:"slotConfig,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	LinkType string `json:"linkType,omitempty"`
 
-	Breadcrumb      interface{}  `json:"breadcrumb,omitempty"`
+	Keywords string `json:"keywords,omitempty"`
 
-	InternalLink      string  `json:"internalLink,omitempty"`
+	ExternalLink string `json:"externalLink,omitempty"`
 
-	MetaTitle      string  `json:"metaTitle,omitempty"`
+	LinkNewTab bool `json:"linkNewTab,omitempty"`
 
-	Keywords      string  `json:"keywords,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	LinkNewTab      bool  `json:"linkNewTab,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	MetaDescription      string  `json:"metaDescription,omitempty"`
+	InternalLink string `json:"internalLink,omitempty"`
 
-	CategoryId      string  `json:"categoryId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
+	MetaDescription string `json:"metaDescription,omitempty"`
 }
 
 type CategoryTranslationCollection struct {

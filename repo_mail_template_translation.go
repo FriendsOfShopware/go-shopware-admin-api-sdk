@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t MailTemplateTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type MailTemplateTranslation struct {
+	Description string `json:"description,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Subject string `json:"subject,omitempty"`
 
-	Subject      string  `json:"subject,omitempty"`
+	ContentHtml string `json:"contentHtml,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	ContentPlain string `json:"contentPlain,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	MailTemplateId string `json:"mailTemplateId,omitempty"`
 
-	MailTemplate      *MailTemplate  `json:"mailTemplate,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Language *Language `json:"language,omitempty"`
 
-	SenderName      string  `json:"senderName,omitempty"`
+	SenderName string `json:"senderName,omitempty"`
 
-	ContentHtml      string  `json:"contentHtml,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	ContentPlain      string  `json:"contentPlain,omitempty"`
-
-	MailTemplateId      string  `json:"mailTemplateId,omitempty"`
-
+	MailTemplate *MailTemplate `json:"mailTemplate,omitempty"`
 }
 
 type MailTemplateTranslationCollection struct {

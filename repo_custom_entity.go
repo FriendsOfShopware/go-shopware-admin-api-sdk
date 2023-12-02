@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,33 +99,31 @@ func (t CustomEntityRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type CustomEntity struct {
+	StoreApiAware bool `json:"storeApiAware,omitempty"`
 
-	Fields      interface{}  `json:"fields,omitempty"`
+	DeletedAt time.Time `json:"deletedAt,omitempty"`
 
-	PluginId      string  `json:"pluginId,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	LabelProperty      string  `json:"labelProperty,omitempty"`
+	Flags interface{} `json:"flags,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	AppId string `json:"appId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CustomFieldsAware bool `json:"customFieldsAware,omitempty"`
 
-	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Flags      interface{}  `json:"flags,omitempty"`
+	Fields interface{} `json:"fields,omitempty"`
 
-	CmsAware      bool  `json:"cmsAware,omitempty"`
+	CmsAware bool `json:"cmsAware,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	PluginId string `json:"pluginId,omitempty"`
 
-	StoreApiAware      bool  `json:"storeApiAware,omitempty"`
+	LabelProperty string `json:"labelProperty,omitempty"`
 
-	CustomFieldsAware      bool  `json:"customFieldsAware,omitempty"`
-
-	AppId      string  `json:"appId,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type CustomEntityCollection struct {

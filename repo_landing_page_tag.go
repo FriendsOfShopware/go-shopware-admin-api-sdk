@@ -2,7 +2,6 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
-	"time"
 )
 
 type LandingPageTagRepository ClientService
@@ -98,17 +97,15 @@ func (t LandingPageTagRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type LandingPageTag struct {
+	Tag *Tag `json:"tag,omitempty"`
 
-	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
+	LandingPageId string `json:"landingPageId,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
+	LandingPageVersionId string `json:"landingPageVersionId,omitempty"`
 
-	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
+	TagId string `json:"tagId,omitempty"`
 
-	Tag      *Tag  `json:"tag,omitempty"`
-
-	LandingPageId      string  `json:"landingPageId,omitempty"`
-
+	LandingPage *LandingPage `json:"landingPage,omitempty"`
 }
 
 type LandingPageTagCollection struct {

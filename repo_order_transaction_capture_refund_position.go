@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,37 +99,35 @@ func (t OrderTransactionCaptureRefundPositionRepository) Delete(ctx ApiContext, 
 }
 
 type OrderTransactionCaptureRefundPosition struct {
+	OrderLineItemId string `json:"orderLineItemId,omitempty"`
 
-	Amount      interface{}  `json:"amount,omitempty"`
+	OrderTransactionCaptureRefund *OrderTransactionCaptureRefund `json:"orderTransactionCaptureRefund,omitempty"`
 
-	RefundId      string  `json:"refundId,omitempty"`
+	Reason string `json:"reason,omitempty"`
 
-	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
+	Quantity float64 `json:"quantity,omitempty"`
 
-	OrderTransactionCaptureRefund      *OrderTransactionCaptureRefund  `json:"orderTransactionCaptureRefund,omitempty"`
+	Amount interface{} `json:"amount,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	RefundVersionId string `json:"refundVersionId,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	ExternalReference string `json:"externalReference,omitempty"`
 
-	Quantity      float64  `json:"quantity,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	VersionId string `json:"versionId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	OrderLineItemVersionId      string  `json:"orderLineItemVersionId,omitempty"`
+	RefundId string `json:"refundId,omitempty"`
 
-	ExternalReference      string  `json:"externalReference,omitempty"`
+	OrderLineItemVersionId string `json:"orderLineItemVersionId,omitempty"`
 
-	Reason      string  `json:"reason,omitempty"`
+	OrderLineItem *OrderLineItem `json:"orderLineItem,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	RefundVersionId      string  `json:"refundVersionId,omitempty"`
-
-	OrderLineItemId      string  `json:"orderLineItemId,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type OrderTransactionCaptureRefundPositionCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,21 +99,19 @@ func (t UserConfigRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type UserConfig struct {
+	Id string `json:"id,omitempty"`
 
-	Value      interface{}  `json:"value,omitempty"`
+	UserId string `json:"userId,omitempty"`
 
-	User      *User  `json:"user,omitempty"`
+	Key string `json:"key,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	User *User `json:"user,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UserId      string  `json:"userId,omitempty"`
-
-	Key      string  `json:"key,omitempty"`
-
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
 type UserConfigCollection struct {

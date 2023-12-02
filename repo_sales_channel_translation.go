@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,35 +99,33 @@ func (t SalesChannelTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type SalesChannelTranslation struct {
+	HomeMetaTitle string `json:"homeMetaTitle,omitempty"`
 
-	HomeSlotConfig      interface{}  `json:"homeSlotConfig,omitempty"`
+	HomeMetaDescription string `json:"homeMetaDescription,omitempty"`
 
-	HomeKeywords      string  `json:"homeKeywords,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	Name string `json:"name,omitempty"`
 
-	HomeName      string  `json:"homeName,omitempty"`
+	HomeEnabled bool `json:"homeEnabled,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	HomeName string `json:"homeName,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	HomeMetaTitle      string  `json:"homeMetaTitle,omitempty"`
+	LanguageId string `json:"languageId,omitempty"`
 
-	HomeMetaDescription      string  `json:"homeMetaDescription,omitempty"`
+	HomeSlotConfig interface{} `json:"homeSlotConfig,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	HomeKeywords string `json:"homeKeywords,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	HomeEnabled      bool  `json:"homeEnabled,omitempty"`
-
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
-
+	Language *Language `json:"language,omitempty"`
 }
 
 type SalesChannelTranslationCollection struct {

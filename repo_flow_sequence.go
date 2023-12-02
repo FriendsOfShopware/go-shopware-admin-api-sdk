@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,43 +99,41 @@ func (t FlowSequenceRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type FlowSequence struct {
+	Position float64 `json:"position,omitempty"`
 
-	FlowId      string  `json:"flowId,omitempty"`
+	DisplayGroup float64 `json:"displayGroup,omitempty"`
 
-	AppFlowAction      *AppFlowAction  `json:"appFlowAction,omitempty"`
+	AppFlowActionId string `json:"appFlowActionId,omitempty"`
 
-	RuleId      string  `json:"ruleId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Flow      *Flow  `json:"flow,omitempty"`
+	FlowId string `json:"flowId,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Config interface{} `json:"config,omitempty"`
 
-	AppFlowActionId      string  `json:"appFlowActionId,omitempty"`
+	Flow *Flow `json:"flow,omitempty"`
 
-	Parent      *FlowSequence  `json:"parent,omitempty"`
+	Rule *Rule `json:"rule,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Parent *FlowSequence `json:"parent,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Children []FlowSequence `json:"children,omitempty"`
 
-	ActionName      string  `json:"actionName,omitempty"`
+	ParentId string `json:"parentId,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	AppFlowAction *AppFlowAction `json:"appFlowAction,omitempty"`
 
-	DisplayGroup      float64  `json:"displayGroup,omitempty"`
+	RuleId string `json:"ruleId,omitempty"`
 
-	TrueCase      bool  `json:"trueCase,omitempty"`
+	ActionName string `json:"actionName,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Rule      *Rule  `json:"rule,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Children      []FlowSequence  `json:"children,omitempty"`
+	CustomFields interface{} `json:"customFields,omitempty"`
 
-	ParentId      string  `json:"parentId,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
+	TrueCase bool `json:"trueCase,omitempty"`
 }
 
 type FlowSequenceCollection struct {

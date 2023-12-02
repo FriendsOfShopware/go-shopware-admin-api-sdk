@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 	"time"
 )
 
@@ -98,31 +99,29 @@ func (t TaxRuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type TaxRule struct {
+	CountryId string `json:"countryId,omitempty"`
 
-	Data      interface{}  `json:"data,omitempty"`
+	TaxRate float64 `json:"taxRate,omitempty"`
 
-	ActiveFrom      time.Time  `json:"activeFrom,omitempty"`
+	Data interface{} `json:"data,omitempty"`
 
-	Tax      *Tax  `json:"tax,omitempty"`
+	TaxId string `json:"taxId,omitempty"`
 
-	CountryId      string  `json:"countryId,omitempty"`
+	ActiveFrom time.Time `json:"activeFrom,omitempty"`
 
-	TaxRate      float64  `json:"taxRate,omitempty"`
+	Type *TaxRuleType `json:"type,omitempty"`
 
-	TaxId      string  `json:"taxId,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Type      *TaxRuleType  `json:"type,omitempty"`
+	Id string `json:"id,omitempty"`
 
-	Country      *Country  `json:"country,omitempty"`
+	TaxRuleTypeId string `json:"taxRuleTypeId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Country *Country `json:"country,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Tax *Tax `json:"tax,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	TaxRuleTypeId      string  `json:"taxRuleTypeId,omitempty"`
-
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 type TaxRuleCollection struct {
