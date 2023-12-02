@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type PromotionSetgroupRuleRepository ClientService
@@ -97,13 +98,15 @@ func (t PromotionSetgroupRuleRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type PromotionSetgroupRule struct {
-	RuleId string `json:"ruleId,omitempty"`
 
-	Setgroup *PromotionSetgroup `json:"setgroup,omitempty"`
+	RuleId      string  `json:"ruleId,omitempty"`
 
-	Rule *Rule `json:"rule,omitempty"`
+	Setgroup      *PromotionSetgroup  `json:"setgroup,omitempty"`
 
-	SetgroupId string `json:"setgroupId,omitempty"`
+	Rule      *Rule  `json:"rule,omitempty"`
+
+	SetgroupId      string  `json:"setgroupId,omitempty"`
+
 }
 
 type PromotionSetgroupRuleCollection struct {

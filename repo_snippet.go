@@ -98,23 +98,25 @@ func (t SnippetRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type Snippet struct {
-	SetId string `json:"setId,omitempty"`
 
-	TranslationKey string `json:"translationKey,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Author string `json:"author,omitempty"`
+	Author      string  `json:"author,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Set      *SnippetSet  `json:"set,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Set *SnippetSet `json:"set,omitempty"`
+	SetId      string  `json:"setId,omitempty"`
 
-	Value string `json:"value,omitempty"`
+	TranslationKey      string  `json:"translationKey,omitempty"`
+
+	Value      string  `json:"value,omitempty"`
+
 }
 
 type SnippetCollection struct {

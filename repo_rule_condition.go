@@ -98,29 +98,35 @@ func (t RuleConditionRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type RuleCondition struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Rule      *Rule  `json:"rule,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Value interface{} `json:"value,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Parent *RuleCondition `json:"parent,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Children []RuleCondition `json:"children,omitempty"`
+	ScriptId      string  `json:"scriptId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Value      interface{}  `json:"value,omitempty"`
 
-	RuleId string `json:"ruleId,omitempty"`
+	Parent      *RuleCondition  `json:"parent,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	RuleId      string  `json:"ruleId,omitempty"`
 
-	Rule *Rule `json:"rule,omitempty"`
+	Children      []RuleCondition  `json:"children,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
+
+	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
+
 }
 
 type RuleConditionCollection struct {

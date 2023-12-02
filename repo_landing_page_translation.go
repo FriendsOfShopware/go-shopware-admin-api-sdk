@@ -98,33 +98,35 @@ func (t LandingPageTranslationRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type LandingPageTranslation struct {
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	MetaTitle string `json:"metaTitle,omitempty"`
+	LandingPageId      string  `json:"landingPageId,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
 
-	LandingPage *LandingPage `json:"landingPage,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
 
-	LandingPageId string `json:"landingPageId,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	LandingPageVersionId string `json:"landingPageVersionId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
+
+	MetaDescription      string  `json:"metaDescription,omitempty"`
+
 }
 
 type LandingPageTranslationCollection struct {

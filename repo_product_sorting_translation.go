@@ -98,19 +98,21 @@ func (t ProductSortingTranslationRepository) Delete(ctx ApiContext, ids []string
 }
 
 type ProductSortingTranslation struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ProductSortingId string `json:"productSortingId,omitempty"`
+	ProductSortingId      string  `json:"productSortingId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	ProductSorting *ProductSorting `json:"productSorting,omitempty"`
+	ProductSorting      *ProductSorting  `json:"productSorting,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type ProductSortingTranslationCollection struct {

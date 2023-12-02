@@ -98,35 +98,37 @@ func (t OrderDeliveryPositionRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type OrderDeliveryPosition struct {
-	Price interface{} `json:"price,omitempty"`
 
-	TotalPrice float64 `json:"totalPrice,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	OrderDeliveryId string `json:"orderDeliveryId,omitempty"`
+	OrderLineItemId      string  `json:"orderLineItemId,omitempty"`
 
-	OrderDeliveryVersionId string `json:"orderDeliveryVersionId,omitempty"`
+	OrderLineItemVersionId      string  `json:"orderLineItemVersionId,omitempty"`
 
-	Quantity float64 `json:"quantity,omitempty"`
+	OrderDelivery      *OrderDelivery  `json:"orderDelivery,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	OrderDelivery *OrderDelivery `json:"orderDelivery,omitempty"`
+	Quantity      float64  `json:"quantity,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	OrderLineItemVersionId string `json:"orderLineItemVersionId,omitempty"`
+	UnitPrice      float64  `json:"unitPrice,omitempty"`
 
-	OrderLineItem *OrderLineItem `json:"orderLineItem,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
 
-	UnitPrice float64 `json:"unitPrice,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	OrderLineItemId string `json:"orderLineItemId,omitempty"`
+	OrderDeliveryId      string  `json:"orderDeliveryId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	OrderDeliveryVersionId      string  `json:"orderDeliveryVersionId,omitempty"`
+
+	TotalPrice      float64  `json:"totalPrice,omitempty"`
+
 }
 
 type OrderDeliveryPositionCollection struct {

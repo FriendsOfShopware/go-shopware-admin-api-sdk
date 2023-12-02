@@ -98,25 +98,27 @@ func (t ScheduledTaskRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ScheduledTask struct {
-	ScheduledTaskClass string `json:"scheduledTaskClass,omitempty"`
 
-	Status string `json:"status,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Status      string  `json:"status,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	DefaultRunInterval      float64  `json:"defaultRunInterval,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	LastExecutionTime      time.Time  `json:"lastExecutionTime,omitempty"`
 
-	RunInterval float64 `json:"runInterval,omitempty"`
+	NextExecutionTime      time.Time  `json:"nextExecutionTime,omitempty"`
 
-	LastExecutionTime time.Time `json:"lastExecutionTime,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	NextExecutionTime time.Time `json:"nextExecutionTime,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	DeadMessages []DeadMessage `json:"deadMessages,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ScheduledTaskClass      string  `json:"scheduledTaskClass,omitempty"`
+
+	RunInterval      float64  `json:"runInterval,omitempty"`
+
 }
 
 type ScheduledTaskCollection struct {

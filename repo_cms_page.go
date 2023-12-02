@@ -98,43 +98,47 @@ func (t CmsPageRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type CmsPage struct {
-	Translations []CmsPageTranslation `json:"translations,omitempty"`
 
-	Categories []Category `json:"categories,omitempty"`
+	CssClass      string  `json:"cssClass,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Sections []CmsSection `json:"sections,omitempty"`
+	Locked      bool  `json:"locked,omitempty"`
 
-	HomeSalesChannels []SalesChannel `json:"homeSalesChannels,omitempty"`
+	PreviewMediaId      string  `json:"previewMediaId,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Translations      []CmsPageTranslation  `json:"translations,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	PreviewMedia      *Media  `json:"previewMedia,omitempty"`
 
-	Entity string `json:"entity,omitempty"`
+	Categories      []Category  `json:"categories,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	PreviewMediaId string `json:"previewMediaId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Entity      string  `json:"entity,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	LandingPages      []LandingPage  `json:"landingPages,omitempty"`
 
-	PreviewMedia *Media `json:"previewMedia,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	LandingPages []LandingPage `json:"landingPages,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Sections      []CmsSection  `json:"sections,omitempty"`
+
+	HomeSalesChannels      []SalesChannel  `json:"homeSalesChannels,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
 }
 
 type CmsPageCollection struct {

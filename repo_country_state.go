@@ -98,33 +98,35 @@ func (t CountryStateRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type CountryState struct {
-	Name string `json:"name,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Translations []CountryStateTranslation `json:"translations,omitempty"`
+	CountryId      string  `json:"countryId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ShortCode      string  `json:"shortCode,omitempty"`
 
-	CountryId string `json:"countryId,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Country *Country `json:"country,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ShortCode string `json:"shortCode,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Translations      []CountryStateTranslation  `json:"translations,omitempty"`
 
-	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
+	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
+
+	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
+
 }
 
 type CountryStateCollection struct {

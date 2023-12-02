@@ -98,17 +98,19 @@ func (t UserRecoveryRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type UserRecovery struct {
-	Id string `json:"id,omitempty"`
 
-	Hash string `json:"hash,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	User      *User  `json:"user,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type UserRecoveryCollection struct {

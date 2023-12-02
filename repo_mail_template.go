@@ -98,35 +98,37 @@ func (t MailTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type MailTemplate struct {
-	Subject string `json:"subject,omitempty"`
 
-	ContentHtml string `json:"contentHtml,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ContentPlain string `json:"contentPlain,omitempty"`
+	Translations      []MailTemplateTranslation  `json:"translations,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SystemDefault bool `json:"systemDefault,omitempty"`
+	SystemDefault      bool  `json:"systemDefault,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Subject      string  `json:"subject,omitempty"`
 
-	MailTemplateTypeId string `json:"mailTemplateTypeId,omitempty"`
+	ContentPlain      string  `json:"contentPlain,omitempty"`
 
-	Translations []MailTemplateTranslation `json:"translations,omitempty"`
+	MailTemplateType      *MailTemplateType  `json:"mailTemplateType,omitempty"`
 
-	Media []MailTemplateMedia `json:"media,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	SenderName string `json:"senderName,omitempty"`
+	MailTemplateTypeId      string  `json:"mailTemplateTypeId,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	SenderName      string  `json:"senderName,omitempty"`
 
-	MailTemplateType *MailTemplateType `json:"mailTemplateType,omitempty"`
+	ContentHtml      string  `json:"contentHtml,omitempty"`
+
+	Media      []MailTemplateMedia  `json:"media,omitempty"`
+
 }
 
 type MailTemplateCollection struct {

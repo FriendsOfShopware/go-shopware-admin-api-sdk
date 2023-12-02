@@ -98,61 +98,71 @@ func (t PaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type PaymentMethod struct {
-	Name string `json:"name,omitempty"`
 
-	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
+	ShortName      string  `json:"shortName,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	DistinguishableName      string  `json:"distinguishableName,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	FormattedHandlerIdentifier string `json:"formattedHandlerIdentifier,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
 
-	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
+	Recurring      bool  `json:"recurring,omitempty"`
 
-	Prepared bool `json:"prepared,omitempty"`
+	Translations      []PaymentMethodTranslation  `json:"translations,omitempty"`
 
-	Customers []Customer `json:"customers,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	HandlerIdentifier string `json:"handlerIdentifier,omitempty"`
+	Asynchronous      bool  `json:"asynchronous,omitempty"`
 
-	Asynchronous bool `json:"asynchronous,omitempty"`
+	Plugin      *Plugin  `json:"plugin,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	Translations []PaymentMethodTranslation `json:"translations,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	FormattedHandlerIdentifier      string  `json:"formattedHandlerIdentifier,omitempty"`
 
-	AppPaymentMethod *AppPaymentMethod `json:"appPaymentMethod,omitempty"`
+	Refundable      bool  `json:"refundable,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	OrderTransactions      []OrderTransaction  `json:"orderTransactions,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	DistinguishableName string `json:"distinguishableName,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	AfterOrderEnabled bool `json:"afterOrderEnabled,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+	PluginId      string  `json:"pluginId,omitempty"`
 
-	Plugin *Plugin `json:"plugin,omitempty"`
+	AfterOrderEnabled      bool  `json:"afterOrderEnabled,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Synchronous      bool  `json:"synchronous,omitempty"`
 
-	PluginId string `json:"pluginId,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
 
-	OrderTransactions []OrderTransaction `json:"orderTransactions,omitempty"`
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Customers      []Customer  `json:"customers,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	AppPaymentMethod      *AppPaymentMethod  `json:"appPaymentMethod,omitempty"`
 
-	Synchronous bool `json:"synchronous,omitempty"`
+	Active      bool  `json:"active,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Media      *Media  `json:"media,omitempty"`
+
+	HandlerIdentifier      string  `json:"handlerIdentifier,omitempty"`
+
+	Prepared      bool  `json:"prepared,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 }
 
 type PaymentMethodCollection struct {

@@ -98,29 +98,31 @@ func (t DeliveryTimeRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type DeliveryTime struct {
-	Name string `json:"name,omitempty"`
 
-	Min float64 `json:"min,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Max float64 `json:"max,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Min      float64  `json:"min,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Max      float64  `json:"max,omitempty"`
 
-	Unit string `json:"unit,omitempty"`
+	Unit      string  `json:"unit,omitempty"`
 
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	Translations []DeliveryTimeTranslation `json:"translations,omitempty"`
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Translations      []DeliveryTimeTranslation  `json:"translations,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
 }
 
 type DeliveryTimeCollection struct {

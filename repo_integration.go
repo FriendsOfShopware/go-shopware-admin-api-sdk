@@ -98,33 +98,33 @@ func (t IntegrationRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type Integration struct {
-	AclRoles []AclRole `json:"aclRoles,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	AclRoles      []AclRole  `json:"aclRoles,omitempty"`
 
-	SecretAccessKey interface{} `json:"secretAccessKey,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	LastUsageAt time.Time `json:"lastUsageAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	DeletedAt time.Time `json:"deletedAt,omitempty"`
+	AccessKey      string  `json:"accessKey,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	AccessKey string `json:"accessKey,omitempty"`
+	SecretAccessKey      interface{}  `json:"secretAccessKey,omitempty"`
 
-	WriteAccess bool `json:"writeAccess,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Admin bool `json:"admin,omitempty"`
+	LastUsageAt      time.Time  `json:"lastUsageAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Admin      bool  `json:"admin,omitempty"`
 
-	CreatedNotifications []Notification `json:"createdNotifications,omitempty"`
+	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
+
 }
 
 type IntegrationCollection struct {

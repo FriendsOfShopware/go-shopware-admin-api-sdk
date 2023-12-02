@@ -98,25 +98,27 @@ func (t ThemeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type ThemeTranslation struct {
-	Theme *Theme `json:"theme,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Labels      interface{}  `json:"labels,omitempty"`
 
-	HelpTexts interface{} `json:"helpTexts,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ThemeId      string  `json:"themeId,omitempty"`
 
-	Labels interface{} `json:"labels,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Theme      *Theme  `json:"theme,omitempty"`
 
-	ThemeId string `json:"themeId,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	HelpTexts      interface{}  `json:"helpTexts,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 }
 
 type ThemeTranslationCollection struct {

@@ -98,29 +98,31 @@ func (t MailHeaderFooterTranslationRepository) Delete(ctx ApiContext, ids []stri
 }
 
 type MailHeaderFooterTranslation struct {
-	Description string `json:"description,omitempty"`
 
-	HeaderPlain string `json:"headerPlain,omitempty"`
+	FooterHtml      string  `json:"footerHtml,omitempty"`
 
-	FooterHtml string `json:"footerHtml,omitempty"`
+	FooterPlain      string  `json:"footerPlain,omitempty"`
 
-	FooterPlain string `json:"footerPlain,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	MailHeaderFooterId string `json:"mailHeaderFooterId,omitempty"`
+	HeaderPlain      string  `json:"headerPlain,omitempty"`
 
-	MailHeaderFooter *MailHeaderFooter `json:"mailHeaderFooter,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	MailHeaderFooterId      string  `json:"mailHeaderFooterId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	MailHeaderFooter      *MailHeaderFooter  `json:"mailHeaderFooter,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	HeaderHtml string `json:"headerHtml,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	HeaderHtml      string  `json:"headerHtml,omitempty"`
+
 }
 
 type MailHeaderFooterTranslationCollection struct {

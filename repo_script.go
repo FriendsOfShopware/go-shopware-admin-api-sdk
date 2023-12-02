@@ -98,23 +98,25 @@ func (t ScriptRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 }
 
 type Script struct {
-	AppId string `json:"appId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Script      string  `json:"script,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Script string `json:"script,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Hook string `json:"hook,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Hook      string  `json:"hook,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Active      bool  `json:"active,omitempty"`
+
+	App      *App  `json:"app,omitempty"`
+
 }
 
 type ScriptCollection struct {

@@ -98,19 +98,21 @@ func (t PromotionIndividualCodeRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type PromotionIndividualCode struct {
-	Payload interface{} `json:"payload,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Code      string  `json:"code,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	Code string `json:"code,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 }
 
 type PromotionIndividualCodeCollection struct {

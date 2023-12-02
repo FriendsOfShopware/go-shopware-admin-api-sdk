@@ -98,75 +98,95 @@ func (t AppRepository) Delete(ctx ApiContext, ids []string) (*http.Response, err
 }
 
 type App struct {
-	Copyright string `json:"copyright,omitempty"`
 
-	IconRaw interface{} `json:"iconRaw,omitempty"`
+	Integration      *Integration  `json:"integration,omitempty"`
 
-	Integration *Integration `json:"integration,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Templates []AppTemplate `json:"templates,omitempty"`
+	Author      string  `json:"author,omitempty"`
 
-	Webhooks []Webhook `json:"webhooks,omitempty"`
+	AppSecret      string  `json:"appSecret,omitempty"`
 
-	Scripts []Script `json:"scripts,omitempty"`
+	MainModule      interface{}  `json:"mainModule,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	AclRoleId      string  `json:"aclRoleId,omitempty"`
 
-	Configurable bool `json:"configurable,omitempty"`
+	ScriptConditions      []AppScriptCondition  `json:"scriptConditions,omitempty"`
 
-	Version string `json:"version,omitempty"`
+	AppShippingMethods      []AppShippingMethod  `json:"appShippingMethods,omitempty"`
 
-	Translations []AppTranslation `json:"translations,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	FlowEvents      []AppFlowEvent  `json:"flowEvents,omitempty"`
 
-	AclRole *AclRole `json:"aclRole,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CmsBlocks []AppCmsBlock `json:"cmsBlocks,omitempty"`
+	License      string  `json:"license,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Icon      string  `json:"icon,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Modules      interface{}  `json:"modules,omitempty"`
 
-	Icon string `json:"icon,omitempty"`
+	AllowedHosts      interface{}  `json:"allowedHosts,omitempty"`
 
-	MainModule interface{} `json:"mainModule,omitempty"`
+	Scripts      []Script  `json:"scripts,omitempty"`
 
-	Cookies interface{} `json:"cookies,omitempty"`
+	FlowActions      []AppFlowAction  `json:"flowActions,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Privacy      string  `json:"privacy,omitempty"`
 
-	IntegrationId string `json:"integrationId,omitempty"`
+	IconRaw      interface{}  `json:"iconRaw,omitempty"`
 
-	PaymentMethods []AppPaymentMethod `json:"paymentMethods,omitempty"`
+	Translations      []AppTranslation  `json:"translations,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	AclRole      *AclRole  `json:"aclRole,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Privacy string `json:"privacy,omitempty"`
+	PrivacyPolicyExtensions      string  `json:"privacyPolicyExtensions,omitempty"`
 
-	CustomFieldSets []CustomFieldSet `json:"customFieldSets,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	AppSecret string `json:"appSecret,omitempty"`
+	Configurable      bool  `json:"configurable,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	AllowDisable      bool  `json:"allowDisable,omitempty"`
 
-	ActionButtons []AppActionButton `json:"actionButtons,omitempty"`
+	TemplateLoadPriority      float64  `json:"templateLoadPriority,omitempty"`
 
-	License string `json:"license,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Modules interface{} `json:"modules,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	PrivacyPolicyExtensions string `json:"privacyPolicyExtensions,omitempty"`
+	Webhooks      []Webhook  `json:"webhooks,omitempty"`
 
-	AclRoleId string `json:"aclRoleId,omitempty"`
+	PaymentMethods      []AppPaymentMethod  `json:"paymentMethods,omitempty"`
 
-	Author string `json:"author,omitempty"`
+	CmsBlocks      []AppCmsBlock  `json:"cmsBlocks,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	Version      string  `json:"version,omitempty"`
+
+	Cookies      interface{}  `json:"cookies,omitempty"`
+
+	BaseAppUrl      string  `json:"baseAppUrl,omitempty"`
+
+	CustomFieldSets      []CustomFieldSet  `json:"customFieldSets,omitempty"`
+
+	ActionButtons      []AppActionButton  `json:"actionButtons,omitempty"`
+
+	Templates      []AppTemplate  `json:"templates,omitempty"`
+
+	Path      string  `json:"path,omitempty"`
+
+	Copyright      string  `json:"copyright,omitempty"`
+
+	IntegrationId      string  `json:"integrationId,omitempty"`
+
+	TaxProviders      []TaxProvider  `json:"taxProviders,omitempty"`
+
 }
 
 type AppCollection struct {

@@ -98,53 +98,61 @@ func (t ShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type ShippingMethod struct {
-	TaxType string `json:"taxType,omitempty"`
 
-	TrackingUrl string `json:"trackingUrl,omitempty"`
+	DeliveryTimeId      string  `json:"deliveryTimeId,omitempty"`
 
-	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
+	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Prices      []ShippingMethodPrice  `json:"prices,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
 
-	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
+	Tax      *Tax  `json:"tax,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	DeliveryTimeId string `json:"deliveryTimeId,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	TaxType      string  `json:"taxType,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	DeliveryTime *DeliveryTime `json:"deliveryTime,omitempty"`
+	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
 
-	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Prices []ShippingMethodPrice `json:"prices,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Tax *Tax `json:"tax,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translations []ShippingMethodTranslation `json:"translations,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	TaxId      string  `json:"taxId,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	DeliveryTime      *DeliveryTime  `json:"deliveryTime,omitempty"`
 
-	TaxId string `json:"taxId,omitempty"`
+	AppShippingMethod      *AppShippingMethod  `json:"appShippingMethod,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	TrackingUrl      string  `json:"trackingUrl,omitempty"`
+
+	Translations      []ShippingMethodTranslation  `json:"translations,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	MediaId      string  `json:"mediaId,omitempty"`
+
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+
 }
 
 type ShippingMethodCollection struct {

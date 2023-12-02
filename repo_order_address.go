@@ -98,59 +98,61 @@ func (t OrderAddressRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type OrderAddress struct {
-	Street string `json:"street,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalutationId string `json:"salutationId,omitempty"`
+	Department      string  `json:"department,omitempty"`
 
-	FirstName string `json:"firstName,omitempty"`
+	CountryState      *CountryState  `json:"countryState,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CountryStateId      string  `json:"countryStateId,omitempty"`
 
-	City string `json:"city,omitempty"`
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
 
-	CountryState *CountryState `json:"countryState,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	CountryId      string  `json:"countryId,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	Company      string  `json:"company,omitempty"`
 
-	Company string `json:"company,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	VatId string `json:"vatId,omitempty"`
+	SalutationId      string  `json:"salutationId,omitempty"`
 
-	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
+	AdditionalAddressLine1      string  `json:"additionalAddressLine1,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Street      string  `json:"street,omitempty"`
 
-	CountryStateId string `json:"countryStateId,omitempty"`
+	AdditionalAddressLine2      string  `json:"additionalAddressLine2,omitempty"`
 
-	Department string `json:"department,omitempty"`
+	Salutation      *Salutation  `json:"salutation,omitempty"`
 
-	AdditionalAddressLine1 string `json:"additionalAddressLine1,omitempty"`
+	PhoneNumber      string  `json:"phoneNumber,omitempty"`
 
-	Country *Country `json:"country,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Zipcode string `json:"zipcode,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	PhoneNumber string `json:"phoneNumber,omitempty"`
+	City      string  `json:"city,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
+	VatId      string  `json:"vatId,omitempty"`
 
-	CountryId string `json:"countryId,omitempty"`
+	Order      *Order  `json:"order,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	AdditionalAddressLine2 string `json:"additionalAddressLine2,omitempty"`
+	LastName      string  `json:"lastName,omitempty"`
+
+	Zipcode      string  `json:"zipcode,omitempty"`
+
 }
 
 type OrderAddressCollection struct {

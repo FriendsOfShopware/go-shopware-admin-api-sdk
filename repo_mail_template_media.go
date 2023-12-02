@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type MailTemplateMediaRepository ClientService
@@ -97,19 +98,21 @@ func (t MailTemplateMediaRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type MailTemplateMedia struct {
-	MediaId string `json:"mediaId,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	MailTemplate *MailTemplate `json:"mailTemplate,omitempty"`
+	MailTemplateId      string  `json:"mailTemplateId,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	MailTemplateId string `json:"mailTemplateId,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	MailTemplate      *MailTemplate  `json:"mailTemplate,omitempty"`
+
+	Media      *Media  `json:"media,omitempty"`
+
 }
 
 type MailTemplateMediaCollection struct {

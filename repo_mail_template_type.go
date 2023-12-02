@@ -98,27 +98,29 @@ func (t MailTemplateTypeRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type MailTemplateType struct {
-	Translations []MailTemplateTypeTranslation `json:"translations,omitempty"`
 
-	MailTemplates []MailTemplate `json:"mailTemplates,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	TemplateData interface{} `json:"templateData,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	AvailableEntities interface{} `json:"availableEntities,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	AvailableEntities      interface{}  `json:"availableEntities,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Translations      []MailTemplateTypeTranslation  `json:"translations,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	MailTemplates      []MailTemplate  `json:"mailTemplates,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	TemplateData      interface{}  `json:"templateData,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
 }
 
 type MailTemplateTypeCollection struct {

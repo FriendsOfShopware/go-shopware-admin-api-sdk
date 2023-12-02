@@ -98,27 +98,29 @@ func (t StateMachineTransitionRepository) Delete(ctx ApiContext, ids []string) (
 }
 
 type StateMachineTransition struct {
-	ToStateMachineState *StateMachineState `json:"toStateMachineState,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ActionName      string  `json:"actionName,omitempty"`
 
-	StateMachineId string `json:"stateMachineId,omitempty"`
+	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
 
-	FromStateId string `json:"fromStateId,omitempty"`
+	FromStateId      string  `json:"fromStateId,omitempty"`
 
-	ToStateId string `json:"toStateId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	StateMachineId      string  `json:"stateMachineId,omitempty"`
 
-	ActionName string `json:"actionName,omitempty"`
+	FromStateMachineState      *StateMachineState  `json:"fromStateMachineState,omitempty"`
 
-	StateMachine *StateMachine `json:"stateMachine,omitempty"`
+	ToStateId      string  `json:"toStateId,omitempty"`
 
-	FromStateMachineState *StateMachineState `json:"fromStateMachineState,omitempty"`
+	ToStateMachineState      *StateMachineState  `json:"toStateMachineState,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 }
 
 type StateMachineTransitionCollection struct {

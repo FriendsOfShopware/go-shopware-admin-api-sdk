@@ -98,39 +98,41 @@ func (t ImportExportProfileRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ImportExportProfile struct {
-	SourceEntity string `json:"sourceEntity,omitempty"`
 
-	Translations []ImportExportProfileTranslation `json:"translations,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	SystemDefault      bool  `json:"systemDefault,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Enclosure      string  `json:"enclosure,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdateBy      interface{}  `json:"updateBy,omitempty"`
 
-	UpdateBy interface{} `json:"updateBy,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	ImportExportLogs      []ImportExportLog  `json:"importExportLogs,omitempty"`
 
-	Mapping interface{} `json:"mapping,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SystemDefault bool `json:"systemDefault,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	FileType string `json:"fileType,omitempty"`
+	SourceEntity      string  `json:"sourceEntity,omitempty"`
 
-	Delimiter string `json:"delimiter,omitempty"`
+	Delimiter      string  `json:"delimiter,omitempty"`
 
-	Enclosure string `json:"enclosure,omitempty"`
+	Mapping      interface{}  `json:"mapping,omitempty"`
 
-	ImportExportLogs []ImportExportLog `json:"importExportLogs,omitempty"`
+	Translations      []ImportExportProfileTranslation  `json:"translations,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	FileType      string  `json:"fileType,omitempty"`
+
 }
 
 type ImportExportProfileCollection struct {

@@ -98,23 +98,25 @@ func (t PromotionSetgroupRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type PromotionSetgroup struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	PackagerKey string `json:"packagerKey,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	SorterKey string `json:"sorterKey,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	PackagerKey      string  `json:"packagerKey,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	SorterKey      string  `json:"sorterKey,omitempty"`
 
-	SetGroupRules []Rule `json:"setGroupRules,omitempty"`
+	Value      float64  `json:"value,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SetGroupRules      []Rule  `json:"setGroupRules,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Value float64 `json:"value,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
+
+	Promotion      *Promotion  `json:"promotion,omitempty"`
+
 }
 
 type PromotionSetgroupCollection struct {

@@ -98,45 +98,47 @@ func (t ProductReviewRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ProductReview struct {
-	Status bool `json:"status,omitempty"`
 
-	Comment string `json:"comment,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CustomerId      string  `json:"customerId,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	ExternalUser      string  `json:"externalUser,omitempty"`
 
-	ExternalEmail string `json:"externalEmail,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	ExternalUser string `json:"externalUser,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Customer *Customer `json:"customer,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	ExternalEmail      string  `json:"externalEmail,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Content      string  `json:"content,omitempty"`
 
-	CustomerId string `json:"customerId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Content string `json:"content,omitempty"`
+	Points      float64  `json:"points,omitempty"`
 
-	Points float64 `json:"points,omitempty"`
+	Status      bool  `json:"status,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	Comment      string  `json:"comment,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Customer      *Customer  `json:"customer,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
 }
 
 type ProductReviewCollection struct {

@@ -98,39 +98,41 @@ func (t ProductTranslationRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type ProductTranslation struct {
-	MetaTitle string `json:"metaTitle,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	CustomSearchKeywords interface{} `json:"customSearchKeywords,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	PackUnitPlural      string  `json:"packUnitPlural,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	PackUnit string `json:"packUnit,omitempty"`
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
-	PackUnitPlural string `json:"packUnitPlural,omitempty"`
+	PackUnit      string  `json:"packUnit,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomSearchKeywords      interface{}  `json:"customSearchKeywords,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
 }
 
 type ProductTranslationCollection struct {

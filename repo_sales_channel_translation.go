@@ -98,33 +98,35 @@ func (t SalesChannelTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type SalesChannelTranslation struct {
-	Name string `json:"name,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	HomeSlotConfig      interface{}  `json:"homeSlotConfig,omitempty"`
 
-	HomeSlotConfig interface{} `json:"homeSlotConfig,omitempty"`
+	HomeKeywords      string  `json:"homeKeywords,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	HomeName      string  `json:"homeName,omitempty"`
 
-	HomeMetaTitle string `json:"homeMetaTitle,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	HomeMetaDescription string `json:"homeMetaDescription,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	HomeKeywords string `json:"homeKeywords,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	HomeMetaTitle      string  `json:"homeMetaTitle,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	HomeMetaDescription      string  `json:"homeMetaDescription,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	HomeEnabled bool `json:"homeEnabled,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	HomeName string `json:"homeName,omitempty"`
+	HomeEnabled      bool  `json:"homeEnabled,omitempty"`
+
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
 }
 
 type SalesChannelTranslationCollection struct {

@@ -98,23 +98,25 @@ func (t ProductSearchConfigRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductSearchConfig struct {
-	LanguageId string `json:"languageId,omitempty"`
 
-	MinSearchLength float64 `json:"minSearchLength,omitempty"`
+	MinSearchLength      float64  `json:"minSearchLength,omitempty"`
 
-	ExcludedTerms interface{} `json:"excludedTerms,omitempty"`
+	ExcludedTerms      interface{}  `json:"excludedTerms,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	ConfigFields      []ProductSearchConfigField  `json:"configFields,omitempty"`
 
-	ConfigFields []ProductSearchConfigField `json:"configFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	AndLogic bool `json:"andLogic,omitempty"`
+	AndLogic      bool  `json:"andLogic,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
 }
 
 type ProductSearchConfigCollection struct {

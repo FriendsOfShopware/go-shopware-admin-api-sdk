@@ -98,51 +98,53 @@ func (t CustomerAddressRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type CustomerAddress struct {
-	SalutationId string `json:"salutationId,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	Company      string  `json:"company,omitempty"`
 
-	City string `json:"city,omitempty"`
+	AdditionalAddressLine1      string  `json:"additionalAddressLine1,omitempty"`
 
-	Department string `json:"department,omitempty"`
+	CountryState      *CountryState  `json:"countryState,omitempty"`
 
-	AdditionalAddressLine1 string `json:"additionalAddressLine1,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	AdditionalAddressLine2 string `json:"additionalAddressLine2,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SalutationId      string  `json:"salutationId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	LastName      string  `json:"lastName,omitempty"`
 
-	Customer *Customer `json:"customer,omitempty"`
+	CountryStateId      string  `json:"countryStateId,omitempty"`
 
-	CountryState *CountryState `json:"countryState,omitempty"`
+	Street      string  `json:"street,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
+	PhoneNumber      string  `json:"phoneNumber,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Zipcode string `json:"zipcode,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CountryStateId string `json:"countryStateId,omitempty"`
+	Customer      *Customer  `json:"customer,omitempty"`
 
-	Company string `json:"company,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
 
-	Street string `json:"street,omitempty"`
+	Zipcode      string  `json:"zipcode,omitempty"`
 
-	PhoneNumber string `json:"phoneNumber,omitempty"`
+	City      string  `json:"city,omitempty"`
 
-	Country *Country `json:"country,omitempty"`
+	Department      string  `json:"department,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	CountryId string `json:"countryId,omitempty"`
+	AdditionalAddressLine2      string  `json:"additionalAddressLine2,omitempty"`
 
-	FirstName string `json:"firstName,omitempty"`
+	CustomerId      string  `json:"customerId,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	CountryId      string  `json:"countryId,omitempty"`
 
-	CustomerId string `json:"customerId,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
+
+	Salutation      *Salutation  `json:"salutation,omitempty"`
+
 }
 
 type CustomerAddressCollection struct {

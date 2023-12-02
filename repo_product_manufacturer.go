@@ -98,31 +98,33 @@ func (t ProductManufacturerRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductManufacturer struct {
-	Description string `json:"description,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Translations []ProductManufacturerTranslation `json:"translations,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Link      string  `json:"link,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	Link string `json:"link,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Translations      []ProductManufacturerTranslation  `json:"translations,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 }
 
 type ProductManufacturerCollection struct {

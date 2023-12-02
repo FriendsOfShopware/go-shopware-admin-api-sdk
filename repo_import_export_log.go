@@ -98,43 +98,45 @@ func (t ImportExportLogRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type ImportExportLog struct {
-	Profile *ImportExportProfile `json:"profile,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Result      interface{}  `json:"result,omitempty"`
 
-	State string `json:"state,omitempty"`
+	User      *User  `json:"user,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	Profile      *ImportExportProfile  `json:"profile,omitempty"`
 
-	InvalidRecordsLogId string `json:"invalidRecordsLogId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Username string `json:"username,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	FailedImportLog *ImportExportLog `json:"failedImportLog,omitempty"`
+	ProfileId      string  `json:"profileId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	File      *ImportExportFile  `json:"file,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	InvalidRecordsLog      *ImportExportLog  `json:"invalidRecordsLog,omitempty"`
 
-	ProfileName string `json:"profileName,omitempty"`
+	Activity      string  `json:"activity,omitempty"`
 
-	Result interface{} `json:"result,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
 
-	File *ImportExportFile `json:"file,omitempty"`
+	FileId      string  `json:"fileId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	FailedImportLog      *ImportExportLog  `json:"failedImportLog,omitempty"`
 
-	Records float64 `json:"records,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ProfileId string `json:"profileId,omitempty"`
+	State      string  `json:"state,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Records      float64  `json:"records,omitempty"`
 
-	InvalidRecordsLog *ImportExportLog `json:"invalidRecordsLog,omitempty"`
+	InvalidRecordsLogId      string  `json:"invalidRecordsLogId,omitempty"`
 
-	Activity string `json:"activity,omitempty"`
+	Username      string  `json:"username,omitempty"`
 
-	FileId string `json:"fileId,omitempty"`
+	ProfileName      string  `json:"profileName,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
 }
 
 type ImportExportLogCollection struct {

@@ -98,35 +98,39 @@ func (t MediaFolderRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type MediaFolder struct {
-	DefaultFolder *MediaDefaultFolder `json:"defaultFolder,omitempty"`
 
-	DefaultFolderId string `json:"defaultFolderId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UseParentConfiguration bool `json:"useParentConfiguration,omitempty"`
+	ChildCount      float64  `json:"childCount,omitempty"`
 
-	Children []MediaFolder `json:"children,omitempty"`
+	Media      []Media  `json:"media,omitempty"`
 
-	Media []Media `json:"media,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Configuration *MediaFolderConfiguration `json:"configuration,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	UseParentConfiguration      bool  `json:"useParentConfiguration,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ConfigurationId      string  `json:"configurationId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	DefaultFolderId      string  `json:"defaultFolderId,omitempty"`
 
-	Parent *MediaFolder `json:"parent,omitempty"`
+	Parent      *MediaFolder  `json:"parent,omitempty"`
 
-	ChildCount float64 `json:"childCount,omitempty"`
+	Children      []MediaFolder  `json:"children,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Configuration      *MediaFolderConfiguration  `json:"configuration,omitempty"`
 
-	ConfigurationId string `json:"configurationId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
+
+	Path      string  `json:"path,omitempty"`
+
+	DefaultFolder      *MediaDefaultFolder  `json:"defaultFolder,omitempty"`
+
 }
 
 type MediaFolderCollection struct {

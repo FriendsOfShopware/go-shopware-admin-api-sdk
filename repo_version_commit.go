@@ -98,27 +98,29 @@ func (t VersionCommitRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type VersionCommit struct {
-	Version *Version `json:"version,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Version      *Version  `json:"version,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	IntegrationId string `json:"integrationId,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Message string `json:"message,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
 
-	Data []VersionCommitData `json:"data,omitempty"`
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	IsMerge      bool  `json:"isMerge,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Data      []VersionCommitData  `json:"data,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	IntegrationId      string  `json:"integrationId,omitempty"`
 
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+	Message      string  `json:"message,omitempty"`
 
-	IsMerge bool `json:"isMerge,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type VersionCommitCollection struct {

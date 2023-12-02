@@ -98,71 +98,83 @@ func (t OrderLineItemRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type OrderLineItem struct {
-	ProductId string `json:"productId,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	Stackable      bool  `json:"stackable,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	CoverId string `json:"coverId,omitempty"`
+	OrderDeliveryPositions      []OrderDeliveryPosition  `json:"orderDeliveryPositions,omitempty"`
 
-	ReferencedId string `json:"referencedId,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	CoverId      string  `json:"coverId,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
+	Removable      bool  `json:"removable,omitempty"`
 
-	Quantity float64 `json:"quantity,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	PriceDefinition      interface{}  `json:"priceDefinition,omitempty"`
 
-	Price interface{} `json:"price,omitempty"`
+	Order      *Order  `json:"order,omitempty"`
 
-	Children []OrderLineItem `json:"children,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	Identifier      string  `json:"identifier,omitempty"`
 
-	PriceDefinition interface{} `json:"priceDefinition,omitempty"`
+	Quantity      float64  `json:"quantity,omitempty"`
 
-	UnitPrice float64 `json:"unitPrice,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	OrderDeliveryPositions []OrderDeliveryPosition `json:"orderDeliveryPositions,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	Children      []OrderLineItem  `json:"children,omitempty"`
 
-	Cover *Media `json:"cover,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Cover      *Media  `json:"cover,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	Parent      *OrderLineItem  `json:"parent,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Parent *OrderLineItem `json:"parent,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Downloads      []OrderLineItemDownload  `json:"downloads,omitempty"`
 
-	Stackable bool `json:"stackable,omitempty"`
+	States      interface{}  `json:"states,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	TotalPrice      float64  `json:"totalPrice,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	ParentVersionId string `json:"parentVersionId,omitempty"`
+	ParentVersionId      string  `json:"parentVersionId,omitempty"`
 
-	Identifier string `json:"identifier,omitempty"`
+	Good      bool  `json:"good,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	Good bool `json:"good,omitempty"`
+	UnitPrice      float64  `json:"unitPrice,omitempty"`
 
-	Removable bool `json:"removable,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	TotalPrice float64 `json:"totalPrice,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
+
+	ReferencedId      string  `json:"referencedId,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
+
+	OrderTransactionCaptureRefundPositions      []OrderTransactionCaptureRefundPosition  `json:"orderTransactionCaptureRefundPositions,omitempty"`
+
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
+
+	Type      string  `json:"type,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 }
 
 type OrderLineItemCollection struct {

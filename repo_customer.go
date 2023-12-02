@@ -98,125 +98,141 @@ func (t CustomerRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 }
 
 type Customer struct {
-	Language *Language `json:"language,omitempty"`
 
-	OrderCustomers []OrderCustomer `json:"orderCustomers,omitempty"`
+	DoubleOptInRegistration      bool  `json:"doubleOptInRegistration,omitempty"`
 
-	RequestedGroup *CustomerGroup `json:"requestedGroup,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
 
-	FirstName string `json:"firstName,omitempty"`
+	NewsletterSalesChannelIds      interface{}  `json:"newsletterSalesChannelIds,omitempty"`
 
-	VatIds interface{} `json:"vatIds,omitempty"`
+	Group      *CustomerGroup  `json:"group,omitempty"`
 
-	LastOrderDate time.Time `json:"lastOrderDate,omitempty"`
+	DefaultShippingAddressId      string  `json:"defaultShippingAddressId,omitempty"`
 
-	Addresses []CustomerAddress `json:"addresses,omitempty"`
+	Password      interface{}  `json:"password,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	FirstLogin      time.Time  `json:"firstLogin,omitempty"`
 
-	LastPaymentMethod *PaymentMethod `json:"lastPaymentMethod,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	Promotions []Promotion `json:"promotions,omitempty"`
+	ProductReviews      []ProductReview  `json:"productReviews,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	UpdatedBy      *User  `json:"updatedBy,omitempty"`
 
-	DefaultBillingAddressId string `json:"defaultBillingAddressId,omitempty"`
+	Company      string  `json:"company,omitempty"`
 
-	Password interface{} `json:"password,omitempty"`
+	CampaignCode      string  `json:"campaignCode,omitempty"`
 
-	OrderTotalAmount float64 `json:"orderTotalAmount,omitempty"`
+	ReviewCount      float64  `json:"reviewCount,omitempty"`
 
-	LegacyEncoder string `json:"legacyEncoder,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	BoundSalesChannelId string `json:"boundSalesChannelId,omitempty"`
+	Addresses      []CustomerAddress  `json:"addresses,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	RemoteAddress      interface{}  `json:"remoteAddress,omitempty"`
 
-	FirstLogin time.Time `json:"firstLogin,omitempty"`
+	AccountType      string  `json:"accountType,omitempty"`
 
-	LegacyPassword string `json:"legacyPassword,omitempty"`
+	GroupId      string  `json:"groupId,omitempty"`
 
-	AffiliateCode string `json:"affiliateCode,omitempty"`
+	DefaultBillingAddressId      string  `json:"defaultBillingAddressId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	LastName      string  `json:"lastName,omitempty"`
 
-	Company string `json:"company,omitempty"`
+	LastOrderDate      time.Time  `json:"lastOrderDate,omitempty"`
 
-	Email string `json:"email,omitempty"`
+	OrderTotalAmount      float64  `json:"orderTotalAmount,omitempty"`
 
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+	DefaultBillingAddress      *CustomerAddress  `json:"defaultBillingAddress,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	ActiveBillingAddress      *CustomerAddress  `json:"activeBillingAddress,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	DoubleOptInConfirmDate time.Time `json:"doubleOptInConfirmDate,omitempty"`
+	Email      string  `json:"email,omitempty"`
 
-	RecoveryCustomer *CustomerRecovery `json:"recoveryCustomer,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	RemoteAddress interface{} `json:"remoteAddress,omitempty"`
+	Birthday      time.Time  `json:"birthday,omitempty"`
 
-	DefaultPaymentMethod *PaymentMethod `json:"defaultPaymentMethod,omitempty"`
+	CreatedBy      *User  `json:"createdBy,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	DefaultPaymentMethodId      string  `json:"defaultPaymentMethodId,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	CampaignCode string `json:"campaignCode,omitempty"`
+	DefaultShippingAddress      *CustomerAddress  `json:"defaultShippingAddress,omitempty"`
 
-	LastLogin time.Time `json:"lastLogin,omitempty"`
+	BoundSalesChannel      *SalesChannel  `json:"boundSalesChannel,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	LastPaymentMethod      *PaymentMethod  `json:"lastPaymentMethod,omitempty"`
 
-	Guest bool `json:"guest,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	NewsletterSalesChannelIds interface{} `json:"newsletterSalesChannelIds,omitempty"`
+	LastPaymentMethodId      string  `json:"lastPaymentMethodId,omitempty"`
 
-	DefaultBillingAddress *CustomerAddress `json:"defaultBillingAddress,omitempty"`
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
 
-	BoundSalesChannel *SalesChannel `json:"boundSalesChannel,omitempty"`
+	LegacyPassword      string  `json:"legacyPassword,omitempty"`
 
-	DoubleOptInEmailSentDate time.Time `json:"doubleOptInEmailSentDate,omitempty"`
+	Guest      bool  `json:"guest,omitempty"`
 
-	Newsletter bool `json:"newsletter,omitempty"`
+	OrderCustomers      []OrderCustomer  `json:"orderCustomers,omitempty"`
 
-	RequestedGroupId string `json:"requestedGroupId,omitempty"`
+	RecoveryCustomer      *CustomerRecovery  `json:"recoveryCustomer,omitempty"`
 
-	DefaultPaymentMethodId string `json:"defaultPaymentMethodId,omitempty"`
+	RequestedGroupId      string  `json:"requestedGroupId,omitempty"`
 
-	CustomerNumber string `json:"customerNumber,omitempty"`
+	DoubleOptInEmailSentDate      time.Time  `json:"doubleOptInEmailSentDate,omitempty"`
 
-	Group *CustomerGroup `json:"group,omitempty"`
+	LegacyEncoder      string  `json:"legacyEncoder,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	DefaultPaymentMethod      *PaymentMethod  `json:"defaultPaymentMethod,omitempty"`
 
-	LastPaymentMethodId string `json:"lastPaymentMethodId,omitempty"`
+	BoundSalesChannelId      string  `json:"boundSalesChannelId,omitempty"`
 
-	Hash string `json:"hash,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
+	RequestedGroup      *CustomerGroup  `json:"requestedGroup,omitempty"`
 
-	ProductReviews []ProductReview `json:"productReviews,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	GroupId string `json:"groupId,omitempty"`
+	SalutationId      string  `json:"salutationId,omitempty"`
 
-	DoubleOptInRegistration bool `json:"doubleOptInRegistration,omitempty"`
+	DoubleOptInConfirmDate      time.Time  `json:"doubleOptInConfirmDate,omitempty"`
 
-	DefaultShippingAddress *CustomerAddress `json:"defaultShippingAddress,omitempty"`
+	OrderCount      float64  `json:"orderCount,omitempty"`
 
-	Birthday time.Time `json:"birthday,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	OrderCount float64 `json:"orderCount,omitempty"`
+	Salutation      *Salutation  `json:"salutation,omitempty"`
 
-	DefaultShippingAddressId string `json:"defaultShippingAddressId,omitempty"`
+	CreatedById      string  `json:"createdById,omitempty"`
 
-	SalutationId string `json:"salutationId,omitempty"`
+	CustomerNumber      string  `json:"customerNumber,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	VatIds      interface{}  `json:"vatIds,omitempty"`
 
-	TagIds interface{} `json:"tagIds,omitempty"`
+	AffiliateCode      string  `json:"affiliateCode,omitempty"`
 
-	Wishlists []CustomerWishlist `json:"wishlists,omitempty"`
+	ActiveShippingAddress      *CustomerAddress  `json:"activeShippingAddress,omitempty"`
+
+	UpdatedById      string  `json:"updatedById,omitempty"`
+
+	Active      bool  `json:"active,omitempty"`
+
+	Hash      string  `json:"hash,omitempty"`
+
+	Promotions      []Promotion  `json:"promotions,omitempty"`
+
+	Wishlists      []CustomerWishlist  `json:"wishlists,omitempty"`
+
+	LastLogin      time.Time  `json:"lastLogin,omitempty"`
+
+	TagIds      interface{}  `json:"tagIds,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type CustomerCollection struct {

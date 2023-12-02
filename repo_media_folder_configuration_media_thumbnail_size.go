@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type MediaFolderConfigurationMediaThumbnailSizeRepository ClientService
@@ -97,13 +98,15 @@ func (t MediaFolderConfigurationMediaThumbnailSizeRepository) Delete(ctx ApiCont
 }
 
 type MediaFolderConfigurationMediaThumbnailSize struct {
-	MediaThumbnailSize *MediaThumbnailSize `json:"mediaThumbnailSize,omitempty"`
 
-	MediaFolderConfigurationId string `json:"mediaFolderConfigurationId,omitempty"`
+	MediaFolderConfigurationId      string  `json:"mediaFolderConfigurationId,omitempty"`
 
-	MediaThumbnailSizeId string `json:"mediaThumbnailSizeId,omitempty"`
+	MediaThumbnailSizeId      string  `json:"mediaThumbnailSizeId,omitempty"`
 
-	MediaFolderConfiguration *MediaFolderConfiguration `json:"mediaFolderConfiguration,omitempty"`
+	MediaFolderConfiguration      *MediaFolderConfiguration  `json:"mediaFolderConfiguration,omitempty"`
+
+	MediaThumbnailSize      *MediaThumbnailSize  `json:"mediaThumbnailSize,omitempty"`
+
 }
 
 type MediaFolderConfigurationMediaThumbnailSizeCollection struct {

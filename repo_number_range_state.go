@@ -98,17 +98,19 @@ func (t NumberRangeStateRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type NumberRangeState struct {
-	Id string `json:"id,omitempty"`
 
-	NumberRangeId string `json:"numberRangeId,omitempty"`
+	LastValue      float64  `json:"lastValue,omitempty"`
 
-	LastValue float64 `json:"lastValue,omitempty"`
+	NumberRange      *NumberRange  `json:"numberRange,omitempty"`
 
-	NumberRange *NumberRange `json:"numberRange,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
+
+	NumberRangeId      string  `json:"numberRangeId,omitempty"`
+
 }
 
 type NumberRangeStateCollection struct {

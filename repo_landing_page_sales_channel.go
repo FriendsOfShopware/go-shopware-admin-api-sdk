@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type LandingPageSalesChannelRepository ClientService
@@ -97,15 +98,17 @@ func (t LandingPageSalesChannelRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type LandingPageSalesChannel struct {
-	LandingPageId string `json:"landingPageId,omitempty"`
 
-	LandingPageVersionId string `json:"landingPageVersionId,omitempty"`
+	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	LandingPage *LandingPage `json:"landingPage,omitempty"`
+	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	LandingPageId      string  `json:"landingPageId,omitempty"`
+
 }
 
 type LandingPageSalesChannelCollection struct {

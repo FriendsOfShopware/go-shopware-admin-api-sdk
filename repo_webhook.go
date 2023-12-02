@@ -98,25 +98,29 @@ func (t WebhookRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type Webhook struct {
-	Active bool `json:"active,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	OnlyLiveVersion      bool  `json:"onlyLiveVersion,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	EventName string `json:"eventName,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ErrorCount float64 `json:"errorCount,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	EventName      string  `json:"eventName,omitempty"`
+
+	ErrorCount      float64  `json:"errorCount,omitempty"`
+
+	Active      bool  `json:"active,omitempty"`
+
 }
 
 type WebhookCollection struct {

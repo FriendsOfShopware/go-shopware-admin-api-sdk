@@ -98,33 +98,35 @@ func (t ProductStreamRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type ProductStream struct {
-	Id string `json:"id,omitempty"`
 
-	ProductCrossSellings []ProductCrossSelling `json:"productCrossSellings,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Invalid      bool  `json:"invalid,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	ApiFilter interface{} `json:"apiFilter,omitempty"`
+	ProductCrossSellings      []ProductCrossSelling  `json:"productCrossSellings,omitempty"`
 
-	Invalid bool `json:"invalid,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translations []ProductStreamTranslation `json:"translations,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Filters []ProductStreamFilter `json:"filters,omitempty"`
+	Translations      []ProductStreamTranslation  `json:"translations,omitempty"`
 
-	ProductExports []ProductExport `json:"productExports,omitempty"`
+	Filters      []ProductStreamFilter  `json:"filters,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Categories      []Category  `json:"categories,omitempty"`
 
-	Categories []Category `json:"categories,omitempty"`
+	ApiFilter      interface{}  `json:"apiFilter,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ProductExports      []ProductExport  `json:"productExports,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type ProductStreamCollection struct {

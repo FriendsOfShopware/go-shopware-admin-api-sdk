@@ -98,29 +98,35 @@ func (t FlowRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type Flow struct {
-	EventName string `json:"eventName,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	AppFlowEventId      string  `json:"appFlowEventId,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	AppFlowEvent      *AppFlowEvent  `json:"appFlowEvent,omitempty"`
 
-	Sequences []FlowSequence `json:"sequences,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Invalid bool `json:"invalid,omitempty"`
+	EventName      string  `json:"eventName,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Invalid      bool  `json:"invalid,omitempty"`
+
+	Active      bool  `json:"active,omitempty"`
+
+	Sequences      []FlowSequence  `json:"sequences,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type FlowCollection struct {

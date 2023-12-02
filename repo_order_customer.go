@@ -98,45 +98,47 @@ func (t OrderCustomerRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type OrderCustomer struct {
-	VersionId string `json:"versionId,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	CustomerId      string  `json:"customerId,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	VatIds interface{} `json:"vatIds,omitempty"`
+	Company      string  `json:"company,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	VatIds      interface{}  `json:"vatIds,omitempty"`
 
-	Customer *Customer `json:"customer,omitempty"`
+	CustomerNumber      string  `json:"customerNumber,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
+	Order      *Order  `json:"order,omitempty"`
 
-	RemoteAddress interface{} `json:"remoteAddress,omitempty"`
+	Customer      *Customer  `json:"customer,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Email      string  `json:"email,omitempty"`
 
-	CustomerId string `json:"customerId,omitempty"`
+	SalutationId      string  `json:"salutationId,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
+	Salutation      *Salutation  `json:"salutation,omitempty"`
 
-	FirstName string `json:"firstName,omitempty"`
+	RemoteAddress      interface{}  `json:"remoteAddress,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	SalutationId string `json:"salutationId,omitempty"`
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
 
-	Company string `json:"company,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomerNumber string `json:"customerNumber,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Email string `json:"email,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
+
+	LastName      string  `json:"lastName,omitempty"`
+
 }
 
 type OrderCustomerCollection struct {

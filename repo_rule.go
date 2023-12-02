@@ -98,51 +98,57 @@ func (t RuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type Rule struct {
-	Payload interface{} `json:"payload,omitempty"`
 
-	ShippingMethodPrices []ShippingMethodPrice `json:"shippingMethodPrices,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	PromotionSetGroups []PromotionSetgroup `json:"promotionSetGroups,omitempty"`
+	Areas      interface{}  `json:"areas,omitempty"`
 
-	EventActions []EventAction `json:"eventActions,omitempty"`
+	TaxProviders      []TaxProvider  `json:"taxProviders,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Conditions      []RuleCondition  `json:"conditions,omitempty"`
 
-	ModuleTypes interface{} `json:"moduleTypes,omitempty"`
+	OrderPromotions      []Promotion  `json:"orderPromotions,omitempty"`
 
-	ProductPrices []ProductPrice `json:"productPrices,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
+	ProductPrices      []ProductPrice  `json:"productPrices,omitempty"`
 
-	PersonaPromotions []Promotion `json:"personaPromotions,omitempty"`
+	ShippingMethodPrices      []ShippingMethodPrice  `json:"shippingMethodPrices,omitempty"`
 
-	OrderPromotions []Promotion `json:"orderPromotions,omitempty"`
+	ShippingMethodPriceCalculations      []ShippingMethodPrice  `json:"shippingMethodPriceCalculations,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Invalid      bool  `json:"invalid,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ShippingMethodPriceCalculations []ShippingMethodPrice `json:"shippingMethodPriceCalculations,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	FlowSequences []FlowSequence `json:"flowSequences,omitempty"`
+	ModuleTypes      interface{}  `json:"moduleTypes,omitempty"`
 
-	CartPromotions []Promotion `json:"cartPromotions,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	PromotionDiscounts []PromotionDiscount `json:"promotionDiscounts,omitempty"`
+	PersonaPromotions      []Promotion  `json:"personaPromotions,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Invalid bool `json:"invalid,omitempty"`
+	CartPromotions      []Promotion  `json:"cartPromotions,omitempty"`
 
-	Conditions []RuleCondition `json:"conditions,omitempty"`
+	PromotionDiscounts      []PromotionDiscount  `json:"promotionDiscounts,omitempty"`
 
-	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
+	PromotionSetGroups      []PromotionSetgroup  `json:"promotionSetGroups,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	FlowSequences      []FlowSequence  `json:"flowSequences,omitempty"`
+
+	Priority      float64  `json:"priority,omitempty"`
+
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+
+	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
+
 }
 
 type RuleCollection struct {

@@ -98,69 +98,73 @@ func (t PromotionRepository) Delete(ctx ApiContext, ids []string) (*http.Respons
 }
 
 type Promotion struct {
-	Translations []PromotionTranslation `json:"translations,omitempty"`
 
-	Exclusive bool `json:"exclusive,omitempty"`
+	MaxRedemptionsGlobal      float64  `json:"maxRedemptionsGlobal,omitempty"`
 
-	UseIndividualCodes bool `json:"useIndividualCodes,omitempty"`
+	IndividualCodePattern      string  `json:"individualCodePattern,omitempty"`
 
-	SalesChannels []PromotionSalesChannel `json:"salesChannels,omitempty"`
+	Setgroups      []PromotionSetgroup  `json:"setgroups,omitempty"`
 
-	OrderRules []Rule `json:"orderRules,omitempty"`
+	OrderRules      []Rule  `json:"orderRules,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Translations      []PromotionTranslation  `json:"translations,omitempty"`
 
-	MaxRedemptionsGlobal float64 `json:"maxRedemptionsGlobal,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	MaxRedemptionsPerCustomer float64 `json:"maxRedemptionsPerCustomer,omitempty"`
+	ValidFrom      time.Time  `json:"validFrom,omitempty"`
 
-	Discounts []PromotionDiscount `json:"discounts,omitempty"`
+	ValidUntil      time.Time  `json:"validUntil,omitempty"`
 
-	PersonaRules []Rule `json:"personaRules,omitempty"`
+	PersonaCustomers      []Customer  `json:"personaCustomers,omitempty"`
 
-	PersonaCustomers []Customer `json:"personaCustomers,omitempty"`
+	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	ValidUntil time.Time `json:"validUntil,omitempty"`
+	Code      string  `json:"code,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
+	ExclusionIds      interface{}  `json:"exclusionIds,omitempty"`
 
-	PreventCombination bool `json:"preventCombination,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	IndividualCodes []PromotionIndividualCode `json:"individualCodes,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Setgroups []PromotionSetgroup `json:"setgroups,omitempty"`
+	MaxRedemptionsPerCustomer      float64  `json:"maxRedemptionsPerCustomer,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	OrdersPerCustomerCount      interface{}  `json:"ordersPerCustomerCount,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	SalesChannels      []PromotionSalesChannel  `json:"salesChannels,omitempty"`
 
-	OrderCount float64 `json:"orderCount,omitempty"`
+	UseIndividualCodes      bool  `json:"useIndividualCodes,omitempty"`
 
-	OrdersPerCustomerCount interface{} `json:"ordersPerCustomerCount,omitempty"`
+	CustomerRestriction      bool  `json:"customerRestriction,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	PersonaRules      []Rule  `json:"personaRules,omitempty"`
 
-	Code string `json:"code,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UseSetGroups bool `json:"useSetGroups,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CustomerRestriction bool `json:"customerRestriction,omitempty"`
+	UseCodes      bool  `json:"useCodes,omitempty"`
 
-	ExclusionIds interface{} `json:"exclusionIds,omitempty"`
+	PreventCombination      bool  `json:"preventCombination,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	OrderCount      float64  `json:"orderCount,omitempty"`
 
-	IndividualCodePattern string `json:"individualCodePattern,omitempty"`
+	IndividualCodes      []PromotionIndividualCode  `json:"individualCodes,omitempty"`
 
-	ValidFrom time.Time `json:"validFrom,omitempty"`
+	Exclusive      bool  `json:"exclusive,omitempty"`
 
-	UseCodes bool `json:"useCodes,omitempty"`
+	UseSetGroups      bool  `json:"useSetGroups,omitempty"`
 
-	CartRules []Rule `json:"cartRules,omitempty"`
+	Discounts      []PromotionDiscount  `json:"discounts,omitempty"`
+
+	CartRules      []Rule  `json:"cartRules,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
 }
 
 type PromotionCollection struct {

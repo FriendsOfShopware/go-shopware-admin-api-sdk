@@ -98,25 +98,31 @@ func (t CustomFieldRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type CustomField struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	CustomFieldSetId string `json:"customFieldSetId,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	AllowCartExpose      bool  `json:"allowCartExpose,omitempty"`
 
-	CustomFieldSet *CustomFieldSet `json:"customFieldSet,omitempty"`
+	ProductSearchConfigFields      []ProductSearchConfigField  `json:"productSearchConfigFields,omitempty"`
 
-	ProductSearchConfigFields []ProductSearchConfigField `json:"productSearchConfigFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	Active      bool  `json:"active,omitempty"`
+
+	AllowCustomerWrite      bool  `json:"allowCustomerWrite,omitempty"`
+
 }
 
 type CustomFieldCollection struct {

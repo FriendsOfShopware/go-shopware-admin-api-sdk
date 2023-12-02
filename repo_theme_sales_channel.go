@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type ThemeSalesChannelRepository ClientService
@@ -97,13 +98,15 @@ func (t ThemeSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type ThemeSalesChannel struct {
-	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	ThemeId string `json:"themeId,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	Theme *Theme `json:"theme,omitempty"`
+	ThemeId      string  `json:"themeId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	Theme      *Theme  `json:"theme,omitempty"`
+
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
 }
 
 type ThemeSalesChannelCollection struct {

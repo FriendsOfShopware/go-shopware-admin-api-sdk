@@ -98,31 +98,35 @@ func (t OrderTransactionRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type OrderTransaction struct {
-	Order *Order `json:"order,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Order      *Order  `json:"order,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
 
-	StateId string `json:"stateId,omitempty"`
+	Amount      interface{}  `json:"amount,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
+	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
 
-	PaymentMethodId string `json:"paymentMethodId,omitempty"`
+	Captures      []OrderTransactionCapture  `json:"captures,omitempty"`
 
-	Amount interface{} `json:"amount,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
+
+	StateId      string  `json:"stateId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type OrderTransactionCollection struct {

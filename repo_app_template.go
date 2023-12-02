@@ -98,21 +98,23 @@ func (t AppTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type AppTemplate struct {
-	Path string `json:"path,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Template      string  `json:"template,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Template string `json:"template,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
+
+	App      *App  `json:"app,omitempty"`
+
 }
 
 type AppTemplateCollection struct {

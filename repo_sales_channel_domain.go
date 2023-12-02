@@ -98,37 +98,39 @@ func (t SalesChannelDomainRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type SalesChannelDomain struct {
-	Url string `json:"url,omitempty"`
 
-	HreflangUseOnlyLocale bool `json:"hreflangUseOnlyLocale,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CurrencyId      string  `json:"currencyId,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	Currency      *Currency  `json:"currency,omitempty"`
 
-	CurrencyId string `json:"currencyId,omitempty"`
+	HreflangUseOnlyLocale      bool  `json:"hreflangUseOnlyLocale,omitempty"`
 
-	Currency *Currency `json:"currency,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	SnippetSet *SnippetSet `json:"snippetSet,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	SalesChannelDefaultHreflang *SalesChannel `json:"salesChannelDefaultHreflang,omitempty"`
+	SalesChannelDefaultHreflang      *SalesChannel  `json:"salesChannelDefaultHreflang,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SnippetSetId string `json:"snippetSetId,omitempty"`
+	SnippetSetId      string  `json:"snippetSetId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ProductExports      []ProductExport  `json:"productExports,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	ProductExports []ProductExport `json:"productExports,omitempty"`
+	SnippetSet      *SnippetSet  `json:"snippetSet,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type SalesChannelDomainCollection struct {

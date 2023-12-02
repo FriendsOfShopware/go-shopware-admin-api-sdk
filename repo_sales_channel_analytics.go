@@ -98,21 +98,23 @@ func (t SalesChannelAnalyticsRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type SalesChannelAnalytics struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	TrackOrders      bool  `json:"trackOrders,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	AnonymizeIp      bool  `json:"anonymizeIp,omitempty"`
 
-	TrackingId string `json:"trackingId,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	TrackOrders bool `json:"trackOrders,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	AnonymizeIp bool `json:"anonymizeIp,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	TrackingId      string  `json:"trackingId,omitempty"`
+
+	Active      bool  `json:"active,omitempty"`
+
 }
 
 type SalesChannelAnalyticsCollection struct {

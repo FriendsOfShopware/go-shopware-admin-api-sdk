@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type SalesChannelCountryRepository ClientService
@@ -97,13 +98,15 @@ func (t SalesChannelCountryRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type SalesChannelCountry struct {
-	Country *Country `json:"country,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	CountryId string `json:"countryId,omitempty"`
+	CountryId      string  `json:"countryId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	Country      *Country  `json:"country,omitempty"`
+
 }
 
 type SalesChannelCountryCollection struct {

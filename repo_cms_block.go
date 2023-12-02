@@ -98,51 +98,55 @@ func (t CmsBlockRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 }
 
 type CmsBlock struct {
-	SectionPosition string `json:"sectionPosition,omitempty"`
 
-	MarginBottom string `json:"marginBottom,omitempty"`
+	Visibility      interface{}  `json:"visibility,omitempty"`
 
-	CssClass string `json:"cssClass,omitempty"`
+	BackgroundMedia      *Media  `json:"backgroundMedia,omitempty"`
 
-	BackgroundMedia *Media `json:"backgroundMedia,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	SectionId string `json:"sectionId,omitempty"`
+	Locked      bool  `json:"locked,omitempty"`
 
-	Section *CmsSection `json:"section,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	MarginTop      string  `json:"marginTop,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	MarginLeft      string  `json:"marginLeft,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	MarginRight      string  `json:"marginRight,omitempty"`
 
-	MarginTop string `json:"marginTop,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	BackgroundMediaMode string `json:"backgroundMediaMode,omitempty"`
+	BackgroundMediaId      string  `json:"backgroundMediaId,omitempty"`
 
-	MarginLeft string `json:"marginLeft,omitempty"`
+	Section      *CmsSection  `json:"section,omitempty"`
 
-	BackgroundColor string `json:"backgroundColor,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	BackgroundMediaId string `json:"backgroundMediaId,omitempty"`
+	CmsSectionVersionId      string  `json:"cmsSectionVersionId,omitempty"`
 
-	Slots []CmsSlot `json:"slots,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	CmsSectionVersionId string `json:"cmsSectionVersionId,omitempty"`
+	MarginBottom      string  `json:"marginBottom,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	BackgroundColor      string  `json:"backgroundColor,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SectionId      string  `json:"sectionId,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	Slots      []CmsSlot  `json:"slots,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	MarginRight string `json:"marginRight,omitempty"`
+	SectionPosition      string  `json:"sectionPosition,omitempty"`
+
+	BackgroundMediaMode      string  `json:"backgroundMediaMode,omitempty"`
+
+	CssClass      string  `json:"cssClass,omitempty"`
+
 }
 
 type CmsBlockCollection struct {

@@ -98,33 +98,35 @@ func (t ProductConfiguratorSettingRepository) Delete(ctx ApiContext, ids []strin
 }
 
 type ProductConfiguratorSetting struct {
-	ProductId string `json:"productId,omitempty"`
 
-	OptionId string `json:"optionId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Option *PropertyGroupOption `json:"option,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	Price interface{} `json:"price,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Option      *PropertyGroupOption  `json:"option,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	OptionId      string  `json:"optionId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Position      float64  `json:"position,omitempty"`
+
+	Product      *Product  `json:"product,omitempty"`
+
 }
 
 type ProductConfiguratorSettingCollection struct {

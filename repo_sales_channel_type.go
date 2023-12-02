@@ -98,33 +98,35 @@ func (t SalesChannelTypeRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type SalesChannelType struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	DescriptionLong string `json:"descriptionLong,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	IconName string `json:"iconName,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	ScreenshotUrls interface{} `json:"screenshotUrls,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CoverUrl      string  `json:"coverUrl,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	IconName      string  `json:"iconName,omitempty"`
 
-	Manufacturer string `json:"manufacturer,omitempty"`
+	Manufacturer      string  `json:"manufacturer,omitempty"`
 
-	Translations []SalesChannelTypeTranslation `json:"translations,omitempty"`
+	DescriptionLong      string  `json:"descriptionLong,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Translations      []SalesChannelTypeTranslation  `json:"translations,omitempty"`
 
-	CoverUrl string `json:"coverUrl,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Id      string  `json:"id,omitempty"`
+
+	ScreenshotUrls      interface{}  `json:"screenshotUrls,omitempty"`
+
 }
 
 type SalesChannelTypeCollection struct {

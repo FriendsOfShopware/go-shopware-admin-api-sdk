@@ -98,21 +98,23 @@ func (t DocumentTypeTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type DocumentTypeTranslation struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	DocumentTypeId string `json:"documentTypeId,omitempty"`
+	DocumentType      *DocumentType  `json:"documentType,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	DocumentType *DocumentType `json:"documentType,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type DocumentTypeTranslationCollection struct {

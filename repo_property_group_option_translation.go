@@ -98,23 +98,25 @@ func (t PropertyGroupOptionTranslationRepository) Delete(ctx ApiContext, ids []s
 }
 
 type PropertyGroupOptionTranslation struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	PropertyGroupOptionId      string  `json:"propertyGroupOptionId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	PropertyGroupOptionId string `json:"propertyGroupOptionId,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	PropertyGroupOption      *PropertyGroupOption  `json:"propertyGroupOption,omitempty"`
 
-	PropertyGroupOption *PropertyGroupOption `json:"propertyGroupOption,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 }
 
 type PropertyGroupOptionTranslationCollection struct {

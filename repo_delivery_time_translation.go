@@ -98,21 +98,23 @@ func (t DeliveryTimeTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type DeliveryTimeTranslation struct {
-	Language *Language `json:"language,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	DeliveryTimeId string `json:"deliveryTimeId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	DeliveryTimeId      string  `json:"deliveryTimeId,omitempty"`
 
-	DeliveryTime *DeliveryTime `json:"deliveryTime,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	DeliveryTime      *DeliveryTime  `json:"deliveryTime,omitempty"`
+
 }
 
 type DeliveryTimeTranslationCollection struct {

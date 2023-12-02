@@ -98,35 +98,37 @@ func (t ProductStreamFilterRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type ProductStreamFilter struct {
-	Value string `json:"value,omitempty"`
 
-	Parameters interface{} `json:"parameters,omitempty"`
+	Queries      []ProductStreamFilter  `json:"queries,omitempty"`
 
-	Parent *ProductStreamFilter `json:"parent,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Field      string  `json:"field,omitempty"`
 
-	Field string `json:"field,omitempty"`
+	Parameters      interface{}  `json:"parameters,omitempty"`
 
-	Queries []ProductStreamFilter `json:"queries,omitempty"`
+	Value      string  `json:"value,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	ProductStreamId string `json:"productStreamId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Operator string `json:"operator,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	ProductStream *ProductStream `json:"productStream,omitempty"`
+	ProductStreamId      string  `json:"productStreamId,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	Operator      string  `json:"operator,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
+
+	Parent      *ProductStreamFilter  `json:"parent,omitempty"`
+
 }
 
 type ProductStreamFilterCollection struct {

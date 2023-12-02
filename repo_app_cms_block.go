@@ -98,29 +98,31 @@ func (t AppCmsBlockRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type AppCmsBlock struct {
-	Block interface{} `json:"block,omitempty"`
 
-	Template string `json:"template,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Translations      []AppCmsBlockTranslation  `json:"translations,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Styles string `json:"styles,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translations []AppCmsBlockTranslation `json:"translations,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Block      interface{}  `json:"block,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Template      string  `json:"template,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Styles      string  `json:"styles,omitempty"`
+
+	Label      string  `json:"label,omitempty"`
+
 }
 
 type AppCmsBlockCollection struct {

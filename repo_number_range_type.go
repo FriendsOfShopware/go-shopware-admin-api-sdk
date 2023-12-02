@@ -98,27 +98,29 @@ func (t NumberRangeTypeRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type NumberRangeType struct {
-	Translations []NumberRangeTypeTranslation `json:"translations,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Translations      []NumberRangeTypeTranslation  `json:"translations,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	TypeName string `json:"typeName,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Global bool `json:"global,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	NumberRanges []NumberRange `json:"numberRanges,omitempty"`
+	TypeName      string  `json:"typeName,omitempty"`
 
-	NumberRangeSalesChannels []NumberRangeSalesChannel `json:"numberRangeSalesChannels,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	NumberRanges      []NumberRange  `json:"numberRanges,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	NumberRangeSalesChannels      []NumberRangeSalesChannel  `json:"numberRangeSalesChannels,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Global      bool  `json:"global,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type NumberRangeTypeCollection struct {

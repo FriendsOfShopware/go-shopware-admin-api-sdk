@@ -98,35 +98,37 @@ func (t DocumentBaseConfigRepository) Delete(ctx ApiContext, ids []string) (*htt
 }
 
 type DocumentBaseConfig struct {
-	Name string `json:"name,omitempty"`
 
-	FilenamePrefix string `json:"filenamePrefix,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Logo      *Media  `json:"logo,omitempty"`
 
-	Global bool `json:"global,omitempty"`
+	FilenameSuffix      string  `json:"filenameSuffix,omitempty"`
 
-	DocumentNumber string `json:"documentNumber,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	DocumentNumber      string  `json:"documentNumber,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
 
-	SalesChannels []DocumentBaseConfigSalesChannel `json:"salesChannels,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	DocumentTypeId string `json:"documentTypeId,omitempty"`
+	FilenamePrefix      string  `json:"filenamePrefix,omitempty"`
 
-	DocumentType *DocumentType `json:"documentType,omitempty"`
+	Global      bool  `json:"global,omitempty"`
 
-	LogoId string `json:"logoId,omitempty"`
+	DocumentType      *DocumentType  `json:"documentType,omitempty"`
 
-	FilenameSuffix string `json:"filenameSuffix,omitempty"`
+	SalesChannels      []DocumentBaseConfigSalesChannel  `json:"salesChannels,omitempty"`
 
-	Logo *Media `json:"logo,omitempty"`
+	Id      string  `json:"id,omitempty"`
+
+	LogoId      string  `json:"logoId,omitempty"`
+
 }
 
 type DocumentBaseConfigCollection struct {

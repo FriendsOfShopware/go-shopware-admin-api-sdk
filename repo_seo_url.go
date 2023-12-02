@@ -98,37 +98,41 @@ func (t SeoUrlRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 }
 
 type SeoUrl struct {
-	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	RouteName string `json:"routeName,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	PathInfo string `json:"pathInfo,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	SeoPathInfo string `json:"seoPathInfo,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	RouteName      string  `json:"routeName,omitempty"`
 
-	IsModified bool `json:"isModified,omitempty"`
+	PathInfo      string  `json:"pathInfo,omitempty"`
 
-	IsDeleted bool `json:"isDeleted,omitempty"`
+	IsModified      bool  `json:"isModified,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	IsDeleted      bool  `json:"isDeleted,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	IsValid      bool  `json:"isValid,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	ForeignKey string `json:"foreignKey,omitempty"`
+	SeoPathInfo      string  `json:"seoPathInfo,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	IsCanonical      bool  `json:"isCanonical,omitempty"`
 
-	IsCanonical bool `json:"isCanonical,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ForeignKey      string  `json:"foreignKey,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type SeoUrlCollection struct {

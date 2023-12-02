@@ -98,47 +98,49 @@ func (t NewsletterRecipientRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type NewsletterRecipient struct {
-	Email string `json:"email,omitempty"`
 
-	City string `json:"city,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Street string `json:"street,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Hash string `json:"hash,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalutationId string `json:"salutationId,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	ZipCode      string  `json:"zipCode,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Email      string  `json:"email,omitempty"`
 
-	ZipCode string `json:"zipCode,omitempty"`
+	ConfirmedAt      time.Time  `json:"confirmedAt,omitempty"`
 
-	ConfirmedAt time.Time `json:"confirmedAt,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Status      string  `json:"status,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	LastName      string  `json:"lastName,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	Street      string  `json:"street,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SalutationId      string  `json:"salutationId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	Salutation      *Salutation  `json:"salutation,omitempty"`
 
-	Status string `json:"status,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
+	City      string  `json:"city,omitempty"`
 
-	FirstName string `json:"firstName,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 }
 
 type NewsletterRecipientCollection struct {

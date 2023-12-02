@@ -98,21 +98,23 @@ func (t CountryStateTranslationRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type CountryStateTranslation struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CountryStateId string `json:"countryStateId,omitempty"`
+	CountryStateId      string  `json:"countryStateId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	CountryState *CountryState `json:"countryState,omitempty"`
+	CountryState      *CountryState  `json:"countryState,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 }
 
 type CountryStateTranslationCollection struct {

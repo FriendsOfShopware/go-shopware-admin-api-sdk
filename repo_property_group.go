@@ -98,33 +98,35 @@ func (t PropertyGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type PropertyGroup struct {
-	SortingType string `json:"sortingType,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Translations      []PropertyGroupTranslation  `json:"translations,omitempty"`
 
-	Filterable bool `json:"filterable,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	DisplayType      string  `json:"displayType,omitempty"`
 
-	Options []PropertyGroupOption `json:"options,omitempty"`
+	Filterable      bool  `json:"filterable,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	VisibleOnProductDetailPage      bool  `json:"visibleOnProductDetailPage,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SortingType      string  `json:"sortingType,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	VisibleOnProductDetailPage bool `json:"visibleOnProductDetailPage,omitempty"`
+	Options      []PropertyGroupOption  `json:"options,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	DisplayType string `json:"displayType,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Translations []PropertyGroupTranslation `json:"translations,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
 }
 
 type PropertyGroupCollection struct {

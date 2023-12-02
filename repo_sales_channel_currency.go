@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type SalesChannelCurrencyRepository ClientService
@@ -97,13 +98,15 @@ func (t SalesChannelCurrencyRepository) Delete(ctx ApiContext, ids []string) (*h
 }
 
 type SalesChannelCurrency struct {
-	CurrencyId string `json:"currencyId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	Currency *Currency `json:"currency,omitempty"`
+	CurrencyId      string  `json:"currencyId,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	Currency      *Currency  `json:"currency,omitempty"`
+
 }
 
 type SalesChannelCurrencyCollection struct {

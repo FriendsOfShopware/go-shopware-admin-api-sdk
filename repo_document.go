@@ -98,43 +98,47 @@ func (t DocumentRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 }
 
 type Document struct {
-	DocumentMediaFileId string `json:"documentMediaFileId,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	DeepLinkCode      string  `json:"deepLinkCode,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Sent bool `json:"sent,omitempty"`
+	DocumentType      *DocumentType  `json:"documentType,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ReferencedDocument *Document `json:"referencedDocument,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ReferencedDocumentId      string  `json:"referencedDocumentId,omitempty"`
 
-	DocumentTypeId string `json:"documentTypeId,omitempty"`
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
 
-	FileType string `json:"fileType,omitempty"`
+	Sent      bool  `json:"sent,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Static      bool  `json:"static,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Order      *Order  `json:"order,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	DependentDocuments      []Document  `json:"dependentDocuments,omitempty"`
 
-	DeepLinkCode string `json:"deepLinkCode,omitempty"`
+	FileType      string  `json:"fileType,omitempty"`
 
-	Static bool `json:"static,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	DocumentType *DocumentType `json:"documentType,omitempty"`
+	DocumentMediaFileId      string  `json:"documentMediaFileId,omitempty"`
 
-	DependentDocuments []Document `json:"dependentDocuments,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	DocumentMediaFile *Media `json:"documentMediaFile,omitempty"`
+	DocumentMediaFile      *Media  `json:"documentMediaFile,omitempty"`
 
-	ReferencedDocumentId string `json:"referencedDocumentId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
+	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
+
+	DocumentNumber      string  `json:"documentNumber,omitempty"`
+
+	ReferencedDocument      *Document  `json:"referencedDocument,omitempty"`
+
 }
 
 type DocumentCollection struct {

@@ -98,45 +98,47 @@ func (t LandingPageRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 }
 
 type LandingPage struct {
-	Name string `json:"name,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	Translations []LandingPageTranslation `json:"translations,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	CmsPageId      string  `json:"cmsPageId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
-	MetaTitle string `json:"metaTitle,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
+	Translations      []LandingPageTranslation  `json:"translations,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
 
-	CmsPageId string `json:"cmsPageId,omitempty"`
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
 
-	CmsPage *CmsPage `json:"cmsPage,omitempty"`
+	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
 
-	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	MetaTitle      string  `json:"metaTitle,omitempty"`
+
 }
 
 type LandingPageCollection struct {

@@ -98,23 +98,27 @@ func (t MediaThumbnailRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type MediaThumbnail struct {
-	Url string `json:"url,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Height      float64  `json:"height,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	Width float64 `json:"width,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	Height float64 `json:"height,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
+
+	MediaId      string  `json:"mediaId,omitempty"`
+
+	Width      float64  `json:"width,omitempty"`
+
 }
 
 type MediaThumbnailCollection struct {

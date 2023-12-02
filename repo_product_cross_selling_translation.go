@@ -98,19 +98,21 @@ func (t ProductCrossSellingTranslationRepository) Delete(ctx ApiContext, ids []s
 }
 
 type ProductCrossSellingTranslation struct {
-	Language *Language `json:"language,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ProductCrossSelling      *ProductCrossSelling  `json:"productCrossSelling,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	ProductCrossSellingId string `json:"productCrossSellingId,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ProductCrossSelling *ProductCrossSelling `json:"productCrossSelling,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	ProductCrossSellingId      string  `json:"productCrossSellingId,omitempty"`
+
 }
 
 type ProductCrossSellingTranslationCollection struct {

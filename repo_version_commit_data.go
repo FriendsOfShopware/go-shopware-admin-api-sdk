@@ -98,29 +98,31 @@ func (t VersionCommitDataRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type VersionCommitData struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
 
-	Commit *VersionCommit `json:"commit,omitempty"`
+	EntityName      string  `json:"entityName,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	EntityName string `json:"entityName,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
+	VersionCommitId      string  `json:"versionCommitId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
 
-	VersionCommitId string `json:"versionCommitId,omitempty"`
+	EntityId      interface{}  `json:"entityId,omitempty"`
 
-	IntegrationId string `json:"integrationId,omitempty"`
+	Action      string  `json:"action,omitempty"`
 
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	EntityId interface{} `json:"entityId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Action string `json:"action,omitempty"`
+	Commit      *VersionCommit  `json:"commit,omitempty"`
+
+	IntegrationId      string  `json:"integrationId,omitempty"`
+
 }
 
 type VersionCommitDataCollection struct {

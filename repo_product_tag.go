@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type ProductTagRepository ClientService
@@ -97,15 +98,17 @@ func (t ProductTagRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type ProductTag struct {
-	ProductId string `json:"productId,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	TagId string `json:"tagId,omitempty"`
+	TagId      string  `json:"tagId,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Tag *Tag `json:"tag,omitempty"`
+	Tag      *Tag  `json:"tag,omitempty"`
+
+	ProductId      string  `json:"productId,omitempty"`
+
 }
 
 type ProductTagCollection struct {

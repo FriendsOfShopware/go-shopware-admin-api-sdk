@@ -98,61 +98,63 @@ func (t PluginRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 }
 
 type Plugin struct {
-	Changelog interface{} `json:"changelog,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Copyright      string  `json:"copyright,omitempty"`
 
-	UpgradedAt time.Time `json:"upgradedAt,omitempty"`
+	Version      string  `json:"version,omitempty"`
 
-	IconRaw interface{} `json:"iconRaw,omitempty"`
+	Translations      []PluginTranslation  `json:"translations,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	ComposerName      string  `json:"composerName,omitempty"`
 
-	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
+	Author      string  `json:"author,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	License      string  `json:"license,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ManagedByComposer      bool  `json:"managedByComposer,omitempty"`
 
-	Autoload interface{} `json:"autoload,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	License string `json:"license,omitempty"`
+	SupportLink      string  `json:"supportLink,omitempty"`
 
-	Icon string `json:"icon,omitempty"`
+	Changelog      interface{}  `json:"changelog,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ManufacturerLink string `json:"manufacturerLink,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Translations []PluginTranslation `json:"translations,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Author string `json:"author,omitempty"`
+	UpgradeVersion      string  `json:"upgradeVersion,omitempty"`
 
-	Copyright string `json:"copyright,omitempty"`
+	UpgradedAt      time.Time  `json:"upgradedAt,omitempty"`
 
-	Version string `json:"version,omitempty"`
+	Icon      string  `json:"icon,omitempty"`
 
-	InstalledAt time.Time `json:"installedAt,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	BaseClass string `json:"baseClass,omitempty"`
+	BaseClass      string  `json:"baseClass,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	InstalledAt      time.Time  `json:"installedAt,omitempty"`
 
-	ComposerName string `json:"composerName,omitempty"`
+	IconRaw      interface{}  `json:"iconRaw,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	SupportLink string `json:"supportLink,omitempty"`
+	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	ManagedByComposer bool `json:"managedByComposer,omitempty"`
+	Autoload      interface{}  `json:"autoload,omitempty"`
 
-	UpgradeVersion string `json:"upgradeVersion,omitempty"`
+	ManufacturerLink      string  `json:"manufacturerLink,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
 }
 
 type PluginCollection struct {

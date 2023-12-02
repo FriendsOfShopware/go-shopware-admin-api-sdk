@@ -98,29 +98,31 @@ func (t StateMachineRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type StateMachine struct {
-	Translated interface{} `json:"translated,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	States []StateMachineState `json:"states,omitempty"`
+	States      []StateMachineState  `json:"states,omitempty"`
 
-	Transitions []StateMachineTransition `json:"transitions,omitempty"`
+	Transitions      []StateMachineTransition  `json:"transitions,omitempty"`
 
-	InitialStateId string `json:"initialStateId,omitempty"`
+	InitialStateId      string  `json:"initialStateId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	HistoryEntries      []StateMachineHistory  `json:"historyEntries,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Translations []StateMachineTranslation `json:"translations,omitempty"`
+	Translations      []StateMachineTranslation  `json:"translations,omitempty"`
 
-	HistoryEntries []StateMachineHistory `json:"historyEntries,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
 }
 
 type StateMachineCollection struct {

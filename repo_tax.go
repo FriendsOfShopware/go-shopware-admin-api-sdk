@@ -98,25 +98,27 @@ func (t TaxRepository) Delete(ctx ApiContext, ids []string) (*http.Response, err
 }
 
 type Tax struct {
-	TaxRate float64 `json:"taxRate,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	TaxRate      float64  `json:"taxRate,omitempty"`
 
-	Rules []TaxRule `json:"rules,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Rules      []TaxRule  `json:"rules,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type TaxCollection struct {

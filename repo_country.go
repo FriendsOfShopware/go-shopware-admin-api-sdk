@@ -98,61 +98,71 @@ func (t CountryRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type Country struct {
-	States []CountryState `json:"states,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CustomerTax interface{} `json:"customerTax,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	ShippingAvailable bool `json:"shippingAvailable,omitempty"`
+	CheckAdvancedPostalCodePattern      bool  `json:"checkAdvancedPostalCodePattern,omitempty"`
 
-	ForceStateInRegistration bool `json:"forceStateInRegistration,omitempty"`
+	CurrencyCountryRoundings      []CurrencyCountryRounding  `json:"currencyCountryRoundings,omitempty"`
 
-	CheckVatIdPattern bool `json:"checkVatIdPattern,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	TaxFree bool `json:"taxFree,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CompanyTaxFree bool `json:"companyTaxFree,omitempty"`
+	Iso3      string  `json:"iso3,omitempty"`
 
-	VatIdRequired bool `json:"vatIdRequired,omitempty"`
+	ForceStateInRegistration      bool  `json:"forceStateInRegistration,omitempty"`
 
-	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
+	VatIdRequired      bool  `json:"vatIdRequired,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Iso string `json:"iso,omitempty"`
+	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
 
-	VatIdPattern string `json:"vatIdPattern,omitempty"`
+	ShippingAvailable      bool  `json:"shippingAvailable,omitempty"`
 
-	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
+	PostalCodeRequired      bool  `json:"postalCodeRequired,omitempty"`
 
-	CurrencyCountryRoundings []CurrencyCountryRounding `json:"currencyCountryRoundings,omitempty"`
+	Translations      []CountryTranslation  `json:"translations,omitempty"`
 
-	CompanyTax interface{} `json:"companyTax,omitempty"`
+	Iso      string  `json:"iso,omitempty"`
 
-	DisplayStateInRegistration bool `json:"displayStateInRegistration,omitempty"`
+	CompanyTax      interface{}  `json:"companyTax,omitempty"`
 
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+	States      []CountryState  `json:"states,omitempty"`
 
-	Translations []CountryTranslation `json:"translations,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	TaxRules []TaxRule `json:"taxRules,omitempty"`
+	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	TaxRules      []TaxRule  `json:"taxRules,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CheckPostalCodePattern      bool  `json:"checkPostalCodePattern,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	AdvancedPostalCodePattern      string  `json:"advancedPostalCodePattern,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	AddressFormat      interface{}  `json:"addressFormat,omitempty"`
 
-	Iso3 string `json:"iso3,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	DisplayStateInRegistration      bool  `json:"displayStateInRegistration,omitempty"`
+
+	CheckVatIdPattern      bool  `json:"checkVatIdPattern,omitempty"`
+
+	VatIdPattern      string  `json:"vatIdPattern,omitempty"`
+
+	CustomerTax      interface{}  `json:"customerTax,omitempty"`
+
+	DefaultPostalCodePattern      string  `json:"defaultPostalCodePattern,omitempty"`
+
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
+
 }
 
 type CountryCollection struct {

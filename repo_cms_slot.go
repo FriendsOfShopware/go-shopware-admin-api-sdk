@@ -98,35 +98,39 @@ func (t CmsSlotRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 }
 
 type CmsSlot struct {
-	CmsBlockVersionId string `json:"cmsBlockVersionId,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Slot string `json:"slot,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	BlockId string `json:"blockId,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	Slot      string  `json:"slot,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Block      *CmsBlock  `json:"block,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Translations      []CmsSlotTranslation  `json:"translations,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CmsBlockVersionId      string  `json:"cmsBlockVersionId,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	Data      interface{}  `json:"data,omitempty"`
 
-	Data interface{} `json:"data,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Block *CmsBlock `json:"block,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Translations []CmsSlotTranslation `json:"translations,omitempty"`
+	Locked      bool  `json:"locked,omitempty"`
+
+	BlockId      string  `json:"blockId,omitempty"`
+
+	FieldConfig      interface{}  `json:"fieldConfig,omitempty"`
+
 }
 
 type CmsSlotCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type SalesChannelShippingMethodRepository ClientService
@@ -97,13 +98,15 @@ func (t SalesChannelShippingMethodRepository) Delete(ctx ApiContext, ids []strin
 }
 
 type SalesChannelShippingMethod struct {
-	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	ShippingMethodId string `json:"shippingMethodId,omitempty"`
+	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
+
 }
 
 type SalesChannelShippingMethodCollection struct {

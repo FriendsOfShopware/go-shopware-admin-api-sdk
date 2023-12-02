@@ -98,31 +98,33 @@ func (t CustomFieldSetRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type CustomFieldSet struct {
-	CustomFields []CustomField `json:"customFields,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Global      bool  `json:"global,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Global bool `json:"global,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	CustomFields      []CustomField  `json:"customFields,omitempty"`
 
-	Relations []CustomFieldSetRelation `json:"relations,omitempty"`
+	Relations      []CustomFieldSetRelation  `json:"relations,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
 }
 
 type CustomFieldSetCollection struct {

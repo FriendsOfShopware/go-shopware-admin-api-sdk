@@ -98,23 +98,25 @@ func (t UnitRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 }
 
 type Unit struct {
-	Id string `json:"id,omitempty"`
 
-	ShortCode string `json:"shortCode,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Translations      []UnitTranslation  `json:"translations,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Translations []UnitTranslation `json:"translations,omitempty"`
+	ShortCode      string  `json:"shortCode,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 }
 
 type UnitCollection struct {

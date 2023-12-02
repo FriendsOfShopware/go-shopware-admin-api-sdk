@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type ProductCustomFieldSetRepository ClientService
@@ -97,15 +98,17 @@ func (t ProductCustomFieldSetRepository) Delete(ctx ApiContext, ids []string) (*
 }
 
 type ProductCustomFieldSet struct {
-	ProductId string `json:"productId,omitempty"`
 
-	CustomFieldSetId string `json:"customFieldSetId,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
 
-	CustomFieldSet *CustomFieldSet `json:"customFieldSet,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
+
+	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
+
 }
 
 type ProductCustomFieldSetCollection struct {

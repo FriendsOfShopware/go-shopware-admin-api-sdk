@@ -98,29 +98,31 @@ func (t MediaFolderConfigurationRepository) Delete(ctx ApiContext, ids []string)
 }
 
 type MediaFolderConfiguration struct {
-	NoAssociation bool `json:"noAssociation,omitempty"`
 
-	MediaThumbnailSizesRo interface{} `json:"mediaThumbnailSizesRo,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	KeepAspectRatio      bool  `json:"keepAspectRatio,omitempty"`
 
-	KeepAspectRatio bool `json:"keepAspectRatio,omitempty"`
+	MediaThumbnailSizes      []MediaThumbnailSize  `json:"mediaThumbnailSizes,omitempty"`
 
-	CreateThumbnails bool `json:"createThumbnails,omitempty"`
+	MediaThumbnailSizesRo      interface{}  `json:"mediaThumbnailSizesRo,omitempty"`
 
-	ThumbnailQuality float64 `json:"thumbnailQuality,omitempty"`
+	Private      bool  `json:"private,omitempty"`
 
-	Private bool `json:"private,omitempty"`
+	NoAssociation      bool  `json:"noAssociation,omitempty"`
 
-	MediaFolders []MediaFolder `json:"mediaFolders,omitempty"`
+	MediaFolders      []MediaFolder  `json:"mediaFolders,omitempty"`
 
-	MediaThumbnailSizes []MediaThumbnailSize `json:"mediaThumbnailSizes,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreateThumbnails      bool  `json:"createThumbnails,omitempty"`
+
+	ThumbnailQuality      float64  `json:"thumbnailQuality,omitempty"`
+
 }
 
 type MediaFolderConfigurationCollection struct {

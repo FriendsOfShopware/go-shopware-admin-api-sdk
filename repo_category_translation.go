@@ -98,43 +98,45 @@ func (t CategoryTranslationRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type CategoryTranslation struct {
-	InternalLink string `json:"internalLink,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LinkType      string  `json:"linkType,omitempty"`
 
-	CategoryVersionId string `json:"categoryVersionId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Category      *Category  `json:"category,omitempty"`
 
-	LinkType string `json:"linkType,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	LinkNewTab bool `json:"linkNewTab,omitempty"`
+	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
 
-	CategoryId string `json:"categoryId,omitempty"`
+	ExternalLink      string  `json:"externalLink,omitempty"`
 
-	Breadcrumb interface{} `json:"breadcrumb,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ExternalLink string `json:"externalLink,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Breadcrumb      interface{}  `json:"breadcrumb,omitempty"`
 
-	Category *Category `json:"category,omitempty"`
+	InternalLink      string  `json:"internalLink,omitempty"`
 
-	MetaTitle string `json:"metaTitle,omitempty"`
+	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	LinkNewTab      bool  `json:"linkNewTab,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CategoryId      string  `json:"categoryId,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
 }
 
 type CategoryTranslationCollection struct {

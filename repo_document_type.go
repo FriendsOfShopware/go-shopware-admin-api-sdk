@@ -98,27 +98,29 @@ func (t DocumentTypeRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 }
 
 type DocumentType struct {
-	DocumentBaseConfigSalesChannels []DocumentBaseConfigSalesChannel `json:"documentBaseConfigSalesChannels,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Translations []DocumentTypeTranslation `json:"translations,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Documents []Document `json:"documents,omitempty"`
+	Translations      []DocumentTypeTranslation  `json:"translations,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	DocumentBaseConfigs []DocumentBaseConfig `json:"documentBaseConfigs,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Documents      []Document  `json:"documents,omitempty"`
+
+	DocumentBaseConfigSalesChannels      []DocumentBaseConfigSalesChannel  `json:"documentBaseConfigSalesChannels,omitempty"`
+
 }
 
 type DocumentTypeCollection struct {

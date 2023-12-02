@@ -98,47 +98,51 @@ func (t ThemeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, e
 }
 
 type Theme struct {
-	Active bool `json:"active,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	ConfigValues      interface{}  `json:"configValues,omitempty"`
 
-	Media []Media `json:"media,omitempty"`
+	Translations      []ThemeTranslation  `json:"translations,omitempty"`
 
-	HelpTexts interface{} `json:"helpTexts,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Labels      interface{}  `json:"labels,omitempty"`
 
-	ParentThemeId string `json:"parentThemeId,omitempty"`
+	HelpTexts      interface{}  `json:"helpTexts,omitempty"`
 
-	BaseConfig interface{} `json:"baseConfig,omitempty"`
+	PreviewMediaId      string  `json:"previewMediaId,omitempty"`
 
-	ConfigValues interface{} `json:"configValues,omitempty"`
+	ParentThemeId      string  `json:"parentThemeId,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	ThemeJson      interface{}  `json:"themeJson,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	DependentThemes      []Theme  `json:"dependentThemes,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Author string `json:"author,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Author      string  `json:"author,omitempty"`
 
-	PreviewMedia *Media `json:"previewMedia,omitempty"`
+	BaseConfig      interface{}  `json:"baseConfig,omitempty"`
 
-	ChildThemes []Theme `json:"childThemes,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Labels interface{} `json:"labels,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	PreviewMediaId string `json:"previewMediaId,omitempty"`
+	Media      []Media  `json:"media,omitempty"`
 
-	Translations []ThemeTranslation `json:"translations,omitempty"`
+	PreviewMedia      *Media  `json:"previewMedia,omitempty"`
+
+	TechnicalName      string  `json:"technicalName,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 }
 
 type ThemeCollection struct {

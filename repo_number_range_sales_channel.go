@@ -98,23 +98,25 @@ func (t NumberRangeSalesChannelRepository) Delete(ctx ApiContext, ids []string) 
 }
 
 type NumberRangeSalesChannel struct {
-	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	NumberRangeTypeId string `json:"numberRangeTypeId,omitempty"`
+	NumberRangeId      string  `json:"numberRangeId,omitempty"`
 
-	NumberRangeType *NumberRangeType `json:"numberRangeType,omitempty"`
+	NumberRange      *NumberRange  `json:"numberRange,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	NumberRangeType      *NumberRangeType  `json:"numberRangeType,omitempty"`
 
-	NumberRange *NumberRange `json:"numberRange,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	NumberRangeTypeId      string  `json:"numberRangeTypeId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	NumberRangeId string `json:"numberRangeId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
 }
 
 type NumberRangeSalesChannelCollection struct {

@@ -98,37 +98,39 @@ func (t CustomerGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type CustomerGroup struct {
-	RegistrationSeoMetaDescription string `json:"registrationSeoMetaDescription,omitempty"`
 
-	Translations []CustomerGroupTranslation `json:"translations,omitempty"`
+	RegistrationTitle      string  `json:"registrationTitle,omitempty"`
 
-	RegistrationSalesChannels []SalesChannel `json:"registrationSalesChannels,omitempty"`
+	RegistrationSeoMetaDescription      string  `json:"registrationSeoMetaDescription,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	RegistrationSalesChannels      []SalesChannel  `json:"registrationSalesChannels,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	DisplayGross      bool  `json:"displayGross,omitempty"`
 
-	RegistrationActive bool `json:"registrationActive,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	RegistrationTitle string `json:"registrationTitle,omitempty"`
+	RegistrationOnlyCompanyRegistration      bool  `json:"registrationOnlyCompanyRegistration,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	RegistrationIntroduction string `json:"registrationIntroduction,omitempty"`
+	RegistrationIntroduction      string  `json:"registrationIntroduction,omitempty"`
 
-	DisplayGross bool `json:"displayGross,omitempty"`
+	Customers      []Customer  `json:"customers,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	RegistrationOnlyCompanyRegistration bool `json:"registrationOnlyCompanyRegistration,omitempty"`
+	Translations      []CustomerGroupTranslation  `json:"translations,omitempty"`
 
-	Customers []Customer `json:"customers,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	RegistrationActive      bool  `json:"registrationActive,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
 }
 
 type CustomerGroupCollection struct {

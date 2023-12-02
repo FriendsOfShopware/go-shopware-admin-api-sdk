@@ -98,37 +98,39 @@ func (t PropertyGroupOptionRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type PropertyGroupOption struct {
-	MediaId string `json:"mediaId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ProductConfiguratorSettings []ProductConfiguratorSetting `json:"productConfiguratorSettings,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Translations []PropertyGroupOptionTranslation `json:"translations,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	ProductProperties []Product `json:"productProperties,omitempty"`
+	ProductOptions      []Product  `json:"productOptions,omitempty"`
 
-	ProductOptions []Product `json:"productOptions,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	GroupId string `json:"groupId,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Group      *PropertyGroup  `json:"group,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	Translations      []PropertyGroupOptionTranslation  `json:"translations,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ProductProperties      []Product  `json:"productProperties,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	ColorHexCode string `json:"colorHexCode,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Group *PropertyGroup `json:"group,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ProductConfiguratorSettings      []ProductConfiguratorSetting  `json:"productConfiguratorSettings,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	GroupId      string  `json:"groupId,omitempty"`
+
+	ColorHexCode      string  `json:"colorHexCode,omitempty"`
+
 }
 
 type PropertyGroupOptionCollection struct {

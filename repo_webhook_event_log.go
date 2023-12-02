@@ -98,39 +98,43 @@ func (t WebhookEventLogRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type WebhookEventLog struct {
-	ResponseContent interface{} `json:"responseContent,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	OnlyLiveVersion      bool  `json:"onlyLiveVersion,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	SerializedWebhookMessage      interface{}  `json:"serializedWebhookMessage,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	RequestContent      interface{}  `json:"requestContent,omitempty"`
 
-	AppName string `json:"appName,omitempty"`
+	ResponseContent      interface{}  `json:"responseContent,omitempty"`
 
-	AppVersion string `json:"appVersion,omitempty"`
+	ResponseStatusCode      float64  `json:"responseStatusCode,omitempty"`
 
-	ResponseReasonPhrase string `json:"responseReasonPhrase,omitempty"`
+	ResponseReasonPhrase      string  `json:"responseReasonPhrase,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	ResponseStatusCode float64 `json:"responseStatusCode,omitempty"`
+	EventName      string  `json:"eventName,omitempty"`
 
-	SerializedWebhookMessage interface{} `json:"serializedWebhookMessage,omitempty"`
+	DeliveryStatus      string  `json:"deliveryStatus,omitempty"`
 
-	DeliveryStatus string `json:"deliveryStatus,omitempty"`
+	AppVersion      string  `json:"appVersion,omitempty"`
 
-	Timestamp float64 `json:"timestamp,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	ProcessingTime float64 `json:"processingTime,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	RequestContent interface{} `json:"requestContent,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	AppName      string  `json:"appName,omitempty"`
 
-	WebhookName string `json:"webhookName,omitempty"`
+	WebhookName      string  `json:"webhookName,omitempty"`
 
-	EventName string `json:"eventName,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Timestamp      float64  `json:"timestamp,omitempty"`
+
+	ProcessingTime      float64  `json:"processingTime,omitempty"`
+
 }
 
 type WebhookEventLogCollection struct {

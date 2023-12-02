@@ -98,29 +98,31 @@ func (t PluginTranslationRepository) Delete(ctx ApiContext, ids []string) (*http
 }
 
 type PluginTranslation struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	PluginId string `json:"pluginId,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	ManufacturerLink      string  `json:"manufacturerLink,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	SupportLink      string  `json:"supportLink,omitempty"`
 
-	Changelog interface{} `json:"changelog,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Plugin      *Plugin  `json:"plugin,omitempty"`
 
-	Plugin *Plugin `json:"plugin,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	ManufacturerLink string `json:"manufacturerLink,omitempty"`
+	Changelog      interface{}  `json:"changelog,omitempty"`
 
-	SupportLink string `json:"supportLink,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	PluginId      string  `json:"pluginId,omitempty"`
+
 }
 
 type PluginTranslationCollection struct {

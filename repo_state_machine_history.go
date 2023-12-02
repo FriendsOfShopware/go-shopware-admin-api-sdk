@@ -98,33 +98,37 @@ func (t StateMachineHistoryRepository) Delete(ctx ApiContext, ids []string) (*ht
 }
 
 type StateMachineHistory struct {
-	StateMachineId string `json:"stateMachineId,omitempty"`
 
-	FromStateMachineState *StateMachineState `json:"fromStateMachineState,omitempty"`
+	TransitionActionName      string  `json:"transitionActionName,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	User      *User  `json:"user,omitempty"`
 
-	EntityId interface{} `json:"entityId,omitempty"`
+	ReferencedId      string  `json:"referencedId,omitempty"`
 
-	ToStateId string `json:"toStateId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	FromStateMachineState      *StateMachineState  `json:"fromStateMachineState,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
 
-	EntityName string `json:"entityName,omitempty"`
+	ReferencedVersionId      string  `json:"referencedVersionId,omitempty"`
 
-	FromStateId string `json:"fromStateId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ToStateMachineState *StateMachineState `json:"toStateMachineState,omitempty"`
+	EntityName      string  `json:"entityName,omitempty"`
 
-	TransitionActionName string `json:"transitionActionName,omitempty"`
+	FromStateId      string  `json:"fromStateId,omitempty"`
 
-	StateMachine *StateMachine `json:"stateMachine,omitempty"`
+	StateMachineId      string  `json:"stateMachineId,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	ToStateId      string  `json:"toStateId,omitempty"`
+
+	ToStateMachineState      *StateMachineState  `json:"toStateMachineState,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 }
 
 type StateMachineHistoryCollection struct {

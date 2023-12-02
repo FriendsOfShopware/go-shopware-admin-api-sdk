@@ -98,19 +98,21 @@ func (t AppActionButtonTranslationRepository) Delete(ctx ApiContext, ids []strin
 }
 
 type AppActionButtonTranslation struct {
-	LanguageId string `json:"languageId,omitempty"`
 
-	AppActionButton *AppActionButton `json:"appActionButton,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	AppActionButtonId      string  `json:"appActionButtonId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	AppActionButton      *AppActionButton  `json:"appActionButton,omitempty"`
 
-	AppActionButtonId string `json:"appActionButtonId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
+
+	Label      string  `json:"label,omitempty"`
+
 }
 
 type AppActionButtonTranslationCollection struct {

@@ -98,25 +98,25 @@ func (t UserAccessKeyRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 }
 
 type UserAccessKey struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	AccessKey      string  `json:"accessKey,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SecretAccessKey      interface{}  `json:"secretAccessKey,omitempty"`
 
-	SecretAccessKey interface{} `json:"secretAccessKey,omitempty"`
+	LastUsageAt      time.Time  `json:"lastUsageAt,omitempty"`
 
-	WriteAccess bool `json:"writeAccess,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	LastUsageAt time.Time `json:"lastUsageAt,omitempty"`
+	User      *User  `json:"user,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	AccessKey string `json:"accessKey,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
+
 }
 
 type UserAccessKeyCollection struct {

@@ -2,6 +2,7 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+	"time"
 )
 
 type IntegrationRoleRepository ClientService
@@ -97,13 +98,15 @@ func (t IntegrationRoleRepository) Delete(ctx ApiContext, ids []string) (*http.R
 }
 
 type IntegrationRole struct {
-	IntegrationId string `json:"integrationId,omitempty"`
 
-	AclRoleId string `json:"aclRoleId,omitempty"`
+	IntegrationId      string  `json:"integrationId,omitempty"`
 
-	Integration *Integration `json:"integration,omitempty"`
+	AclRoleId      string  `json:"aclRoleId,omitempty"`
 
-	Role *AclRole `json:"role,omitempty"`
+	Integration      *Integration  `json:"integration,omitempty"`
+
+	Role      *AclRole  `json:"role,omitempty"`
+
 }
 
 type IntegrationRoleCollection struct {

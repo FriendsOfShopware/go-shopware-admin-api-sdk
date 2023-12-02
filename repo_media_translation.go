@@ -98,23 +98,25 @@ func (t MediaTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.
 }
 
 type MediaTranslation struct {
-	LanguageId string `json:"languageId,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Alt string `json:"alt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Alt      string  `json:"alt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
+
+	Media      *Media  `json:"media,omitempty"`
+
 }
 
 type MediaTranslationCollection struct {

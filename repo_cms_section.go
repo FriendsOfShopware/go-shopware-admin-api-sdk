@@ -98,45 +98,49 @@ func (t CmsSectionRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type CmsSection struct {
-	Page *CmsPage `json:"page,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	MobileBehavior string `json:"mobileBehavior,omitempty"`
+	SizingMode      string  `json:"sizingMode,omitempty"`
 
-	BackgroundMediaId string `json:"backgroundMediaId,omitempty"`
+	BackgroundColor      string  `json:"backgroundColor,omitempty"`
 
-	CssClass string `json:"cssClass,omitempty"`
+	PageId      string  `json:"pageId,omitempty"`
 
-	PageId string `json:"pageId,omitempty"`
+	Visibility      interface{}  `json:"visibility,omitempty"`
 
-	BackgroundMedia *Media `json:"backgroundMedia,omitempty"`
+	Blocks      []CmsBlock  `json:"blocks,omitempty"`
 
-	Blocks []CmsBlock `json:"blocks,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Page      *CmsPage  `json:"page,omitempty"`
 
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
 
-	SizingMode string `json:"sizingMode,omitempty"`
+	Locked      bool  `json:"locked,omitempty"`
 
-	BackgroundColor string `json:"backgroundColor,omitempty"`
+	BackgroundMediaId      string  `json:"backgroundMediaId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	BackgroundMediaMode      string  `json:"backgroundMediaMode,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	BackgroundMedia      *Media  `json:"backgroundMedia,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	BackgroundMediaMode string `json:"backgroundMediaMode,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	MobileBehavior      string  `json:"mobileBehavior,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	CssClass      string  `json:"cssClass,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
 }
 
 type CmsSectionCollection struct {

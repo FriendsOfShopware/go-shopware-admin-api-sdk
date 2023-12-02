@@ -98,25 +98,27 @@ func (t SeoUrlTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 }
 
 type SeoUrlTemplate struct {
-	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	EntityName string `json:"entityName,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	RouteName string `json:"routeName,omitempty"`
+	RouteName      string  `json:"routeName,omitempty"`
 
-	Template string `json:"template,omitempty"`
+	IsValid      bool  `json:"isValid,omitempty"`
 
-	IsValid bool `json:"isValid,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	EntityName      string  `json:"entityName,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Template      string  `json:"template,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }
 
 type SeoUrlTemplateCollection struct {

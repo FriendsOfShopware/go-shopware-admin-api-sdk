@@ -98,23 +98,25 @@ func (t SnippetSetRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 }
 
 type SnippetSet struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Snippets      []Snippet  `json:"snippets,omitempty"`
 
-	SalesChannelDomains []SalesChannelDomain `json:"salesChannelDomains,omitempty"`
+	SalesChannelDomains      []SalesChannelDomain  `json:"salesChannelDomains,omitempty"`
 
-	Iso string `json:"iso,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Snippets []Snippet `json:"snippets,omitempty"`
+	BaseFile      string  `json:"baseFile,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	BaseFile string `json:"baseFile,omitempty"`
+	Id      string  `json:"id,omitempty"`
+
+	Iso      string  `json:"iso,omitempty"`
+
 }
 
 type SnippetSetCollection struct {
