@@ -73,7 +73,7 @@ func (e ExtensionManagerService) DeactivateExtension(ctx ApiContext, extType, na
 }
 
 func (e ExtensionManagerService) RemoveExtension(ctx ApiContext, extType, name string) (*http.Response, error) {
-	return e.lifecycleUpdate("RemoveExtension", ctx, fmt.Sprintf("/api/_action/extension/remove/%s/%s", extType, name), http.MethodDelete)
+	return e.lifecycleUpdate("RemoveExtension", ctx, fmt.Sprintf("/api/_action/extension/remove/%s/%s", extType, name), http.MethodPost)
 }
 
 func (e ExtensionManagerService) UploadExtension(ctx ApiContext, extensionZip io.Reader) (*http.Response, error) {
