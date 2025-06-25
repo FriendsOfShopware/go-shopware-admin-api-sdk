@@ -71,17 +71,17 @@ func (t *SystemConfigRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 
 type SystemConfig struct {
 
-	Id      string  `json:"id,omitempty"`
-
 	ConfigurationKey      string  `json:"configurationKey,omitempty"`
 
 	ConfigurationValue      interface{}  `json:"configurationValue,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
 
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

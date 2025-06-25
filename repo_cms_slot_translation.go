@@ -71,22 +71,22 @@ func (t *CmsSlotTranslationRepository) Delete(ctx ApiContext, ids []string) (*ht
 
 type CmsSlotTranslation struct {
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CmsSlot      *CmsSlot  `json:"cmsSlot,omitempty"`
 
 	CmsSlotId      string  `json:"cmsSlotId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
 	CmsSlotVersionId      string  `json:"cmsSlotVersionId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	CmsSlot      *CmsSlot  `json:"cmsSlot,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Language      *Language  `json:"language,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

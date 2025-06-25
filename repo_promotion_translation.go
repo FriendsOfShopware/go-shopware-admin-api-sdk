@@ -71,20 +71,20 @@ func (t *PromotionTranslationRepository) Delete(ctx ApiContext, ids []string) (*
 
 type PromotionTranslation struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	PromotionId      string  `json:"promotionId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	Promotion      *Promotion  `json:"promotion,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	Promotion      *Promotion  `json:"promotion,omitempty"`
+
+	PromotionId      string  `json:"promotionId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

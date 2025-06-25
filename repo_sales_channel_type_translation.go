@@ -71,26 +71,26 @@ func (t *SalesChannelTypeTranslationRepository) Delete(ctx ApiContext, ids []str
 
 type SalesChannelTypeTranslation struct {
 
-	SalesChannelType      *SalesChannelType  `json:"salesChannelType,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	DescriptionLong      string  `json:"descriptionLong,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	SalesChannelTypeId      string  `json:"salesChannelTypeId,omitempty"`
+	DescriptionLong      string  `json:"descriptionLong,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
 
 	Manufacturer      string  `json:"manufacturer,omitempty"`
 
-	Description      string  `json:"description,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	SalesChannelType      *SalesChannelType  `json:"salesChannelType,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	SalesChannelTypeId      string  `json:"salesChannelTypeId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

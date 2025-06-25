@@ -73,22 +73,22 @@ type ScheduledTask struct {
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	RunInterval      float64  `json:"runInterval,omitempty"`
-
 	DefaultRunInterval      float64  `json:"defaultRunInterval,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
 
 	LastExecutionTime      time.Time  `json:"lastExecutionTime,omitempty"`
 
+	Name      string  `json:"name,omitempty"`
+
 	NextExecutionTime      time.Time  `json:"nextExecutionTime,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	RunInterval      float64  `json:"runInterval,omitempty"`
 
 	ScheduledTaskClass      string  `json:"scheduledTaskClass,omitempty"`
 
 	Status      string  `json:"status,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

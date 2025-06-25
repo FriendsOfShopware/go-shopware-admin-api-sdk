@@ -69,11 +69,11 @@ func (t *PromotionPersonaCustomerRepository) Delete(ctx ApiContext, ids []string
 
 type PromotionPersonaCustomer struct {
 
+	Customer      *Customer  `json:"customer,omitempty"`
+
 	CustomerId      string  `json:"customerId,omitempty"`
 
 	Promotion      *Promotion  `json:"promotion,omitempty"`
-
-	Customer      *Customer  `json:"customer,omitempty"`
 
 	PromotionId      string  `json:"promotionId,omitempty"`
 

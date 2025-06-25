@@ -71,26 +71,26 @@ func (t *ProductDownloadRepository) Delete(ctx ApiContext, ids []string) (*http.
 
 type ProductDownload struct {
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
-
-	Position      float64  `json:"position,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Media      *Media  `json:"media,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
 	ProductId      string  `json:"productId,omitempty"`
 
 	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
 }

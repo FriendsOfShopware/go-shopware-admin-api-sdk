@@ -71,21 +71,11 @@ func (t *PluginRepository) Delete(ctx ApiContext, ids []string) (*http.Response,
 
 type Plugin struct {
 
-	Label      string  `json:"label,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	ManufacturerLink      string  `json:"manufacturerLink,omitempty"`
+	Author      string  `json:"author,omitempty"`
 
-	Translations      []PluginTranslation  `json:"translations,omitempty"`
-
-	License      string  `json:"license,omitempty"`
-
-	InstalledAt      time.Time  `json:"installedAt,omitempty"`
-
-	SupportLink      string  `json:"supportLink,omitempty"`
-
-	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
+	Autoload      interface{}  `json:"autoload,omitempty"`
 
 	BaseClass      string  `json:"baseClass,omitempty"`
 
@@ -93,36 +83,46 @@ type Plugin struct {
 
 	Copyright      string  `json:"copyright,omitempty"`
 
-	Version      string  `json:"version,omitempty"`
-
-	IconRaw      interface{}  `json:"iconRaw,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	Active      bool  `json:"active,omitempty"`
-
-	ManagedByComposer      bool  `json:"managedByComposer,omitempty"`
-
-	UpgradeVersion      string  `json:"upgradeVersion,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	Icon      string  `json:"icon,omitempty"`
 
-	Autoload      interface{}  `json:"autoload,omitempty"`
+	IconRaw      interface{}  `json:"iconRaw,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	InstalledAt      time.Time  `json:"installedAt,omitempty"`
+
+	Label      string  `json:"label,omitempty"`
+
+	License      string  `json:"license,omitempty"`
+
+	ManagedByComposer      bool  `json:"managedByComposer,omitempty"`
+
+	ManufacturerLink      string  `json:"manufacturerLink,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
 
 	Path      string  `json:"path,omitempty"`
 
-	Author      string  `json:"author,omitempty"`
+	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
+
+	SupportLink      string  `json:"supportLink,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []PluginTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	UpgradeVersion      string  `json:"upgradeVersion,omitempty"`
 
 	UpgradedAt      time.Time  `json:"upgradedAt,omitempty"`
 
-	Icon      string  `json:"icon,omitempty"`
+	Version      string  `json:"version,omitempty"`
 
 }

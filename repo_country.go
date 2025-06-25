@@ -71,69 +71,69 @@ func (t *CountryRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 
 type Country struct {
 
-	DisplayStateInRegistration      bool  `json:"displayStateInRegistration,omitempty"`
-
-	States      []CountryState  `json:"states,omitempty"`
-
-	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	Position      float64  `json:"position,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
 	AddressFormat      interface{}  `json:"addressFormat,omitempty"`
 
-	IsEu      bool  `json:"isEu,omitempty"`
-
-	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
-
-	Iso      string  `json:"iso,omitempty"`
-
-	ForceStateInRegistration      bool  `json:"forceStateInRegistration,omitempty"`
-
-	CheckPostalCodePattern      bool  `json:"checkPostalCodePattern,omitempty"`
-
-	TaxRules      []TaxRule  `json:"taxRules,omitempty"`
-
-	CompanyTax      interface{}  `json:"companyTax,omitempty"`
-
-	Translations      []CountryTranslation  `json:"translations,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	CustomerTax      interface{}  `json:"customerTax,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	Active      bool  `json:"active,omitempty"`
-
-	DefaultPostalCodePattern      string  `json:"defaultPostalCodePattern,omitempty"`
-
-	CurrencyCountryRoundings      []CurrencyCountryRounding  `json:"currencyCountryRoundings,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AdvancedPostalCodePattern      string  `json:"advancedPostalCodePattern,omitempty"`
 
 	CheckAdvancedPostalCodePattern      bool  `json:"checkAdvancedPostalCodePattern,omitempty"`
 
-	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
-
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
-
-	VatIdPattern      string  `json:"vatIdPattern,omitempty"`
-
-	ShippingAvailable      bool  `json:"shippingAvailable,omitempty"`
-
-	Iso3      string  `json:"iso3,omitempty"`
+	CheckPostalCodePattern      bool  `json:"checkPostalCodePattern,omitempty"`
 
 	CheckVatIdPattern      bool  `json:"checkVatIdPattern,omitempty"`
 
-	PostalCodeRequired      bool  `json:"postalCodeRequired,omitempty"`
+	CompanyTax      interface{}  `json:"companyTax,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CurrencyCountryRoundings      []CurrencyCountryRounding  `json:"currencyCountryRoundings,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
+
+	CustomerTax      interface{}  `json:"customerTax,omitempty"`
+
+	DefaultPostalCodePattern      string  `json:"defaultPostalCodePattern,omitempty"`
+
+	DisplayStateInRegistration      bool  `json:"displayStateInRegistration,omitempty"`
+
+	ForceStateInRegistration      bool  `json:"forceStateInRegistration,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	AdvancedPostalCodePattern      string  `json:"advancedPostalCodePattern,omitempty"`
+	IsEu      bool  `json:"isEu,omitempty"`
+
+	Iso      string  `json:"iso,omitempty"`
+
+	Iso3      string  `json:"iso3,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
+
+	PostalCodeRequired      bool  `json:"postalCodeRequired,omitempty"`
+
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
+
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+
+	ShippingAvailable      bool  `json:"shippingAvailable,omitempty"`
+
+	States      []CountryState  `json:"states,omitempty"`
+
+	TaxRules      []TaxRule  `json:"taxRules,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []CountryTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	VatIdPattern      string  `json:"vatIdPattern,omitempty"`
 
 	VatIdRequired      bool  `json:"vatIdRequired,omitempty"`
 

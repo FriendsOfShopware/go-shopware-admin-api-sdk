@@ -71,24 +71,24 @@ func (t *ShippingMethodTranslationRepository) Delete(ctx ApiContext, ids []strin
 
 type ShippingMethodTranslation struct {
 
-	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
-
-	TrackingUrl      string  `json:"trackingUrl,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
 	Language      *Language  `json:"language,omitempty"`
 
+	LanguageId      string  `json:"languageId,omitempty"`
+
 	Name      string  `json:"name,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
 
 	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+
+	TrackingUrl      string  `json:"trackingUrl,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

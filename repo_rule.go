@@ -71,54 +71,54 @@ func (t *RuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, e
 
 type Rule struct {
 
-	ShippingMethodPriceCalculations      []ShippingMethodPrice  `json:"shippingMethodPriceCalculations,omitempty"`
+	Areas      interface{}  `json:"areas,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	ProductPrices      []ProductPrice  `json:"productPrices,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	Priority      float64  `json:"priority,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
-
-	Payload      interface{}  `json:"payload,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	ModuleTypes      interface{}  `json:"moduleTypes,omitempty"`
+	CartPromotions      []Promotion  `json:"cartPromotions,omitempty"`
 
 	Conditions      []RuleCondition  `json:"conditions,omitempty"`
 
-	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Description      string  `json:"description,omitempty"`
+
+	FlowSequences      []FlowSequence  `json:"flowSequences,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Invalid      bool  `json:"invalid,omitempty"`
+
+	ModuleTypes      interface{}  `json:"moduleTypes,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	OrderPromotions      []Promotion  `json:"orderPromotions,omitempty"`
+
+	Payload      interface{}  `json:"payload,omitempty"`
 
 	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
 
 	PersonaPromotions      []Promotion  `json:"personaPromotions,omitempty"`
 
-	TaxProviders      []TaxProvider  `json:"taxProviders,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	Tags      []Tag  `json:"tags,omitempty"`
-
-	OrderPromotions      []Promotion  `json:"orderPromotions,omitempty"`
-
-	PromotionSetGroups      []PromotionSetgroup  `json:"promotionSetGroups,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	ShippingMethodPrices      []ShippingMethodPrice  `json:"shippingMethodPrices,omitempty"`
-
-	Areas      interface{}  `json:"areas,omitempty"`
-
-	FlowSequences      []FlowSequence  `json:"flowSequences,omitempty"`
-
-	CartPromotions      []Promotion  `json:"cartPromotions,omitempty"`
+	ProductPrices      []ProductPrice  `json:"productPrices,omitempty"`
 
 	PromotionDiscounts      []PromotionDiscount  `json:"promotionDiscounts,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	PromotionSetGroups      []PromotionSetgroup  `json:"promotionSetGroups,omitempty"`
 
-	Invalid      bool  `json:"invalid,omitempty"`
+	ShippingMethodPriceCalculations      []ShippingMethodPrice  `json:"shippingMethodPriceCalculations,omitempty"`
+
+	ShippingMethodPrices      []ShippingMethodPrice  `json:"shippingMethodPrices,omitempty"`
+
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+
+	Tags      []Tag  `json:"tags,omitempty"`
+
+	TaxProviders      []TaxProvider  `json:"taxProviders,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,22 +71,22 @@ func (t *CustomerWishlistRepository) Delete(ctx ApiContext, ids []string) (*http
 
 type CustomerWishlist struct {
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	Products      []CustomerWishlistProduct  `json:"products,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	CustomerId      string  `json:"customerId,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Customer      *Customer  `json:"customer,omitempty"`
 
+	CustomerId      string  `json:"customerId,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Products      []CustomerWishlistProduct  `json:"products,omitempty"`
+
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,15 +71,21 @@ func (t *IntegrationRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 
 type Integration struct {
 
+	AccessKey      string  `json:"accessKey,omitempty"`
+
+	AclRoles      []AclRole  `json:"aclRoles,omitempty"`
+
 	Admin      bool  `json:"admin,omitempty"`
+
+	App      *App  `json:"app,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
-
-	AclRoles      []AclRole  `json:"aclRoles,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
@@ -87,14 +93,8 @@ type Integration struct {
 
 	LastUsageAt      time.Time  `json:"lastUsageAt,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	SecretAccessKey      interface{}  `json:"secretAccessKey,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
-
-	AccessKey      string  `json:"accessKey,omitempty"`
-
-	SecretAccessKey      interface{}  `json:"secretAccessKey,omitempty"`
 
 }

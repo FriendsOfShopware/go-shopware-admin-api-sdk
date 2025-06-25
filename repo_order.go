@@ -71,98 +71,98 @@ func (t *OrderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 
 type Order struct {
 
-	CustomerComment      string  `json:"customerComment,omitempty"`
-
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
-
-	CreatedBy      *User  `json:"createdBy,omitempty"`
-
-	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	TaxStatus      string  `json:"taxStatus,omitempty"`
-
-	DeepLinkCode      string  `json:"deepLinkCode,omitempty"`
-
-	Source      string  `json:"source,omitempty"`
-
-	UpdatedById      string  `json:"updatedById,omitempty"`
-
-	LineItems      []OrderLineItem  `json:"lineItems,omitempty"`
-
-	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
-
-	OrderDateTime      time.Time  `json:"orderDateTime,omitempty"`
-
-	Price      interface{}  `json:"price,omitempty"`
-
-	Transactions      []OrderTransaction  `json:"transactions,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	VersionId      string  `json:"versionId,omitempty"`
-
-	BillingAddressVersionId      string  `json:"billingAddressVersionId,omitempty"`
-
-	CurrencyId      string  `json:"currencyId,omitempty"`
-
-	ShippingTotal      float64  `json:"shippingTotal,omitempty"`
-
-	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
-
-	Tags      []Tag  `json:"tags,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	CampaignCode      string  `json:"campaignCode,omitempty"`
-
-	StateId      string  `json:"stateId,omitempty"`
-
-	RuleIds      interface{}  `json:"ruleIds,omitempty"`
-
-	OrderCustomer      *OrderCustomer  `json:"orderCustomer,omitempty"`
-
 	Addresses      []OrderAddress  `json:"addresses,omitempty"`
 
-	BillingAddress      *OrderAddress  `json:"billingAddress,omitempty"`
-
-	Deliveries      []OrderDelivery  `json:"deliveries,omitempty"`
-
-	OrderDate      time.Time  `json:"orderDate,omitempty"`
-
-	AmountTotal      float64  `json:"amountTotal,omitempty"`
-
-	PositionPrice      float64  `json:"positionPrice,omitempty"`
-
-	Currency      *Currency  `json:"currency,omitempty"`
-
-	UpdatedBy      *User  `json:"updatedBy,omitempty"`
-
-	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
-
-	OrderNumber      string  `json:"orderNumber,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	CurrencyFactor      float64  `json:"currencyFactor,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	Documents      []Document  `json:"documents,omitempty"`
+	AffiliateCode      string  `json:"affiliateCode,omitempty"`
 
 	AmountNet      float64  `json:"amountNet,omitempty"`
 
-	CreatedById      string  `json:"createdById,omitempty"`
+	AmountTotal      float64  `json:"amountTotal,omitempty"`
+
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
+
+	BillingAddress      *OrderAddress  `json:"billingAddress,omitempty"`
 
 	BillingAddressId      string  `json:"billingAddressId,omitempty"`
+
+	BillingAddressVersionId      string  `json:"billingAddressVersionId,omitempty"`
+
+	CampaignCode      string  `json:"campaignCode,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CreatedBy      *User  `json:"createdBy,omitempty"`
+
+	CreatedById      string  `json:"createdById,omitempty"`
+
+	Currency      *Currency  `json:"currency,omitempty"`
+
+	CurrencyFactor      float64  `json:"currencyFactor,omitempty"`
+
+	CurrencyId      string  `json:"currencyId,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	CustomerComment      string  `json:"customerComment,omitempty"`
+
+	DeepLinkCode      string  `json:"deepLinkCode,omitempty"`
+
+	Deliveries      []OrderDelivery  `json:"deliveries,omitempty"`
+
+	Documents      []Document  `json:"documents,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	LineItems      []OrderLineItem  `json:"lineItems,omitempty"`
+
+	OrderCustomer      *OrderCustomer  `json:"orderCustomer,omitempty"`
+
+	OrderDate      time.Time  `json:"orderDate,omitempty"`
+
+	OrderDateTime      time.Time  `json:"orderDateTime,omitempty"`
+
+	OrderNumber      string  `json:"orderNumber,omitempty"`
+
+	PositionPrice      float64  `json:"positionPrice,omitempty"`
+
+	Price      interface{}  `json:"price,omitempty"`
+
+	RuleIds      interface{}  `json:"ruleIds,omitempty"`
+
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
 	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
 	ShippingCosts      interface{}  `json:"shippingCosts,omitempty"`
 
-	AffiliateCode      string  `json:"affiliateCode,omitempty"`
+	ShippingTotal      float64  `json:"shippingTotal,omitempty"`
+
+	Source      string  `json:"source,omitempty"`
+
+	StateId      string  `json:"stateId,omitempty"`
+
+	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
+
+	Tags      []Tag  `json:"tags,omitempty"`
+
+	TaxStatus      string  `json:"taxStatus,omitempty"`
+
+	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
+
+	Transactions      []OrderTransaction  `json:"transactions,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	UpdatedBy      *User  `json:"updatedBy,omitempty"`
+
+	UpdatedById      string  `json:"updatedById,omitempty"`
+
+	VersionId      string  `json:"versionId,omitempty"`
 
 }

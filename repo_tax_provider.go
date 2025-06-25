@@ -71,34 +71,34 @@ func (t *TaxProviderRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 
 type TaxProvider struct {
 
-	ProcessUrl      string  `json:"processUrl,omitempty"`
-
-	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
 	App      *App  `json:"app,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
 	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
 
 	Identifier      string  `json:"identifier,omitempty"`
 
-	Translations      []TaxProviderTranslation  `json:"translations,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
 	Priority      float64  `json:"priority,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	ProcessUrl      string  `json:"processUrl,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	Translations      []TaxProviderTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

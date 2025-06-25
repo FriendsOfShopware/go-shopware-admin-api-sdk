@@ -71,38 +71,38 @@ func (t *AppPaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http
 
 type AppPaymentMethod struct {
 
-	Identifier      string  `json:"identifier,omitempty"`
-
-	FinalizeUrl      string  `json:"finalizeUrl,omitempty"`
-
-	OriginalMediaId      string  `json:"originalMediaId,omitempty"`
-
-	OriginalMedia      *Media  `json:"originalMedia,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	AppName      string  `json:"appName,omitempty"`
-
-	RefundUrl      string  `json:"refundUrl,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
 	AppId      string  `json:"appId,omitempty"`
 
-	PayUrl      string  `json:"payUrl,omitempty"`
-
-	RecurringUrl      string  `json:"recurringUrl,omitempty"`
-
-	ValidateUrl      string  `json:"validateUrl,omitempty"`
+	AppName      string  `json:"appName,omitempty"`
 
 	CaptureUrl      string  `json:"captureUrl,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	FinalizeUrl      string  `json:"finalizeUrl,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Identifier      string  `json:"identifier,omitempty"`
+
+	OriginalMedia      *Media  `json:"originalMedia,omitempty"`
+
+	OriginalMediaId      string  `json:"originalMediaId,omitempty"`
+
+	PayUrl      string  `json:"payUrl,omitempty"`
+
+	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
 
 	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
 
-	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
+	RecurringUrl      string  `json:"recurringUrl,omitempty"`
+
+	RefundUrl      string  `json:"refundUrl,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	ValidateUrl      string  `json:"validateUrl,omitempty"`
 
 }

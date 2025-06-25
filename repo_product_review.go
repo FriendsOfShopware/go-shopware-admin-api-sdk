@@ -71,44 +71,44 @@ func (t *ProductReviewRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 
 type ProductReview struct {
 
-	Points      float64  `json:"points,omitempty"`
-
 	Comment      string  `json:"comment,omitempty"`
-
-	Customer      *Customer  `json:"customer,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
 	Content      string  `json:"content,omitempty"`
 
-	Status      bool  `json:"status,omitempty"`
-
-	Product      *Product  `json:"product,omitempty"`
-
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Customer      *Customer  `json:"customer,omitempty"`
+
+	CustomerId      string  `json:"customerId,omitempty"`
+
+	ExternalEmail      string  `json:"externalEmail,omitempty"`
 
 	ExternalUser      string  `json:"externalUser,omitempty"`
 
+	Id      string  `json:"id,omitempty"`
+
 	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	Points      float64  `json:"points,omitempty"`
+
+	Product      *Product  `json:"product,omitempty"`
 
 	ProductId      string  `json:"productId,omitempty"`
 
 	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	CustomerId      string  `json:"customerId,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	ExternalEmail      string  `json:"externalEmail,omitempty"`
+	Status      bool  `json:"status,omitempty"`
 
 	Title      string  `json:"title,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

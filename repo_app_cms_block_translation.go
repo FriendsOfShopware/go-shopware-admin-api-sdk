@@ -71,18 +71,18 @@ func (t *AppCmsBlockTranslationRepository) Delete(ctx ApiContext, ids []string) 
 
 type AppCmsBlockTranslation struct {
 
-	Label      string  `json:"label,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppCmsBlock      *AppCmsBlock  `json:"appCmsBlock,omitempty"`
 
 	AppCmsBlockId      string  `json:"appCmsBlockId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AppCmsBlock      *AppCmsBlock  `json:"appCmsBlock,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
 	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,52 +71,52 @@ func (t *CustomerAddressRepository) Delete(ctx ApiContext, ids []string) (*http.
 
 type CustomerAddress struct {
 
-	Salutation      *Salutation  `json:"salutation,omitempty"`
-
-	CustomerId      string  `json:"customerId,omitempty"`
-
-	Company      string  `json:"company,omitempty"`
-
-	Street      string  `json:"street,omitempty"`
-
-	Department      string  `json:"department,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	CountryStateId      string  `json:"countryStateId,omitempty"`
-
-	LastName      string  `json:"lastName,omitempty"`
-
-	Zipcode      string  `json:"zipcode,omitempty"`
-
 	AdditionalAddressLine1      string  `json:"additionalAddressLine1,omitempty"`
 
 	AdditionalAddressLine2      string  `json:"additionalAddressLine2,omitempty"`
 
-	Customer      *Customer  `json:"customer,omitempty"`
+	City      string  `json:"city,omitempty"`
+
+	Company      string  `json:"company,omitempty"`
 
 	Country      *Country  `json:"country,omitempty"`
 
 	CountryId      string  `json:"countryId,omitempty"`
 
-	PhoneNumber      string  `json:"phoneNumber,omitempty"`
-
 	CountryState      *CountryState  `json:"countryState,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CountryStateId      string  `json:"countryStateId,omitempty"`
 
-	SalutationId      string  `json:"salutationId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Customer      *Customer  `json:"customer,omitempty"`
+
+	CustomerId      string  `json:"customerId,omitempty"`
+
+	Department      string  `json:"department,omitempty"`
 
 	FirstName      string  `json:"firstName,omitempty"`
 
-	City      string  `json:"city,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	LastName      string  `json:"lastName,omitempty"`
+
+	PhoneNumber      string  `json:"phoneNumber,omitempty"`
+
+	Salutation      *Salutation  `json:"salutation,omitempty"`
+
+	SalutationId      string  `json:"salutationId,omitempty"`
+
+	Street      string  `json:"street,omitempty"`
 
 	Title      string  `json:"title,omitempty"`
 
-	Hash      string  `json:"hash,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Zipcode      string  `json:"zipcode,omitempty"`
 
 }

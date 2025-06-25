@@ -71,18 +71,18 @@ func (t *AppScriptConditionTranslationRepository) Delete(ctx ApiContext, ids []s
 
 type AppScriptConditionTranslation struct {
 
-	Language      *Language  `json:"language,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
 
 	AppScriptConditionId      string  `json:"appScriptConditionId,omitempty"`
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
 	LanguageId      string  `json:"languageId,omitempty"`
 
-	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

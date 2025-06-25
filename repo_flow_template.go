@@ -71,13 +71,13 @@ func (t *FlowTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 
 type FlowTemplate struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
 	Config      interface{}  `json:"config,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

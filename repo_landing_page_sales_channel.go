@@ -69,14 +69,14 @@ func (t *LandingPageSalesChannelRepository) Delete(ctx ApiContext, ids []string)
 
 type LandingPageSalesChannel struct {
 
-	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
 	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
+
+	LandingPageId      string  `json:"landingPageId,omitempty"`
+
+	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
 
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	LandingPageId      string  `json:"landingPageId,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
 }

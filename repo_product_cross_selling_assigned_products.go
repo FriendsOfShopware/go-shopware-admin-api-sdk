@@ -71,21 +71,21 @@ func (t *ProductCrossSellingAssignedProductsRepository) Delete(ctx ApiContext, i
 
 type ProductCrossSellingAssignedProducts struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
-
-	Product      *Product  `json:"product,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CrossSelling      *ProductCrossSelling  `json:"crossSelling,omitempty"`
 
+	CrossSellingId      string  `json:"crossSellingId,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
 	Position      float64  `json:"position,omitempty"`
 
-	CrossSellingId      string  `json:"crossSellingId,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
 	ProductId      string  `json:"productId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

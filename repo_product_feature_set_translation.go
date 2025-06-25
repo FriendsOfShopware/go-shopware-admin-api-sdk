@@ -71,20 +71,20 @@ func (t *ProductFeatureSetTranslationRepository) Delete(ctx ApiContext, ids []st
 
 type ProductFeatureSetTranslation struct {
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	ProductFeatureSet      *ProductFeatureSet  `json:"productFeatureSet,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	ProductFeatureSet      *ProductFeatureSet  `json:"productFeatureSet,omitempty"`
 
 	ProductFeatureSetId      string  `json:"productFeatureSetId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

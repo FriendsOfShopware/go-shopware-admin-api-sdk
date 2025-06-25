@@ -69,11 +69,11 @@ func (t *ThemeChildRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 
 type ThemeChild struct {
 
+	ChildId      string  `json:"childId,omitempty"`
+
 	ChildTheme      *Theme  `json:"childTheme,omitempty"`
 
 	ParentId      string  `json:"parentId,omitempty"`
-
-	ChildId      string  `json:"childId,omitempty"`
 
 	ParentTheme      *Theme  `json:"parentTheme,omitempty"`
 

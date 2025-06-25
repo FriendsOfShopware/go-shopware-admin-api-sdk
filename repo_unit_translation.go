@@ -71,22 +71,22 @@ func (t *UnitTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.
 
 type UnitTranslation struct {
 
-	Language      *Language  `json:"language,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Unit      *Unit  `json:"unit,omitempty"`
-
-	ShortCode      string  `json:"shortCode,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
 	Name      string  `json:"name,omitempty"`
 
+	ShortCode      string  `json:"shortCode,omitempty"`
+
+	Unit      *Unit  `json:"unit,omitempty"`
+
 	UnitId      string  `json:"unitId,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

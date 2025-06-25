@@ -71,52 +71,52 @@ func (t *CmsBlockRepository) Delete(ctx ApiContext, ids []string) (*http.Respons
 
 type CmsBlock struct {
 
-	Type      string  `json:"type,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	MarginBottom      string  `json:"marginBottom,omitempty"`
-
-	MarginRight      string  `json:"marginRight,omitempty"`
-
-	BackgroundMediaMode      string  `json:"backgroundMediaMode,omitempty"`
-
-	SectionId      string  `json:"sectionId,omitempty"`
+	BackgroundColor      string  `json:"backgroundColor,omitempty"`
 
 	BackgroundMedia      *Media  `json:"backgroundMedia,omitempty"`
 
+	BackgroundMediaId      string  `json:"backgroundMediaId,omitempty"`
+
+	BackgroundMediaMode      string  `json:"backgroundMediaMode,omitempty"`
+
 	CmsSectionVersionId      string  `json:"cmsSectionVersionId,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	Position      float64  `json:"position,omitempty"`
-
-	MarginLeft      string  `json:"marginLeft,omitempty"`
-
-	BackgroundColor      string  `json:"backgroundColor,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CssClass      string  `json:"cssClass,omitempty"`
 
-	Visibility      interface{}  `json:"visibility,omitempty"`
-
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	MarginTop      string  `json:"marginTop,omitempty"`
-
-	BackgroundMediaId      string  `json:"backgroundMediaId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Locked      bool  `json:"locked,omitempty"`
 
-	SectionPosition      string  `json:"sectionPosition,omitempty"`
+	MarginBottom      string  `json:"marginBottom,omitempty"`
+
+	MarginLeft      string  `json:"marginLeft,omitempty"`
+
+	MarginRight      string  `json:"marginRight,omitempty"`
+
+	MarginTop      string  `json:"marginTop,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
 
 	Section      *CmsSection  `json:"section,omitempty"`
 
+	SectionId      string  `json:"sectionId,omitempty"`
+
+	SectionPosition      string  `json:"sectionPosition,omitempty"`
+
 	Slots      []CmsSlot  `json:"slots,omitempty"`
+
+	Type      string  `json:"type,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 	VersionId      string  `json:"versionId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Visibility      interface{}  `json:"visibility,omitempty"`
 
 }

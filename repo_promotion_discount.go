@@ -71,36 +71,36 @@ func (t *PromotionDiscountRepository) Delete(ctx ApiContext, ids []string) (*htt
 
 type PromotionDiscount struct {
 
-	Type      string  `json:"type,omitempty"`
-
-	Value      float64  `json:"value,omitempty"`
+	ApplierKey      string  `json:"applierKey,omitempty"`
 
 	ConsiderAdvancedRules      bool  `json:"considerAdvancedRules,omitempty"`
 
-	UsageKey      string  `json:"usageKey,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SorterKey      string  `json:"sorterKey,omitempty"`
+	DiscountRules      []Rule  `json:"discountRules,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	MaxValue      float64  `json:"maxValue,omitempty"`
 
 	PickerKey      string  `json:"pickerKey,omitempty"`
 
 	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
+	PromotionDiscountPrices      []PromotionDiscountPrices  `json:"promotionDiscountPrices,omitempty"`
 
 	PromotionId      string  `json:"promotionId,omitempty"`
 
-	MaxValue      float64  `json:"maxValue,omitempty"`
-
-	ApplierKey      string  `json:"applierKey,omitempty"`
-
-	PromotionDiscountPrices      []PromotionDiscountPrices  `json:"promotionDiscountPrices,omitempty"`
-
 	Scope      string  `json:"scope,omitempty"`
 
-	DiscountRules      []Rule  `json:"discountRules,omitempty"`
+	SorterKey      string  `json:"sorterKey,omitempty"`
+
+	Type      string  `json:"type,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	UsageKey      string  `json:"usageKey,omitempty"`
+
+	Value      float64  `json:"value,omitempty"`
 
 }

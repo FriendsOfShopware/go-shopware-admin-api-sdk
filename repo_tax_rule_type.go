@@ -71,22 +71,22 @@ func (t *TaxRuleTypeRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 
 type TaxRuleType struct {
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	TechnicalName      string  `json:"technicalName,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Position      float64  `json:"position,omitempty"`
 
-	Translations      []TaxRuleTypeTranslation  `json:"translations,omitempty"`
+	Rules      []TaxRule  `json:"rules,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []TaxRuleTypeTranslation  `json:"translations,omitempty"`
 
 	TypeName      string  `json:"typeName,omitempty"`
 
-	Rules      []TaxRule  `json:"rules,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

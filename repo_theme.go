@@ -71,31 +71,7 @@ func (t *ThemeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 
 type Theme struct {
 
-	Translations      []ThemeTranslation  `json:"translations,omitempty"`
-
-	DependentThemes      []Theme  `json:"dependentThemes,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	TechnicalName      string  `json:"technicalName,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	PreviewMediaId      string  `json:"previewMediaId,omitempty"`
-
-	Media      []Media  `json:"media,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	HelpTexts      interface{}  `json:"helpTexts,omitempty"`
-
 	Active      bool  `json:"active,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
 
 	Author      string  `json:"author,omitempty"`
 
@@ -103,16 +79,40 @@ type Theme struct {
 
 	ConfigValues      interface{}  `json:"configValues,omitempty"`
 
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	PreviewMedia      *Media  `json:"previewMedia,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	DependentThemes      []Theme  `json:"dependentThemes,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
+	HelpTexts      interface{}  `json:"helpTexts,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
 	Labels      interface{}  `json:"labels,omitempty"`
+
+	Media      []Media  `json:"media,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
 
 	ParentThemeId      string  `json:"parentThemeId,omitempty"`
 
+	PreviewMedia      *Media  `json:"previewMedia,omitempty"`
+
+	PreviewMediaId      string  `json:"previewMediaId,omitempty"`
+
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+
+	TechnicalName      string  `json:"technicalName,omitempty"`
+
 	ThemeJson      interface{}  `json:"themeJson,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []ThemeTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

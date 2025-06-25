@@ -71,104 +71,104 @@ func (t *MediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, 
 
 type Media struct {
 
-	AppShippingMethods      []AppShippingMethod  `json:"appShippingMethods,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	ProductManufacturers      []ProductManufacturer  `json:"productManufacturers,omitempty"`
-
-	MailTemplateMedia      []MailTemplateMedia  `json:"mailTemplateMedia,omitempty"`
-
-	Themes      []Theme  `json:"themes,omitempty"`
-
-	MediaFolderId      string  `json:"mediaFolderId,omitempty"`
-
-	FileSize      float64  `json:"fileSize,omitempty"`
-
-	MetaData      interface{}  `json:"metaData,omitempty"`
-
 	Alt      string  `json:"alt,omitempty"`
 
-	Path      string  `json:"path,omitempty"`
+	AppPaymentMethods      []AppPaymentMethod  `json:"appPaymentMethods,omitempty"`
 
-	HasFile      bool  `json:"hasFile,omitempty"`
+	AppShippingMethods      []AppShippingMethod  `json:"appShippingMethods,omitempty"`
+
+	AvatarUsers      []User  `json:"avatarUsers,omitempty"`
+
+	Categories      []Category  `json:"categories,omitempty"`
+
+	CmsBlocks      []CmsBlock  `json:"cmsBlocks,omitempty"`
+
+	CmsPages      []CmsPage  `json:"cmsPages,omitempty"`
+
+	CmsSections      []CmsSection  `json:"cmsSections,omitempty"`
+
+	Config      interface{}  `json:"config,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ThumbnailsRo      interface{}  `json:"thumbnailsRo,omitempty"`
+	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
+
+	Documents      []Document  `json:"documents,omitempty"`
+
+	FileExtension      string  `json:"fileExtension,omitempty"`
+
+	FileHash      string  `json:"fileHash,omitempty"`
+
+	FileName      string  `json:"fileName,omitempty"`
+
+	FileSize      float64  `json:"fileSize,omitempty"`
+
+	HasFile      bool  `json:"hasFile,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	Thumbnails      []MediaThumbnail  `json:"thumbnails,omitempty"`
+	MailTemplateMedia      []MailTemplateMedia  `json:"mailTemplateMedia,omitempty"`
+
+	MediaFolder      *MediaFolder  `json:"mediaFolder,omitempty"`
+
+	MediaFolderId      string  `json:"mediaFolderId,omitempty"`
+
+	MediaType      interface{}  `json:"mediaType,omitempty"`
+
+	MediaTypeRaw      interface{}  `json:"mediaTypeRaw,omitempty"`
+
+	MetaData      interface{}  `json:"metaData,omitempty"`
+
+	MimeType      string  `json:"mimeType,omitempty"`
+
+	OrderLineItemDownloads      []OrderLineItemDownload  `json:"orderLineItemDownloads,omitempty"`
+
+	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
+
+	Path      string  `json:"path,omitempty"`
+
+	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
+
+	Private      bool  `json:"private,omitempty"`
+
+	ProductConfiguratorSettings      []ProductConfiguratorSetting  `json:"productConfiguratorSettings,omitempty"`
+
+	ProductDownloads      []ProductDownload  `json:"productDownloads,omitempty"`
+
+	ProductManufacturers      []ProductManufacturer  `json:"productManufacturers,omitempty"`
+
+	ProductMedia      []ProductMedia  `json:"productMedia,omitempty"`
 
 	PropertyGroupOptions      []PropertyGroupOption  `json:"propertyGroupOptions,omitempty"`
 
 	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
 
-	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
-
-	ProductConfiguratorSettings      []ProductConfiguratorSetting  `json:"productConfiguratorSettings,omitempty"`
-
-	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	FileName      string  `json:"fileName,omitempty"`
-
-	Config      interface{}  `json:"config,omitempty"`
-
-	ProductDownloads      []ProductDownload  `json:"productDownloads,omitempty"`
-
-	OrderLineItemDownloads      []OrderLineItemDownload  `json:"orderLineItemDownloads,omitempty"`
-
-	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
-
-	CmsPages      []CmsPage  `json:"cmsPages,omitempty"`
-
-	AppPaymentMethods      []AppPaymentMethod  `json:"appPaymentMethods,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
 	ThemeMedia      []Theme  `json:"themeMedia,omitempty"`
 
-	MediaTypeRaw      interface{}  `json:"mediaTypeRaw,omitempty"`
+	Themes      []Theme  `json:"themes,omitempty"`
 
-	User      *User  `json:"user,omitempty"`
+	Thumbnails      []MediaThumbnail  `json:"thumbnails,omitempty"`
 
-	CmsBlocks      []CmsBlock  `json:"cmsBlocks,omitempty"`
+	ThumbnailsRo      interface{}  `json:"thumbnailsRo,omitempty"`
 
-	Documents      []Document  `json:"documents,omitempty"`
-
-	UserId      string  `json:"userId,omitempty"`
-
-	MediaType      interface{}  `json:"mediaType,omitempty"`
-
-	Url      string  `json:"url,omitempty"`
-
-	Private      bool  `json:"private,omitempty"`
-
-	Categories      []Category  `json:"categories,omitempty"`
-
-	ProductMedia      []ProductMedia  `json:"productMedia,omitempty"`
-
-	AvatarUsers      []User  `json:"avatarUsers,omitempty"`
-
-	MediaFolder      *MediaFolder  `json:"mediaFolder,omitempty"`
-
-	UploadedAt      time.Time  `json:"uploadedAt,omitempty"`
-
-	Translations      []MediaTranslation  `json:"translations,omitempty"`
-
-	Tags      []Tag  `json:"tags,omitempty"`
-
-	CmsSections      []CmsSection  `json:"cmsSections,omitempty"`
-
-	FileHash      string  `json:"fileHash,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
 	Translated      interface{}  `json:"translated,omitempty"`
 
-	MimeType      string  `json:"mimeType,omitempty"`
+	Translations      []MediaTranslation  `json:"translations,omitempty"`
 
-	FileExtension      string  `json:"fileExtension,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
+	UploadedAt      time.Time  `json:"uploadedAt,omitempty"`
+
+	Url      string  `json:"url,omitempty"`
+
+	User      *User  `json:"user,omitempty"`
+
+	UserId      string  `json:"userId,omitempty"`
 
 }

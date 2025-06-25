@@ -71,22 +71,22 @@ func (t *CmsPageTranslationRepository) Delete(ctx ApiContext, ids []string) (*ht
 
 type CmsPageTranslation struct {
 
-	Name      string  `json:"name,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
 
 	CmsPageId      string  `json:"cmsPageId,omitempty"`
 
-	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Language      *Language  `json:"language,omitempty"`
 
-	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,30 +71,30 @@ func (t *OrderTransactionCaptureRepository) Delete(ctx ApiContext, ids []string)
 
 type OrderTransactionCapture struct {
 
-	ExternalReference      string  `json:"externalReference,omitempty"`
-
 	Amount      interface{}  `json:"amount,omitempty"`
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	ExternalReference      string  `json:"externalReference,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	OrderTransactionId      string  `json:"orderTransactionId,omitempty"`
+
+	OrderTransactionVersionId      string  `json:"orderTransactionVersionId,omitempty"`
+
+	Refunds      []OrderTransactionCaptureRefund  `json:"refunds,omitempty"`
+
+	StateId      string  `json:"stateId,omitempty"`
+
+	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
+
+	Transaction      *OrderTransaction  `json:"transaction,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 	VersionId      string  `json:"versionId,omitempty"`
-
-	OrderTransactionId      string  `json:"orderTransactionId,omitempty"`
-
-	StateId      string  `json:"stateId,omitempty"`
-
-	Transaction      *OrderTransaction  `json:"transaction,omitempty"`
-
-	Refunds      []OrderTransactionCaptureRefund  `json:"refunds,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	OrderTransactionVersionId      string  `json:"orderTransactionVersionId,omitempty"`
-
-	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
 
 }

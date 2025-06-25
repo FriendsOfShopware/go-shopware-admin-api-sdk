@@ -71,22 +71,22 @@ func (t *LocaleTranslationRepository) Delete(ctx ApiContext, ids []string) (*htt
 
 type LocaleTranslation struct {
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	Locale      *Locale  `json:"locale,omitempty"`
+
+	LocaleId      string  `json:"localeId,omitempty"`
 
 	Name      string  `json:"name,omitempty"`
 
 	Territory      string  `json:"territory,omitempty"`
 
-	Locale      *Locale  `json:"locale,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	LocaleId      string  `json:"localeId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
 
 }

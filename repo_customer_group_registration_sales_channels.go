@@ -71,14 +71,14 @@ func (t *CustomerGroupRegistrationSalesChannelsRepository) Delete(ctx ApiContext
 
 type CustomerGroupRegistrationSalesChannels struct {
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomerGroup      *CustomerGroup  `json:"customerGroup,omitempty"`
 
+	CustomerGroupId      string  `json:"customerGroupId,omitempty"`
+
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	CustomerGroupId      string  `json:"customerGroupId,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
 }

@@ -71,21 +71,21 @@ func (t *DocumentBaseConfigSalesChannelRepository) Delete(ctx ApiContext, ids []
 
 type DocumentBaseConfigSalesChannel struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	DocumentBaseConfigId      string  `json:"documentBaseConfigId,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
-	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	DocumentBaseConfig      *DocumentBaseConfig  `json:"documentBaseConfig,omitempty"`
 
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	DocumentBaseConfigId      string  `json:"documentBaseConfigId,omitempty"`
 
 	DocumentType      *DocumentType  `json:"documentType,omitempty"`
+
+	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

@@ -71,18 +71,18 @@ func (t *TaxRuleTypeTranslationRepository) Delete(ctx ApiContext, ids []string) 
 
 type TaxRuleTypeTranslation struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	TaxRuleTypeId      string  `json:"taxRuleTypeId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
 	LanguageId      string  `json:"languageId,omitempty"`
 
 	TaxRuleType      *TaxRuleType  `json:"taxRuleType,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	TaxRuleTypeId      string  `json:"taxRuleTypeId,omitempty"`
 
 	TypeName      string  `json:"typeName,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

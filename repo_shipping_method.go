@@ -71,58 +71,58 @@ func (t *ShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http.R
 
 type ShippingMethod struct {
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	MediaId      string  `json:"mediaId,omitempty"`
-
-	DeliveryTimeId      string  `json:"deliveryTimeId,omitempty"`
-
-	TrackingUrl      string  `json:"trackingUrl,omitempty"`
-
-	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
-
-	Prices      []ShippingMethodPrice  `json:"prices,omitempty"`
-
 	Active      bool  `json:"active,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
-
-	Translations      []ShippingMethodTranslation  `json:"translations,omitempty"`
-
-	Tags      []Tag  `json:"tags,omitempty"`
-
-	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
-
-	Tax      *Tax  `json:"tax,omitempty"`
 
 	AppShippingMethod      *AppShippingMethod  `json:"appShippingMethod,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	DeliveryTime      *DeliveryTime  `json:"deliveryTime,omitempty"`
-
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
-
-	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
-
-	TechnicalName      string  `json:"technicalName,omitempty"`
+	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
 
 	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
 
-	TaxType      string  `json:"taxType,omitempty"`
-
-	TaxId      string  `json:"taxId,omitempty"`
-
-	Media      *Media  `json:"media,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	DeliveryTime      *DeliveryTime  `json:"deliveryTime,omitempty"`
+
+	DeliveryTimeId      string  `json:"deliveryTimeId,omitempty"`
+
+	Description      string  `json:"description,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
+	Media      *Media  `json:"media,omitempty"`
+
+	MediaId      string  `json:"mediaId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
+
 	Position      float64  `json:"position,omitempty"`
+
+	Prices      []ShippingMethodPrice  `json:"prices,omitempty"`
+
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
+
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+
+	Tags      []Tag  `json:"tags,omitempty"`
+
+	Tax      *Tax  `json:"tax,omitempty"`
+
+	TaxId      string  `json:"taxId,omitempty"`
+
+	TaxType      string  `json:"taxType,omitempty"`
+
+	TechnicalName      string  `json:"technicalName,omitempty"`
+
+	TrackingUrl      string  `json:"trackingUrl,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []ShippingMethodTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

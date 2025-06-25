@@ -69,12 +69,12 @@ func (t *RuleTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 
 type RuleTag struct {
 
-	Tag      *Tag  `json:"tag,omitempty"`
+	Rule      *Rule  `json:"rule,omitempty"`
 
 	RuleId      string  `json:"ruleId,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
+	Tag      *Tag  `json:"tag,omitempty"`
 
-	Rule      *Rule  `json:"rule,omitempty"`
+	TagId      string  `json:"tagId,omitempty"`
 
 }

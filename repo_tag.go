@@ -71,30 +71,30 @@ func (t *TagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, er
 
 type Tag struct {
 
-	Orders      []Order  `json:"orders,omitempty"`
-
-	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
-
-	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
-
-	LandingPages      []LandingPage  `json:"landingPages,omitempty"`
+	Categories      []Category  `json:"categories,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	Products      []Product  `json:"products,omitempty"`
-
-	Categories      []Category  `json:"categories,omitempty"`
-
 	Customers      []Customer  `json:"customers,omitempty"`
-
-	Rules      []Rule  `json:"rules,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
+	LandingPages      []LandingPage  `json:"landingPages,omitempty"`
+
 	Media      []Media  `json:"media,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
+
+	Orders      []Order  `json:"orders,omitempty"`
+
+	Products      []Product  `json:"products,omitempty"`
+
+	Rules      []Rule  `json:"rules,omitempty"`
+
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

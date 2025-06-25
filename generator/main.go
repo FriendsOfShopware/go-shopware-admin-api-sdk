@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-
+	"sort"
 	"strings"
 	"text/template"
 
@@ -44,7 +44,14 @@ func main() {
 			HasTimeField:  entity.HasTimeField(),
 		}
 
-		for name, property := range entity.Properties {
+				propertyNames := make([]string, 0, len(entity.Properties))
+		for name := range entity.Properties {
+			propertyNames = append(propertyNames, name)
+		}
+		sort.Strings(propertyNames)
+
+		for _, name := range propertyNames {
+			property := entity.Properties[name]
 			info.Fields = append(info.Fields, TplField{
 				Key:  strcase.ToCamel(name),
 				Name: name,

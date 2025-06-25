@@ -71,20 +71,20 @@ func (t *NumberRangeTypeTranslationRepository) Delete(ctx ApiContext, ids []stri
 
 type NumberRangeTypeTranslation struct {
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
 	LanguageId      string  `json:"languageId,omitempty"`
 
 	NumberRangeType      *NumberRangeType  `json:"numberRangeType,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	NumberRangeTypeId      string  `json:"numberRangeTypeId,omitempty"`
 
 	TypeName      string  `json:"typeName,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	NumberRangeTypeId      string  `json:"numberRangeTypeId,omitempty"`
 
 }

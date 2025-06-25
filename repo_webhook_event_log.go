@@ -71,40 +71,40 @@ func (t *WebhookEventLogRepository) Delete(ctx ApiContext, ids []string) (*http.
 
 type WebhookEventLog struct {
 
-	ResponseContent      interface{}  `json:"responseContent,omitempty"`
-
-	ResponseStatusCode      float64  `json:"responseStatusCode,omitempty"`
-
-	ResponseReasonPhrase      string  `json:"responseReasonPhrase,omitempty"`
-
-	OnlyLiveVersion      bool  `json:"onlyLiveVersion,omitempty"`
-
-	SerializedWebhookMessage      interface{}  `json:"serializedWebhookMessage,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	WebhookName      string  `json:"webhookName,omitempty"`
-
-	DeliveryStatus      string  `json:"deliveryStatus,omitempty"`
-
-	ProcessingTime      float64  `json:"processingTime,omitempty"`
+	AppName      string  `json:"appName,omitempty"`
 
 	AppVersion      string  `json:"appVersion,omitempty"`
 
-	RequestContent      interface{}  `json:"requestContent,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AppName      string  `json:"appName,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	DeliveryStatus      string  `json:"deliveryStatus,omitempty"`
 
 	EventName      string  `json:"eventName,omitempty"`
 
-	Url      string  `json:"url,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	OnlyLiveVersion      bool  `json:"onlyLiveVersion,omitempty"`
+
+	ProcessingTime      float64  `json:"processingTime,omitempty"`
+
+	RequestContent      interface{}  `json:"requestContent,omitempty"`
+
+	ResponseContent      interface{}  `json:"responseContent,omitempty"`
+
+	ResponseReasonPhrase      string  `json:"responseReasonPhrase,omitempty"`
+
+	ResponseStatusCode      float64  `json:"responseStatusCode,omitempty"`
+
+	SerializedWebhookMessage      interface{}  `json:"serializedWebhookMessage,omitempty"`
 
 	Timestamp      float64  `json:"timestamp,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Url      string  `json:"url,omitempty"`
+
+	WebhookName      string  `json:"webhookName,omitempty"`
 
 }

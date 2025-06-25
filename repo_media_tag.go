@@ -69,12 +69,12 @@ func (t *MediaTagRepository) Delete(ctx ApiContext, ids []string) (*http.Respons
 
 type MediaTag struct {
 
-	MediaId      string  `json:"mediaId,omitempty"`
-
-	TagId      string  `json:"tagId,omitempty"`
-
 	Media      *Media  `json:"media,omitempty"`
 
+	MediaId      string  `json:"mediaId,omitempty"`
+
 	Tag      *Tag  `json:"tag,omitempty"`
+
+	TagId      string  `json:"tagId,omitempty"`
 
 }

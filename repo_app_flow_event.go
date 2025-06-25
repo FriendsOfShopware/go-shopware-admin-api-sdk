@@ -71,21 +71,21 @@ func (t *AppFlowEventRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 
 type AppFlowEvent struct {
 
-	AppId      string  `json:"appId,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
 	Aware      interface{}  `json:"aware,omitempty"`
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	App      *App  `json:"app,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
 
 	Flows      []Flow  `json:"flows,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

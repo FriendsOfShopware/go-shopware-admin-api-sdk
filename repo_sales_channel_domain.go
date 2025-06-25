@@ -71,36 +71,36 @@ func (t *SalesChannelDomainRepository) Delete(ctx ApiContext, ids []string) (*ht
 
 type SalesChannelDomain struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	CurrencyId      string  `json:"currencyId,omitempty"`
-
-	HreflangUseOnlyLocale      bool  `json:"hreflangUseOnlyLocale,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
-	SnippetSetId      string  `json:"snippetSetId,omitempty"`
-
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	Currency      *Currency  `json:"currency,omitempty"`
 
-	SnippetSet      *SnippetSet  `json:"snippetSet,omitempty"`
+	CurrencyId      string  `json:"currencyId,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	HreflangUseOnlyLocale      bool  `json:"hreflangUseOnlyLocale,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
 
 	Language      *Language  `json:"language,omitempty"`
 
+	LanguageId      string  `json:"languageId,omitempty"`
+
 	ProductExports      []ProductExport  `json:"productExports,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	SalesChannelDefaultHreflang      *SalesChannel  `json:"salesChannelDefaultHreflang,omitempty"`
+
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
+	SnippetSet      *SnippetSet  `json:"snippetSet,omitempty"`
+
+	SnippetSetId      string  `json:"snippetSetId,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 	Url      string  `json:"url,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	SalesChannelDefaultHreflang      *SalesChannel  `json:"salesChannelDefaultHreflang,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 }

@@ -69,14 +69,14 @@ func (t *ProductOptionRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 
 type ProductOption struct {
 
-	ProductId      string  `json:"productId,omitempty"`
-
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	Option      *PropertyGroupOption  `json:"option,omitempty"`
 
 	OptionId      string  `json:"optionId,omitempty"`
 
 	Product      *Product  `json:"product,omitempty"`
 
-	Option      *PropertyGroupOption  `json:"option,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
+
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
 }

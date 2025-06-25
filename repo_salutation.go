@@ -71,32 +71,32 @@ func (t *SalutationRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 
 type Salutation struct {
 
-	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
-
-	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
-
-	OrderCustomers      []OrderCustomer  `json:"orderCustomers,omitempty"`
-
-	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	SalutationKey      string  `json:"salutationKey,omitempty"`
-
-	DisplayName      string  `json:"displayName,omitempty"`
-
-	LetterName      string  `json:"letterName,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Translations      []SalutationTranslation  `json:"translations,omitempty"`
+	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
 
 	Customers      []Customer  `json:"customers,omitempty"`
+
+	DisplayName      string  `json:"displayName,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	LetterName      string  `json:"letterName,omitempty"`
+
+	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
+
+	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
+
+	OrderCustomers      []OrderCustomer  `json:"orderCustomers,omitempty"`
+
+	SalutationKey      string  `json:"salutationKey,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []SalutationTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

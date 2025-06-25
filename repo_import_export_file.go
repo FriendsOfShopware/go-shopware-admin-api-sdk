@@ -71,22 +71,22 @@ func (t *ImportExportFileRepository) Delete(ctx ApiContext, ids []string) (*http
 
 type ImportExportFile struct {
 
-	Path      string  `json:"path,omitempty"`
-
-	ExpireDate      time.Time  `json:"expireDate,omitempty"`
+	AccessToken      string  `json:"accessToken,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Size      float64  `json:"size,omitempty"`
-
-	Log      *ImportExportLog  `json:"log,omitempty"`
-
-	AccessToken      string  `json:"accessToken,omitempty"`
+	ExpireDate      time.Time  `json:"expireDate,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
+	Log      *ImportExportLog  `json:"log,omitempty"`
+
 	OriginalName      string  `json:"originalName,omitempty"`
+
+	Path      string  `json:"path,omitempty"`
+
+	Size      float64  `json:"size,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

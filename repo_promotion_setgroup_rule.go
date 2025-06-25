@@ -69,12 +69,12 @@ func (t *PromotionSetgroupRuleRepository) Delete(ctx ApiContext, ids []string) (
 
 type PromotionSetgroupRule struct {
 
-	SetgroupId      string  `json:"setgroupId,omitempty"`
+	Rule      *Rule  `json:"rule,omitempty"`
 
 	RuleId      string  `json:"ruleId,omitempty"`
 
 	Setgroup      *PromotionSetgroup  `json:"setgroup,omitempty"`
 
-	Rule      *Rule  `json:"rule,omitempty"`
+	SetgroupId      string  `json:"setgroupId,omitempty"`
 
 }

@@ -71,42 +71,42 @@ func (t *ImportExportLogRepository) Delete(ctx ApiContext, ids []string) (*http.
 
 type ImportExportLog struct {
 
-	InvalidRecordsLogId      string  `json:"invalidRecordsLogId,omitempty"`
-
-	Username      string  `json:"username,omitempty"`
-
-	ProfileName      string  `json:"profileName,omitempty"`
-
-	Result      interface{}  `json:"result,omitempty"`
-
-	Profile      *ImportExportProfile  `json:"profile,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
 	Activity      string  `json:"activity,omitempty"`
-
-	State      string  `json:"state,omitempty"`
-
-	UserId      string  `json:"userId,omitempty"`
-
-	ProfileId      string  `json:"profileId,omitempty"`
-
-	Records      float64  `json:"records,omitempty"`
 
 	Config      interface{}  `json:"config,omitempty"`
 
-	User      *User  `json:"user,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	FailedImportLog      *ImportExportLog  `json:"failedImportLog,omitempty"`
 
 	File      *ImportExportFile  `json:"file,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
 	FileId      string  `json:"fileId,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
 
 	InvalidRecordsLog      *ImportExportLog  `json:"invalidRecordsLog,omitempty"`
 
-	FailedImportLog      *ImportExportLog  `json:"failedImportLog,omitempty"`
+	InvalidRecordsLogId      string  `json:"invalidRecordsLogId,omitempty"`
+
+	Profile      *ImportExportProfile  `json:"profile,omitempty"`
+
+	ProfileId      string  `json:"profileId,omitempty"`
+
+	ProfileName      string  `json:"profileName,omitempty"`
+
+	Records      float64  `json:"records,omitempty"`
+
+	Result      interface{}  `json:"result,omitempty"`
+
+	State      string  `json:"state,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	User      *User  `json:"user,omitempty"`
+
+	UserId      string  `json:"userId,omitempty"`
+
+	Username      string  `json:"username,omitempty"`
 
 }

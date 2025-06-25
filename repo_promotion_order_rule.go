@@ -69,12 +69,12 @@ func (t *PromotionOrderRuleRepository) Delete(ctx ApiContext, ids []string) (*ht
 
 type PromotionOrderRule struct {
 
-	PromotionId      string  `json:"promotionId,omitempty"`
-
-	RuleId      string  `json:"ruleId,omitempty"`
-
 	Promotion      *Promotion  `json:"promotion,omitempty"`
 
+	PromotionId      string  `json:"promotionId,omitempty"`
+
 	Rule      *Rule  `json:"rule,omitempty"`
+
+	RuleId      string  `json:"ruleId,omitempty"`
 
 }

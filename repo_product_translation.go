@@ -71,38 +71,38 @@ func (t *ProductTranslationRepository) Delete(ctx ApiContext, ids []string) (*ht
 
 type ProductTranslation struct {
 
-	Name      string  `json:"name,omitempty"`
-
-	Keywords      string  `json:"keywords,omitempty"`
-
-	PackUnitPlural      string  `json:"packUnitPlural,omitempty"`
-
-	CustomSearchKeywords      interface{}  `json:"customSearchKeywords,omitempty"`
-
-	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
-
-	PackUnit      string  `json:"packUnit,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
-
-	ProductId      string  `json:"productId,omitempty"`
-
-	MetaDescription      string  `json:"metaDescription,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	CustomSearchKeywords      interface{}  `json:"customSearchKeywords,omitempty"`
+
+	Description      string  `json:"description,omitempty"`
+
+	Keywords      string  `json:"keywords,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
 	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	PackUnit      string  `json:"packUnit,omitempty"`
+
+	PackUnitPlural      string  `json:"packUnitPlural,omitempty"`
+
+	Product      *Product  `json:"product,omitempty"`
+
+	ProductId      string  `json:"productId,omitempty"`
+
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
+
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -69,12 +69,12 @@ func (t *SalesChannelShippingMethodRepository) Delete(ctx ApiContext, ids []stri
 
 type SalesChannelShippingMethod struct {
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
-
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
 	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
+
+	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
 
 }

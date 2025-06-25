@@ -73,18 +73,18 @@ type TaxProviderTranslation struct {
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	TaxProviderId      string  `json:"taxProviderId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	TaxProvider      *TaxProvider  `json:"taxProvider,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Language      *Language  `json:"language,omitempty"`
 
+	LanguageId      string  `json:"languageId,omitempty"`
+
 	Name      string  `json:"name,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	TaxProvider      *TaxProvider  `json:"taxProvider,omitempty"`
+
+	TaxProviderId      string  `json:"taxProviderId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

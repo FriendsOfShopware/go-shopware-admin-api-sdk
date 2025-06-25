@@ -71,7 +71,7 @@ func (t *AclUserRoleRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 
 type AclUserRole struct {
 
-	UserId      string  `json:"userId,omitempty"`
+	AclRole      *AclRole  `json:"aclRole,omitempty"`
 
 	AclRoleId      string  `json:"aclRoleId,omitempty"`
 
@@ -81,6 +81,6 @@ type AclUserRole struct {
 
 	User      *User  `json:"user,omitempty"`
 
-	AclRole      *AclRole  `json:"aclRole,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
 
 }

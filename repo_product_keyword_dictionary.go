@@ -69,13 +69,13 @@ func (t *ProductKeywordDictionaryRepository) Delete(ctx ApiContext, ids []string
 
 type ProductKeywordDictionary struct {
 
-	Language      *Language  `json:"language,omitempty"`
-
 	Id      string  `json:"id,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
 	Keyword      string  `json:"keyword,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
 
 	Reversed      string  `json:"reversed,omitempty"`
 

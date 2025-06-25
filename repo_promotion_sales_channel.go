@@ -71,20 +71,20 @@ func (t *PromotionSalesChannelRepository) Delete(ctx ApiContext, ids []string) (
 
 type PromotionSalesChannel struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
-
-	PromotionId      string  `json:"promotionId,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
 	Priority      float64  `json:"priority,omitempty"`
 
 	Promotion      *Promotion  `json:"promotion,omitempty"`
 
+	PromotionId      string  `json:"promotionId,omitempty"`
+
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,26 +71,26 @@ func (t *NumberRangeTypeRepository) Delete(ctx ApiContext, ids []string) (*http.
 
 type NumberRangeType struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	TechnicalName      string  `json:"technicalName,omitempty"`
-
-	TypeName      string  `json:"typeName,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
+	Global      bool  `json:"global,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	NumberRangeSalesChannels      []NumberRangeSalesChannel  `json:"numberRangeSalesChannels,omitempty"`
+
 	NumberRanges      []NumberRange  `json:"numberRanges,omitempty"`
 
-	Translations      []NumberRangeTypeTranslation  `json:"translations,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
 	Translated      interface{}  `json:"translated,omitempty"`
 
-	Global      bool  `json:"global,omitempty"`
+	Translations      []NumberRangeTypeTranslation  `json:"translations,omitempty"`
 
-	NumberRangeSalesChannels      []NumberRangeSalesChannel  `json:"numberRangeSalesChannels,omitempty"`
+	TypeName      string  `json:"typeName,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

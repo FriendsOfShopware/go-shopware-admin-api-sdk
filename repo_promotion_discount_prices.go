@@ -71,20 +71,20 @@ func (t *PromotionDiscountPricesRepository) Delete(ctx ApiContext, ids []string)
 
 type PromotionDiscountPrices struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Currency      *Currency  `json:"currency,omitempty"`
+
+	CurrencyId      string  `json:"currencyId,omitempty"`
 
 	DiscountId      string  `json:"discountId,omitempty"`
 
-	CurrencyId      string  `json:"currencyId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Price      float64  `json:"price,omitempty"`
 
 	PromotionDiscount      *PromotionDiscount  `json:"promotionDiscount,omitempty"`
 
-	Currency      *Currency  `json:"currency,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

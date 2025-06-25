@@ -71,24 +71,24 @@ func (t *AppFlowActionTranslationRepository) Delete(ctx ApiContext, ids []string
 
 type AppFlowActionTranslation struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppFlowAction      *AppFlowAction  `json:"appFlowAction,omitempty"`
 
 	AppFlowActionId      string  `json:"appFlowActionId,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
-
-	Headline      string  `json:"headline,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	AppFlowAction      *AppFlowAction  `json:"appFlowAction,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Description      string  `json:"description,omitempty"`
+
+	Headline      string  `json:"headline,omitempty"`
+
+	Label      string  `json:"label,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

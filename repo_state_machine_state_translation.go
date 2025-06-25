@@ -71,20 +71,20 @@ func (t *StateMachineStateTranslationRepository) Delete(ctx ApiContext, ids []st
 
 type StateMachineStateTranslation struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	StateMachineStateId      string  `json:"stateMachineStateId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
+
+	StateMachineStateId      string  `json:"stateMachineStateId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

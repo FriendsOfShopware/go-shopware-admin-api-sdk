@@ -71,68 +71,68 @@ func (t *PaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 
 type PaymentMethod struct {
 
-	PluginId      string  `json:"pluginId,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
 	AfterOrderEnabled      bool  `json:"afterOrderEnabled,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	Plugin      *Plugin  `json:"plugin,omitempty"`
-
-	HandlerIdentifier      string  `json:"handlerIdentifier,omitempty"`
+	AppPaymentMethod      *AppPaymentMethod  `json:"appPaymentMethod,omitempty"`
 
 	Asynchronous      bool  `json:"asynchronous,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
+	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
+
+	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Customers      []Customer  `json:"customers,omitempty"`
 
-	AppPaymentMethod      *AppPaymentMethod  `json:"appPaymentMethod,omitempty"`
+	Description      string  `json:"description,omitempty"`
+
+	DistinguishableName      string  `json:"distinguishableName,omitempty"`
+
+	FormattedHandlerIdentifier      string  `json:"formattedHandlerIdentifier,omitempty"`
+
+	HandlerIdentifier      string  `json:"handlerIdentifier,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
+
+	Media      *Media  `json:"media,omitempty"`
+
+	MediaId      string  `json:"mediaId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	OrderTransactions      []OrderTransaction  `json:"orderTransactions,omitempty"`
+
+	Plugin      *Plugin  `json:"plugin,omitempty"`
+
+	PluginId      string  `json:"pluginId,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
 
 	Prepared      bool  `json:"prepared,omitempty"`
 
 	Recurring      bool  `json:"recurring,omitempty"`
 
-	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
+	Refundable      bool  `json:"refundable,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
-
-	Synchronous      bool  `json:"synchronous,omitempty"`
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
 
 	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
 	ShortName      string  `json:"shortName,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
-
-	Active      bool  `json:"active,omitempty"`
-
-	FormattedHandlerIdentifier      string  `json:"formattedHandlerIdentifier,omitempty"`
-
-	Refundable      bool  `json:"refundable,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	DistinguishableName      string  `json:"distinguishableName,omitempty"`
-
-	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
-
-	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
+	Synchronous      bool  `json:"synchronous,omitempty"`
 
 	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
-
-	OrderTransactions      []OrderTransaction  `json:"orderTransactions,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
 	Translations      []PaymentMethodTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

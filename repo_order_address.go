@@ -71,60 +71,60 @@ func (t *OrderAddressRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 
 type OrderAddress struct {
 
-	Zipcode      string  `json:"zipcode,omitempty"`
-
-	Company      string  `json:"company,omitempty"`
-
-	Department      string  `json:"department,omitempty"`
-
 	AdditionalAddressLine1      string  `json:"additionalAddressLine1,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
-
-	CountryId      string  `json:"countryId,omitempty"`
+	AdditionalAddressLine2      string  `json:"additionalAddressLine2,omitempty"`
 
 	City      string  `json:"city,omitempty"`
 
-	VatId      string  `json:"vatId,omitempty"`
+	Company      string  `json:"company,omitempty"`
 
-	PhoneNumber      string  `json:"phoneNumber,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
+
+	CountryId      string  `json:"countryId,omitempty"`
+
+	CountryState      *CountryState  `json:"countryState,omitempty"`
+
+	CountryStateId      string  `json:"countryStateId,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Department      string  `json:"department,omitempty"`
+
+	FirstName      string  `json:"firstName,omitempty"`
+
+	Hash      string  `json:"hash,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	LastName      string  `json:"lastName,omitempty"`
 
 	Order      *Order  `json:"order,omitempty"`
 
 	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
 
-	FirstName      string  `json:"firstName,omitempty"`
-
-	Title      string  `json:"title,omitempty"`
-
-	Country      *Country  `json:"country,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	CountryStateId      string  `json:"countryStateId,omitempty"`
-
 	OrderId      string  `json:"orderId,omitempty"`
-
-	SalutationId      string  `json:"salutationId,omitempty"`
-
-	AdditionalAddressLine2      string  `json:"additionalAddressLine2,omitempty"`
-
-	Hash      string  `json:"hash,omitempty"`
-
-	CountryState      *CountryState  `json:"countryState,omitempty"`
-
-	Salutation      *Salutation  `json:"salutation,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
 
 	OrderVersionId      string  `json:"orderVersionId,omitempty"`
 
-	LastName      string  `json:"lastName,omitempty"`
+	PhoneNumber      string  `json:"phoneNumber,omitempty"`
+
+	Salutation      *Salutation  `json:"salutation,omitempty"`
+
+	SalutationId      string  `json:"salutationId,omitempty"`
 
 	Street      string  `json:"street,omitempty"`
+
+	Title      string  `json:"title,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	VatId      string  `json:"vatId,omitempty"`
+
+	VersionId      string  `json:"versionId,omitempty"`
+
+	Zipcode      string  `json:"zipcode,omitempty"`
 
 }

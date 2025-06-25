@@ -71,42 +71,42 @@ func (t *StateMachineStateRepository) Delete(ctx ApiContext, ids []string) (*htt
 
 type StateMachineState struct {
 
-	OrderTransactions      []OrderTransaction  `json:"orderTransactions,omitempty"`
-
-	OrderTransactionCaptureRefunds      []OrderTransactionCaptureRefund  `json:"orderTransactionCaptureRefunds,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	StateMachineId      string  `json:"stateMachineId,omitempty"`
-
-	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
+	FromStateMachineHistoryEntries      []StateMachineHistory  `json:"fromStateMachineHistoryEntries,omitempty"`
 
 	FromStateMachineTransitions      []StateMachineTransition  `json:"fromStateMachineTransitions,omitempty"`
 
-	OrderTransactionCaptures      []OrderTransactionCapture  `json:"orderTransactionCaptures,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Name      string  `json:"name,omitempty"`
 
-	Orders      []Order  `json:"orders,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
 	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
 
-	ToStateMachineHistoryEntries      []StateMachineHistory  `json:"toStateMachineHistoryEntries,omitempty"`
+	OrderTransactionCaptureRefunds      []OrderTransactionCaptureRefund  `json:"orderTransactionCaptureRefunds,omitempty"`
 
-	FromStateMachineHistoryEntries      []StateMachineHistory  `json:"fromStateMachineHistoryEntries,omitempty"`
+	OrderTransactionCaptures      []OrderTransactionCapture  `json:"orderTransactionCaptures,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	OrderTransactions      []OrderTransaction  `json:"orderTransactions,omitempty"`
+
+	Orders      []Order  `json:"orders,omitempty"`
+
+	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
+
+	StateMachineId      string  `json:"stateMachineId,omitempty"`
 
 	TechnicalName      string  `json:"technicalName,omitempty"`
 
+	ToStateMachineHistoryEntries      []StateMachineHistory  `json:"toStateMachineHistoryEntries,omitempty"`
+
 	ToStateMachineTransitions      []StateMachineTransition  `json:"toStateMachineTransitions,omitempty"`
 
+	Translated      interface{}  `json:"translated,omitempty"`
+
 	Translations      []StateMachineStateTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,32 +71,32 @@ func (t *SalesChannelTypeRepository) Delete(ctx ApiContext, ids []string) (*http
 
 type SalesChannelType struct {
 
-	DescriptionLong      string  `json:"descriptionLong,omitempty"`
-
-	Translations      []SalesChannelTypeTranslation  `json:"translations,omitempty"`
-
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	CoverUrl      string  `json:"coverUrl,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CoverUrl      string  `json:"coverUrl,omitempty"`
-
-	ScreenshotUrls      interface{}  `json:"screenshotUrls,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
+	DescriptionLong      string  `json:"descriptionLong,omitempty"`
 
 	IconName      string  `json:"iconName,omitempty"`
 
+	Id      string  `json:"id,omitempty"`
+
 	Manufacturer      string  `json:"manufacturer,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+
+	ScreenshotUrls      interface{}  `json:"screenshotUrls,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []SalesChannelTypeTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

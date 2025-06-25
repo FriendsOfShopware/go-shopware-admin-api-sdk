@@ -71,48 +71,48 @@ func (t *DocumentRepository) Delete(ctx ApiContext, ids []string) (*http.Respons
 
 type Document struct {
 
-	DocumentA11YMediaFileId      string  `json:"documentA11yMediaFileId,omitempty"`
-
-	OrderVersionId      string  `json:"orderVersionId,omitempty"`
-
-	DeepLinkCode      string  `json:"deepLinkCode,omitempty"`
-
-	ReferencedDocument      *Document  `json:"referencedDocument,omitempty"`
-
-	FileType      string  `json:"fileType,omitempty"`
-
-	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	DocumentType      *DocumentType  `json:"documentType,omitempty"`
-
-	DependentDocuments      []Document  `json:"dependentDocuments,omitempty"`
-
-	DocumentMediaFile      *Media  `json:"documentMediaFile,omitempty"`
-
-	DocumentNumber      string  `json:"documentNumber,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ReferencedDocumentId      string  `json:"referencedDocumentId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	DeepLinkCode      string  `json:"deepLinkCode,omitempty"`
+
+	DependentDocuments      []Document  `json:"dependentDocuments,omitempty"`
+
+	DocumentA11YMediaFile      *Media  `json:"documentA11yMediaFile,omitempty"`
+
+	DocumentA11YMediaFileId      string  `json:"documentA11yMediaFileId,omitempty"`
+
+	DocumentMediaFile      *Media  `json:"documentMediaFile,omitempty"`
+
+	DocumentMediaFileId      string  `json:"documentMediaFileId,omitempty"`
+
+	DocumentNumber      string  `json:"documentNumber,omitempty"`
+
+	DocumentType      *DocumentType  `json:"documentType,omitempty"`
+
+	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
+
+	FileType      string  `json:"fileType,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Order      *Order  `json:"order,omitempty"`
+
+	OrderId      string  `json:"orderId,omitempty"`
+
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
+
+	ReferencedDocument      *Document  `json:"referencedDocument,omitempty"`
+
+	ReferencedDocumentId      string  `json:"referencedDocumentId,omitempty"`
 
 	Sent      bool  `json:"sent,omitempty"`
 
 	Static      bool  `json:"static,omitempty"`
 
-	Order      *Order  `json:"order,omitempty"`
-
-	DocumentA11YMediaFile      *Media  `json:"documentA11yMediaFile,omitempty"`
-
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	OrderId      string  `json:"orderId,omitempty"`
-
-	DocumentMediaFileId      string  `json:"documentMediaFileId,omitempty"`
 
 }

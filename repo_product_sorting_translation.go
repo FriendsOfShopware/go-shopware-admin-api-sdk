@@ -73,16 +73,16 @@ type ProductSortingTranslation struct {
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	ProductSortingId      string  `json:"productSortingId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
 	LanguageId      string  `json:"languageId,omitempty"`
 
 	ProductSorting      *ProductSorting  `json:"productSorting,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	ProductSortingId      string  `json:"productSortingId,omitempty"`
 
-	Label      string  `json:"label,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,22 +71,22 @@ func (t *SalutationTranslationRepository) Delete(ctx ApiContext, ids []string) (
 
 type SalutationTranslation struct {
 
-	DisplayName      string  `json:"displayName,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	DisplayName      string  `json:"displayName,omitempty"`
 
-	SalutationId      string  `json:"salutationId,omitempty"`
-
-	Salutation      *Salutation  `json:"salutation,omitempty"`
-
-	LetterName      string  `json:"letterName,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
 	LanguageId      string  `json:"languageId,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	LetterName      string  `json:"letterName,omitempty"`
+
+	Salutation      *Salutation  `json:"salutation,omitempty"`
+
+	SalutationId      string  `json:"salutationId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

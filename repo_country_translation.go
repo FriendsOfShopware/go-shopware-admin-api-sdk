@@ -73,20 +73,20 @@ type CountryTranslation struct {
 
 	AddressFormat      interface{}  `json:"addressFormat,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
 
 	CountryId      string  `json:"countryId,omitempty"`
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
 	LanguageId      string  `json:"languageId,omitempty"`
 
-	Country      *Country  `json:"country,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

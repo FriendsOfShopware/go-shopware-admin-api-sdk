@@ -71,70 +71,70 @@ func (t *PromotionRepository) Delete(ctx ApiContext, ids []string) (*http.Respon
 
 type Promotion struct {
 
-	ValidUntil      time.Time  `json:"validUntil,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	MaxRedemptionsGlobal      float64  `json:"maxRedemptionsGlobal,omitempty"`
+	CartRules      []Rule  `json:"cartRules,omitempty"`
 
 	Code      string  `json:"code,omitempty"`
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	CustomerRestriction      bool  `json:"customerRestriction,omitempty"`
+
+	Discounts      []PromotionDiscount  `json:"discounts,omitempty"`
+
+	ExclusionIds      interface{}  `json:"exclusionIds,omitempty"`
+
+	Exclusive      bool  `json:"exclusive,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	IndividualCodePattern      string  `json:"individualCodePattern,omitempty"`
+
 	IndividualCodes      []PromotionIndividualCode  `json:"individualCodes,omitempty"`
+
+	MaxRedemptionsGlobal      float64  `json:"maxRedemptionsGlobal,omitempty"`
+
+	MaxRedemptionsPerCustomer      float64  `json:"maxRedemptionsPerCustomer,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	OrderCount      float64  `json:"orderCount,omitempty"`
+
+	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
+
+	OrderRules      []Rule  `json:"orderRules,omitempty"`
+
+	OrdersPerCustomerCount      interface{}  `json:"ordersPerCustomerCount,omitempty"`
+
+	PersonaCustomers      []Customer  `json:"personaCustomers,omitempty"`
+
+	PersonaRules      []Rule  `json:"personaRules,omitempty"`
+
+	PreventCombination      bool  `json:"preventCombination,omitempty"`
+
+	Priority      float64  `json:"priority,omitempty"`
+
+	SalesChannels      []PromotionSalesChannel  `json:"salesChannels,omitempty"`
+
+	Setgroups      []PromotionSetgroup  `json:"setgroups,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []PromotionTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 	UseCodes      bool  `json:"useCodes,omitempty"`
 
 	UseIndividualCodes      bool  `json:"useIndividualCodes,omitempty"`
 
-	CartRules      []Rule  `json:"cartRules,omitempty"`
-
-	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
 	UseSetGroups      bool  `json:"useSetGroups,omitempty"`
-
-	Setgroups      []PromotionSetgroup  `json:"setgroups,omitempty"`
-
-	Translations      []PromotionTranslation  `json:"translations,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	Active      bool  `json:"active,omitempty"`
-
-	PersonaCustomers      []Customer  `json:"personaCustomers,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	IndividualCodePattern      string  `json:"individualCodePattern,omitempty"`
-
-	CustomerRestriction      bool  `json:"customerRestriction,omitempty"`
-
-	PreventCombination      bool  `json:"preventCombination,omitempty"`
-
-	OrdersPerCustomerCount      interface{}  `json:"ordersPerCustomerCount,omitempty"`
-
-	Discounts      []PromotionDiscount  `json:"discounts,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
 
 	ValidFrom      time.Time  `json:"validFrom,omitempty"`
 
-	OrderCount      float64  `json:"orderCount,omitempty"`
-
-	SalesChannels      []PromotionSalesChannel  `json:"salesChannels,omitempty"`
-
-	OrderRules      []Rule  `json:"orderRules,omitempty"`
-
-	ExclusionIds      interface{}  `json:"exclusionIds,omitempty"`
-
-	MaxRedemptionsPerCustomer      float64  `json:"maxRedemptionsPerCustomer,omitempty"`
-
-	Priority      float64  `json:"priority,omitempty"`
-
-	Exclusive      bool  `json:"exclusive,omitempty"`
-
-	PersonaRules      []Rule  `json:"personaRules,omitempty"`
+	ValidUntil      time.Time  `json:"validUntil,omitempty"`
 
 }

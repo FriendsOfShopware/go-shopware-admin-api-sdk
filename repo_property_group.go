@@ -71,32 +71,32 @@ func (t *PropertyGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 
 type PropertyGroup struct {
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
 	DisplayType      string  `json:"displayType,omitempty"`
 
-	SortingType      string  `json:"sortingType,omitempty"`
-
 	Filterable      bool  `json:"filterable,omitempty"`
 
-	VisibleOnProductDetailPage      bool  `json:"visibleOnProductDetailPage,omitempty"`
-
-	Position      float64  `json:"position,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Name      string  `json:"name,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
 	Options      []PropertyGroupOption  `json:"options,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
+
+	SortingType      string  `json:"sortingType,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
 
 	Translations      []PropertyGroupTranslation  `json:"translations,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	VisibleOnProductDetailPage      bool  `json:"visibleOnProductDetailPage,omitempty"`
 
 }

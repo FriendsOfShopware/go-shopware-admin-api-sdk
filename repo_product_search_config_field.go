@@ -71,26 +71,26 @@ func (t *ProductSearchConfigFieldRepository) Delete(ctx ApiContext, ids []string
 
 type ProductSearchConfigField struct {
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Tokenize      bool  `json:"tokenize,omitempty"`
-
-	Ranking      float64  `json:"ranking,omitempty"`
-
-	SearchConfig      *ProductSearchConfig  `json:"searchConfig,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	SearchConfigId      string  `json:"searchConfigId,omitempty"`
+	CustomField      *CustomField  `json:"customField,omitempty"`
 
 	CustomFieldId      string  `json:"customFieldId,omitempty"`
 
 	Field      string  `json:"field,omitempty"`
 
+	Id      string  `json:"id,omitempty"`
+
+	Ranking      float64  `json:"ranking,omitempty"`
+
+	SearchConfig      *ProductSearchConfig  `json:"searchConfig,omitempty"`
+
+	SearchConfigId      string  `json:"searchConfigId,omitempty"`
+
 	Searchable      bool  `json:"searchable,omitempty"`
 
-	CustomField      *CustomField  `json:"customField,omitempty"`
+	Tokenize      bool  `json:"tokenize,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

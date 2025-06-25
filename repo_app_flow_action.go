@@ -71,50 +71,50 @@ func (t *AppFlowActionRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 
 type AppFlowAction struct {
 
-	Requirements      interface{}  `json:"requirements,omitempty"`
-
-	SwIcon      string  `json:"swIcon,omitempty"`
-
-	Url      string  `json:"url,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
 	AppId      string  `json:"appId,omitempty"`
 
 	Badge      string  `json:"badge,omitempty"`
 
-	Icon      string  `json:"icon,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	FlowSequences      []FlowSequence  `json:"flowSequences,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	IconRaw      interface{}  `json:"iconRaw,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Delayable      bool  `json:"delayable,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
+	FlowSequences      []FlowSequence  `json:"flowSequences,omitempty"`
+
+	Headers      interface{}  `json:"headers,omitempty"`
+
 	Headline      string  `json:"headline,omitempty"`
 
-	Translations      []AppFlowActionTranslation  `json:"translations,omitempty"`
+	Icon      string  `json:"icon,omitempty"`
 
-	App      *App  `json:"app,omitempty"`
+	IconRaw      interface{}  `json:"iconRaw,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	Config      interface{}  `json:"config,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Label      string  `json:"label,omitempty"`
 
+	Name      string  `json:"name,omitempty"`
+
 	Parameters      interface{}  `json:"parameters,omitempty"`
 
-	Headers      interface{}  `json:"headers,omitempty"`
+	Requirements      interface{}  `json:"requirements,omitempty"`
+
+	SwIcon      string  `json:"swIcon,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []AppFlowActionTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Url      string  `json:"url,omitempty"`
 
 }

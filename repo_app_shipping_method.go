@@ -71,26 +71,26 @@ func (t *AppShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*htt
 
 type AppShippingMethod struct {
 
-	AppId      string  `json:"appId,omitempty"`
-
 	App      *App  `json:"app,omitempty"`
 
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Identifier      string  `json:"identifier,omitempty"`
-
-	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
-
-	OriginalMediaId      string  `json:"originalMediaId,omitempty"`
-
-	OriginalMedia      *Media  `json:"originalMedia,omitempty"`
+	AppName      string  `json:"appName,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
 	Id      string  `json:"id,omitempty"`
 
-	AppName      string  `json:"appName,omitempty"`
+	Identifier      string  `json:"identifier,omitempty"`
+
+	OriginalMedia      *Media  `json:"originalMedia,omitempty"`
+
+	OriginalMediaId      string  `json:"originalMediaId,omitempty"`
+
+	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
+
+	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

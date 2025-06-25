@@ -69,14 +69,14 @@ func (t *LandingPageTagRepository) Delete(ctx ApiContext, ids []string) (*http.R
 
 type LandingPageTag struct {
 
+	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
+
 	LandingPageId      string  `json:"landingPageId,omitempty"`
 
 	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
-
-	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
-
 	Tag      *Tag  `json:"tag,omitempty"`
+
+	TagId      string  `json:"tagId,omitempty"`
 
 }

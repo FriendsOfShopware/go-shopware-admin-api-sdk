@@ -69,12 +69,12 @@ func (t *ThemeSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*htt
 
 type ThemeSalesChannel struct {
 
-	ThemeId      string  `json:"themeId,omitempty"`
-
-	Theme      *Theme  `json:"theme,omitempty"`
-
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
 	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
+	Theme      *Theme  `json:"theme,omitempty"`
+
+	ThemeId      string  `json:"themeId,omitempty"`
 
 }

@@ -73,18 +73,18 @@ type SalesChannelAnalytics struct {
 
 	Active      bool  `json:"active,omitempty"`
 
-	TrackOrders      bool  `json:"trackOrders,omitempty"`
-
 	AnonymizeIp      bool  `json:"anonymizeIp,omitempty"`
-
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
 	Id      string  `json:"id,omitempty"`
 
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	TrackOrders      bool  `json:"trackOrders,omitempty"`
+
 	TrackingId      string  `json:"trackingId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

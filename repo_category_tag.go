@@ -69,14 +69,14 @@ func (t *CategoryTagRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 
 type CategoryTag struct {
 
-	Tag      *Tag  `json:"tag,omitempty"`
+	Category      *Category  `json:"category,omitempty"`
 
 	CategoryId      string  `json:"categoryId,omitempty"`
 
 	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
 
-	TagId      string  `json:"tagId,omitempty"`
+	Tag      *Tag  `json:"tag,omitempty"`
 
-	Category      *Category  `json:"category,omitempty"`
+	TagId      string  `json:"tagId,omitempty"`
 
 }

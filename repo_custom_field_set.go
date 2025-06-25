@@ -71,30 +71,30 @@ func (t *CustomFieldSetRepository) Delete(ctx ApiContext, ids []string) (*http.R
 
 type CustomFieldSet struct {
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	Global      bool  `json:"global,omitempty"`
-
-	CustomFields      []CustomField  `json:"customFields,omitempty"`
-
-	Relations      []CustomFieldSetRelation  `json:"relations,omitempty"`
-
-	Products      []Product  `json:"products,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
 	App      *App  `json:"app,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
 	Config      interface{}  `json:"config,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      []CustomField  `json:"customFields,omitempty"`
+
+	Global      bool  `json:"global,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
 
 	Position      float64  `json:"position,omitempty"`
 
-	AppId      string  `json:"appId,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
+
+	Relations      []CustomFieldSetRelation  `json:"relations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

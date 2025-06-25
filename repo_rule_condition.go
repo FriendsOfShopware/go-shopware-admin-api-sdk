@@ -71,32 +71,32 @@ func (t *RuleConditionRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 
 type RuleCondition struct {
 
+	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
+
+	Children      []RuleCondition  `json:"children,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
 	Id      string  `json:"id,omitempty"`
 
-	RuleId      string  `json:"ruleId,omitempty"`
-
-	ScriptId      string  `json:"scriptId,omitempty"`
+	Parent      *RuleCondition  `json:"parent,omitempty"`
 
 	ParentId      string  `json:"parentId,omitempty"`
-
-	Value      interface{}  `json:"value,omitempty"`
 
 	Position      float64  `json:"position,omitempty"`
 
 	Rule      *Rule  `json:"rule,omitempty"`
 
-	Children      []RuleCondition  `json:"children,omitempty"`
+	RuleId      string  `json:"ruleId,omitempty"`
+
+	ScriptId      string  `json:"scriptId,omitempty"`
 
 	Type      string  `json:"type,omitempty"`
 
-	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
-
-	Parent      *RuleCondition  `json:"parent,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Value      interface{}  `json:"value,omitempty"`
 
 }

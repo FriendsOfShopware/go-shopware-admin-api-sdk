@@ -73,13 +73,13 @@ type UserRecovery struct {
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	User      *User  `json:"user,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	Hash      string  `json:"hash,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	User      *User  `json:"user,omitempty"`
 
 	UserId      string  `json:"userId,omitempty"`
 

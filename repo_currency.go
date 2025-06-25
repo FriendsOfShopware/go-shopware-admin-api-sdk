@@ -71,50 +71,50 @@ func (t *CurrencyRepository) Delete(ctx ApiContext, ids []string) (*http.Respons
 
 type Currency struct {
 
-	Symbol      string  `json:"symbol,omitempty"`
-
-	ShortName      string  `json:"shortName,omitempty"`
-
-	IsSystemDefault      bool  `json:"isSystemDefault,omitempty"`
-
-	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
-
-	Orders      []Order  `json:"orders,omitempty"`
-
-	SalesChannelDomains      []SalesChannelDomain  `json:"salesChannelDomains,omitempty"`
-
-	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
-
-	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	Position      float64  `json:"position,omitempty"`
-
-	TaxFreeFrom      float64  `json:"taxFreeFrom,omitempty"`
-
 	CountryRoundings      []CurrencyCountryRounding  `json:"countryRoundings,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Factor      float64  `json:"factor,omitempty"`
 
+	Id      string  `json:"id,omitempty"`
+
+	IsSystemDefault      bool  `json:"isSystemDefault,omitempty"`
+
 	IsoCode      string  `json:"isoCode,omitempty"`
 
-	Translations      []CurrencyTranslation  `json:"translations,omitempty"`
+	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
 
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	PromotionDiscountPrices      []PromotionDiscountPrices  `json:"promotionDiscountPrices,omitempty"`
+	Orders      []Order  `json:"orders,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
 
 	ProductExports      []ProductExport  `json:"productExports,omitempty"`
 
+	PromotionDiscountPrices      []PromotionDiscountPrices  `json:"promotionDiscountPrices,omitempty"`
+
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
+
+	SalesChannelDomains      []SalesChannelDomain  `json:"salesChannelDomains,omitempty"`
+
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+
+	ShortName      string  `json:"shortName,omitempty"`
+
+	Symbol      string  `json:"symbol,omitempty"`
+
+	TaxFreeFrom      float64  `json:"taxFreeFrom,omitempty"`
+
+	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
+
 	Translated      interface{}  `json:"translated,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Translations      []CurrencyTranslation  `json:"translations,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,20 +71,20 @@ func (t *LogEntryRepository) Delete(ctx ApiContext, ids []string) (*http.Respons
 
 type LogEntry struct {
 
-	Context      interface{}  `json:"context,omitempty"`
+	Channel      string  `json:"channel,omitempty"`
 
-	Extra      interface{}  `json:"extra,omitempty"`
+	Context      interface{}  `json:"context,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Extra      interface{}  `json:"extra,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	Message      string  `json:"message,omitempty"`
-
 	Level      float64  `json:"level,omitempty"`
 
-	Channel      string  `json:"channel,omitempty"`
+	Message      string  `json:"message,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

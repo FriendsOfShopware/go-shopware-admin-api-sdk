@@ -71,30 +71,30 @@ func (t *CustomEntityRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 
 type CustomEntity struct {
 
+	AppId      string  `json:"appId,omitempty"`
+
+	CmsAware      bool  `json:"cmsAware,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 	CustomFieldsAware      bool  `json:"customFieldsAware,omitempty"`
 
 	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
 	Fields      interface{}  `json:"fields,omitempty"`
-
-	AppId      string  `json:"appId,omitempty"`
-
-	LabelProperty      string  `json:"labelProperty,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
 
 	Flags      interface{}  `json:"flags,omitempty"`
 
+	Id      string  `json:"id,omitempty"`
+
+	LabelProperty      string  `json:"labelProperty,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
 	PluginId      string  `json:"pluginId,omitempty"`
 
-	CmsAware      bool  `json:"cmsAware,omitempty"`
-
 	StoreApiAware      bool  `json:"storeApiAware,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

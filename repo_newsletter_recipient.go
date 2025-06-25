@@ -71,46 +71,46 @@ func (t *NewsletterRecipientRepository) Delete(ctx ApiContext, ids []string) (*h
 
 type NewsletterRecipient struct {
 
-	ZipCode      string  `json:"zipCode,omitempty"`
+	City      string  `json:"city,omitempty"`
 
-	Status      string  `json:"status,omitempty"`
-
-	Hash      string  `json:"hash,omitempty"`
-
-	SalutationId      string  `json:"salutationId,omitempty"`
+	ConfirmedAt      time.Time  `json:"confirmedAt,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Title      string  `json:"title,omitempty"`
-
-	City      string  `json:"city,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Email      string  `json:"email,omitempty"`
 
 	FirstName      string  `json:"firstName,omitempty"`
 
-	Street      string  `json:"street,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	ConfirmedAt      time.Time  `json:"confirmedAt,omitempty"`
-
-	Salutation      *Salutation  `json:"salutation,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Language      *Language  `json:"language,omitempty"`
 
-	Tags      []Tag  `json:"tags,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	LastName      string  `json:"lastName,omitempty"`
 
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
+	Salutation      *Salutation  `json:"salutation,omitempty"`
+
+	SalutationId      string  `json:"salutationId,omitempty"`
+
+	Status      string  `json:"status,omitempty"`
+
+	Street      string  `json:"street,omitempty"`
+
+	Tags      []Tag  `json:"tags,omitempty"`
+
+	Title      string  `json:"title,omitempty"`
+
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	LastName      string  `json:"lastName,omitempty"`
+	ZipCode      string  `json:"zipCode,omitempty"`
 
 }

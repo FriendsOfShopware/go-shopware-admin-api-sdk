@@ -71,46 +71,46 @@ func (t *CmsSectionRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 
 type CmsSection struct {
 
+	BackgroundColor      string  `json:"backgroundColor,omitempty"`
+
 	BackgroundMedia      *Media  `json:"backgroundMedia,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	BackgroundMediaId      string  `json:"backgroundMediaId,omitempty"`
 
-	Position      float64  `json:"position,omitempty"`
+	BackgroundMediaMode      string  `json:"backgroundMediaMode,omitempty"`
+
+	Blocks      []CmsBlock  `json:"blocks,omitempty"`
+
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CssClass      string  `json:"cssClass,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
 
 	Locked      bool  `json:"locked,omitempty"`
 
 	MobileBehavior      string  `json:"mobileBehavior,omitempty"`
 
-	PageId      string  `json:"pageId,omitempty"`
-
-	Blocks      []CmsBlock  `json:"blocks,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
 	Name      string  `json:"name,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	Page      *CmsPage  `json:"page,omitempty"`
 
-	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
+	PageId      string  `json:"pageId,omitempty"`
 
-	BackgroundMediaMode      string  `json:"backgroundMediaMode,omitempty"`
-
-	VersionId      string  `json:"versionId,omitempty"`
-
-	Type      string  `json:"type,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
 	SizingMode      string  `json:"sizingMode,omitempty"`
 
-	BackgroundColor      string  `json:"backgroundColor,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	BackgroundMediaId      string  `json:"backgroundMediaId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CssClass      string  `json:"cssClass,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
 	Visibility      interface{}  `json:"visibility,omitempty"`
-
-	Page      *CmsPage  `json:"page,omitempty"`
 
 }

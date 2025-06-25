@@ -71,28 +71,28 @@ func (t *MailHeaderFooterTranslationRepository) Delete(ctx ApiContext, ids []str
 
 type MailHeaderFooterTranslation struct {
 
-	HeaderHtml      string  `json:"headerHtml,omitempty"`
-
-	FooterPlain      string  `json:"footerPlain,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
-	HeaderPlain      string  `json:"headerPlain,omitempty"`
-
 	FooterHtml      string  `json:"footerHtml,omitempty"`
 
-	MailHeaderFooterId      string  `json:"mailHeaderFooterId,omitempty"`
+	FooterPlain      string  `json:"footerPlain,omitempty"`
+
+	HeaderHtml      string  `json:"headerHtml,omitempty"`
+
+	HeaderPlain      string  `json:"headerPlain,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
 
 	MailHeaderFooter      *MailHeaderFooter  `json:"mailHeaderFooter,omitempty"`
 
+	MailHeaderFooterId      string  `json:"mailHeaderFooterId,omitempty"`
+
 	Name      string  `json:"name,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

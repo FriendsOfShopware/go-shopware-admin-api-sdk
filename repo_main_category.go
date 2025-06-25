@@ -71,26 +71,26 @@ func (t *MainCategoryRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 
 type MainCategory struct {
 
-	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
+	Category      *Category  `json:"category,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
+	CategoryId      string  `json:"categoryId,omitempty"`
+
+	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ProductId      string  `json:"productId,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
-	Category      *Category  `json:"category,omitempty"`
-
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
 	Id      string  `json:"id,omitempty"`
+
+	Product      *Product  `json:"product,omitempty"`
+
+	ProductId      string  `json:"productId,omitempty"`
 
 	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	CategoryId      string  `json:"categoryId,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

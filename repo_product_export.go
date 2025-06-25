@@ -71,56 +71,56 @@ func (t *ProductExportRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 
 type ProductExport struct {
 
-	IncludeVariants      bool  `json:"includeVariants,omitempty"`
+	AccessKey      string  `json:"accessKey,omitempty"`
 
 	BodyTemplate      string  `json:"bodyTemplate,omitempty"`
 
-	SalesChannelDomain      *SalesChannelDomain  `json:"salesChannelDomain,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	Currency      *Currency  `json:"currency,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CurrencyId      string  `json:"currencyId,omitempty"`
 
 	Encoding      string  `json:"encoding,omitempty"`
 
-	GeneratedAt      time.Time  `json:"generatedAt,omitempty"`
-
-	PausedSchedule      bool  `json:"pausedSchedule,omitempty"`
-
-	StorefrontSalesChannelId      string  `json:"storefrontSalesChannelId,omitempty"`
-
-	SalesChannelDomainId      string  `json:"salesChannelDomainId,omitempty"`
-
-	AccessKey      string  `json:"accessKey,omitempty"`
-
-	Interval      float64  `json:"interval,omitempty"`
-
-	HeaderTemplate      string  `json:"headerTemplate,omitempty"`
-
-	FooterTemplate      string  `json:"footerTemplate,omitempty"`
-
-	IsRunning      bool  `json:"isRunning,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
-
-	CurrencyId      string  `json:"currencyId,omitempty"`
-
-	GenerateByCronjob      bool  `json:"generateByCronjob,omitempty"`
-
-	ProductStream      *ProductStream  `json:"productStream,omitempty"`
-
-	StorefrontSalesChannel      *SalesChannel  `json:"storefrontSalesChannel,omitempty"`
-
-	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	ProductStreamId      string  `json:"productStreamId,omitempty"`
+	FileFormat      string  `json:"fileFormat,omitempty"`
 
 	FileName      string  `json:"fileName,omitempty"`
 
-	FileFormat      string  `json:"fileFormat,omitempty"`
+	FooterTemplate      string  `json:"footerTemplate,omitempty"`
+
+	GenerateByCronjob      bool  `json:"generateByCronjob,omitempty"`
+
+	GeneratedAt      time.Time  `json:"generatedAt,omitempty"`
+
+	HeaderTemplate      string  `json:"headerTemplate,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	IncludeVariants      bool  `json:"includeVariants,omitempty"`
+
+	Interval      float64  `json:"interval,omitempty"`
+
+	IsRunning      bool  `json:"isRunning,omitempty"`
+
+	PausedSchedule      bool  `json:"pausedSchedule,omitempty"`
+
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
+
+	ProductStreamId      string  `json:"productStreamId,omitempty"`
+
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
+
+	SalesChannelDomain      *SalesChannelDomain  `json:"salesChannelDomain,omitempty"`
+
+	SalesChannelDomainId      string  `json:"salesChannelDomainId,omitempty"`
+
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+
+	StorefrontSalesChannel      *SalesChannel  `json:"storefrontSalesChannel,omitempty"`
+
+	StorefrontSalesChannelId      string  `json:"storefrontSalesChannelId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

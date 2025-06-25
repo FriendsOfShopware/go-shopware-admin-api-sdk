@@ -71,15 +71,15 @@ func (t *CustomFieldSetRelationRepository) Delete(ctx ApiContext, ids []string) 
 
 type CustomFieldSetRelation struct {
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
 
 	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
 
 	EntityName      string  `json:"entityName,omitempty"`
 
-	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

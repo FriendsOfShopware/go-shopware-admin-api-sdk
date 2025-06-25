@@ -69,12 +69,12 @@ func (t *MediaFolderConfigurationMediaThumbnailSizeRepository) Delete(ctx ApiCon
 
 type MediaFolderConfigurationMediaThumbnailSize struct {
 
-	MediaFolderConfigurationId      string  `json:"mediaFolderConfigurationId,omitempty"`
-
-	MediaThumbnailSizeId      string  `json:"mediaThumbnailSizeId,omitempty"`
-
 	MediaFolderConfiguration      *MediaFolderConfiguration  `json:"mediaFolderConfiguration,omitempty"`
 
+	MediaFolderConfigurationId      string  `json:"mediaFolderConfigurationId,omitempty"`
+
 	MediaThumbnailSize      *MediaThumbnailSize  `json:"mediaThumbnailSize,omitempty"`
+
+	MediaThumbnailSizeId      string  `json:"mediaThumbnailSizeId,omitempty"`
 
 }

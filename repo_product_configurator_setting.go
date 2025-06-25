@@ -71,32 +71,32 @@ func (t *ProductConfiguratorSettingRepository) Delete(ctx ApiContext, ids []stri
 
 type ProductConfiguratorSetting struct {
 
-	MediaId      string  `json:"mediaId,omitempty"`
-
-	Position      float64  `json:"position,omitempty"`
-
-	Media      *Media  `json:"media,omitempty"`
-
-	Option      *PropertyGroupOption  `json:"option,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
+
+	Media      *Media  `json:"media,omitempty"`
+
+	MediaId      string  `json:"mediaId,omitempty"`
+
+	Option      *PropertyGroupOption  `json:"option,omitempty"`
 
 	OptionId      string  `json:"optionId,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
 
 	Price      interface{}  `json:"price,omitempty"`
 
 	Product      *Product  `json:"product,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
 	ProductId      string  `json:"productId,omitempty"`
 
 	ProductVersionId      string  `json:"productVersionId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	VersionId      string  `json:"versionId,omitempty"`
 
 }

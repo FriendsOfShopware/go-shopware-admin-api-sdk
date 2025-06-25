@@ -69,14 +69,14 @@ func (t *ProductStreamMappingRepository) Delete(ctx ApiContext, ids []string) (*
 
 type ProductStreamMapping struct {
 
+	Product      *Product  `json:"product,omitempty"`
+
 	ProductId      string  `json:"productId,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
 
 	ProductStreamId      string  `json:"productStreamId,omitempty"`
 
-	Product      *Product  `json:"product,omitempty"`
-
-	ProductStream      *ProductStream  `json:"productStream,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
 }

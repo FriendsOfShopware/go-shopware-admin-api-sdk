@@ -71,34 +71,34 @@ func (t *AppScriptConditionRepository) Delete(ctx ApiContext, ids []string) (*ht
 
 type AppScriptCondition struct {
 
+	Active      bool  `json:"active,omitempty"`
+
 	App      *App  `json:"app,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
 
 	AppId      string  `json:"appId,omitempty"`
 
-	RuleConditions      []RuleCondition  `json:"ruleConditions,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	Script      string  `json:"script,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Identifier      string  `json:"identifier,omitempty"`
-
-	Active      bool  `json:"active,omitempty"`
-
-	Group      string  `json:"group,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
 	Constraints      interface{}  `json:"constraints,omitempty"`
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Group      string  `json:"group,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Identifier      string  `json:"identifier,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	RuleConditions      []RuleCondition  `json:"ruleConditions,omitempty"`
+
+	Script      string  `json:"script,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
 	Translations      []AppScriptConditionTranslation  `json:"translations,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

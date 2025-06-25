@@ -71,16 +71,16 @@ func (t *AppAdministrationSnippetRepository) Delete(ctx ApiContext, ids []string
 
 type AppAdministrationSnippet struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	Value      string  `json:"value,omitempty"`
-
-	AppId      string  `json:"appId,omitempty"`
-
 	LocaleId      string  `json:"localeId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Value      string  `json:"value,omitempty"`
 
 }

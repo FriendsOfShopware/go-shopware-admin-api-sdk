@@ -71,106 +71,106 @@ func (t *CategoryRepository) Delete(ctx ApiContext, ids []string) (*http.Respons
 
 type Category struct {
 
-	Products      []Product  `json:"products,omitempty"`
-
-	CmsPageId      string  `json:"cmsPageId,omitempty"`
-
-	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
-
-	ParentVersionId      string  `json:"parentVersionId,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
 	AfterCategoryId      string  `json:"afterCategoryId,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
+	AfterCategoryVersionId      string  `json:"afterCategoryVersionId,omitempty"`
+
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
 
 	Breadcrumb      interface{}  `json:"breadcrumb,omitempty"`
 
-	Level      float64  `json:"level,omitempty"`
+	ChildCount      float64  `json:"childCount,omitempty"`
 
-	Path      string  `json:"path,omitempty"`
+	Children      []Category  `json:"children,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
+	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
+
+	CmsPageId      string  `json:"cmsPageId,omitempty"`
+
+	CmsPageIdSwitched      bool  `json:"cmsPageIdSwitched,omitempty"`
+
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomEntityTypeId      string  `json:"customEntityTypeId,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
-	MetaTitle      string  `json:"metaTitle,omitempty"`
+	DisplayNestedProducts      bool  `json:"displayNestedProducts,omitempty"`
 
-	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
+	ExternalLink      string  `json:"externalLink,omitempty"`
 
-	ProductAssignmentType      string  `json:"productAssignmentType,omitempty"`
+	FooterSalesChannels      []SalesChannel  `json:"footerSalesChannels,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	InternalLink      string  `json:"internalLink,omitempty"`
+
+	Keywords      string  `json:"keywords,omitempty"`
+
+	Level      float64  `json:"level,omitempty"`
+
+	LinkNewTab      bool  `json:"linkNewTab,omitempty"`
 
 	LinkType      string  `json:"linkType,omitempty"`
 
+	MainCategories      []MainCategory  `json:"mainCategories,omitempty"`
+
+	Media      *Media  `json:"media,omitempty"`
+
+	MediaId      string  `json:"mediaId,omitempty"`
+
 	MetaDescription      string  `json:"metaDescription,omitempty"`
+
+	MetaTitle      string  `json:"metaTitle,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	NavigationSalesChannels      []SalesChannel  `json:"navigationSalesChannels,omitempty"`
+
+	NestedProducts      []Product  `json:"nestedProducts,omitempty"`
+
+	Parent      *Category  `json:"parent,omitempty"`
+
+	ParentId      string  `json:"parentId,omitempty"`
+
+	ParentVersionId      string  `json:"parentVersionId,omitempty"`
+
+	Path      string  `json:"path,omitempty"`
+
+	ProductAssignmentType      string  `json:"productAssignmentType,omitempty"`
+
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
 
 	ProductStreamId      string  `json:"productStreamId,omitempty"`
 
-	ProductStream      *ProductStream  `json:"productStream,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
+
+	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
+
+	ServiceSalesChannels      []SalesChannel  `json:"serviceSalesChannels,omitempty"`
+
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
+
+	Tags      []Tag  `json:"tags,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []CategoryTranslation  `json:"translations,omitempty"`
+
+	Type      string  `json:"type,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	VersionId      string  `json:"versionId,omitempty"`
 
 	Visible      bool  `json:"visible,omitempty"`
 
 	VisibleChildCount      float64  `json:"visibleChildCount,omitempty"`
-
-	Parent      *Category  `json:"parent,omitempty"`
-
-	Tags      []Tag  `json:"tags,omitempty"`
-
-	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
-
-	CustomEntityTypeId      string  `json:"customEntityTypeId,omitempty"`
-
-	MainCategories      []MainCategory  `json:"mainCategories,omitempty"`
-
-	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
-
-	Keywords      string  `json:"keywords,omitempty"`
-
-	Media      *Media  `json:"media,omitempty"`
-
-	FooterSalesChannels      []SalesChannel  `json:"footerSalesChannels,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	ExternalLink      string  `json:"externalLink,omitempty"`
-
-	Type      string  `json:"type,omitempty"`
-
-	Translations      []CategoryTranslation  `json:"translations,omitempty"`
-
-	NestedProducts      []Product  `json:"nestedProducts,omitempty"`
-
-	NavigationSalesChannels      []SalesChannel  `json:"navigationSalesChannels,omitempty"`
-
-	ServiceSalesChannels      []SalesChannel  `json:"serviceSalesChannels,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	ParentId      string  `json:"parentId,omitempty"`
-
-	CmsPageIdSwitched      bool  `json:"cmsPageIdSwitched,omitempty"`
-
-	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
-
-	Children      []Category  `json:"children,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	VersionId      string  `json:"versionId,omitempty"`
-
-	AfterCategoryVersionId      string  `json:"afterCategoryVersionId,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	DisplayNestedProducts      bool  `json:"displayNestedProducts,omitempty"`
-
-	ChildCount      float64  `json:"childCount,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	InternalLink      string  `json:"internalLink,omitempty"`
-
-	LinkNewTab      bool  `json:"linkNewTab,omitempty"`
 
 }

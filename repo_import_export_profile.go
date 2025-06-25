@@ -71,40 +71,40 @@ func (t *ImportExportProfileRepository) Delete(ctx ApiContext, ids []string) (*h
 
 type ImportExportProfile struct {
 
-	Type      string  `json:"type,omitempty"`
-
-	FileType      string  `json:"fileType,omitempty"`
-
-	Delimiter      string  `json:"delimiter,omitempty"`
-
-	UpdateBy      interface{}  `json:"updateBy,omitempty"`
-
-	TechnicalName      string  `json:"technicalName,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
-	Label      string  `json:"label,omitempty"`
-
-	Translations      []ImportExportProfileTranslation  `json:"translations,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
+	Delimiter      string  `json:"delimiter,omitempty"`
 
 	Enclosure      string  `json:"enclosure,omitempty"`
 
-	Mapping      interface{}  `json:"mapping,omitempty"`
+	FileType      string  `json:"fileType,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	ImportExportLogs      []ImportExportLog  `json:"importExportLogs,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	SystemDefault      bool  `json:"systemDefault,omitempty"`
+	Mapping      interface{}  `json:"mapping,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
 
 	SourceEntity      string  `json:"sourceEntity,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
+	SystemDefault      bool  `json:"systemDefault,omitempty"`
+
+	TechnicalName      string  `json:"technicalName,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []ImportExportProfileTranslation  `json:"translations,omitempty"`
+
+	Type      string  `json:"type,omitempty"`
+
+	UpdateBy      interface{}  `json:"updateBy,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

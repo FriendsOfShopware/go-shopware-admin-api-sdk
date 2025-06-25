@@ -69,14 +69,14 @@ func (t *ProductCustomFieldSetRepository) Delete(ctx ApiContext, ids []string) (
 
 type ProductCustomFieldSet struct {
 
-	ProductId      string  `json:"productId,omitempty"`
+	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
 
 	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
 
-	ProductVersionId      string  `json:"productVersionId,omitempty"`
-
 	Product      *Product  `json:"product,omitempty"`
 
-	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
+
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
 }

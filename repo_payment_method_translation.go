@@ -71,24 +71,24 @@ func (t *PaymentMethodTranslationRepository) Delete(ctx ApiContext, ids []string
 
 type PaymentMethodTranslation struct {
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
-	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
+	DistinguishableName      string  `json:"distinguishableName,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
 
 	LanguageId      string  `json:"languageId,omitempty"`
 
 	Name      string  `json:"name,omitempty"`
 
-	DistinguishableName      string  `json:"distinguishableName,omitempty"`
+	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
+
+	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

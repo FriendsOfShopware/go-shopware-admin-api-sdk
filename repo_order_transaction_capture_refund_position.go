@@ -71,34 +71,34 @@ func (t *OrderTransactionCaptureRefundPositionRepository) Delete(ctx ApiContext,
 
 type OrderTransactionCaptureRefundPosition struct {
 
-	ExternalReference      string  `json:"externalReference,omitempty"`
-
 	Amount      interface{}  `json:"amount,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	VersionId      string  `json:"versionId,omitempty"`
-
-	Reason      string  `json:"reason,omitempty"`
-
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	OrderTransactionCaptureRefund      *OrderTransactionCaptureRefund  `json:"orderTransactionCaptureRefund,omitempty"`
+	ExternalReference      string  `json:"externalReference,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	RefundVersionId      string  `json:"refundVersionId,omitempty"`
+	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
 
 	OrderLineItemId      string  `json:"orderLineItemId,omitempty"`
 
 	OrderLineItemVersionId      string  `json:"orderLineItemVersionId,omitempty"`
 
+	OrderTransactionCaptureRefund      *OrderTransactionCaptureRefund  `json:"orderTransactionCaptureRefund,omitempty"`
+
 	Quantity      float64  `json:"quantity,omitempty"`
+
+	Reason      string  `json:"reason,omitempty"`
 
 	RefundId      string  `json:"refundId,omitempty"`
 
-	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
+	RefundVersionId      string  `json:"refundVersionId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	VersionId      string  `json:"versionId,omitempty"`
 
 }

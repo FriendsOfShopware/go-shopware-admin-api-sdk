@@ -69,12 +69,12 @@ func (t *SalesChannelCurrencyRepository) Delete(ctx ApiContext, ids []string) (*
 
 type SalesChannelCurrency struct {
 
-	SalesChannelId      string  `json:"salesChannelId,omitempty"`
+	Currency      *Currency  `json:"currency,omitempty"`
 
 	CurrencyId      string  `json:"currencyId,omitempty"`
 
 	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	Currency      *Currency  `json:"currency,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
 }

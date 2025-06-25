@@ -71,18 +71,18 @@ func (t *MediaThumbnailSizeRepository) Delete(ctx ApiContext, ids []string) (*ht
 
 type MediaThumbnailSize struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	Width      float64  `json:"width,omitempty"`
-
-	Height      float64  `json:"height,omitempty"`
-
-	MediaFolderConfigurations      []MediaFolderConfiguration  `json:"mediaFolderConfigurations,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Height      float64  `json:"height,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	MediaFolderConfigurations      []MediaFolderConfiguration  `json:"mediaFolderConfigurations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Width      float64  `json:"width,omitempty"`
 
 }

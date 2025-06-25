@@ -69,12 +69,12 @@ func (t *ShippingMethodTagRepository) Delete(ctx ApiContext, ids []string) (*htt
 
 type ShippingMethodTag struct {
 
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
-
-	TagId      string  `json:"tagId,omitempty"`
-
 	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
 
+	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
+
 	Tag      *Tag  `json:"tag,omitempty"`
+
+	TagId      string  `json:"tagId,omitempty"`
 
 }

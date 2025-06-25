@@ -71,28 +71,28 @@ func (t *MailTemplateTranslationRepository) Delete(ctx ApiContext, ids []string)
 
 type MailTemplateTranslation struct {
 
-	Language      *Language  `json:"language,omitempty"`
-
-	SenderName      string  `json:"senderName,omitempty"`
-
-	Subject      string  `json:"subject,omitempty"`
+	ContentHtml      string  `json:"contentHtml,omitempty"`
 
 	ContentPlain      string  `json:"contentPlain,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	MailTemplateId      string  `json:"mailTemplateId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
-	ContentHtml      string  `json:"contentHtml,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
 	MailTemplate      *MailTemplate  `json:"mailTemplate,omitempty"`
+
+	MailTemplateId      string  `json:"mailTemplateId,omitempty"`
+
+	SenderName      string  `json:"senderName,omitempty"`
+
+	Subject      string  `json:"subject,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

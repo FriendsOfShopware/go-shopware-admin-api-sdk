@@ -71,30 +71,30 @@ func (t *ProductManufacturerRepository) Delete(ctx ApiContext, ids []string) (*h
 
 type ProductManufacturer struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	VersionId      string  `json:"versionId,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Translations      []ProductManufacturerTranslation  `json:"translations,omitempty"`
-
-	Translated      interface{}  `json:"translated,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
-
 	Link      string  `json:"link,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
 
 	Media      *Media  `json:"media,omitempty"`
 
+	MediaId      string  `json:"mediaId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
 	Products      []Product  `json:"products,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []ProductManufacturerTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	VersionId      string  `json:"versionId,omitempty"`
 
 }

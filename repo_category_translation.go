@@ -71,42 +71,42 @@ func (t *CategoryTranslationRepository) Delete(ctx ApiContext, ids []string) (*h
 
 type CategoryTranslation struct {
 
-	ExternalLink      string  `json:"externalLink,omitempty"`
-
-	LinkNewTab      bool  `json:"linkNewTab,omitempty"`
-
-	MetaDescription      string  `json:"metaDescription,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
-
-	MetaTitle      string  `json:"metaTitle,omitempty"`
+	Breadcrumb      interface{}  `json:"breadcrumb,omitempty"`
 
 	Category      *Category  `json:"category,omitempty"`
-
-	InternalLink      string  `json:"internalLink,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
-
-	Keywords      string  `json:"keywords,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 	CategoryId      string  `json:"categoryId,omitempty"`
 
 	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
 
-	Breadcrumb      interface{}  `json:"breadcrumb,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Description      string  `json:"description,omitempty"`
+
+	ExternalLink      string  `json:"externalLink,omitempty"`
+
+	InternalLink      string  `json:"internalLink,omitempty"`
+
+	Keywords      string  `json:"keywords,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	LinkNewTab      bool  `json:"linkNewTab,omitempty"`
 
 	LinkType      string  `json:"linkType,omitempty"`
+
+	MetaDescription      string  `json:"metaDescription,omitempty"`
+
+	MetaTitle      string  `json:"metaTitle,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

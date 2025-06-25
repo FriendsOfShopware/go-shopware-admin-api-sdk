@@ -71,28 +71,28 @@ func (t *CustomerGroupTranslationRepository) Delete(ctx ApiContext, ids []string
 
 type CustomerGroupTranslation struct {
 
-	Name      string  `json:"name,omitempty"`
-
-	RegistrationTitle      string  `json:"registrationTitle,omitempty"`
-
-	RegistrationOnlyCompanyRegistration      bool  `json:"registrationOnlyCompanyRegistration,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
-
-	RegistrationIntroduction      string  `json:"registrationIntroduction,omitempty"`
-
-	RegistrationSeoMetaDescription      string  `json:"registrationSeoMetaDescription,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CustomerGroup      *CustomerGroup  `json:"customerGroup,omitempty"`
 
 	CustomerGroupId      string  `json:"customerGroupId,omitempty"`
 
-	CustomerGroup      *CustomerGroup  `json:"customerGroup,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	RegistrationIntroduction      string  `json:"registrationIntroduction,omitempty"`
+
+	RegistrationOnlyCompanyRegistration      bool  `json:"registrationOnlyCompanyRegistration,omitempty"`
+
+	RegistrationSeoMetaDescription      string  `json:"registrationSeoMetaDescription,omitempty"`
+
+	RegistrationTitle      string  `json:"registrationTitle,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

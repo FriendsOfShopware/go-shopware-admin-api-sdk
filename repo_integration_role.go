@@ -69,11 +69,11 @@ func (t *IntegrationRoleRepository) Delete(ctx ApiContext, ids []string) (*http.
 
 type IntegrationRole struct {
 
-	IntegrationId      string  `json:"integrationId,omitempty"`
-
 	AclRoleId      string  `json:"aclRoleId,omitempty"`
 
 	Integration      *Integration  `json:"integration,omitempty"`
+
+	IntegrationId      string  `json:"integrationId,omitempty"`
 
 	Role      *AclRole  `json:"role,omitempty"`
 

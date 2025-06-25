@@ -71,18 +71,18 @@ func (t *UserConfigRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 
 type UserConfig struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	UserId      string  `json:"userId,omitempty"`
-
 	Key      string  `json:"key,omitempty"`
 
-	Value      interface{}  `json:"value,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 	User      *User  `json:"user,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
+
+	Value      interface{}  `json:"value,omitempty"`
 
 }

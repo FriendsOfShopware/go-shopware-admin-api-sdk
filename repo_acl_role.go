@@ -71,24 +71,24 @@ func (t *AclRoleRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 
 type AclRole struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	Users      []User  `json:"users,omitempty"`
-
 	App      *App  `json:"app,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
-
-	Privileges      interface{}  `json:"privileges,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
 
+	Description      string  `json:"description,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
 	Integrations      []Integration  `json:"integrations,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
+
+	Privileges      interface{}  `json:"privileges,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Users      []User  `json:"users,omitempty"`
 
 }

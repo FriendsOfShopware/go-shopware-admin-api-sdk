@@ -71,24 +71,24 @@ func (t *AppTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.R
 
 type AppTranslation struct {
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	App      *App  `json:"app,omitempty"`
+
+	AppId      string  `json:"appId,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Description      string  `json:"description,omitempty"`
 
 	Label      string  `json:"label,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
 
 	PrivacyPolicyExtensions      string  `json:"privacyPolicyExtensions,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	AppId      string  `json:"appId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	App      *App  `json:"app,omitempty"`
-
-	Description      string  `json:"description,omitempty"`
 
 }

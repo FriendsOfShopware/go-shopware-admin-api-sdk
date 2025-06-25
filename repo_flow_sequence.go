@@ -71,40 +71,40 @@ func (t *FlowSequenceRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 
 type FlowSequence struct {
 
-	Rule      *Rule  `json:"rule,omitempty"`
-
-	Children      []FlowSequence  `json:"children,omitempty"`
-
-	ParentId      string  `json:"parentId,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	FlowId      string  `json:"flowId,omitempty"`
-
-	DisplayGroup      float64  `json:"displayGroup,omitempty"`
-
-	TrueCase      bool  `json:"trueCase,omitempty"`
-
-	Flow      *Flow  `json:"flow,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	Position      float64  `json:"position,omitempty"`
-
-	AppFlowActionId      string  `json:"appFlowActionId,omitempty"`
+	ActionName      string  `json:"actionName,omitempty"`
 
 	AppFlowAction      *AppFlowAction  `json:"appFlowAction,omitempty"`
 
-	RuleId      string  `json:"ruleId,omitempty"`
+	AppFlowActionId      string  `json:"appFlowActionId,omitempty"`
 
-	ActionName      string  `json:"actionName,omitempty"`
+	Children      []FlowSequence  `json:"children,omitempty"`
 
 	Config      interface{}  `json:"config,omitempty"`
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	DisplayGroup      float64  `json:"displayGroup,omitempty"`
+
+	Flow      *Flow  `json:"flow,omitempty"`
+
+	FlowId      string  `json:"flowId,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
 	Parent      *FlowSequence  `json:"parent,omitempty"`
+
+	ParentId      string  `json:"parentId,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
+
+	Rule      *Rule  `json:"rule,omitempty"`
+
+	RuleId      string  `json:"ruleId,omitempty"`
+
+	TrueCase      bool  `json:"trueCase,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

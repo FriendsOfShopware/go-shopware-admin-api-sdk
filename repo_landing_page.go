@@ -71,44 +71,44 @@ func (t *LandingPageRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 
 type LandingPage struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	MetaTitle      string  `json:"metaTitle,omitempty"`
-
-	Translations      []LandingPageTranslation  `json:"translations,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
 	Active      bool  `json:"active,omitempty"`
 
-	Name      string  `json:"name,omitempty"`
-
-	MetaDescription      string  `json:"metaDescription,omitempty"`
-
-	Url      string  `json:"url,omitempty"`
-
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
-
-	VersionId      string  `json:"versionId,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	Keywords      string  `json:"keywords,omitempty"`
+	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
 
 	CmsPageId      string  `json:"cmsPageId,omitempty"`
-
-	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
 
 	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Keywords      string  `json:"keywords,omitempty"`
+
+	MetaDescription      string  `json:"metaDescription,omitempty"`
+
+	MetaTitle      string  `json:"metaTitle,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+
+	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
 
 	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
 	Tags      []Tag  `json:"tags,omitempty"`
 
-	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []LandingPageTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Url      string  `json:"url,omitempty"`
+
+	VersionId      string  `json:"versionId,omitempty"`
 
 }

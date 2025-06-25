@@ -71,18 +71,18 @@ func (t *ImportExportProfileTranslationRepository) Delete(ctx ApiContext, ids []
 
 type ImportExportProfileTranslation struct {
 
-	Label      string  `json:"label,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	ImportExportProfileId      string  `json:"importExportProfileId,omitempty"`
-
-	LanguageId      string  `json:"languageId,omitempty"`
 
 	ImportExportProfile      *ImportExportProfile  `json:"importExportProfile,omitempty"`
 
+	ImportExportProfileId      string  `json:"importExportProfileId,omitempty"`
+
+	Label      string  `json:"label,omitempty"`
+
 	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

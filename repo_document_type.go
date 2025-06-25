@@ -71,25 +71,25 @@ func (t *DocumentTypeRepository) Delete(ctx ApiContext, ids []string) (*http.Res
 
 type DocumentType struct {
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Translations      []DocumentTypeTranslation  `json:"translations,omitempty"`
+	DocumentBaseConfigSalesChannels      []DocumentBaseConfigSalesChannel  `json:"documentBaseConfigSalesChannels,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
+
+	Documents      []Document  `json:"documents,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
 
 	Name      string  `json:"name,omitempty"`
 
 	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	Documents      []Document  `json:"documents,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
-
-	DocumentBaseConfigSalesChannels      []DocumentBaseConfigSalesChannel  `json:"documentBaseConfigSalesChannels,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Translations      []DocumentTypeTranslation  `json:"translations,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

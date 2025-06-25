@@ -71,31 +71,31 @@ func (t *ShippingMethodPriceRepository) Delete(ctx ApiContext, ids []string) (*h
 
 type ShippingMethodPrice struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	RuleId      string  `json:"ruleId,omitempty"`
-
 	Calculation      float64  `json:"calculation,omitempty"`
-
-	CalculationRuleId      string  `json:"calculationRuleId,omitempty"`
-
-	QuantityEnd      float64  `json:"quantityEnd,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
-
-	Rule      *Rule  `json:"rule,omitempty"`
-
-	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
-
-	QuantityStart      float64  `json:"quantityStart,omitempty"`
-
-	CurrencyPrice      interface{}  `json:"currencyPrice,omitempty"`
 
 	CalculationRule      *Rule  `json:"calculationRule,omitempty"`
 
+	CalculationRuleId      string  `json:"calculationRuleId,omitempty"`
+
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CurrencyPrice      interface{}  `json:"currencyPrice,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	QuantityEnd      float64  `json:"quantityEnd,omitempty"`
+
+	QuantityStart      float64  `json:"quantityStart,omitempty"`
+
+	Rule      *Rule  `json:"rule,omitempty"`
+
+	RuleId      string  `json:"ruleId,omitempty"`
+
+	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
+
+	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

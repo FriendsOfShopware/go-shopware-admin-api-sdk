@@ -71,28 +71,28 @@ func (t *MediaFolderConfigurationRepository) Delete(ctx ApiContext, ids []string
 
 type MediaFolderConfiguration struct {
 
-	NoAssociation      bool  `json:"noAssociation,omitempty"`
+	CreateThumbnails      bool  `json:"createThumbnails,omitempty"`
 
-	MediaThumbnailSizes      []MediaThumbnailSize  `json:"mediaThumbnailSizes,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
+	KeepAspectRatio      bool  `json:"keepAspectRatio,omitempty"`
+
 	MediaFolders      []MediaFolder  `json:"mediaFolders,omitempty"`
+
+	MediaThumbnailSizes      []MediaThumbnailSize  `json:"mediaThumbnailSizes,omitempty"`
 
 	MediaThumbnailSizesRo      interface{}  `json:"mediaThumbnailSizesRo,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	NoAssociation      bool  `json:"noAssociation,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	CreateThumbnails      bool  `json:"createThumbnails,omitempty"`
-
-	KeepAspectRatio      bool  `json:"keepAspectRatio,omitempty"`
+	Private      bool  `json:"private,omitempty"`
 
 	ThumbnailQuality      float64  `json:"thumbnailQuality,omitempty"`
 
-	Private      bool  `json:"private,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

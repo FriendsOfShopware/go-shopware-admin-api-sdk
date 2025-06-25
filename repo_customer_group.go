@@ -71,36 +71,36 @@ func (t *CustomerGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Re
 
 type CustomerGroup struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	RegistrationIntroduction      string  `json:"registrationIntroduction,omitempty"`
+	Customers      []Customer  `json:"customers,omitempty"`
 
 	DisplayGross      bool  `json:"displayGross,omitempty"`
 
-	RegistrationTitle      string  `json:"registrationTitle,omitempty"`
-
-	RegistrationOnlyCompanyRegistration      bool  `json:"registrationOnlyCompanyRegistration,omitempty"`
-
-	RegistrationSalesChannels      []SalesChannel  `json:"registrationSalesChannels,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Name      string  `json:"name,omitempty"`
 
 	RegistrationActive      bool  `json:"registrationActive,omitempty"`
 
-	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+	RegistrationIntroduction      string  `json:"registrationIntroduction,omitempty"`
 
-	Translations      []CustomerGroupTranslation  `json:"translations,omitempty"`
+	RegistrationOnlyCompanyRegistration      bool  `json:"registrationOnlyCompanyRegistration,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
+	RegistrationSalesChannels      []SalesChannel  `json:"registrationSalesChannels,omitempty"`
 
 	RegistrationSeoMetaDescription      string  `json:"registrationSeoMetaDescription,omitempty"`
 
-	Customers      []Customer  `json:"customers,omitempty"`
+	RegistrationTitle      string  `json:"registrationTitle,omitempty"`
+
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []CustomerGroupTranslation  `json:"translations,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

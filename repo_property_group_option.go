@@ -71,35 +71,35 @@ func (t *PropertyGroupOptionRepository) Delete(ctx ApiContext, ids []string) (*h
 
 type PropertyGroupOption struct {
 
-	Position      float64  `json:"position,omitempty"`
+	ColorHexCode      string  `json:"colorHexCode,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
-
-	Translations      []PropertyGroupOptionTranslation  `json:"translations,omitempty"`
-
-	Id      string  `json:"id,omitempty"`
-
-	GroupId      string  `json:"groupId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Group      *PropertyGroup  `json:"group,omitempty"`
 
-	ProductOptions      []Product  `json:"productOptions,omitempty"`
+	GroupId      string  `json:"groupId,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Translated      interface{}  `json:"translated,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
-	ColorHexCode      string  `json:"colorHexCode,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
 	MediaId      string  `json:"mediaId,omitempty"`
 
+	Name      string  `json:"name,omitempty"`
+
+	Position      float64  `json:"position,omitempty"`
+
 	ProductConfiguratorSettings      []ProductConfiguratorSetting  `json:"productConfiguratorSettings,omitempty"`
 
+	ProductOptions      []Product  `json:"productOptions,omitempty"`
+
 	ProductProperties      []Product  `json:"productProperties,omitempty"`
+
+	Translated      interface{}  `json:"translated,omitempty"`
+
+	Translations      []PropertyGroupOptionTranslation  `json:"translations,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

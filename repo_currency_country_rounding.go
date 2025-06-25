@@ -71,22 +71,22 @@ func (t *CurrencyCountryRoundingRepository) Delete(ctx ApiContext, ids []string)
 
 type CurrencyCountryRounding struct {
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
 
 	CountryId      string  `json:"countryId,omitempty"`
 
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
 	Currency      *Currency  `json:"currency,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
-
 	CurrencyId      string  `json:"currencyId,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
 
 	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
 
 	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
 
-	Country      *Country  `json:"country,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

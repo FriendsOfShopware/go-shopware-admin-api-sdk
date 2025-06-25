@@ -71,34 +71,34 @@ func (t *ProductStreamFilterRepository) Delete(ctx ApiContext, ids []string) (*h
 
 type ProductStreamFilter struct {
 
-	Type      string  `json:"type,omitempty"`
-
-	Value      string  `json:"value,omitempty"`
-
-	ProductStream      *ProductStream  `json:"productStream,omitempty"`
-
-	Parent      *ProductStreamFilter  `json:"parent,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id      string  `json:"id,omitempty"`
+	Field      string  `json:"field,omitempty"`
 
-	ParentId      string  `json:"parentId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	Operator      string  `json:"operator,omitempty"`
 
 	Parameters      interface{}  `json:"parameters,omitempty"`
 
-	ProductStreamId      string  `json:"productStreamId,omitempty"`
+	Parent      *ProductStreamFilter  `json:"parent,omitempty"`
 
-	Field      string  `json:"field,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
 	Position      float64  `json:"position,omitempty"`
 
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
+
+	ProductStreamId      string  `json:"productStreamId,omitempty"`
+
 	Queries      []ProductStreamFilter  `json:"queries,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Type      string  `json:"type,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Value      string  `json:"value,omitempty"`
 
 }

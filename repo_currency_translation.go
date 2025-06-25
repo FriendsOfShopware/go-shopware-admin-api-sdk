@@ -71,22 +71,22 @@ func (t *CurrencyTranslationRepository) Delete(ctx ApiContext, ids []string) (*h
 
 type CurrencyTranslation struct {
 
-	ShortName      string  `json:"shortName,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 	Currency      *Currency  `json:"currency,omitempty"`
 
-	Language      *Language  `json:"language,omitempty"`
+	CurrencyId      string  `json:"currencyId,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CurrencyId      string  `json:"currencyId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
 	LanguageId      string  `json:"languageId,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	ShortName      string  `json:"shortName,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

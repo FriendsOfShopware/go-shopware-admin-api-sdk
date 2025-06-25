@@ -71,30 +71,30 @@ func (t *CustomFieldRepository) Delete(ctx ApiContext, ids []string) (*http.Resp
 
 type CustomField struct {
 
-	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
+	Active      bool  `json:"active,omitempty"`
+
+	AllowCartExpose      bool  `json:"allowCartExpose,omitempty"`
 
 	AllowCustomerWrite      bool  `json:"allowCustomerWrite,omitempty"`
 
-	StoreApiAware      bool  `json:"storeApiAware,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	ProductSearchConfigFields      []ProductSearchConfigField  `json:"productSearchConfigFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
+
+	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
 	Name      string  `json:"name,omitempty"`
 
-	Config      interface{}  `json:"config,omitempty"`
+	ProductSearchConfigFields      []ProductSearchConfigField  `json:"productSearchConfigFields,omitempty"`
 
-	Active      bool  `json:"active,omitempty"`
-
-	AllowCartExpose      bool  `json:"allowCartExpose,omitempty"`
-
-	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	StoreApiAware      bool  `json:"storeApiAware,omitempty"`
 
 	Type      string  `json:"type,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

@@ -71,28 +71,28 @@ func (t *OrderLineItemDownloadRepository) Delete(ctx ApiContext, ids []string) (
 
 type OrderLineItemDownload struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	VersionId      string  `json:"versionId,omitempty"`
-
 	AccessGranted      bool  `json:"accessGranted,omitempty"`
+
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
+
+	Media      *Media  `json:"media,omitempty"`
+
+	MediaId      string  `json:"mediaId,omitempty"`
+
+	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
 
 	OrderLineItemId      string  `json:"orderLineItemId,omitempty"`
 
 	OrderLineItemVersionId      string  `json:"orderLineItemVersionId,omitempty"`
 
-	MediaId      string  `json:"mediaId,omitempty"`
-
 	Position      float64  `json:"position,omitempty"`
 
-	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Media      *Media  `json:"media,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
 }

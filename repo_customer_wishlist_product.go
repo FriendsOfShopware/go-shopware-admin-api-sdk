@@ -71,20 +71,20 @@ func (t *CustomerWishlistProductRepository) Delete(ctx ApiContext, ids []string)
 
 type CustomerWishlistProduct struct {
 
-	WishlistId      string  `json:"wishlistId,omitempty"`
-
-	Wishlist      *CustomerWishlist  `json:"wishlist,omitempty"`
-
-	Product      *Product  `json:"product,omitempty"`
-
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
 	Id      string  `json:"id,omitempty"`
+
+	Product      *Product  `json:"product,omitempty"`
 
 	ProductId      string  `json:"productId,omitempty"`
 
 	ProductVersionId      string  `json:"productVersionId,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Wishlist      *CustomerWishlist  `json:"wishlist,omitempty"`
+
+	WishlistId      string  `json:"wishlistId,omitempty"`
 
 }

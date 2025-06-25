@@ -71,65 +71,65 @@ func (t *UserRepository) Delete(ctx ApiContext, ids []string) (*http.Response, e
 
 type User struct {
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
-
-	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
-
-	Locale      *Locale  `json:"locale,omitempty"`
-
-	ImportExportLogEntries      []ImportExportLog  `json:"importExportLogEntries,omitempty"`
-
-	Active      bool  `json:"active,omitempty"`
-
-	LastUpdatedPasswordAt      time.Time  `json:"lastUpdatedPasswordAt,omitempty"`
-
-	AvatarMedia      *Media  `json:"avatarMedia,omitempty"`
+	AccessKeys      []UserAccessKey  `json:"accessKeys,omitempty"`
 
 	AclRoles      []AclRole  `json:"aclRoles,omitempty"`
 
-	RecoveryUser      *UserRecovery  `json:"recoveryUser,omitempty"`
-
-	CreatedOrders      []Order  `json:"createdOrders,omitempty"`
-
-	Password      interface{}  `json:"password,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	AccessKeys      []UserAccessKey  `json:"accessKeys,omitempty"`
-
-	LastName      string  `json:"lastName,omitempty"`
-
-	Media      []Media  `json:"media,omitempty"`
-
-	StateMachineHistoryEntries      []StateMachineHistory  `json:"stateMachineHistoryEntries,omitempty"`
-
-	Title      string  `json:"title,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
 	Admin      bool  `json:"admin,omitempty"`
 
-	TimeZone      string  `json:"timeZone,omitempty"`
+	AvatarId      string  `json:"avatarId,omitempty"`
+
+	AvatarMedia      *Media  `json:"avatarMedia,omitempty"`
 
 	Configs      []UserConfig  `json:"configs,omitempty"`
 
-	UpdatedCustomers      []Customer  `json:"updatedCustomers,omitempty"`
-
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	FirstName      string  `json:"firstName,omitempty"`
-
-	Email      string  `json:"email,omitempty"`
-
-	AvatarId      string  `json:"avatarId,omitempty"`
-
-	StoreToken      string  `json:"storeToken,omitempty"`
-
-	UpdatedOrders      []Order  `json:"updatedOrders,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	CreatedCustomers      []Customer  `json:"createdCustomers,omitempty"`
 
+	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
+
+	CreatedOrders      []Order  `json:"createdOrders,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
+
+	Email      string  `json:"email,omitempty"`
+
+	FirstName      string  `json:"firstName,omitempty"`
+
 	Id      string  `json:"id,omitempty"`
 
+	ImportExportLogEntries      []ImportExportLog  `json:"importExportLogEntries,omitempty"`
+
+	LastName      string  `json:"lastName,omitempty"`
+
+	LastUpdatedPasswordAt      time.Time  `json:"lastUpdatedPasswordAt,omitempty"`
+
+	Locale      *Locale  `json:"locale,omitempty"`
+
 	LocaleId      string  `json:"localeId,omitempty"`
+
+	Media      []Media  `json:"media,omitempty"`
+
+	Password      interface{}  `json:"password,omitempty"`
+
+	RecoveryUser      *UserRecovery  `json:"recoveryUser,omitempty"`
+
+	StateMachineHistoryEntries      []StateMachineHistory  `json:"stateMachineHistoryEntries,omitempty"`
+
+	StoreToken      string  `json:"storeToken,omitempty"`
+
+	TimeZone      string  `json:"timeZone,omitempty"`
+
+	Title      string  `json:"title,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	UpdatedCustomers      []Customer  `json:"updatedCustomers,omitempty"`
+
+	UpdatedOrders      []Order  `json:"updatedOrders,omitempty"`
 
 	Username      string  `json:"username,omitempty"`
 

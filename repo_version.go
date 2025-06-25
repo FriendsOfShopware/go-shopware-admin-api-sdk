@@ -71,13 +71,13 @@ func (t *VersionRepository) Delete(ctx ApiContext, ids []string) (*http.Response
 
 type Version struct {
 
-	Id      string  `json:"id,omitempty"`
-
-	Name      string  `json:"name,omitempty"`
-
 	Commits      []VersionCommit  `json:"commits,omitempty"`
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	Id      string  `json:"id,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 

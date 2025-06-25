@@ -69,12 +69,12 @@ func (t *ThemeMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Respo
 
 type ThemeMedia struct {
 
-	Theme      *Theme  `json:"theme,omitempty"`
-
 	Media      *Media  `json:"media,omitempty"`
 
-	ThemeId      string  `json:"themeId,omitempty"`
-
 	MediaId      string  `json:"mediaId,omitempty"`
+
+	Theme      *Theme  `json:"theme,omitempty"`
+
+	ThemeId      string  `json:"themeId,omitempty"`
 
 }

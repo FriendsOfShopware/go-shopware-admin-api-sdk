@@ -71,16 +71,16 @@ func (t *CustomerRecoveryRepository) Delete(ctx ApiContext, ids []string) (*http
 
 type CustomerRecovery struct {
 
-	CustomerId      string  `json:"customerId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
 	Customer      *Customer  `json:"customer,omitempty"`
 
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	CustomerId      string  `json:"customerId,omitempty"`
 
-	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
 
 	Id      string  `json:"id,omitempty"`
 
-	Hash      string  `json:"hash,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
 }

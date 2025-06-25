@@ -73,24 +73,24 @@ type PluginTranslation struct {
 
 	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	LanguageId      string  `json:"languageId,omitempty"`
-
-	Language      *Language  `json:"language,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Description      string  `json:"description,omitempty"`
 
+	Label      string  `json:"label,omitempty"`
+
+	Language      *Language  `json:"language,omitempty"`
+
+	LanguageId      string  `json:"languageId,omitempty"`
+
 	ManufacturerLink      string  `json:"manufacturerLink,omitempty"`
+
+	Plugin      *Plugin  `json:"plugin,omitempty"`
+
+	PluginId      string  `json:"pluginId,omitempty"`
 
 	SupportLink      string  `json:"supportLink,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
-
-	PluginId      string  `json:"pluginId,omitempty"`
-
-	Plugin      *Plugin  `json:"plugin,omitempty"`
-
-	Label      string  `json:"label,omitempty"`
-
-	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 }

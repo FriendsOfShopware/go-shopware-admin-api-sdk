@@ -71,15 +71,15 @@ func (t *MediaDefaultFolderRepository) Delete(ctx ApiContext, ids []string) (*ht
 
 type MediaDefaultFolder struct {
 
-	Id      string  `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
 	Entity      string  `json:"entity,omitempty"`
 
 	Folder      *MediaFolder  `json:"folder,omitempty"`
 
-	CustomFields      interface{}  `json:"customFields,omitempty"`
-
-	CreatedAt      time.Time  `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
 	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
