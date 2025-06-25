@@ -3,16 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
-	sdk "github.com/friendsofshopware/go-shopware-admin-api-sdk"
 	"log"
-	"os"
+
+	sdk "github.com/friendsofshopware/go-shopware-admin-api-sdk"
 )
 
 func main() {
 	ctx := context.Background()
 
-	creds := sdk.NewPasswordCredentials("admin", os.Getenv("ADMIN_PW"), []string{})
-	client, err := sdk.NewApiClient(ctx, "https://shop.shyim.de", creds, nil)
+	creds := sdk.NewPasswordCredentials("admin", "shopware", []string{})
+	client, err := sdk.NewApiClient(ctx, "https://demo.fos.gg", creds, nil)
 
 	if err != nil {
 		log.Fatalln(err)
