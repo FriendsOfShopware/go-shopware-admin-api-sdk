@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type OrderTransactionCaptureRepository ClientService
-
-func (t OrderTransactionCaptureRepository) Search(ctx ApiContext, criteria Criteria) (*OrderTransactionCaptureCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/order-transaction-capture", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(OrderTransactionCaptureCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type OrderTransactionCaptureRepository struct {
+	*GenericRepository[OrderTransactionCapture]
 }
 
-func (t OrderTransactionCaptureRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderTransactionCaptureCollection, *http.Response, error) {
+func NewOrderTransactionCaptureRepository(client *Client) *OrderTransactionCaptureRepository {
+	return &OrderTransactionCaptureRepository{
+		GenericRepository: NewGenericRepository[OrderTransactionCapture](client),
+	}
+}
+
+func (t *OrderTransactionCaptureRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderTransactionCapture], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "order-transaction-capture")
+}
+
+func (t *OrderTransactionCaptureRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderTransactionCapture], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,74 +57,44 @@ func (t OrderTransactionCaptureRepository) SearchAll(ctx ApiContext, criteria Cr
 	return c, resp, err
 }
 
-func (t OrderTransactionCaptureRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-transaction-capture", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *OrderTransactionCaptureRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "order-transaction-capture")
 }
 
-func (t OrderTransactionCaptureRepository) Upsert(ctx ApiContext, entity []OrderTransactionCapture) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_transaction_capture": {
-		Entity:  "order_transaction_capture",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *OrderTransactionCaptureRepository) Upsert(ctx ApiContext, entity []OrderTransactionCapture) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "order_transaction_capture")
 }
 
-func (t OrderTransactionCaptureRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_transaction_capture": {
-		Entity:  "order_transaction_capture",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *OrderTransactionCaptureRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "order_transaction_capture")
 }
 
 type OrderTransactionCapture struct {
-	StateId string `json:"stateId,omitempty"`
 
-	Refunds []OrderTransactionCaptureRefund `json:"refunds,omitempty"`
+	ExternalReference      string  `json:"externalReference,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Amount      interface{}  `json:"amount,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Transaction *OrderTransaction `json:"transaction,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	OrderTransactionId string `json:"orderTransactionId,omitempty"`
+	OrderTransactionId      string  `json:"orderTransactionId,omitempty"`
 
-	OrderTransactionVersionId string `json:"orderTransactionVersionId,omitempty"`
+	StateId      string  `json:"stateId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Transaction      *OrderTransaction  `json:"transaction,omitempty"`
 
-	ExternalReference string `json:"externalReference,omitempty"`
+	Refunds      []OrderTransactionCaptureRefund  `json:"refunds,omitempty"`
 
-	Amount interface{} `json:"amount,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	OrderTransactionVersionId      string  `json:"orderTransactionVersionId,omitempty"`
 
-type OrderTransactionCaptureCollection struct {
-	EntityCollection
+	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
 
-	Data []OrderTransactionCapture `json:"data"`
 }

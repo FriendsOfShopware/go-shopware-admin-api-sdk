@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PluginRepository ClientService
-
-func (t PluginRepository) Search(ctx ApiContext, criteria Criteria) (*PluginCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/plugin", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PluginCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PluginRepository struct {
+	*GenericRepository[Plugin]
 }
 
-func (t PluginRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PluginCollection, *http.Response, error) {
+func NewPluginRepository(client *Client) *PluginRepository {
+	return &PluginRepository{
+		GenericRepository: NewGenericRepository[Plugin](client),
+	}
+}
+
+func (t *PluginRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Plugin], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "plugin")
+}
+
+func (t *PluginRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Plugin], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,104 +57,72 @@ func (t PluginRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PluginC
 	return c, resp, err
 }
 
-func (t PluginRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/plugin", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PluginRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "plugin")
 }
 
-func (t PluginRepository) Upsert(ctx ApiContext, entity []Plugin) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"plugin": {
-		Entity:  "plugin",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PluginRepository) Upsert(ctx ApiContext, entity []Plugin) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "plugin")
 }
 
-func (t PluginRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"plugin": {
-		Entity:  "plugin",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PluginRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "plugin")
 }
 
 type Plugin struct {
-	ComposerName string `json:"composerName,omitempty"`
 
-	Icon string `json:"icon,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	ManufacturerLink string `json:"manufacturerLink,omitempty"`
+	ManufacturerLink      string  `json:"manufacturerLink,omitempty"`
 
-	Changelog interface{} `json:"changelog,omitempty"`
+	Translations      []PluginTranslation  `json:"translations,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	License      string  `json:"license,omitempty"`
 
-	Copyright string `json:"copyright,omitempty"`
+	InstalledAt      time.Time  `json:"installedAt,omitempty"`
 
-	UpgradeVersion string `json:"upgradeVersion,omitempty"`
+	SupportLink      string  `json:"supportLink,omitempty"`
 
-	Autoload interface{} `json:"autoload,omitempty"`
+	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
 
-	Translations []PluginTranslation `json:"translations,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	BaseClass      string  `json:"baseClass,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	ComposerName      string  `json:"composerName,omitempty"`
 
-	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
+	Copyright      string  `json:"copyright,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Version      string  `json:"version,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	IconRaw      interface{}  `json:"iconRaw,omitempty"`
 
-	Author string `json:"author,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	UpgradedAt time.Time `json:"upgradedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SupportLink string `json:"supportLink,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	ManagedByComposer      bool  `json:"managedByComposer,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	UpgradeVersion      string  `json:"upgradeVersion,omitempty"`
 
-	License string `json:"license,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Version string `json:"version,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	IconRaw interface{} `json:"iconRaw,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Autoload      interface{}  `json:"autoload,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	BaseClass string `json:"baseClass,omitempty"`
+	Author      string  `json:"author,omitempty"`
 
-	ManagedByComposer bool `json:"managedByComposer,omitempty"`
+	UpgradedAt      time.Time  `json:"upgradedAt,omitempty"`
 
-	InstalledAt time.Time `json:"installedAt,omitempty"`
-}
+	Icon      string  `json:"icon,omitempty"`
 
-type PluginCollection struct {
-	EntityCollection
-
-	Data []Plugin `json:"data"`
 }

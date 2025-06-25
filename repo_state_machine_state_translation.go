@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type StateMachineStateTranslationRepository ClientService
-
-func (t StateMachineStateTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*StateMachineStateTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/state-machine-state-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(StateMachineStateTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type StateMachineStateTranslationRepository struct {
+	*GenericRepository[StateMachineStateTranslation]
 }
 
-func (t StateMachineStateTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*StateMachineStateTranslationCollection, *http.Response, error) {
+func NewStateMachineStateTranslationRepository(client *Client) *StateMachineStateTranslationRepository {
+	return &StateMachineStateTranslationRepository{
+		GenericRepository: NewGenericRepository[StateMachineStateTranslation](client),
+	}
+}
+
+func (t *StateMachineStateTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[StateMachineStateTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "state-machine-state-translation")
+}
+
+func (t *StateMachineStateTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[StateMachineStateTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,64 +57,34 @@ func (t StateMachineStateTranslationRepository) SearchAll(ctx ApiContext, criter
 	return c, resp, err
 }
 
-func (t StateMachineStateTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/state-machine-state-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *StateMachineStateTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "state-machine-state-translation")
 }
 
-func (t StateMachineStateTranslationRepository) Upsert(ctx ApiContext, entity []StateMachineStateTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"state_machine_state_translation": {
-		Entity:  "state_machine_state_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *StateMachineStateTranslationRepository) Upsert(ctx ApiContext, entity []StateMachineStateTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "state_machine_state_translation")
 }
 
-func (t StateMachineStateTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"state_machine_state_translation": {
-		Entity:  "state_machine_state_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *StateMachineStateTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "state_machine_state_translation")
 }
 
 type StateMachineStateTranslation struct {
-	StateMachineStateId string `json:"stateMachineStateId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
+	StateMachineStateId      string  `json:"stateMachineStateId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-type StateMachineStateTranslationCollection struct {
-	EntityCollection
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Data []StateMachineStateTranslation `json:"data"`
 }

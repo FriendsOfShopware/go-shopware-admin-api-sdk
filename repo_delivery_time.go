@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type DeliveryTimeRepository ClientService
-
-func (t DeliveryTimeRepository) Search(ctx ApiContext, criteria Criteria) (*DeliveryTimeCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/delivery-time", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(DeliveryTimeCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type DeliveryTimeRepository struct {
+	*GenericRepository[DeliveryTime]
 }
 
-func (t DeliveryTimeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*DeliveryTimeCollection, *http.Response, error) {
+func NewDeliveryTimeRepository(client *Client) *DeliveryTimeRepository {
+	return &DeliveryTimeRepository{
+		GenericRepository: NewGenericRepository[DeliveryTime](client),
+	}
+}
+
+func (t *DeliveryTimeRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[DeliveryTime], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "delivery-time")
+}
+
+func (t *DeliveryTimeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[DeliveryTime], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,42 @@ func (t DeliveryTimeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*D
 	return c, resp, err
 }
 
-func (t DeliveryTimeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/delivery-time", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *DeliveryTimeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "delivery-time")
 }
 
-func (t DeliveryTimeRepository) Upsert(ctx ApiContext, entity []DeliveryTime) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"delivery_time": {
-		Entity:  "delivery_time",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *DeliveryTimeRepository) Upsert(ctx ApiContext, entity []DeliveryTime) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "delivery_time")
 }
 
-func (t DeliveryTimeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"delivery_time": {
-		Entity:  "delivery_time",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *DeliveryTimeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "delivery_time")
 }
 
 type DeliveryTime struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Unit string `json:"unit,omitempty"`
+	Min      float64  `json:"min,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Max      float64  `json:"max,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	Unit      string  `json:"unit,omitempty"`
 
-	Translations []DeliveryTimeTranslation `json:"translations,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	Min float64 `json:"min,omitempty"`
+	Translations      []DeliveryTimeTranslation  `json:"translations,omitempty"`
 
-	Max float64 `json:"max,omitempty"`
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type DeliveryTimeCollection struct {
-	EntityCollection
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Data []DeliveryTime `json:"data"`
 }

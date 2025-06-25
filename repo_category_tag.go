@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type CategoryTagRepository ClientService
-
-func (t CategoryTagRepository) Search(ctx ApiContext, criteria Criteria) (*CategoryTagCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/category-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CategoryTagCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CategoryTagRepository struct {
+	*GenericRepository[CategoryTag]
 }
 
-func (t CategoryTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CategoryTagCollection, *http.Response, error) {
+func NewCategoryTagRepository(client *Client) *CategoryTagRepository {
+	return &CategoryTagRepository{
+		GenericRepository: NewGenericRepository[CategoryTag](client),
+	}
+}
+
+func (t *CategoryTagRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CategoryTag], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "category-tag")
+}
+
+func (t *CategoryTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CategoryTag], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,58 +55,28 @@ func (t CategoryTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Ca
 	return c, resp, err
 }
 
-func (t CategoryTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/category-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CategoryTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "category-tag")
 }
 
-func (t CategoryTagRepository) Upsert(ctx ApiContext, entity []CategoryTag) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"category_tag": {
-		Entity:  "category_tag",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CategoryTagRepository) Upsert(ctx ApiContext, entity []CategoryTag) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "category_tag")
 }
 
-func (t CategoryTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"category_tag": {
-		Entity:  "category_tag",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CategoryTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "category_tag")
 }
 
 type CategoryTag struct {
-	Tag *Tag `json:"tag,omitempty"`
 
-	CategoryId string `json:"categoryId,omitempty"`
+	Tag      *Tag  `json:"tag,omitempty"`
 
-	CategoryVersionId string `json:"categoryVersionId,omitempty"`
+	CategoryId      string  `json:"categoryId,omitempty"`
 
-	TagId string `json:"tagId,omitempty"`
+	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
 
-	Category *Category `json:"category,omitempty"`
-}
+	TagId      string  `json:"tagId,omitempty"`
 
-type CategoryTagCollection struct {
-	EntityCollection
+	Category      *Category  `json:"category,omitempty"`
 
-	Data []CategoryTag `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppAdministrationSnippetRepository ClientService
-
-func (t AppAdministrationSnippetRepository) Search(ctx ApiContext, criteria Criteria) (*AppAdministrationSnippetCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-administration-snippet", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppAdministrationSnippetCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppAdministrationSnippetRepository struct {
+	*GenericRepository[AppAdministrationSnippet]
 }
 
-func (t AppAdministrationSnippetRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppAdministrationSnippetCollection, *http.Response, error) {
+func NewAppAdministrationSnippetRepository(client *Client) *AppAdministrationSnippetRepository {
+	return &AppAdministrationSnippetRepository{
+		GenericRepository: NewGenericRepository[AppAdministrationSnippet](client),
+	}
+}
+
+func (t *AppAdministrationSnippetRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppAdministrationSnippet], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-administration-snippet")
+}
+
+func (t *AppAdministrationSnippetRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppAdministrationSnippet], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,60 +57,30 @@ func (t AppAdministrationSnippetRepository) SearchAll(ctx ApiContext, criteria C
 	return c, resp, err
 }
 
-func (t AppAdministrationSnippetRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-administration-snippet", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppAdministrationSnippetRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-administration-snippet")
 }
 
-func (t AppAdministrationSnippetRepository) Upsert(ctx ApiContext, entity []AppAdministrationSnippet) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_administration_snippet": {
-		Entity:  "app_administration_snippet",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppAdministrationSnippetRepository) Upsert(ctx ApiContext, entity []AppAdministrationSnippet) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_administration_snippet")
 }
 
-func (t AppAdministrationSnippetRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_administration_snippet": {
-		Entity:  "app_administration_snippet",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppAdministrationSnippetRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_administration_snippet")
 }
 
 type AppAdministrationSnippet struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Value string `json:"value,omitempty"`
+	Value      string  `json:"value,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	LocaleId string `json:"localeId,omitempty"`
-}
+	LocaleId      string  `json:"localeId,omitempty"`
 
-type AppAdministrationSnippetCollection struct {
-	EntityCollection
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Data []AppAdministrationSnippet `json:"data"`
 }

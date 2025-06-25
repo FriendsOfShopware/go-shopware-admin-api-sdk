@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type SystemConfigRepository ClientService
-
-func (t SystemConfigRepository) Search(ctx ApiContext, criteria Criteria) (*SystemConfigCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/system-config", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SystemConfigCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type SystemConfigRepository struct {
+	*GenericRepository[SystemConfig]
 }
 
-func (t SystemConfigRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SystemConfigCollection, *http.Response, error) {
+func NewSystemConfigRepository(client *Client) *SystemConfigRepository {
+	return &SystemConfigRepository{
+		GenericRepository: NewGenericRepository[SystemConfig](client),
+	}
+}
+
+func (t *SystemConfigRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[SystemConfig], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "system-config")
+}
+
+func (t *SystemConfigRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[SystemConfig], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,62 +57,32 @@ func (t SystemConfigRepository) SearchAll(ctx ApiContext, criteria Criteria) (*S
 	return c, resp, err
 }
 
-func (t SystemConfigRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/system-config", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *SystemConfigRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "system-config")
 }
 
-func (t SystemConfigRepository) Upsert(ctx ApiContext, entity []SystemConfig) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"system_config": {
-		Entity:  "system_config",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *SystemConfigRepository) Upsert(ctx ApiContext, entity []SystemConfig) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "system_config")
 }
 
-func (t SystemConfigRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"system_config": {
-		Entity:  "system_config",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *SystemConfigRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "system_config")
 }
 
 type SystemConfig struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ConfigurationKey      string  `json:"configurationKey,omitempty"`
 
-	ConfigurationKey string `json:"configurationKey,omitempty"`
+	ConfigurationValue      interface{}  `json:"configurationValue,omitempty"`
 
-	ConfigurationValue interface{} `json:"configurationValue,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
-}
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-type SystemConfigCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []SystemConfig `json:"data"`
 }

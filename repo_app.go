@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppRepository ClientService
-
-func (t AppRepository) Search(ctx ApiContext, criteria Criteria) (*AppCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppRepository struct {
+	*GenericRepository[App]
 }
 
-func (t AppRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppCollection, *http.Response, error) {
+func NewAppRepository(client *Client) *AppRepository {
+	return &AppRepository{
+		GenericRepository: NewGenericRepository[App](client),
+	}
+}
+
+func (t *AppRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[App], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app")
+}
+
+func (t *AppRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[App], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,136 +57,116 @@ func (t AppRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppCollect
 	return c, resp, err
 }
 
-func (t AppRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app")
 }
 
-func (t AppRepository) Upsert(ctx ApiContext, entity []App) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app": {
-		Entity:  "app",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppRepository) Upsert(ctx ApiContext, entity []App) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app")
 }
 
-func (t AppRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app": {
-		Entity:  "app",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app")
 }
 
 type App struct {
-	Active bool `json:"active,omitempty"`
 
-	IconRaw interface{} `json:"iconRaw,omitempty"`
+	PrivacyPolicyExtensions      string  `json:"privacyPolicyExtensions,omitempty"`
 
-	Modules interface{} `json:"modules,omitempty"`
+	Webhooks      []Webhook  `json:"webhooks,omitempty"`
 
-	AllowedHosts interface{} `json:"allowedHosts,omitempty"`
+	AppShippingMethods      []AppShippingMethod  `json:"appShippingMethods,omitempty"`
 
-	Translations []AppTranslation `json:"translations,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	AppShippingMethods []AppShippingMethod `json:"appShippingMethods,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Configurable      bool  `json:"configurable,omitempty"`
 
-	Author string `json:"author,omitempty"`
+	AppSecret      string  `json:"appSecret,omitempty"`
 
-	Privacy string `json:"privacy,omitempty"`
+	TemplateLoadPriority      float64  `json:"templateLoadPriority,omitempty"`
 
-	Templates []AppTemplate `json:"templates,omitempty"`
+	SourceType      string  `json:"sourceType,omitempty"`
 
-	PaymentMethods []AppPaymentMethod `json:"paymentMethods,omitempty"`
+	Scripts      []Script  `json:"scripts,omitempty"`
 
-	AclRole *AclRole `json:"aclRole,omitempty"`
+	TaxProviders      []TaxProvider  `json:"taxProviders,omitempty"`
 
-	Version string `json:"version,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	Icon string `json:"icon,omitempty"`
+	Author      string  `json:"author,omitempty"`
 
-	MainModule interface{} `json:"mainModule,omitempty"`
+	Version      string  `json:"version,omitempty"`
 
-	Cookies interface{} `json:"cookies,omitempty"`
+	IconRaw      interface{}  `json:"iconRaw,omitempty"`
 
-	IntegrationId string `json:"integrationId,omitempty"`
+	BaseAppUrl      string  `json:"baseAppUrl,omitempty"`
 
-	Integration *Integration `json:"integration,omitempty"`
+	Integration      *Integration  `json:"integration,omitempty"`
 
-	AclRoleId string `json:"aclRoleId,omitempty"`
+	CustomFieldSets      []CustomFieldSet  `json:"customFieldSets,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	AllowedHosts      interface{}  `json:"allowedHosts,omitempty"`
 
-	PrivacyPolicyExtensions string `json:"privacyPolicyExtensions,omitempty"`
+	InAppPurchasesGatewayUrl      string  `json:"inAppPurchasesGatewayUrl,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	IntegrationId      string  `json:"integrationId,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	ScriptConditions      []AppScriptCondition  `json:"scriptConditions,omitempty"`
 
-	License string `json:"license,omitempty"`
+	FlowActions      []AppFlowAction  `json:"flowActions,omitempty"`
 
-	AppSecret string `json:"appSecret,omitempty"`
+	License      string  `json:"license,omitempty"`
 
-	BaseAppUrl string `json:"baseAppUrl,omitempty"`
+	AllowDisable      bool  `json:"allowDisable,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ActionButtons      []AppActionButton  `json:"actionButtons,omitempty"`
 
-	ActionButtons []AppActionButton `json:"actionButtons,omitempty"`
+	Translations      []AppTranslation  `json:"translations,omitempty"`
 
-	Scripts []Script `json:"scripts,omitempty"`
+	Privacy      string  `json:"privacy,omitempty"`
 
-	TaxProviders []TaxProvider `json:"taxProviders,omitempty"`
+	SourceConfig      interface{}  `json:"sourceConfig,omitempty"`
 
-	ScriptConditions []AppScriptCondition `json:"scriptConditions,omitempty"`
+	SelfManaged      bool  `json:"selfManaged,omitempty"`
 
-	CmsBlocks []AppCmsBlock `json:"cmsBlocks,omitempty"`
+	PaymentMethods      []AppPaymentMethod  `json:"paymentMethods,omitempty"`
 
-	Copyright string `json:"copyright,omitempty"`
+	CmsBlocks      []AppCmsBlock  `json:"cmsBlocks,omitempty"`
 
-	Configurable bool `json:"configurable,omitempty"`
+	FlowEvents      []AppFlowEvent  `json:"flowEvents,omitempty"`
 
-	TemplateLoadPriority float64 `json:"templateLoadPriority,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Icon      string  `json:"icon,omitempty"`
 
-	Webhooks []Webhook `json:"webhooks,omitempty"`
+	MainModule      interface{}  `json:"mainModule,omitempty"`
 
-	FlowEvents []AppFlowEvent `json:"flowEvents,omitempty"`
+	CheckoutGatewayUrl      string  `json:"checkoutGatewayUrl,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	AclRoleId      string  `json:"aclRoleId,omitempty"`
 
-	AllowDisable bool `json:"allowDisable,omitempty"`
+	Templates      []AppTemplate  `json:"templates,omitempty"`
 
-	CustomFieldSets []CustomFieldSet `json:"customFieldSets,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	FlowActions []AppFlowAction `json:"flowActions,omitempty"`
-}
+	Copyright      string  `json:"copyright,omitempty"`
 
-type AppCollection struct {
-	EntityCollection
+	Label      string  `json:"label,omitempty"`
 
-	Data []App `json:"data"`
+	AclRole      *AclRole  `json:"aclRole,omitempty"`
+
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
+	Name      string  `json:"name,omitempty"`
+
+	Modules      interface{}  `json:"modules,omitempty"`
+
+	Cookies      interface{}  `json:"cookies,omitempty"`
+
 }

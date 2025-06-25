@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type OrderTagRepository ClientService
-
-func (t OrderTagRepository) Search(ctx ApiContext, criteria Criteria) (*OrderTagCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/order-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(OrderTagCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type OrderTagRepository struct {
+	*GenericRepository[OrderTag]
 }
 
-func (t OrderTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderTagCollection, *http.Response, error) {
+func NewOrderTagRepository(client *Client) *OrderTagRepository {
+	return &OrderTagRepository{
+		GenericRepository: NewGenericRepository[OrderTag](client),
+	}
+}
+
+func (t *OrderTagRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderTag], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "order-tag")
+}
+
+func (t *OrderTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderTag], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,58 +55,28 @@ func (t OrderTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Order
 	return c, resp, err
 }
 
-func (t OrderTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *OrderTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "order-tag")
 }
 
-func (t OrderTagRepository) Upsert(ctx ApiContext, entity []OrderTag) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_tag": {
-		Entity:  "order_tag",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *OrderTagRepository) Upsert(ctx ApiContext, entity []OrderTag) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "order_tag")
 }
 
-func (t OrderTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_tag": {
-		Entity:  "order_tag",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *OrderTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "order_tag")
 }
 
 type OrderTag struct {
-	TagId string `json:"tagId,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	Tag *Tag `json:"tag,omitempty"`
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	TagId      string  `json:"tagId,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
-}
+	Order      *Order  `json:"order,omitempty"`
 
-type OrderTagCollection struct {
-	EntityCollection
+	Tag      *Tag  `json:"tag,omitempty"`
 
-	Data []OrderTag `json:"data"`
 }

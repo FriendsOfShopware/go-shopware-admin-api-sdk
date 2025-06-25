@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MediaThumbnailRepository ClientService
-
-func (t MediaThumbnailRepository) Search(ctx ApiContext, criteria Criteria) (*MediaThumbnailCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/media-thumbnail", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MediaThumbnailCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MediaThumbnailRepository struct {
+	*GenericRepository[MediaThumbnail]
 }
 
-func (t MediaThumbnailRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaThumbnailCollection, *http.Response, error) {
+func NewMediaThumbnailRepository(client *Client) *MediaThumbnailRepository {
+	return &MediaThumbnailRepository{
+		GenericRepository: NewGenericRepository[MediaThumbnail](client),
+	}
+}
+
+func (t *MediaThumbnailRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaThumbnail], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "media-thumbnail")
+}
+
+func (t *MediaThumbnailRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaThumbnail], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,68 +57,38 @@ func (t MediaThumbnailRepository) SearchAll(ctx ApiContext, criteria Criteria) (
 	return c, resp, err
 }
 
-func (t MediaThumbnailRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media-thumbnail", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MediaThumbnailRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "media-thumbnail")
 }
 
-func (t MediaThumbnailRepository) Upsert(ctx ApiContext, entity []MediaThumbnail) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_thumbnail": {
-		Entity:  "media_thumbnail",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MediaThumbnailRepository) Upsert(ctx ApiContext, entity []MediaThumbnail) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "media_thumbnail")
 }
 
-func (t MediaThumbnailRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_thumbnail": {
-		Entity:  "media_thumbnail",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MediaThumbnailRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "media_thumbnail")
 }
 
 type MediaThumbnail struct {
-	Id string `json:"id,omitempty"`
 
-	Height float64 `json:"height,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Width      float64  `json:"width,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	Height      float64  `json:"height,omitempty"`
 
-	Width float64 `json:"width,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	Url      string  `json:"url,omitempty"`
 
-type MediaThumbnailCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []MediaThumbnail `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CountryStateRepository ClientService
-
-func (t CountryStateRepository) Search(ctx ApiContext, criteria Criteria) (*CountryStateCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/country-state", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CountryStateCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CountryStateRepository struct {
+	*GenericRepository[CountryState]
 }
 
-func (t CountryStateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CountryStateCollection, *http.Response, error) {
+func NewCountryStateRepository(client *Client) *CountryStateRepository {
+	return &CountryStateRepository{
+		GenericRepository: NewGenericRepository[CountryState](client),
+	}
+}
+
+func (t *CountryStateRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CountryState], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "country-state")
+}
+
+func (t *CountryStateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CountryState], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,76 +57,46 @@ func (t CountryStateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*C
 	return c, resp, err
 }
 
-func (t CountryStateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/country-state", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CountryStateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "country-state")
 }
 
-func (t CountryStateRepository) Upsert(ctx ApiContext, entity []CountryState) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"country_state": {
-		Entity:  "country_state",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CountryStateRepository) Upsert(ctx ApiContext, entity []CountryState) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "country_state")
 }
 
-func (t CountryStateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"country_state": {
-		Entity:  "country_state",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CountryStateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "country_state")
 }
 
 type CountryState struct {
-	Id string `json:"id,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	CountryId      string  `json:"countryId,omitempty"`
 
-	Translations []CountryStateTranslation `json:"translations,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	CountryId string `json:"countryId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
+	Translations      []CountryStateTranslation  `json:"translations,omitempty"`
 
-	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
+	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ShortCode string `json:"shortCode,omitempty"`
+	ShortCode      string  `json:"shortCode,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
 
-	Country *Country `json:"country,omitempty"`
+	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-type CountryStateCollection struct {
-	EntityCollection
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Data []CountryState `json:"data"`
 }

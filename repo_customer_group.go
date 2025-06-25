@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CustomerGroupRepository ClientService
-
-func (t CustomerGroupRepository) Search(ctx ApiContext, criteria Criteria) (*CustomerGroupCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/customer-group", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CustomerGroupCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CustomerGroupRepository struct {
+	*GenericRepository[CustomerGroup]
 }
 
-func (t CustomerGroupRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomerGroupCollection, *http.Response, error) {
+func NewCustomerGroupRepository(client *Client) *CustomerGroupRepository {
+	return &CustomerGroupRepository{
+		GenericRepository: NewGenericRepository[CustomerGroup](client),
+	}
+}
+
+func (t *CustomerGroupRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomerGroup], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "customer-group")
+}
+
+func (t *CustomerGroupRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomerGroup], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,80 +57,50 @@ func (t CustomerGroupRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t CustomerGroupRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/customer-group", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CustomerGroupRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "customer-group")
 }
 
-func (t CustomerGroupRepository) Upsert(ctx ApiContext, entity []CustomerGroup) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"customer_group": {
-		Entity:  "customer_group",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CustomerGroupRepository) Upsert(ctx ApiContext, entity []CustomerGroup) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "customer_group")
 }
 
-func (t CustomerGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"customer_group": {
-		Entity:  "customer_group",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CustomerGroupRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "customer_group")
 }
 
 type CustomerGroup struct {
-	Name string `json:"name,omitempty"`
 
-	DisplayGross bool `json:"displayGross,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	RegistrationTitle string `json:"registrationTitle,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	RegistrationOnlyCompanyRegistration bool `json:"registrationOnlyCompanyRegistration,omitempty"`
+	RegistrationIntroduction      string  `json:"registrationIntroduction,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	DisplayGross      bool  `json:"displayGross,omitempty"`
 
-	RegistrationActive bool `json:"registrationActive,omitempty"`
+	RegistrationTitle      string  `json:"registrationTitle,omitempty"`
 
-	RegistrationIntroduction string `json:"registrationIntroduction,omitempty"`
+	RegistrationOnlyCompanyRegistration      bool  `json:"registrationOnlyCompanyRegistration,omitempty"`
 
-	RegistrationSeoMetaDescription string `json:"registrationSeoMetaDescription,omitempty"`
+	RegistrationSalesChannels      []SalesChannel  `json:"registrationSalesChannels,omitempty"`
 
-	Customers []Customer `json:"customers,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Translations []CustomerGroupTranslation `json:"translations,omitempty"`
+	RegistrationActive      bool  `json:"registrationActive,omitempty"`
 
-	RegistrationSalesChannels []SalesChannel `json:"registrationSalesChannels,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Translations      []CustomerGroupTranslation  `json:"translations,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
-}
+	RegistrationSeoMetaDescription      string  `json:"registrationSeoMetaDescription,omitempty"`
 
-type CustomerGroupCollection struct {
-	EntityCollection
+	Customers      []Customer  `json:"customers,omitempty"`
 
-	Data []CustomerGroup `json:"data"`
 }

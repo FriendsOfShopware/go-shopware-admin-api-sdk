@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductStreamTranslationRepository ClientService
-
-func (t ProductStreamTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*ProductStreamTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-stream-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductStreamTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductStreamTranslationRepository struct {
+	*GenericRepository[ProductStreamTranslation]
 }
 
-func (t ProductStreamTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductStreamTranslationCollection, *http.Response, error) {
+func NewProductStreamTranslationRepository(client *Client) *ProductStreamTranslationRepository {
+	return &ProductStreamTranslationRepository{
+		GenericRepository: NewGenericRepository[ProductStreamTranslation](client),
+	}
+}
+
+func (t *ProductStreamTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductStreamTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-stream-translation")
+}
+
+func (t *ProductStreamTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductStreamTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t ProductStreamTranslationRepository) SearchAll(ctx ApiContext, criteria C
 	return c, resp, err
 }
 
-func (t ProductStreamTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-stream-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductStreamTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-stream-translation")
 }
 
-func (t ProductStreamTranslationRepository) Upsert(ctx ApiContext, entity []ProductStreamTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_stream_translation": {
-		Entity:  "product_stream_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductStreamTranslationRepository) Upsert(ctx ApiContext, entity []ProductStreamTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_stream_translation")
 }
 
-func (t ProductStreamTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_stream_translation": {
-		Entity:  "product_stream_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductStreamTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_stream_translation")
 }
 
 type ProductStreamTranslation struct {
-	Name string `json:"name,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	ProductStream *ProductStream `json:"productStream,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ProductStreamId      string  `json:"productStreamId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
 
-	ProductStreamId string `json:"productStreamId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
-}
+	LanguageId      string  `json:"languageId,omitempty"`
 
-type ProductStreamTranslationCollection struct {
-	EntityCollection
+	Language      *Language  `json:"language,omitempty"`
 
-	Data []ProductStreamTranslation `json:"data"`
 }

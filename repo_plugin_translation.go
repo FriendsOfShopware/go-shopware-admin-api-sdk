@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PluginTranslationRepository ClientService
-
-func (t PluginTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*PluginTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/plugin-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PluginTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PluginTranslationRepository struct {
+	*GenericRepository[PluginTranslation]
 }
 
-func (t PluginTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PluginTranslationCollection, *http.Response, error) {
+func NewPluginTranslationRepository(client *Client) *PluginTranslationRepository {
+	return &PluginTranslationRepository{
+		GenericRepository: NewGenericRepository[PluginTranslation](client),
+	}
+}
+
+func (t *PluginTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PluginTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "plugin-translation")
+}
+
+func (t *PluginTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PluginTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,40 @@ func (t PluginTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria
 	return c, resp, err
 }
 
-func (t PluginTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/plugin-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PluginTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "plugin-translation")
 }
 
-func (t PluginTranslationRepository) Upsert(ctx ApiContext, entity []PluginTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"plugin_translation": {
-		Entity:  "plugin_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PluginTranslationRepository) Upsert(ctx ApiContext, entity []PluginTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "plugin_translation")
 }
 
-func (t PluginTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"plugin_translation": {
-		Entity:  "plugin_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PluginTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "plugin_translation")
 }
 
 type PluginTranslation struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	ManufacturerLink string `json:"manufacturerLink,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	SupportLink string `json:"supportLink,omitempty"`
+	ManufacturerLink      string  `json:"manufacturerLink,omitempty"`
 
-	Changelog interface{} `json:"changelog,omitempty"`
+	SupportLink      string  `json:"supportLink,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	PluginId      string  `json:"pluginId,omitempty"`
 
-	PluginId string `json:"pluginId,omitempty"`
+	Plugin      *Plugin  `json:"plugin,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Plugin *Plugin `json:"plugin,omitempty"`
-}
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-type PluginTranslationCollection struct {
-	EntityCollection
-
-	Data []PluginTranslation `json:"data"`
 }

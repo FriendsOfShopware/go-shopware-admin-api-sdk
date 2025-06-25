@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PromotionDiscountRepository ClientService
-
-func (t PromotionDiscountRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionDiscountCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion-discount", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionDiscountCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionDiscountRepository struct {
+	*GenericRepository[PromotionDiscount]
 }
 
-func (t PromotionDiscountRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionDiscountCollection, *http.Response, error) {
+func NewPromotionDiscountRepository(client *Client) *PromotionDiscountRepository {
+	return &PromotionDiscountRepository{
+		GenericRepository: NewGenericRepository[PromotionDiscount](client),
+	}
+}
+
+func (t *PromotionDiscountRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionDiscount], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion-discount")
+}
+
+func (t *PromotionDiscountRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionDiscount], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,80 +57,50 @@ func (t PromotionDiscountRepository) SearchAll(ctx ApiContext, criteria Criteria
 	return c, resp, err
 }
 
-func (t PromotionDiscountRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-discount", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionDiscountRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion-discount")
 }
 
-func (t PromotionDiscountRepository) Upsert(ctx ApiContext, entity []PromotionDiscount) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_discount": {
-		Entity:  "promotion_discount",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionDiscountRepository) Upsert(ctx ApiContext, entity []PromotionDiscount) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion_discount")
 }
 
-func (t PromotionDiscountRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_discount": {
-		Entity:  "promotion_discount",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionDiscountRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion_discount")
 }
 
 type PromotionDiscount struct {
-	SorterKey string `json:"sorterKey,omitempty"`
 
-	PromotionDiscountPrices []PromotionDiscountPrices `json:"promotionDiscountPrices,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Value      float64  `json:"value,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ConsiderAdvancedRules      bool  `json:"considerAdvancedRules,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
+	UsageKey      string  `json:"usageKey,omitempty"`
 
-	Scope string `json:"scope,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	SorterKey      string  `json:"sorterKey,omitempty"`
 
-	MaxValue float64 `json:"maxValue,omitempty"`
+	PickerKey      string  `json:"pickerKey,omitempty"`
 
-	ApplierKey string `json:"applierKey,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	DiscountRules []Rule `json:"discountRules,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Value float64 `json:"value,omitempty"`
+	MaxValue      float64  `json:"maxValue,omitempty"`
 
-	ConsiderAdvancedRules bool `json:"considerAdvancedRules,omitempty"`
+	ApplierKey      string  `json:"applierKey,omitempty"`
 
-	PickerKey string `json:"pickerKey,omitempty"`
+	PromotionDiscountPrices      []PromotionDiscountPrices  `json:"promotionDiscountPrices,omitempty"`
 
-	UsageKey string `json:"usageKey,omitempty"`
-}
+	Scope      string  `json:"scope,omitempty"`
 
-type PromotionDiscountCollection struct {
-	EntityCollection
+	DiscountRules      []Rule  `json:"discountRules,omitempty"`
 
-	Data []PromotionDiscount `json:"data"`
 }

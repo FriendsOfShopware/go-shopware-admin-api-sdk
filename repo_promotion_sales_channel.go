@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PromotionSalesChannelRepository ClientService
-
-func (t PromotionSalesChannelRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionSalesChannelCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion-sales-channel", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionSalesChannelCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionSalesChannelRepository struct {
+	*GenericRepository[PromotionSalesChannel]
 }
 
-func (t PromotionSalesChannelRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionSalesChannelCollection, *http.Response, error) {
+func NewPromotionSalesChannelRepository(client *Client) *PromotionSalesChannelRepository {
+	return &PromotionSalesChannelRepository{
+		GenericRepository: NewGenericRepository[PromotionSalesChannel](client),
+	}
+}
+
+func (t *PromotionSalesChannelRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionSalesChannel], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion-sales-channel")
+}
+
+func (t *PromotionSalesChannelRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionSalesChannel], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,64 +57,34 @@ func (t PromotionSalesChannelRepository) SearchAll(ctx ApiContext, criteria Crit
 	return c, resp, err
 }
 
-func (t PromotionSalesChannelRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-sales-channel", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionSalesChannelRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion-sales-channel")
 }
 
-func (t PromotionSalesChannelRepository) Upsert(ctx ApiContext, entity []PromotionSalesChannel) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_sales_channel": {
-		Entity:  "promotion_sales_channel",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionSalesChannelRepository) Upsert(ctx ApiContext, entity []PromotionSalesChannel) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion_sales_channel")
 }
 
-func (t PromotionSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_sales_channel": {
-		Entity:  "promotion_sales_channel",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion_sales_channel")
 }
 
 type PromotionSalesChannel struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-type PromotionSalesChannelCollection struct {
-	EntityCollection
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Data []PromotionSalesChannel `json:"data"`
 }

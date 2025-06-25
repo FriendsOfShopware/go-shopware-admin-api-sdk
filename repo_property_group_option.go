@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PropertyGroupOptionRepository ClientService
-
-func (t PropertyGroupOptionRepository) Search(ctx ApiContext, criteria Criteria) (*PropertyGroupOptionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/property-group-option", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PropertyGroupOptionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PropertyGroupOptionRepository struct {
+	*GenericRepository[PropertyGroupOption]
 }
 
-func (t PropertyGroupOptionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PropertyGroupOptionCollection, *http.Response, error) {
+func NewPropertyGroupOptionRepository(client *Client) *PropertyGroupOptionRepository {
+	return &PropertyGroupOptionRepository{
+		GenericRepository: NewGenericRepository[PropertyGroupOption](client),
+	}
+}
+
+func (t *PropertyGroupOptionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PropertyGroupOption], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "property-group-option")
+}
+
+func (t *PropertyGroupOptionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PropertyGroupOption], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,80 +57,50 @@ func (t PropertyGroupOptionRepository) SearchAll(ctx ApiContext, criteria Criter
 	return c, resp, err
 }
 
-func (t PropertyGroupOptionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/property-group-option", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PropertyGroupOptionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "property-group-option")
 }
 
-func (t PropertyGroupOptionRepository) Upsert(ctx ApiContext, entity []PropertyGroupOption) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"property_group_option": {
-		Entity:  "property_group_option",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PropertyGroupOptionRepository) Upsert(ctx ApiContext, entity []PropertyGroupOption) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "property_group_option")
 }
 
-func (t PropertyGroupOptionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"property_group_option": {
-		Entity:  "property_group_option",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PropertyGroupOptionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "property_group_option")
 }
 
 type PropertyGroupOption struct {
-	Group *PropertyGroup `json:"group,omitempty"`
 
-	ProductConfiguratorSettings []ProductConfiguratorSetting `json:"productConfiguratorSettings,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	ProductProperties []Product `json:"productProperties,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	GroupId string `json:"groupId,omitempty"`
+	Translations      []PropertyGroupOptionTranslation  `json:"translations,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	GroupId      string  `json:"groupId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Group      *PropertyGroup  `json:"group,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	ProductOptions      []Product  `json:"productOptions,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translations []PropertyGroupOptionTranslation `json:"translations,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	ColorHexCode string `json:"colorHexCode,omitempty"`
+	ColorHexCode      string  `json:"colorHexCode,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	ProductOptions []Product `json:"productOptions,omitempty"`
+	ProductConfiguratorSettings      []ProductConfiguratorSetting  `json:"productConfiguratorSettings,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
-}
+	ProductProperties      []Product  `json:"productProperties,omitempty"`
 
-type PropertyGroupOptionCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []PropertyGroupOption `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CategoryRepository ClientService
-
-func (t CategoryRepository) Search(ctx ApiContext, criteria Criteria) (*CategoryCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/category", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CategoryCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CategoryRepository struct {
+	*GenericRepository[Category]
 }
 
-func (t CategoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CategoryCollection, *http.Response, error) {
+func NewCategoryRepository(client *Client) *CategoryRepository {
+	return &CategoryRepository{
+		GenericRepository: NewGenericRepository[Category](client),
+	}
+}
+
+func (t *CategoryRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Category], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "category")
+}
+
+func (t *CategoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Category], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,150 +57,120 @@ func (t CategoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Categ
 	return c, resp, err
 }
 
-func (t CategoryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/category", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CategoryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "category")
 }
 
-func (t CategoryRepository) Upsert(ctx ApiContext, entity []Category) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"category": {
-		Entity:  "category",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CategoryRepository) Upsert(ctx ApiContext, entity []Category) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "category")
 }
 
-func (t CategoryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"category": {
-		Entity:  "category",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CategoryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "category")
 }
 
 type Category struct {
-	Children []Category `json:"children,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	CustomEntityTypeId string `json:"customEntityTypeId,omitempty"`
+	CmsPageId      string  `json:"cmsPageId,omitempty"`
 
-	Breadcrumb interface{} `json:"breadcrumb,omitempty"`
+	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	ParentVersionId      string  `json:"parentVersionId,omitempty"`
 
-	CmsPageId string `json:"cmsPageId,omitempty"`
+	AfterCategoryId      string  `json:"afterCategoryId,omitempty"`
 
-	DisplayNestedProducts bool `json:"displayNestedProducts,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	Level float64 `json:"level,omitempty"`
+	Breadcrumb      interface{}  `json:"breadcrumb,omitempty"`
 
-	ChildCount float64 `json:"childCount,omitempty"`
+	Level      float64  `json:"level,omitempty"`
 
-	ProductAssignmentType string `json:"productAssignmentType,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Parent *Category `json:"parent,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ProductStreamId string `json:"productStreamId,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	ParentVersionId string `json:"parentVersionId,omitempty"`
+	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
 
-	LinkType string `json:"linkType,omitempty"`
+	ProductAssignmentType      string  `json:"productAssignmentType,omitempty"`
 
-	VisibleChildCount float64 `json:"visibleChildCount,omitempty"`
+	LinkType      string  `json:"linkType,omitempty"`
 
-	CmsPage *CmsPage `json:"cmsPage,omitempty"`
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
-	AfterCategoryId string `json:"afterCategoryId,omitempty"`
+	ProductStreamId      string  `json:"productStreamId,omitempty"`
 
-	LinkNewTab bool `json:"linkNewTab,omitempty"`
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
 
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
+	Visible      bool  `json:"visible,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	VisibleChildCount      float64  `json:"visibleChildCount,omitempty"`
 
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
+	Parent      *Category  `json:"parent,omitempty"`
 
-	CmsPageIdSwitched bool `json:"cmsPageIdSwitched,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	NestedProducts []Product `json:"nestedProducts,omitempty"`
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
 
-	NavigationSalesChannels []SalesChannel `json:"navigationSalesChannels,omitempty"`
+	CustomEntityTypeId      string  `json:"customEntityTypeId,omitempty"`
 
-	Visible bool `json:"visible,omitempty"`
+	MainCategories      []MainCategory  `json:"mainCategories,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	FooterSalesChannels []SalesChannel `json:"footerSalesChannels,omitempty"`
+	FooterSalesChannels      []SalesChannel  `json:"footerSalesChannels,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ExternalLink string `json:"externalLink,omitempty"`
+	ExternalLink      string  `json:"externalLink,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
+	Translations      []CategoryTranslation  `json:"translations,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	NestedProducts      []Product  `json:"nestedProducts,omitempty"`
 
-	InternalLink string `json:"internalLink,omitempty"`
+	NavigationSalesChannels      []SalesChannel  `json:"navigationSalesChannels,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	ServiceSalesChannels      []SalesChannel  `json:"serviceSalesChannels,omitempty"`
 
-	ProductStream *ProductStream `json:"productStream,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	AfterCategoryVersionId string `json:"afterCategoryVersionId,omitempty"`
+	CmsPageIdSwitched      bool  `json:"cmsPageIdSwitched,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Children      []Category  `json:"children,omitempty"`
 
-	Translations []CategoryTranslation `json:"translations,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	MainCategories []MainCategory `json:"mainCategories,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	AfterCategoryVersionId      string  `json:"afterCategoryVersionId,omitempty"`
 
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	MetaTitle string `json:"metaTitle,omitempty"`
+	DisplayNestedProducts      bool  `json:"displayNestedProducts,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	ChildCount      float64  `json:"childCount,omitempty"`
 
-	ServiceSalesChannels []SalesChannel `json:"serviceSalesChannels,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	InternalLink      string  `json:"internalLink,omitempty"`
 
-type CategoryCollection struct {
-	EntityCollection
+	LinkNewTab      bool  `json:"linkNewTab,omitempty"`
 
-	Data []Category `json:"data"`
 }

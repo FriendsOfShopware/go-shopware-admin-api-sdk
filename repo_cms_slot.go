@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CmsSlotRepository ClientService
-
-func (t CmsSlotRepository) Search(ctx ApiContext, criteria Criteria) (*CmsSlotCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/cms-slot", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CmsSlotCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CmsSlotRepository struct {
+	*GenericRepository[CmsSlot]
 }
 
-func (t CmsSlotRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsSlotCollection, *http.Response, error) {
+func NewCmsSlotRepository(client *Client) *CmsSlotRepository {
+	return &CmsSlotRepository{
+		GenericRepository: NewGenericRepository[CmsSlot](client),
+	}
+}
+
+func (t *CmsSlotRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CmsSlot], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "cms-slot")
+}
+
+func (t *CmsSlotRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CmsSlot], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,80 +57,50 @@ func (t CmsSlotRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsSlo
 	return c, resp, err
 }
 
-func (t CmsSlotRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/cms-slot", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CmsSlotRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "cms-slot")
 }
 
-func (t CmsSlotRepository) Upsert(ctx ApiContext, entity []CmsSlot) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"cms_slot": {
-		Entity:  "cms_slot",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CmsSlotRepository) Upsert(ctx ApiContext, entity []CmsSlot) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "cms_slot")
 }
 
-func (t CmsSlotRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"cms_slot": {
-		Entity:  "cms_slot",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CmsSlotRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "cms_slot")
 }
 
 type CmsSlot struct {
-	Type string `json:"type,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Data      interface{}  `json:"data,omitempty"`
 
-	CmsBlockVersionId string `json:"cmsBlockVersionId,omitempty"`
+	BlockId      string  `json:"blockId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CmsBlockVersionId      string  `json:"cmsBlockVersionId,omitempty"`
 
-	Block *CmsBlock `json:"block,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Block      *CmsBlock  `json:"block,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Slot      string  `json:"slot,omitempty"`
 
-	Slot string `json:"slot,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Translations      []CmsSlotTranslation  `json:"translations,omitempty"`
 
-	Data interface{} `json:"data,omitempty"`
+	FieldConfig      interface{}  `json:"fieldConfig,omitempty"`
 
-	Translations []CmsSlotTranslation `json:"translations,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	BlockId string `json:"blockId,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	FieldConfig interface{} `json:"fieldConfig,omitempty"`
+	Locked      bool  `json:"locked,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-type CmsSlotCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []CmsSlot `json:"data"`
 }

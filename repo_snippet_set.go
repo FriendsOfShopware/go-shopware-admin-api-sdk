@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type SnippetSetRepository ClientService
-
-func (t SnippetSetRepository) Search(ctx ApiContext, criteria Criteria) (*SnippetSetCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/snippet-set", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SnippetSetCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type SnippetSetRepository struct {
+	*GenericRepository[SnippetSet]
 }
 
-func (t SnippetSetRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SnippetSetCollection, *http.Response, error) {
+func NewSnippetSetRepository(client *Client) *SnippetSetRepository {
+	return &SnippetSetRepository{
+		GenericRepository: NewGenericRepository[SnippetSet](client),
+	}
+}
+
+func (t *SnippetSetRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[SnippetSet], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "snippet-set")
+}
+
+func (t *SnippetSetRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[SnippetSet], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t SnippetSetRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Sni
 	return c, resp, err
 }
 
-func (t SnippetSetRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/snippet-set", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *SnippetSetRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "snippet-set")
 }
 
-func (t SnippetSetRepository) Upsert(ctx ApiContext, entity []SnippetSet) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"snippet_set": {
-		Entity:  "snippet_set",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *SnippetSetRepository) Upsert(ctx ApiContext, entity []SnippetSet) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "snippet_set")
 }
 
-func (t SnippetSetRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"snippet_set": {
-		Entity:  "snippet_set",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *SnippetSetRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "snippet_set")
 }
 
 type SnippetSet struct {
-	BaseFile string `json:"baseFile,omitempty"`
 
-	Iso string `json:"iso,omitempty"`
+	Iso      string  `json:"iso,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Snippets      []Snippet  `json:"snippets,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Snippets []Snippet `json:"snippets,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	SalesChannelDomains []SalesChannelDomain `json:"salesChannelDomains,omitempty"`
+	SalesChannelDomains      []SalesChannelDomain  `json:"salesChannelDomains,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	Id      string  `json:"id,omitempty"`
 
-type SnippetSetCollection struct {
-	EntityCollection
+	BaseFile      string  `json:"baseFile,omitempty"`
 
-	Data []SnippetSet `json:"data"`
 }

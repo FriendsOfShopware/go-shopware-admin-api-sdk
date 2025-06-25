@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductRepository ClientService
-
-func (t ProductRepository) Search(ctx ApiContext, criteria Criteria) (*ProductCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductRepository struct {
+	*GenericRepository[Product]
 }
 
-func (t ProductRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductCollection, *http.Response, error) {
+func NewProductRepository(client *Client) *ProductRepository {
+	return &ProductRepository{
+		GenericRepository: NewGenericRepository[Product](client),
+	}
+}
+
+func (t *ProductRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Product], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product")
+}
+
+func (t *ProductRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Product], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,244 +57,216 @@ func (t ProductRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Produc
 	return c, resp, err
 }
 
-func (t ProductRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product")
 }
 
-func (t ProductRepository) Upsert(ctx ApiContext, entity []Product) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product": {
-		Entity:  "product",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductRepository) Upsert(ctx ApiContext, entity []Product) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product")
 }
 
-func (t ProductRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product": {
-		Entity:  "product",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product")
 }
 
 type Product struct {
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
 
-	Cover *ProductMedia `json:"cover,omitempty"`
+	CategoryIds      interface{}  `json:"categoryIds,omitempty"`
 
-	Categories []Category `json:"categories,omitempty"`
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
-	ManufacturerId string `json:"manufacturerId,omitempty"`
+	Cover      *ProductMedia  `json:"cover,omitempty"`
 
-	TaxId string `json:"taxId,omitempty"`
+	Categories      []Category  `json:"categories,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Translations      []ProductTranslation  `json:"translations,omitempty"`
 
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
+	RestockTime      float64  `json:"restockTime,omitempty"`
 
-	CustomFieldSetSelectionActive bool `json:"customFieldSetSelectionActive,omitempty"`
+	VariantListingConfig      interface{}  `json:"variantListingConfig,omitempty"`
 
-	Manufacturer *ProductManufacturer `json:"manufacturer,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	PurchaseSteps float64 `json:"purchaseSteps,omitempty"`
+	CrossSellings      []ProductCrossSelling  `json:"crossSellings,omitempty"`
 
-	ChildCount float64 `json:"childCount,omitempty"`
+	Streams      []ProductStream  `json:"streams,omitempty"`
 
-	States interface{} `json:"states,omitempty"`
+	ProductManufacturerVersionId      string  `json:"productManufacturerVersionId,omitempty"`
 
-	Wishlists []CustomerWishlistProduct `json:"wishlists,omitempty"`
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
 
-	Children []Product `json:"children,omitempty"`
+	ReferenceUnit      float64  `json:"referenceUnit,omitempty"`
 
-	Prices []ProductPrice `json:"prices,omitempty"`
+	StreamIds      interface{}  `json:"streamIds,omitempty"`
 
-	Streams []ProductStream `json:"streams,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Stock float64 `json:"stock,omitempty"`
+	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-	Available bool `json:"available,omitempty"`
+	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
 
-	Sales float64 `json:"sales,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	VariantRestrictions interface{} `json:"variantRestrictions,omitempty"`
+	CanonicalProductVersionId      string  `json:"canonicalProductVersionId,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	ParentVersionId      string  `json:"parentVersionId,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	IsCloseout      bool  `json:"isCloseout,omitempty"`
 
-	Price interface{} `json:"price,omitempty"`
+	Variation      interface{}  `json:"variation,omitempty"`
 
-	ProductNumber string `json:"productNumber,omitempty"`
+	MinPurchase      float64  `json:"minPurchase,omitempty"`
 
-	StreamIds interface{} `json:"streamIds,omitempty"`
+	Prices      []ProductPrice  `json:"prices,omitempty"`
 
-	Unit *Unit `json:"unit,omitempty"`
+	SearchKeywords      []ProductSearchKeyword  `json:"searchKeywords,omitempty"`
 
-	OptionIds interface{} `json:"optionIds,omitempty"`
+	Options      []PropertyGroupOption  `json:"options,omitempty"`
 
-	DisplayGroup string `json:"displayGroup,omitempty"`
+	ManufacturerId      string  `json:"manufacturerId,omitempty"`
 
-	DeliveryTime *DeliveryTime `json:"deliveryTime,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	ProductManufacturerVersionId string `json:"productManufacturerVersionId,omitempty"`
+	Ean      string  `json:"ean,omitempty"`
 
-	Height float64 `json:"height,omitempty"`
+	CustomFieldSetSelectionActive      bool  `json:"customFieldSetSelectionActive,omitempty"`
 
-	RatingAverage float64 `json:"ratingAverage,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	ProductReviews      []ProductReview  `json:"productReviews,omitempty"`
 
-	ShippingFree bool `json:"shippingFree,omitempty"`
+	CustomFieldSets      []CustomFieldSet  `json:"customFieldSets,omitempty"`
 
-	CustomSearchKeywords interface{} `json:"customSearchKeywords,omitempty"`
+	UnitId      string  `json:"unitId,omitempty"`
 
-	Ean string `json:"ean,omitempty"`
+	PurchasePrices      interface{}  `json:"purchasePrices,omitempty"`
 
-	Parent *Product `json:"parent,omitempty"`
+	States      interface{}  `json:"states,omitempty"`
 
-	ConfiguratorSettings []ProductConfiguratorSetting `json:"configuratorSettings,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	Translations []ProductTranslation `json:"translations,omitempty"`
+	CustomSearchKeywords      interface{}  `json:"customSearchKeywords,omitempty"`
 
-	AvailableStock float64 `json:"availableStock,omitempty"`
+	ConfiguratorSettings      []ProductConfiguratorSetting  `json:"configuratorSettings,omitempty"`
 
-	Width float64 `json:"width,omitempty"`
+	Visibilities      []ProductVisibility  `json:"visibilities,omitempty"`
 
-	PropertyIds interface{} `json:"propertyIds,omitempty"`
+	Properties      []PropertyGroupOption  `json:"properties,omitempty"`
 
-	PackUnit string `json:"packUnit,omitempty"`
+	TaxId      string  `json:"taxId,omitempty"`
 
-	MainCategories []MainCategory `json:"mainCategories,omitempty"`
+	ProductNumber      string  `json:"productNumber,omitempty"`
 
-	VariantListingConfig interface{} `json:"variantListingConfig,omitempty"`
+	VariantRestrictions      interface{}  `json:"variantRestrictions,omitempty"`
 
-	OrderLineItems []OrderLineItem `json:"orderLineItems,omitempty"`
+	RatingAverage      float64  `json:"ratingAverage,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Parent      *Product  `json:"parent,omitempty"`
 
-	CategoryIds interface{} `json:"categoryIds,omitempty"`
+	DeliveryTime      *DeliveryTime  `json:"deliveryTime,omitempty"`
 
-	ReferenceUnit float64 `json:"referenceUnit,omitempty"`
+	Manufacturer      *ProductManufacturer  `json:"manufacturer,omitempty"`
 
-	Weight float64 `json:"weight,omitempty"`
+	CategoriesRo      []Category  `json:"categoriesRo,omitempty"`
 
-	CoverId string `json:"coverId,omitempty"`
+	PropertyIds      interface{}  `json:"propertyIds,omitempty"`
 
-	RestockTime float64 `json:"restockTime,omitempty"`
+	OptionIds      interface{}  `json:"optionIds,omitempty"`
 
-	CanonicalProduct *Product `json:"canonicalProduct,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	PackUnitPlural string `json:"packUnitPlural,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	FeatureSet *ProductFeatureSet `json:"featureSet,omitempty"`
+	CmsPageId      string  `json:"cmsPageId,omitempty"`
 
-	Media []ProductMedia `json:"media,omitempty"`
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ShippingFree      bool  `json:"shippingFree,omitempty"`
 
-	CanonicalProductId string `json:"canonicalProductId,omitempty"`
+	PackUnit      string  `json:"packUnit,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
-	ProductReviews []ProductReview `json:"productReviews,omitempty"`
+	Unit      *Unit  `json:"unit,omitempty"`
 
-	Options []PropertyGroupOption `json:"options,omitempty"`
+	Wishlists      []CustomerWishlistProduct  `json:"wishlists,omitempty"`
 
-	CategoriesRo []Category `json:"categoriesRo,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	MarkAsTopseller bool `json:"markAsTopseller,omitempty"`
+	DeliveryTimeId      string  `json:"deliveryTimeId,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	ManufacturerNumber      string  `json:"manufacturerNumber,omitempty"`
 
-	Downloads []ProductDownload `json:"downloads,omitempty"`
+	CategoryTree      interface{}  `json:"categoryTree,omitempty"`
 
-	Tax *Tax `json:"tax,omitempty"`
+	Children      []Product  `json:"children,omitempty"`
 
-	CategoryTree interface{} `json:"categoryTree,omitempty"`
+	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
 
-	CustomFieldSets []CustomFieldSet `json:"customFieldSets,omitempty"`
+	FeatureSetId      string  `json:"featureSetId,omitempty"`
 
-	ParentVersionId string `json:"parentVersionId,omitempty"`
+	MaxPurchase      float64  `json:"maxPurchase,omitempty"`
 
-	CmsPageId string `json:"cmsPageId,omitempty"`
+	Downloads      []ProductDownload  `json:"downloads,omitempty"`
 
-	ManufacturerNumber string `json:"manufacturerNumber,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	DeliveryTimeId string `json:"deliveryTimeId,omitempty"`
+	CoverId      string  `json:"coverId,omitempty"`
 
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+	ProductMediaVersionId      string  `json:"productMediaVersionId,omitempty"`
 
-	IsCloseout bool `json:"isCloseout,omitempty"`
+	AvailableStock      float64  `json:"availableStock,omitempty"`
 
-	Variation interface{} `json:"variation,omitempty"`
+	Stock      float64  `json:"stock,omitempty"`
 
-	Length float64 `json:"length,omitempty"`
+	Width      float64  `json:"width,omitempty"`
 
-	MetaTitle string `json:"metaTitle,omitempty"`
+	Sales      float64  `json:"sales,omitempty"`
 
-	ProductMediaVersionId string `json:"productMediaVersionId,omitempty"`
+	PackUnitPlural      string  `json:"packUnitPlural,omitempty"`
 
-	Properties []PropertyGroupOption `json:"properties,omitempty"`
+	Tax      *Tax  `json:"tax,omitempty"`
 
-	Visibilities []ProductVisibility `json:"visibilities,omitempty"`
+	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
 
-	SearchKeywords []ProductSearchKeyword `json:"searchKeywords,omitempty"`
+	CanonicalProductId      string  `json:"canonicalProductId,omitempty"`
 
-	TagIds interface{} `json:"tagIds,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	CrossSellings []ProductCrossSelling `json:"crossSellings,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	UnitId string `json:"unitId,omitempty"`
+	PurchaseSteps      float64  `json:"purchaseSteps,omitempty"`
 
-	PurchaseUnit float64 `json:"purchaseUnit,omitempty"`
+	TagIds      interface{}  `json:"tagIds,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Media      []ProductMedia  `json:"media,omitempty"`
 
-	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
+	MarkAsTopseller      bool  `json:"markAsTopseller,omitempty"`
 
-	FeatureSetId string `json:"featureSetId,omitempty"`
+	ReleaseDate      time.Time  `json:"releaseDate,omitempty"`
 
-	ReleaseDate time.Time `json:"releaseDate,omitempty"`
+	CanonicalProduct      *Product  `json:"canonicalProduct,omitempty"`
 
-	CmsPage *CmsPage `json:"cmsPage,omitempty"`
+	CrossSellingAssignedProducts      []ProductCrossSellingAssignedProducts  `json:"crossSellingAssignedProducts,omitempty"`
 
-	MinPurchase float64 `json:"minPurchase,omitempty"`
+	MainCategories      []MainCategory  `json:"mainCategories,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Available      bool  `json:"available,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	PurchaseUnit      float64  `json:"purchaseUnit,omitempty"`
 
-	MaxPurchase float64 `json:"maxPurchase,omitempty"`
+	Weight      float64  `json:"weight,omitempty"`
 
-	PurchasePrices interface{} `json:"purchasePrices,omitempty"`
+	Height      float64  `json:"height,omitempty"`
 
-	CrossSellingAssignedProducts []ProductCrossSellingAssignedProducts `json:"crossSellingAssignedProducts,omitempty"`
+	Length      float64  `json:"length,omitempty"`
 
-	Active bool `json:"active,omitempty"`
-}
+	ChildCount      float64  `json:"childCount,omitempty"`
 
-type ProductCollection struct {
-	EntityCollection
+	FeatureSet      *ProductFeatureSet  `json:"featureSet,omitempty"`
 
-	Data []Product `json:"data"`
+	DisplayGroup      string  `json:"displayGroup,omitempty"`
+
 }

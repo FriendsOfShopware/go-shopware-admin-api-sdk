@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type ProductKeywordDictionaryRepository ClientService
-
-func (t ProductKeywordDictionaryRepository) Search(ctx ApiContext, criteria Criteria) (*ProductKeywordDictionaryCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-keyword-dictionary", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductKeywordDictionaryCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductKeywordDictionaryRepository struct {
+	*GenericRepository[ProductKeywordDictionary]
 }
 
-func (t ProductKeywordDictionaryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductKeywordDictionaryCollection, *http.Response, error) {
+func NewProductKeywordDictionaryRepository(client *Client) *ProductKeywordDictionaryRepository {
+	return &ProductKeywordDictionaryRepository{
+		GenericRepository: NewGenericRepository[ProductKeywordDictionary](client),
+	}
+}
+
+func (t *ProductKeywordDictionaryRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductKeywordDictionary], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-keyword-dictionary")
+}
+
+func (t *ProductKeywordDictionaryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductKeywordDictionary], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,58 +55,28 @@ func (t ProductKeywordDictionaryRepository) SearchAll(ctx ApiContext, criteria C
 	return c, resp, err
 }
 
-func (t ProductKeywordDictionaryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-keyword-dictionary", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductKeywordDictionaryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-keyword-dictionary")
 }
 
-func (t ProductKeywordDictionaryRepository) Upsert(ctx ApiContext, entity []ProductKeywordDictionary) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_keyword_dictionary": {
-		Entity:  "product_keyword_dictionary",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductKeywordDictionaryRepository) Upsert(ctx ApiContext, entity []ProductKeywordDictionary) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_keyword_dictionary")
 }
 
-func (t ProductKeywordDictionaryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_keyword_dictionary": {
-		Entity:  "product_keyword_dictionary",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductKeywordDictionaryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_keyword_dictionary")
 }
 
 type ProductKeywordDictionary struct {
-	Id string `json:"id,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Keyword string `json:"keyword,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Reversed string `json:"reversed,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
-}
+	Keyword      string  `json:"keyword,omitempty"`
 
-type ProductKeywordDictionaryCollection struct {
-	EntityCollection
+	Reversed      string  `json:"reversed,omitempty"`
 
-	Data []ProductKeywordDictionary `json:"data"`
 }

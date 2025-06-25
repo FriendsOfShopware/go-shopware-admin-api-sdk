@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type ProductCustomFieldSetRepository ClientService
-
-func (t ProductCustomFieldSetRepository) Search(ctx ApiContext, criteria Criteria) (*ProductCustomFieldSetCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-custom-field-set", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductCustomFieldSetCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductCustomFieldSetRepository struct {
+	*GenericRepository[ProductCustomFieldSet]
 }
 
-func (t ProductCustomFieldSetRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductCustomFieldSetCollection, *http.Response, error) {
+func NewProductCustomFieldSetRepository(client *Client) *ProductCustomFieldSetRepository {
+	return &ProductCustomFieldSetRepository{
+		GenericRepository: NewGenericRepository[ProductCustomFieldSet](client),
+	}
+}
+
+func (t *ProductCustomFieldSetRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductCustomFieldSet], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-custom-field-set")
+}
+
+func (t *ProductCustomFieldSetRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductCustomFieldSet], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,58 +55,28 @@ func (t ProductCustomFieldSetRepository) SearchAll(ctx ApiContext, criteria Crit
 	return c, resp, err
 }
 
-func (t ProductCustomFieldSetRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-custom-field-set", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductCustomFieldSetRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-custom-field-set")
 }
 
-func (t ProductCustomFieldSetRepository) Upsert(ctx ApiContext, entity []ProductCustomFieldSet) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_custom_field_set": {
-		Entity:  "product_custom_field_set",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductCustomFieldSetRepository) Upsert(ctx ApiContext, entity []ProductCustomFieldSet) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_custom_field_set")
 }
 
-func (t ProductCustomFieldSetRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_custom_field_set": {
-		Entity:  "product_custom_field_set",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductCustomFieldSetRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_custom_field_set")
 }
 
 type ProductCustomFieldSet struct {
-	ProductId string `json:"productId,omitempty"`
 
-	CustomFieldSetId string `json:"customFieldSetId,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	CustomFieldSet *CustomFieldSet `json:"customFieldSet,omitempty"`
-}
+	Product      *Product  `json:"product,omitempty"`
 
-type ProductCustomFieldSetCollection struct {
-	EntityCollection
+	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
 
-	Data []ProductCustomFieldSet `json:"data"`
 }

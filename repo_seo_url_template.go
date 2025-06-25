@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type SeoUrlTemplateRepository ClientService
-
-func (t SeoUrlTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*SeoUrlTemplateCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/seo-url-template", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SeoUrlTemplateCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type SeoUrlTemplateRepository struct {
+	*GenericRepository[SeoUrlTemplate]
 }
 
-func (t SeoUrlTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SeoUrlTemplateCollection, *http.Response, error) {
+func NewSeoUrlTemplateRepository(client *Client) *SeoUrlTemplateRepository {
+	return &SeoUrlTemplateRepository{
+		GenericRepository: NewGenericRepository[SeoUrlTemplate](client),
+	}
+}
+
+func (t *SeoUrlTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[SeoUrlTemplate], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "seo-url-template")
+}
+
+func (t *SeoUrlTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[SeoUrlTemplate], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,68 +57,38 @@ func (t SeoUrlTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (
 	return c, resp, err
 }
 
-func (t SeoUrlTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/seo-url-template", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *SeoUrlTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "seo-url-template")
 }
 
-func (t SeoUrlTemplateRepository) Upsert(ctx ApiContext, entity []SeoUrlTemplate) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"seo_url_template": {
-		Entity:  "seo_url_template",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *SeoUrlTemplateRepository) Upsert(ctx ApiContext, entity []SeoUrlTemplate) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "seo_url_template")
 }
 
-func (t SeoUrlTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"seo_url_template": {
-		Entity:  "seo_url_template",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *SeoUrlTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "seo_url_template")
 }
 
 type SeoUrlTemplate struct {
-	IsValid bool `json:"isValid,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	EntityName      string  `json:"entityName,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	RouteName      string  `json:"routeName,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Template      string  `json:"template,omitempty"`
 
-	EntityName string `json:"entityName,omitempty"`
+	IsValid      bool  `json:"isValid,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	RouteName string `json:"routeName,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Template string `json:"template,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
-}
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-type SeoUrlTemplateCollection struct {
-	EntityCollection
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Data []SeoUrlTemplate `json:"data"`
 }

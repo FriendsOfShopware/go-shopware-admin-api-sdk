@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppCmsBlockTranslationRepository ClientService
-
-func (t AppCmsBlockTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*AppCmsBlockTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-cms-block-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppCmsBlockTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppCmsBlockTranslationRepository struct {
+	*GenericRepository[AppCmsBlockTranslation]
 }
 
-func (t AppCmsBlockTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppCmsBlockTranslationCollection, *http.Response, error) {
+func NewAppCmsBlockTranslationRepository(client *Client) *AppCmsBlockTranslationRepository {
+	return &AppCmsBlockTranslationRepository{
+		GenericRepository: NewGenericRepository[AppCmsBlockTranslation](client),
+	}
+}
+
+func (t *AppCmsBlockTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppCmsBlockTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-cms-block-translation")
+}
+
+func (t *AppCmsBlockTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppCmsBlockTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,62 +57,32 @@ func (t AppCmsBlockTranslationRepository) SearchAll(ctx ApiContext, criteria Cri
 	return c, resp, err
 }
 
-func (t AppCmsBlockTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-cms-block-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppCmsBlockTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-cms-block-translation")
 }
 
-func (t AppCmsBlockTranslationRepository) Upsert(ctx ApiContext, entity []AppCmsBlockTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_cms_block_translation": {
-		Entity:  "app_cms_block_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppCmsBlockTranslationRepository) Upsert(ctx ApiContext, entity []AppCmsBlockTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_cms_block_translation")
 }
 
-func (t AppCmsBlockTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_cms_block_translation": {
-		Entity:  "app_cms_block_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppCmsBlockTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_cms_block_translation")
 }
 
 type AppCmsBlockTranslation struct {
-	AppCmsBlockId string `json:"appCmsBlockId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	AppCmsBlock *AppCmsBlock `json:"appCmsBlock,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	AppCmsBlockId      string  `json:"appCmsBlockId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	AppCmsBlock      *AppCmsBlock  `json:"appCmsBlock,omitempty"`
 
-type AppCmsBlockTranslationCollection struct {
-	EntityCollection
+	Language      *Language  `json:"language,omitempty"`
 
-	Data []AppCmsBlockTranslation `json:"data"`
 }

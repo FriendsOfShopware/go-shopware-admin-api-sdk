@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type NewsletterRecipientRepository ClientService
-
-func (t NewsletterRecipientRepository) Search(ctx ApiContext, criteria Criteria) (*NewsletterRecipientCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/newsletter-recipient", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(NewsletterRecipientCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type NewsletterRecipientRepository struct {
+	*GenericRepository[NewsletterRecipient]
 }
 
-func (t NewsletterRecipientRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NewsletterRecipientCollection, *http.Response, error) {
+func NewNewsletterRecipientRepository(client *Client) *NewsletterRecipientRepository {
+	return &NewsletterRecipientRepository{
+		GenericRepository: NewGenericRepository[NewsletterRecipient](client),
+	}
+}
+
+func (t *NewsletterRecipientRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[NewsletterRecipient], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "newsletter-recipient")
+}
+
+func (t *NewsletterRecipientRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[NewsletterRecipient], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,90 +57,60 @@ func (t NewsletterRecipientRepository) SearchAll(ctx ApiContext, criteria Criter
 	return c, resp, err
 }
 
-func (t NewsletterRecipientRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/newsletter-recipient", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *NewsletterRecipientRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "newsletter-recipient")
 }
 
-func (t NewsletterRecipientRepository) Upsert(ctx ApiContext, entity []NewsletterRecipient) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"newsletter_recipient": {
-		Entity:  "newsletter_recipient",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *NewsletterRecipientRepository) Upsert(ctx ApiContext, entity []NewsletterRecipient) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "newsletter_recipient")
 }
 
-func (t NewsletterRecipientRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"newsletter_recipient": {
-		Entity:  "newsletter_recipient",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *NewsletterRecipientRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "newsletter_recipient")
 }
 
 type NewsletterRecipient struct {
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ZipCode      string  `json:"zipCode,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Status      string  `json:"status,omitempty"`
 
-	Status string `json:"status,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	SalutationId      string  `json:"salutationId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	City      string  `json:"city,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	ConfirmedAt time.Time `json:"confirmedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Email      string  `json:"email,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
 
-	Email string `json:"email,omitempty"`
+	Street      string  `json:"street,omitempty"`
 
-	FirstName string `json:"firstName,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ZipCode string `json:"zipCode,omitempty"`
+	ConfirmedAt      time.Time  `json:"confirmedAt,omitempty"`
 
-	City string `json:"city,omitempty"`
+	Salutation      *Salutation  `json:"salutation,omitempty"`
 
-	Street string `json:"street,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Hash string `json:"hash,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	SalutationId string `json:"salutationId,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	Id string `json:"id,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type NewsletterRecipientCollection struct {
-	EntityCollection
+	LastName      string  `json:"lastName,omitempty"`
 
-	Data []NewsletterRecipient `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type UnitTranslationRepository ClientService
-
-func (t UnitTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*UnitTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/unit-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(UnitTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type UnitTranslationRepository struct {
+	*GenericRepository[UnitTranslation]
 }
 
-func (t UnitTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UnitTranslationCollection, *http.Response, error) {
+func NewUnitTranslationRepository(client *Client) *UnitTranslationRepository {
+	return &UnitTranslationRepository{
+		GenericRepository: NewGenericRepository[UnitTranslation](client),
+	}
+}
+
+func (t *UnitTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[UnitTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "unit-translation")
+}
+
+func (t *UnitTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[UnitTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t UnitTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) 
 	return c, resp, err
 }
 
-func (t UnitTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/unit-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *UnitTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "unit-translation")
 }
 
-func (t UnitTranslationRepository) Upsert(ctx ApiContext, entity []UnitTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"unit_translation": {
-		Entity:  "unit_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *UnitTranslationRepository) Upsert(ctx ApiContext, entity []UnitTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "unit_translation")
 }
 
-func (t UnitTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"unit_translation": {
-		Entity:  "unit_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *UnitTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "unit_translation")
 }
 
 type UnitTranslation struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	UnitId string `json:"unitId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Unit *Unit `json:"unit,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ShortCode string `json:"shortCode,omitempty"`
+	Unit      *Unit  `json:"unit,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	ShortCode      string  `json:"shortCode,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
-}
+	UnitId      string  `json:"unitId,omitempty"`
 
-type UnitTranslationCollection struct {
-	EntityCollection
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Data []UnitTranslation `json:"data"`
 }

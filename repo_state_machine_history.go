@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type StateMachineHistoryRepository ClientService
-
-func (t StateMachineHistoryRepository) Search(ctx ApiContext, criteria Criteria) (*StateMachineHistoryCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/state-machine-history", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(StateMachineHistoryCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type StateMachineHistoryRepository struct {
+	*GenericRepository[StateMachineHistory]
 }
 
-func (t StateMachineHistoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*StateMachineHistoryCollection, *http.Response, error) {
+func NewStateMachineHistoryRepository(client *Client) *StateMachineHistoryRepository {
+	return &StateMachineHistoryRepository{
+		GenericRepository: NewGenericRepository[StateMachineHistory](client),
+	}
+}
+
+func (t *StateMachineHistoryRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[StateMachineHistory], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "state-machine-history")
+}
+
+func (t *StateMachineHistoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[StateMachineHistory], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,78 +57,48 @@ func (t StateMachineHistoryRepository) SearchAll(ctx ApiContext, criteria Criter
 	return c, resp, err
 }
 
-func (t StateMachineHistoryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/state-machine-history", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *StateMachineHistoryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "state-machine-history")
 }
 
-func (t StateMachineHistoryRepository) Upsert(ctx ApiContext, entity []StateMachineHistory) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"state_machine_history": {
-		Entity:  "state_machine_history",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *StateMachineHistoryRepository) Upsert(ctx ApiContext, entity []StateMachineHistory) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "state_machine_history")
 }
 
-func (t StateMachineHistoryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"state_machine_history": {
-		Entity:  "state_machine_history",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *StateMachineHistoryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "state_machine_history")
 }
 
 type StateMachineHistory struct {
-	Id string `json:"id,omitempty"`
 
-	FromStateId string `json:"fromStateId,omitempty"`
+	EntityName      string  `json:"entityName,omitempty"`
 
-	ToStateId string `json:"toStateId,omitempty"`
+	FromStateMachineState      *StateMachineState  `json:"fromStateMachineState,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ToStateMachineState      *StateMachineState  `json:"toStateMachineState,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ReferencedVersionId      string  `json:"referencedVersionId,omitempty"`
 
-	ToStateMachineState *StateMachineState `json:"toStateMachineState,omitempty"`
+	TransitionActionName      string  `json:"transitionActionName,omitempty"`
 
-	ReferencedVersionId string `json:"referencedVersionId,omitempty"`
+	User      *User  `json:"user,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	StateMachineId      string  `json:"stateMachineId,omitempty"`
 
-	ReferencedId string `json:"referencedId,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
 
-	StateMachineId string `json:"stateMachineId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	StateMachine *StateMachine `json:"stateMachine,omitempty"`
+	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
 
-	EntityName string `json:"entityName,omitempty"`
+	FromStateId      string  `json:"fromStateId,omitempty"`
 
-	FromStateMachineState *StateMachineState `json:"fromStateMachineState,omitempty"`
+	ToStateId      string  `json:"toStateId,omitempty"`
 
-	TransitionActionName string `json:"transitionActionName,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type StateMachineHistoryCollection struct {
-	EntityCollection
+	ReferencedId      string  `json:"referencedId,omitempty"`
 
-	Data []StateMachineHistory `json:"data"`
 }

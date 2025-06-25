@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type LocaleTranslationRepository ClientService
-
-func (t LocaleTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*LocaleTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/locale-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(LocaleTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type LocaleTranslationRepository struct {
+	*GenericRepository[LocaleTranslation]
 }
 
-func (t LocaleTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LocaleTranslationCollection, *http.Response, error) {
+func NewLocaleTranslationRepository(client *Client) *LocaleTranslationRepository {
+	return &LocaleTranslationRepository{
+		GenericRepository: NewGenericRepository[LocaleTranslation](client),
+	}
+}
+
+func (t *LocaleTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[LocaleTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "locale-translation")
+}
+
+func (t *LocaleTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[LocaleTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t LocaleTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria
 	return c, resp, err
 }
 
-func (t LocaleTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/locale-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *LocaleTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "locale-translation")
 }
 
-func (t LocaleTranslationRepository) Upsert(ctx ApiContext, entity []LocaleTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"locale_translation": {
-		Entity:  "locale_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *LocaleTranslationRepository) Upsert(ctx ApiContext, entity []LocaleTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "locale_translation")
 }
 
-func (t LocaleTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"locale_translation": {
-		Entity:  "locale_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *LocaleTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "locale_translation")
 }
 
 type LocaleTranslation struct {
-	Territory string `json:"territory,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Territory      string  `json:"territory,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Locale      *Locale  `json:"locale,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	LocaleId string `json:"localeId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Locale *Locale `json:"locale,omitempty"`
-}
+	LocaleId      string  `json:"localeId,omitempty"`
 
-type LocaleTranslationCollection struct {
-	EntityCollection
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Data []LocaleTranslation `json:"data"`
 }

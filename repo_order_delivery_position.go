@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type OrderDeliveryPositionRepository ClientService
-
-func (t OrderDeliveryPositionRepository) Search(ctx ApiContext, criteria Criteria) (*OrderDeliveryPositionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/order-delivery-position", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(OrderDeliveryPositionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type OrderDeliveryPositionRepository struct {
+	*GenericRepository[OrderDeliveryPosition]
 }
 
-func (t OrderDeliveryPositionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderDeliveryPositionCollection, *http.Response, error) {
+func NewOrderDeliveryPositionRepository(client *Client) *OrderDeliveryPositionRepository {
+	return &OrderDeliveryPositionRepository{
+		GenericRepository: NewGenericRepository[OrderDeliveryPosition](client),
+	}
+}
+
+func (t *OrderDeliveryPositionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderDeliveryPosition], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "order-delivery-position")
+}
+
+func (t *OrderDeliveryPositionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderDeliveryPosition], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,78 +57,48 @@ func (t OrderDeliveryPositionRepository) SearchAll(ctx ApiContext, criteria Crit
 	return c, resp, err
 }
 
-func (t OrderDeliveryPositionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-delivery-position", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *OrderDeliveryPositionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "order-delivery-position")
 }
 
-func (t OrderDeliveryPositionRepository) Upsert(ctx ApiContext, entity []OrderDeliveryPosition) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_delivery_position": {
-		Entity:  "order_delivery_position",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *OrderDeliveryPositionRepository) Upsert(ctx ApiContext, entity []OrderDeliveryPosition) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "order_delivery_position")
 }
 
-func (t OrderDeliveryPositionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_delivery_position": {
-		Entity:  "order_delivery_position",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *OrderDeliveryPositionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "order_delivery_position")
 }
 
 type OrderDeliveryPosition struct {
-	Id string `json:"id,omitempty"`
 
-	OrderDeliveryVersionId string `json:"orderDeliveryVersionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Price interface{} `json:"price,omitempty"`
+	OrderDeliveryId      string  `json:"orderDeliveryId,omitempty"`
 
-	Quantity float64 `json:"quantity,omitempty"`
+	OrderLineItemId      string  `json:"orderLineItemId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	OrderLineItemId string `json:"orderLineItemId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	TotalPrice float64 `json:"totalPrice,omitempty"`
+	OrderLineItemVersionId      string  `json:"orderLineItemVersionId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	TotalPrice      float64  `json:"totalPrice,omitempty"`
 
-	OrderLineItemVersionId string `json:"orderLineItemVersionId,omitempty"`
+	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
 
-	OrderLineItem *OrderLineItem `json:"orderLineItem,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	OrderDeliveryVersionId      string  `json:"orderDeliveryVersionId,omitempty"`
 
-	OrderDeliveryId string `json:"orderDeliveryId,omitempty"`
+	UnitPrice      float64  `json:"unitPrice,omitempty"`
 
-	UnitPrice float64 `json:"unitPrice,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	OrderDelivery *OrderDelivery `json:"orderDelivery,omitempty"`
-}
+	Quantity      float64  `json:"quantity,omitempty"`
 
-type OrderDeliveryPositionCollection struct {
-	EntityCollection
+	OrderDelivery      *OrderDelivery  `json:"orderDelivery,omitempty"`
 
-	Data []OrderDeliveryPosition `json:"data"`
 }

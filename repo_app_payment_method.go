@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppPaymentMethodRepository ClientService
-
-func (t AppPaymentMethodRepository) Search(ctx ApiContext, criteria Criteria) (*AppPaymentMethodCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-payment-method", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppPaymentMethodCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppPaymentMethodRepository struct {
+	*GenericRepository[AppPaymentMethod]
 }
 
-func (t AppPaymentMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppPaymentMethodCollection, *http.Response, error) {
+func NewAppPaymentMethodRepository(client *Client) *AppPaymentMethodRepository {
+	return &AppPaymentMethodRepository{
+		GenericRepository: NewGenericRepository[AppPaymentMethod](client),
+	}
+}
+
+func (t *AppPaymentMethodRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppPaymentMethod], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-payment-method")
+}
+
+func (t *AppPaymentMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppPaymentMethod], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,82 +57,52 @@ func (t AppPaymentMethodRepository) SearchAll(ctx ApiContext, criteria Criteria)
 	return c, resp, err
 }
 
-func (t AppPaymentMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-payment-method", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppPaymentMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-payment-method")
 }
 
-func (t AppPaymentMethodRepository) Upsert(ctx ApiContext, entity []AppPaymentMethod) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_payment_method": {
-		Entity:  "app_payment_method",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppPaymentMethodRepository) Upsert(ctx ApiContext, entity []AppPaymentMethod) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_payment_method")
 }
 
-func (t AppPaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_payment_method": {
-		Entity:  "app_payment_method",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppPaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_payment_method")
 }
 
 type AppPaymentMethod struct {
-	AppName string `json:"appName,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Identifier      string  `json:"identifier,omitempty"`
 
-	OriginalMedia *Media `json:"originalMedia,omitempty"`
+	FinalizeUrl      string  `json:"finalizeUrl,omitempty"`
 
-	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
+	OriginalMediaId      string  `json:"originalMediaId,omitempty"`
 
-	PaymentMethodId string `json:"paymentMethodId,omitempty"`
+	OriginalMedia      *Media  `json:"originalMedia,omitempty"`
 
-	PayUrl string `json:"payUrl,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	FinalizeUrl string `json:"finalizeUrl,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ValidateUrl string `json:"validateUrl,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	RecurringUrl string `json:"recurringUrl,omitempty"`
+	AppName      string  `json:"appName,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	RefundUrl      string  `json:"refundUrl,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	PayUrl      string  `json:"payUrl,omitempty"`
 
-	Identifier string `json:"identifier,omitempty"`
+	RecurringUrl      string  `json:"recurringUrl,omitempty"`
 
-	CaptureUrl string `json:"captureUrl,omitempty"`
+	ValidateUrl      string  `json:"validateUrl,omitempty"`
 
-	RefundUrl string `json:"refundUrl,omitempty"`
+	CaptureUrl      string  `json:"captureUrl,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	OriginalMediaId string `json:"originalMediaId,omitempty"`
-}
+	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
 
-type AppPaymentMethodCollection struct {
-	EntityCollection
+	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
 
-	Data []AppPaymentMethod `json:"data"`
 }

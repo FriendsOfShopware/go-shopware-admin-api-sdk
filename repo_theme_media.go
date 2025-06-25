@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type ThemeMediaRepository ClientService
-
-func (t ThemeMediaRepository) Search(ctx ApiContext, criteria Criteria) (*ThemeMediaCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/theme-media", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ThemeMediaCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ThemeMediaRepository struct {
+	*GenericRepository[ThemeMedia]
 }
 
-func (t ThemeMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ThemeMediaCollection, *http.Response, error) {
+func NewThemeMediaRepository(client *Client) *ThemeMediaRepository {
+	return &ThemeMediaRepository{
+		GenericRepository: NewGenericRepository[ThemeMedia](client),
+	}
+}
+
+func (t *ThemeMediaRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ThemeMedia], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "theme-media")
+}
+
+func (t *ThemeMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ThemeMedia], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t ThemeMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*The
 	return c, resp, err
 }
 
-func (t ThemeMediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/theme-media", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ThemeMediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "theme-media")
 }
 
-func (t ThemeMediaRepository) Upsert(ctx ApiContext, entity []ThemeMedia) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"theme_media": {
-		Entity:  "theme_media",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ThemeMediaRepository) Upsert(ctx ApiContext, entity []ThemeMedia) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "theme_media")
 }
 
-func (t ThemeMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"theme_media": {
-		Entity:  "theme_media",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ThemeMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "theme_media")
 }
 
 type ThemeMedia struct {
-	ThemeId string `json:"themeId,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	Theme      *Theme  `json:"theme,omitempty"`
 
-	Theme *Theme `json:"theme,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
-}
+	ThemeId      string  `json:"themeId,omitempty"`
 
-type ThemeMediaCollection struct {
-	EntityCollection
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	Data []ThemeMedia `json:"data"`
 }

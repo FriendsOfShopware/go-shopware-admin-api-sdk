@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ShippingMethodRepository ClientService
-
-func (t ShippingMethodRepository) Search(ctx ApiContext, criteria Criteria) (*ShippingMethodCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/shipping-method", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ShippingMethodCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ShippingMethodRepository struct {
+	*GenericRepository[ShippingMethod]
 }
 
-func (t ShippingMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ShippingMethodCollection, *http.Response, error) {
+func NewShippingMethodRepository(client *Client) *ShippingMethodRepository {
+	return &ShippingMethodRepository{
+		GenericRepository: NewGenericRepository[ShippingMethod](client),
+	}
+}
+
+func (t *ShippingMethodRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ShippingMethod], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "shipping-method")
+}
+
+func (t *ShippingMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ShippingMethod], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,102 +57,72 @@ func (t ShippingMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (
 	return c, resp, err
 }
 
-func (t ShippingMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/shipping-method", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ShippingMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "shipping-method")
 }
 
-func (t ShippingMethodRepository) Upsert(ctx ApiContext, entity []ShippingMethod) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"shipping_method": {
-		Entity:  "shipping_method",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ShippingMethodRepository) Upsert(ctx ApiContext, entity []ShippingMethod) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "shipping_method")
 }
 
-func (t ShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"shipping_method": {
-		Entity:  "shipping_method",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "shipping_method")
 }
 
 type ShippingMethod struct {
-	Description string `json:"description,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	DeliveryTimeId      string  `json:"deliveryTimeId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	TrackingUrl      string  `json:"trackingUrl,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	Prices      []ShippingMethodPrice  `json:"prices,omitempty"`
 
-	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Prices []ShippingMethodPrice `json:"prices,omitempty"`
+	Translations      []ShippingMethodTranslation  `json:"translations,omitempty"`
 
-	AppShippingMethod *AppShippingMethod `json:"appShippingMethod,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Tax      *Tax  `json:"tax,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	AppShippingMethod      *AppShippingMethod  `json:"appShippingMethod,omitempty"`
 
-	DeliveryTimeId string `json:"deliveryTimeId,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	TrackingUrl string `json:"trackingUrl,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
+	DeliveryTime      *DeliveryTime  `json:"deliveryTime,omitempty"`
 
-	Tax *Tax `json:"tax,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
 
-	TaxType string `json:"taxType,omitempty"`
+	TaxType      string  `json:"taxType,omitempty"`
 
-	DeliveryTime *DeliveryTime `json:"deliveryTime,omitempty"`
+	TaxId      string  `json:"taxId,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	TaxId string `json:"taxId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translations []ShippingMethodTranslation `json:"translations,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
-}
+	Id      string  `json:"id,omitempty"`
 
-type ShippingMethodCollection struct {
-	EntityCollection
+	Position      float64  `json:"position,omitempty"`
 
-	Data []ShippingMethod `json:"data"`
 }

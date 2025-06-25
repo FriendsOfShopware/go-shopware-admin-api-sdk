@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type StateMachineStateRepository ClientService
-
-func (t StateMachineStateRepository) Search(ctx ApiContext, criteria Criteria) (*StateMachineStateCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/state-machine-state", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(StateMachineStateCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type StateMachineStateRepository struct {
+	*GenericRepository[StateMachineState]
 }
 
-func (t StateMachineStateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*StateMachineStateCollection, *http.Response, error) {
+func NewStateMachineStateRepository(client *Client) *StateMachineStateRepository {
+	return &StateMachineStateRepository{
+		GenericRepository: NewGenericRepository[StateMachineState](client),
+	}
+}
+
+func (t *StateMachineStateRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[StateMachineState], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "state-machine-state")
+}
+
+func (t *StateMachineStateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[StateMachineState], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,86 +57,56 @@ func (t StateMachineStateRepository) SearchAll(ctx ApiContext, criteria Criteria
 	return c, resp, err
 }
 
-func (t StateMachineStateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/state-machine-state", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *StateMachineStateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "state-machine-state")
 }
 
-func (t StateMachineStateRepository) Upsert(ctx ApiContext, entity []StateMachineState) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"state_machine_state": {
-		Entity:  "state_machine_state",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *StateMachineStateRepository) Upsert(ctx ApiContext, entity []StateMachineState) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "state_machine_state")
 }
 
-func (t StateMachineStateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"state_machine_state": {
-		Entity:  "state_machine_state",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *StateMachineStateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "state_machine_state")
 }
 
 type StateMachineState struct {
-	Name string `json:"name,omitempty"`
 
-	StateMachine *StateMachine `json:"stateMachine,omitempty"`
+	OrderTransactions      []OrderTransaction  `json:"orderTransactions,omitempty"`
 
-	ToStateMachineTransitions []StateMachineTransition `json:"toStateMachineTransitions,omitempty"`
+	OrderTransactionCaptureRefunds      []OrderTransactionCaptureRefund  `json:"orderTransactionCaptureRefunds,omitempty"`
 
-	OrderTransactionCaptures []OrderTransactionCapture `json:"orderTransactionCaptures,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	OrderTransactionCaptureRefunds []OrderTransactionCaptureRefund `json:"orderTransactionCaptureRefunds,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	ToStateMachineHistoryEntries []StateMachineHistory `json:"toStateMachineHistoryEntries,omitempty"`
+	StateMachineId      string  `json:"stateMachineId,omitempty"`
 
-	Orders []Order `json:"orders,omitempty"`
+	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	FromStateMachineTransitions      []StateMachineTransition  `json:"fromStateMachineTransitions,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	OrderTransactionCaptures      []OrderTransactionCapture  `json:"orderTransactionCaptures,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	StateMachineId string `json:"stateMachineId,omitempty"`
+	Orders      []Order  `json:"orders,omitempty"`
 
-	FromStateMachineTransitions []StateMachineTransition `json:"fromStateMachineTransitions,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translations []StateMachineStateTranslation `json:"translations,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
+	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	ToStateMachineHistoryEntries      []StateMachineHistory  `json:"toStateMachineHistoryEntries,omitempty"`
 
-	OrderTransactions []OrderTransaction `json:"orderTransactions,omitempty"`
+	FromStateMachineHistoryEntries      []StateMachineHistory  `json:"fromStateMachineHistoryEntries,omitempty"`
 
-	FromStateMachineHistoryEntries []StateMachineHistory `json:"fromStateMachineHistoryEntries,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
-}
+	ToStateMachineTransitions      []StateMachineTransition  `json:"toStateMachineTransitions,omitempty"`
 
-type StateMachineStateCollection struct {
-	EntityCollection
+	Translations      []StateMachineStateTranslation  `json:"translations,omitempty"`
 
-	Data []StateMachineState `json:"data"`
 }

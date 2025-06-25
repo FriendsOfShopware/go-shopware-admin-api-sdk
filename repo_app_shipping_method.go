@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppShippingMethodRepository ClientService
-
-func (t AppShippingMethodRepository) Search(ctx ApiContext, criteria Criteria) (*AppShippingMethodCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-shipping-method", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppShippingMethodCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppShippingMethodRepository struct {
+	*GenericRepository[AppShippingMethod]
 }
 
-func (t AppShippingMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppShippingMethodCollection, *http.Response, error) {
+func NewAppShippingMethodRepository(client *Client) *AppShippingMethodRepository {
+	return &AppShippingMethodRepository{
+		GenericRepository: NewGenericRepository[AppShippingMethod](client),
+	}
+}
+
+func (t *AppShippingMethodRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppShippingMethod], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-shipping-method")
+}
+
+func (t *AppShippingMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppShippingMethod], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t AppShippingMethodRepository) SearchAll(ctx ApiContext, criteria Criteria
 	return c, resp, err
 }
 
-func (t AppShippingMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-shipping-method", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppShippingMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-shipping-method")
 }
 
-func (t AppShippingMethodRepository) Upsert(ctx ApiContext, entity []AppShippingMethod) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_shipping_method": {
-		Entity:  "app_shipping_method",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppShippingMethodRepository) Upsert(ctx ApiContext, entity []AppShippingMethod) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_shipping_method")
 }
 
-func (t AppShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_shipping_method": {
-		Entity:  "app_shipping_method",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppShippingMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_shipping_method")
 }
 
 type AppShippingMethod struct {
-	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
 
-	OriginalMediaId string `json:"originalMediaId,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Identifier      string  `json:"identifier,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
 
-	ShippingMethodId string `json:"shippingMethodId,omitempty"`
+	OriginalMediaId      string  `json:"originalMediaId,omitempty"`
 
-	OriginalMedia *Media `json:"originalMedia,omitempty"`
+	OriginalMedia      *Media  `json:"originalMedia,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AppName string `json:"appName,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Identifier string `json:"identifier,omitempty"`
-}
+	Id      string  `json:"id,omitempty"`
 
-type AppShippingMethodCollection struct {
-	EntityCollection
+	AppName      string  `json:"appName,omitempty"`
 
-	Data []AppShippingMethod `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type FlowTemplateRepository ClientService
-
-func (t FlowTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*FlowTemplateCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/flow-template", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(FlowTemplateCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type FlowTemplateRepository struct {
+	*GenericRepository[FlowTemplate]
 }
 
-func (t FlowTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*FlowTemplateCollection, *http.Response, error) {
+func NewFlowTemplateRepository(client *Client) *FlowTemplateRepository {
+	return &FlowTemplateRepository{
+		GenericRepository: NewGenericRepository[FlowTemplate](client),
+	}
+}
+
+func (t *FlowTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[FlowTemplate], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "flow-template")
+}
+
+func (t *FlowTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[FlowTemplate], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,58 +57,28 @@ func (t FlowTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*F
 	return c, resp, err
 }
 
-func (t FlowTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/flow-template", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *FlowTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "flow-template")
 }
 
-func (t FlowTemplateRepository) Upsert(ctx ApiContext, entity []FlowTemplate) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"flow_template": {
-		Entity:  "flow_template",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *FlowTemplateRepository) Upsert(ctx ApiContext, entity []FlowTemplate) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "flow_template")
 }
 
-func (t FlowTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"flow_template": {
-		Entity:  "flow_template",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *FlowTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "flow_template")
 }
 
 type FlowTemplate struct {
-	Id string `json:"id,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-type FlowTemplateCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []FlowTemplate `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MediaDefaultFolderRepository ClientService
-
-func (t MediaDefaultFolderRepository) Search(ctx ApiContext, criteria Criteria) (*MediaDefaultFolderCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/media-default-folder", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MediaDefaultFolderCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MediaDefaultFolderRepository struct {
+	*GenericRepository[MediaDefaultFolder]
 }
 
-func (t MediaDefaultFolderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaDefaultFolderCollection, *http.Response, error) {
+func NewMediaDefaultFolderRepository(client *Client) *MediaDefaultFolderRepository {
+	return &MediaDefaultFolderRepository{
+		GenericRepository: NewGenericRepository[MediaDefaultFolder](client),
+	}
+}
+
+func (t *MediaDefaultFolderRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaDefaultFolder], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "media-default-folder")
+}
+
+func (t *MediaDefaultFolderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaDefaultFolder], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,60 +57,30 @@ func (t MediaDefaultFolderRepository) SearchAll(ctx ApiContext, criteria Criteri
 	return c, resp, err
 }
 
-func (t MediaDefaultFolderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media-default-folder", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MediaDefaultFolderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "media-default-folder")
 }
 
-func (t MediaDefaultFolderRepository) Upsert(ctx ApiContext, entity []MediaDefaultFolder) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_default_folder": {
-		Entity:  "media_default_folder",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MediaDefaultFolderRepository) Upsert(ctx ApiContext, entity []MediaDefaultFolder) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "media_default_folder")
 }
 
-func (t MediaDefaultFolderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_default_folder": {
-		Entity:  "media_default_folder",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MediaDefaultFolderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "media_default_folder")
 }
 
 type MediaDefaultFolder struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Entity      string  `json:"entity,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Folder      *MediaFolder  `json:"folder,omitempty"`
 
-	Entity string `json:"entity,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Folder *MediaFolder `json:"folder,omitempty"`
-}
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-type MediaDefaultFolderCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []MediaDefaultFolder `json:"data"`
 }

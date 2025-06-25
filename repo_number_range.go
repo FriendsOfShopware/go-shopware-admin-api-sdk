@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type NumberRangeRepository ClientService
-
-func (t NumberRangeRepository) Search(ctx ApiContext, criteria Criteria) (*NumberRangeCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/number-range", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(NumberRangeCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type NumberRangeRepository struct {
+	*GenericRepository[NumberRange]
 }
 
-func (t NumberRangeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NumberRangeCollection, *http.Response, error) {
+func NewNumberRangeRepository(client *Client) *NumberRangeRepository {
+	return &NumberRangeRepository{
+		GenericRepository: NewGenericRepository[NumberRange](client),
+	}
+}
+
+func (t *NumberRangeRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[NumberRange], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "number-range")
+}
+
+func (t *NumberRangeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[NumberRange], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,78 +57,48 @@ func (t NumberRangeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Nu
 	return c, resp, err
 }
 
-func (t NumberRangeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/number-range", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *NumberRangeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "number-range")
 }
 
-func (t NumberRangeRepository) Upsert(ctx ApiContext, entity []NumberRange) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"number_range": {
-		Entity:  "number_range",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *NumberRangeRepository) Upsert(ctx ApiContext, entity []NumberRange) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "number_range")
 }
 
-func (t NumberRangeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"number_range": {
-		Entity:  "number_range",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *NumberRangeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "number_range")
 }
 
 type NumberRange struct {
-	Start float64 `json:"start,omitempty"`
 
-	TypeId string `json:"typeId,omitempty"`
+	TypeId      string  `json:"typeId,omitempty"`
 
-	Global bool `json:"global,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Type *NumberRangeType `json:"type,omitempty"`
+	Pattern      string  `json:"pattern,omitempty"`
 
-	Translations []NumberRangeTranslation `json:"translations,omitempty"`
+	Start      float64  `json:"start,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	NumberRangeSalesChannels      []NumberRangeSalesChannel  `json:"numberRangeSalesChannels,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Pattern string `json:"pattern,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	State      *NumberRangeState  `json:"state,omitempty"`
 
-	State *NumberRangeState `json:"state,omitempty"`
+	Translations      []NumberRangeTranslation  `json:"translations,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Global      bool  `json:"global,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	NumberRangeSalesChannels []NumberRangeSalesChannel `json:"numberRangeSalesChannels,omitempty"`
-}
+	Type      *NumberRangeType  `json:"type,omitempty"`
 
-type NumberRangeCollection struct {
-	EntityCollection
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Data []NumberRange `json:"data"`
 }

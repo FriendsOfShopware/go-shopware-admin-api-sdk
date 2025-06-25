@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type ProductOptionRepository ClientService
-
-func (t ProductOptionRepository) Search(ctx ApiContext, criteria Criteria) (*ProductOptionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-option", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductOptionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductOptionRepository struct {
+	*GenericRepository[ProductOption]
 }
 
-func (t ProductOptionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductOptionCollection, *http.Response, error) {
+func NewProductOptionRepository(client *Client) *ProductOptionRepository {
+	return &ProductOptionRepository{
+		GenericRepository: NewGenericRepository[ProductOption](client),
+	}
+}
+
+func (t *ProductOptionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductOption], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-option")
+}
+
+func (t *ProductOptionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductOption], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,58 +55,28 @@ func (t ProductOptionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t ProductOptionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-option", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductOptionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-option")
 }
 
-func (t ProductOptionRepository) Upsert(ctx ApiContext, entity []ProductOption) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_option": {
-		Entity:  "product_option",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductOptionRepository) Upsert(ctx ApiContext, entity []ProductOption) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_option")
 }
 
-func (t ProductOptionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_option": {
-		Entity:  "product_option",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductOptionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_option")
 }
 
 type ProductOption struct {
-	Option *PropertyGroupOption `json:"option,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	OptionId string `json:"optionId,omitempty"`
+	OptionId      string  `json:"optionId,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
-}
+	Product      *Product  `json:"product,omitempty"`
 
-type ProductOptionCollection struct {
-	EntityCollection
+	Option      *PropertyGroupOption  `json:"option,omitempty"`
 
-	Data []ProductOption `json:"data"`
 }

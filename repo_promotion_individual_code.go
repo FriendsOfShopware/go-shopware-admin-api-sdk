@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PromotionIndividualCodeRepository ClientService
-
-func (t PromotionIndividualCodeRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionIndividualCodeCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion-individual-code", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionIndividualCodeCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionIndividualCodeRepository struct {
+	*GenericRepository[PromotionIndividualCode]
 }
 
-func (t PromotionIndividualCodeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionIndividualCodeCollection, *http.Response, error) {
+func NewPromotionIndividualCodeRepository(client *Client) *PromotionIndividualCodeRepository {
+	return &PromotionIndividualCodeRepository{
+		GenericRepository: NewGenericRepository[PromotionIndividualCode](client),
+	}
+}
+
+func (t *PromotionIndividualCodeRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionIndividualCode], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion-individual-code")
+}
+
+func (t *PromotionIndividualCodeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionIndividualCode], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,62 +57,32 @@ func (t PromotionIndividualCodeRepository) SearchAll(ctx ApiContext, criteria Cr
 	return c, resp, err
 }
 
-func (t PromotionIndividualCodeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-individual-code", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionIndividualCodeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion-individual-code")
 }
 
-func (t PromotionIndividualCodeRepository) Upsert(ctx ApiContext, entity []PromotionIndividualCode) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_individual_code": {
-		Entity:  "promotion_individual_code",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionIndividualCodeRepository) Upsert(ctx ApiContext, entity []PromotionIndividualCode) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion_individual_code")
 }
 
-func (t PromotionIndividualCodeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_individual_code": {
-		Entity:  "promotion_individual_code",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionIndividualCodeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion_individual_code")
 }
 
 type PromotionIndividualCode struct {
-	Id string `json:"id,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Code string `json:"code,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
+	Code      string  `json:"code,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-type PromotionIndividualCodeCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []PromotionIndividualCode `json:"data"`
 }

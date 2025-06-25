@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ScriptRepository ClientService
-
-func (t ScriptRepository) Search(ctx ApiContext, criteria Criteria) (*ScriptCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/script", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ScriptCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ScriptRepository struct {
+	*GenericRepository[Script]
 }
 
-func (t ScriptRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ScriptCollection, *http.Response, error) {
+func NewScriptRepository(client *Client) *ScriptRepository {
+	return &ScriptRepository{
+		GenericRepository: NewGenericRepository[Script](client),
+	}
+}
+
+func (t *ScriptRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Script], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "script")
+}
+
+func (t *ScriptRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Script], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t ScriptRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ScriptC
 	return c, resp, err
 }
 
-func (t ScriptRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/script", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ScriptRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "script")
 }
 
-func (t ScriptRepository) Upsert(ctx ApiContext, entity []Script) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"script": {
-		Entity:  "script",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ScriptRepository) Upsert(ctx ApiContext, entity []Script) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "script")
 }
 
-func (t ScriptRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"script": {
-		Entity:  "script",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ScriptRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "script")
 }
 
 type Script struct {
-	Hook string `json:"hook,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Script string `json:"script,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	Script      string  `json:"script,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Hook      string  `json:"hook,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Id string `json:"id,omitempty"`
-}
+	AppId      string  `json:"appId,omitempty"`
 
-type ScriptCollection struct {
-	EntityCollection
+	App      *App  `json:"app,omitempty"`
 
-	Data []Script `json:"data"`
 }

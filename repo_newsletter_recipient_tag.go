@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type NewsletterRecipientTagRepository ClientService
-
-func (t NewsletterRecipientTagRepository) Search(ctx ApiContext, criteria Criteria) (*NewsletterRecipientTagCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/newsletter-recipient-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(NewsletterRecipientTagCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type NewsletterRecipientTagRepository struct {
+	*GenericRepository[NewsletterRecipientTag]
 }
 
-func (t NewsletterRecipientTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NewsletterRecipientTagCollection, *http.Response, error) {
+func NewNewsletterRecipientTagRepository(client *Client) *NewsletterRecipientTagRepository {
+	return &NewsletterRecipientTagRepository{
+		GenericRepository: NewGenericRepository[NewsletterRecipientTag](client),
+	}
+}
+
+func (t *NewsletterRecipientTagRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[NewsletterRecipientTag], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "newsletter-recipient-tag")
+}
+
+func (t *NewsletterRecipientTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[NewsletterRecipientTag], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t NewsletterRecipientTagRepository) SearchAll(ctx ApiContext, criteria Cri
 	return c, resp, err
 }
 
-func (t NewsletterRecipientTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/newsletter-recipient-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *NewsletterRecipientTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "newsletter-recipient-tag")
 }
 
-func (t NewsletterRecipientTagRepository) Upsert(ctx ApiContext, entity []NewsletterRecipientTag) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"newsletter_recipient_tag": {
-		Entity:  "newsletter_recipient_tag",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *NewsletterRecipientTagRepository) Upsert(ctx ApiContext, entity []NewsletterRecipientTag) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "newsletter_recipient_tag")
 }
 
-func (t NewsletterRecipientTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"newsletter_recipient_tag": {
-		Entity:  "newsletter_recipient_tag",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *NewsletterRecipientTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "newsletter_recipient_tag")
 }
 
 type NewsletterRecipientTag struct {
-	NewsletterRecipientId string `json:"newsletterRecipientId,omitempty"`
 
-	TagId string `json:"tagId,omitempty"`
+	NewsletterRecipientId      string  `json:"newsletterRecipientId,omitempty"`
 
-	NewsletterRecipient *NewsletterRecipient `json:"newsletterRecipient,omitempty"`
+	TagId      string  `json:"tagId,omitempty"`
 
-	Tag *Tag `json:"tag,omitempty"`
-}
+	NewsletterRecipient      *NewsletterRecipient  `json:"newsletterRecipient,omitempty"`
 
-type NewsletterRecipientTagCollection struct {
-	EntityCollection
+	Tag      *Tag  `json:"tag,omitempty"`
 
-	Data []NewsletterRecipientTag `json:"data"`
 }

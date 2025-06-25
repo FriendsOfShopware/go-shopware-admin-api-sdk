@@ -12,10 +12,8 @@ func NewRepository(client ClientService) Repository {
 	repo := Repository{
 		ClientService: client,
 	}
-
-    {{ range . }}
-	repo.{{ . }} = (*{{ . }}Repository)(&client)
-	{{ end }}
-
+{{ range . }}
+	repo.{{ . }} = New{{ . }}Repository(client.Client)
+{{ end }}
 	return repo
 }

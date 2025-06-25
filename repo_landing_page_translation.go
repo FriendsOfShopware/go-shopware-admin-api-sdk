@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type LandingPageTranslationRepository ClientService
-
-func (t LandingPageTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*LandingPageTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/landing-page-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(LandingPageTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type LandingPageTranslationRepository struct {
+	*GenericRepository[LandingPageTranslation]
 }
 
-func (t LandingPageTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LandingPageTranslationCollection, *http.Response, error) {
+func NewLandingPageTranslationRepository(client *Client) *LandingPageTranslationRepository {
+	return &LandingPageTranslationRepository{
+		GenericRepository: NewGenericRepository[LandingPageTranslation](client),
+	}
+}
+
+func (t *LandingPageTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[LandingPageTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "landing-page-translation")
+}
+
+func (t *LandingPageTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[LandingPageTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,76 +57,46 @@ func (t LandingPageTranslationRepository) SearchAll(ctx ApiContext, criteria Cri
 	return c, resp, err
 }
 
-func (t LandingPageTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/landing-page-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *LandingPageTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "landing-page-translation")
 }
 
-func (t LandingPageTranslationRepository) Upsert(ctx ApiContext, entity []LandingPageTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"landing_page_translation": {
-		Entity:  "landing_page_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *LandingPageTranslationRepository) Upsert(ctx ApiContext, entity []LandingPageTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "landing_page_translation")
 }
 
-func (t LandingPageTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"landing_page_translation": {
-		Entity:  "landing_page_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *LandingPageTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "landing_page_translation")
 }
 
 type LandingPageTranslation struct {
-	LandingPage *LandingPage `json:"landingPage,omitempty"`
 
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
 
-	LandingPageVersionId string `json:"landingPageVersionId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	MetaTitle string `json:"metaTitle,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	LandingPageId      string  `json:"landingPageId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
 
-	LandingPageId string `json:"landingPageId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
-}
+	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-type LandingPageTranslationCollection struct {
-	EntityCollection
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
-	Data []LandingPageTranslation `json:"data"`
 }

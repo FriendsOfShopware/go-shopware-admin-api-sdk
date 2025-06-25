@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppTemplateRepository ClientService
-
-func (t AppTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*AppTemplateCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-template", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppTemplateCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppTemplateRepository struct {
+	*GenericRepository[AppTemplate]
 }
 
-func (t AppTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppTemplateCollection, *http.Response, error) {
+func NewAppTemplateRepository(client *Client) *AppTemplateRepository {
+	return &AppTemplateRepository{
+		GenericRepository: NewGenericRepository[AppTemplate](client),
+	}
+}
+
+func (t *AppTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppTemplate], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-template")
+}
+
+func (t *AppTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppTemplate], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,64 +57,36 @@ func (t AppTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Ap
 	return c, resp, err
 }
 
-func (t AppTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-template", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-template")
 }
 
-func (t AppTemplateRepository) Upsert(ctx ApiContext, entity []AppTemplate) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_template": {
-		Entity:  "app_template",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppTemplateRepository) Upsert(ctx ApiContext, entity []AppTemplate) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_template")
 }
 
-func (t AppTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_template": {
-		Entity:  "app_template",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_template")
 }
 
 type AppTemplate struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Template      string  `json:"template,omitempty"`
 
-	Template string `json:"template,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	Path      string  `json:"path,omitempty"`
 
-type AppTemplateCollection struct {
-	EntityCollection
+	Active      bool  `json:"active,omitempty"`
 
-	Data []AppTemplate `json:"data"`
+	Hash      string  `json:"hash,omitempty"`
+
 }

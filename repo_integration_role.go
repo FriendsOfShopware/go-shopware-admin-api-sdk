@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type IntegrationRoleRepository ClientService
-
-func (t IntegrationRoleRepository) Search(ctx ApiContext, criteria Criteria) (*IntegrationRoleCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/integration-role", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(IntegrationRoleCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type IntegrationRoleRepository struct {
+	*GenericRepository[IntegrationRole]
 }
 
-func (t IntegrationRoleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*IntegrationRoleCollection, *http.Response, error) {
+func NewIntegrationRoleRepository(client *Client) *IntegrationRoleRepository {
+	return &IntegrationRoleRepository{
+		GenericRepository: NewGenericRepository[IntegrationRole](client),
+	}
+}
+
+func (t *IntegrationRoleRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[IntegrationRole], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "integration-role")
+}
+
+func (t *IntegrationRoleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[IntegrationRole], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t IntegrationRoleRepository) SearchAll(ctx ApiContext, criteria Criteria) 
 	return c, resp, err
 }
 
-func (t IntegrationRoleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/integration-role", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *IntegrationRoleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "integration-role")
 }
 
-func (t IntegrationRoleRepository) Upsert(ctx ApiContext, entity []IntegrationRole) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"integration_role": {
-		Entity:  "integration_role",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *IntegrationRoleRepository) Upsert(ctx ApiContext, entity []IntegrationRole) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "integration_role")
 }
 
-func (t IntegrationRoleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"integration_role": {
-		Entity:  "integration_role",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *IntegrationRoleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "integration_role")
 }
 
 type IntegrationRole struct {
-	IntegrationId string `json:"integrationId,omitempty"`
 
-	AclRoleId string `json:"aclRoleId,omitempty"`
+	IntegrationId      string  `json:"integrationId,omitempty"`
 
-	Integration *Integration `json:"integration,omitempty"`
+	AclRoleId      string  `json:"aclRoleId,omitempty"`
 
-	Role *AclRole `json:"role,omitempty"`
-}
+	Integration      *Integration  `json:"integration,omitempty"`
 
-type IntegrationRoleCollection struct {
-	EntityCollection
+	Role      *AclRole  `json:"role,omitempty"`
 
-	Data []IntegrationRole `json:"data"`
 }

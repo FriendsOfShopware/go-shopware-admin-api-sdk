@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type PromotionPersonaCustomerRepository ClientService
-
-func (t PromotionPersonaCustomerRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionPersonaCustomerCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion-persona-customer", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionPersonaCustomerCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionPersonaCustomerRepository struct {
+	*GenericRepository[PromotionPersonaCustomer]
 }
 
-func (t PromotionPersonaCustomerRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionPersonaCustomerCollection, *http.Response, error) {
+func NewPromotionPersonaCustomerRepository(client *Client) *PromotionPersonaCustomerRepository {
+	return &PromotionPersonaCustomerRepository{
+		GenericRepository: NewGenericRepository[PromotionPersonaCustomer](client),
+	}
+}
+
+func (t *PromotionPersonaCustomerRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionPersonaCustomer], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion-persona-customer")
+}
+
+func (t *PromotionPersonaCustomerRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionPersonaCustomer], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t PromotionPersonaCustomerRepository) SearchAll(ctx ApiContext, criteria C
 	return c, resp, err
 }
 
-func (t PromotionPersonaCustomerRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-persona-customer", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionPersonaCustomerRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion-persona-customer")
 }
 
-func (t PromotionPersonaCustomerRepository) Upsert(ctx ApiContext, entity []PromotionPersonaCustomer) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_persona_customer": {
-		Entity:  "promotion_persona_customer",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionPersonaCustomerRepository) Upsert(ctx ApiContext, entity []PromotionPersonaCustomer) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion_persona_customer")
 }
 
-func (t PromotionPersonaCustomerRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_persona_customer": {
-		Entity:  "promotion_persona_customer",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionPersonaCustomerRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion_persona_customer")
 }
 
 type PromotionPersonaCustomer struct {
-	Promotion *Promotion `json:"promotion,omitempty"`
 
-	Customer *Customer `json:"customer,omitempty"`
+	CustomerId      string  `json:"customerId,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	CustomerId string `json:"customerId,omitempty"`
-}
+	Customer      *Customer  `json:"customer,omitempty"`
 
-type PromotionPersonaCustomerCollection struct {
-	EntityCollection
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Data []PromotionPersonaCustomer `json:"data"`
 }

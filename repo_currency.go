@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CurrencyRepository ClientService
-
-func (t CurrencyRepository) Search(ctx ApiContext, criteria Criteria) (*CurrencyCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/currency", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CurrencyCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CurrencyRepository struct {
+	*GenericRepository[Currency]
 }
 
-func (t CurrencyRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CurrencyCollection, *http.Response, error) {
+func NewCurrencyRepository(client *Client) *CurrencyRepository {
+	return &CurrencyRepository{
+		GenericRepository: NewGenericRepository[Currency](client),
+	}
+}
+
+func (t *CurrencyRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Currency], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "currency")
+}
+
+func (t *CurrencyRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Currency], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,94 +57,64 @@ func (t CurrencyRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Curre
 	return c, resp, err
 }
 
-func (t CurrencyRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/currency", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CurrencyRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "currency")
 }
 
-func (t CurrencyRepository) Upsert(ctx ApiContext, entity []Currency) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"currency": {
-		Entity:  "currency",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CurrencyRepository) Upsert(ctx ApiContext, entity []Currency) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "currency")
 }
 
-func (t CurrencyRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"currency": {
-		Entity:  "currency",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CurrencyRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "currency")
 }
 
 type Currency struct {
-	CountryRoundings []CurrencyCountryRounding `json:"countryRoundings,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Symbol      string  `json:"symbol,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	ShortName      string  `json:"shortName,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	IsSystemDefault      bool  `json:"isSystemDefault,omitempty"`
 
-	Orders []Order `json:"orders,omitempty"`
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Orders      []Order  `json:"orders,omitempty"`
 
-	TotalRounding interface{} `json:"totalRounding,omitempty"`
+	SalesChannelDomains      []SalesChannelDomain  `json:"salesChannelDomains,omitempty"`
 
-	Symbol string `json:"symbol,omitempty"`
+	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
 
-	IsSystemDefault bool `json:"isSystemDefault,omitempty"`
+	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
 
-	ItemRounding interface{} `json:"itemRounding,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	PromotionDiscountPrices []PromotionDiscountPrices `json:"promotionDiscountPrices,omitempty"`
+	TaxFreeFrom      float64  `json:"taxFreeFrom,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CountryRoundings      []CurrencyCountryRounding  `json:"countryRoundings,omitempty"`
 
-	Factor float64 `json:"factor,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	TaxFreeFrom float64 `json:"taxFreeFrom,omitempty"`
+	Factor      float64  `json:"factor,omitempty"`
 
-	Translations []CurrencyTranslation `json:"translations,omitempty"`
+	IsoCode      string  `json:"isoCode,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Translations      []CurrencyTranslation  `json:"translations,omitempty"`
 
-	IsoCode string `json:"isoCode,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	ShortName string `json:"shortName,omitempty"`
+	PromotionDiscountPrices      []PromotionDiscountPrices  `json:"promotionDiscountPrices,omitempty"`
 
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+	ProductExports      []ProductExport  `json:"productExports,omitempty"`
 
-	SalesChannelDomains []SalesChannelDomain `json:"salesChannelDomains,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	ProductExports []ProductExport `json:"productExports,omitempty"`
-}
+	Id      string  `json:"id,omitempty"`
 
-type CurrencyCollection struct {
-	EntityCollection
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Data []Currency `json:"data"`
 }

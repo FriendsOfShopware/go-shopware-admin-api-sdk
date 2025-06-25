@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CustomEntityRepository ClientService
-
-func (t CustomEntityRepository) Search(ctx ApiContext, criteria Criteria) (*CustomEntityCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/custom-entity", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CustomEntityCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CustomEntityRepository struct {
+	*GenericRepository[CustomEntity]
 }
 
-func (t CustomEntityRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomEntityCollection, *http.Response, error) {
+func NewCustomEntityRepository(client *Client) *CustomEntityRepository {
+	return &CustomEntityRepository{
+		GenericRepository: NewGenericRepository[CustomEntity](client),
+	}
+}
+
+func (t *CustomEntityRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomEntity], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "custom-entity")
+}
+
+func (t *CustomEntityRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomEntity], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,74 +57,44 @@ func (t CustomEntityRepository) SearchAll(ctx ApiContext, criteria Criteria) (*C
 	return c, resp, err
 }
 
-func (t CustomEntityRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/custom-entity", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CustomEntityRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "custom-entity")
 }
 
-func (t CustomEntityRepository) Upsert(ctx ApiContext, entity []CustomEntity) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"custom_entity": {
-		Entity:  "custom_entity",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CustomEntityRepository) Upsert(ctx ApiContext, entity []CustomEntity) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "custom_entity")
 }
 
-func (t CustomEntityRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"custom_entity": {
-		Entity:  "custom_entity",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CustomEntityRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "custom_entity")
 }
 
 type CustomEntity struct {
-	StoreApiAware bool `json:"storeApiAware,omitempty"`
 
-	DeletedAt time.Time `json:"deletedAt,omitempty"`
+	CustomFieldsAware      bool  `json:"customFieldsAware,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
 
-	Flags interface{} `json:"flags,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CustomFieldsAware bool `json:"customFieldsAware,omitempty"`
+	Fields      interface{}  `json:"fields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Fields interface{} `json:"fields,omitempty"`
+	LabelProperty      string  `json:"labelProperty,omitempty"`
 
-	CmsAware bool `json:"cmsAware,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	PluginId string `json:"pluginId,omitempty"`
+	Flags      interface{}  `json:"flags,omitempty"`
 
-	LabelProperty string `json:"labelProperty,omitempty"`
+	PluginId      string  `json:"pluginId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	CmsAware      bool  `json:"cmsAware,omitempty"`
 
-type CustomEntityCollection struct {
-	EntityCollection
+	StoreApiAware      bool  `json:"storeApiAware,omitempty"`
 
-	Data []CustomEntity `json:"data"`
 }

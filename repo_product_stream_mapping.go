@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type ProductStreamMappingRepository ClientService
-
-func (t ProductStreamMappingRepository) Search(ctx ApiContext, criteria Criteria) (*ProductStreamMappingCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-stream-mapping", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductStreamMappingCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductStreamMappingRepository struct {
+	*GenericRepository[ProductStreamMapping]
 }
 
-func (t ProductStreamMappingRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductStreamMappingCollection, *http.Response, error) {
+func NewProductStreamMappingRepository(client *Client) *ProductStreamMappingRepository {
+	return &ProductStreamMappingRepository{
+		GenericRepository: NewGenericRepository[ProductStreamMapping](client),
+	}
+}
+
+func (t *ProductStreamMappingRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductStreamMapping], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-stream-mapping")
+}
+
+func (t *ProductStreamMappingRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductStreamMapping], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,58 +55,28 @@ func (t ProductStreamMappingRepository) SearchAll(ctx ApiContext, criteria Crite
 	return c, resp, err
 }
 
-func (t ProductStreamMappingRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-stream-mapping", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductStreamMappingRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-stream-mapping")
 }
 
-func (t ProductStreamMappingRepository) Upsert(ctx ApiContext, entity []ProductStreamMapping) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_stream_mapping": {
-		Entity:  "product_stream_mapping",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductStreamMappingRepository) Upsert(ctx ApiContext, entity []ProductStreamMapping) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_stream_mapping")
 }
 
-func (t ProductStreamMappingRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_stream_mapping": {
-		Entity:  "product_stream_mapping",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductStreamMappingRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_stream_mapping")
 }
 
 type ProductStreamMapping struct {
-	ProductId string `json:"productId,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	ProductStreamId string `json:"productStreamId,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	ProductStreamId      string  `json:"productStreamId,omitempty"`
 
-	ProductStream *ProductStream `json:"productStream,omitempty"`
-}
+	Product      *Product  `json:"product,omitempty"`
 
-type ProductStreamMappingCollection struct {
-	EntityCollection
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
 
-	Data []ProductStreamMapping `json:"data"`
 }

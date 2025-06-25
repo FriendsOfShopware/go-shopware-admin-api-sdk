@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type SalesChannelTypeRepository ClientService
-
-func (t SalesChannelTypeRepository) Search(ctx ApiContext, criteria Criteria) (*SalesChannelTypeCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/sales-channel-type", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SalesChannelTypeCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type SalesChannelTypeRepository struct {
+	*GenericRepository[SalesChannelType]
 }
 
-func (t SalesChannelTypeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SalesChannelTypeCollection, *http.Response, error) {
+func NewSalesChannelTypeRepository(client *Client) *SalesChannelTypeRepository {
+	return &SalesChannelTypeRepository{
+		GenericRepository: NewGenericRepository[SalesChannelType](client),
+	}
+}
+
+func (t *SalesChannelTypeRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[SalesChannelType], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "sales-channel-type")
+}
+
+func (t *SalesChannelTypeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[SalesChannelType], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,76 +57,46 @@ func (t SalesChannelTypeRepository) SearchAll(ctx ApiContext, criteria Criteria)
 	return c, resp, err
 }
 
-func (t SalesChannelTypeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/sales-channel-type", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *SalesChannelTypeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "sales-channel-type")
 }
 
-func (t SalesChannelTypeRepository) Upsert(ctx ApiContext, entity []SalesChannelType) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"sales_channel_type": {
-		Entity:  "sales_channel_type",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *SalesChannelTypeRepository) Upsert(ctx ApiContext, entity []SalesChannelType) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "sales_channel_type")
 }
 
-func (t SalesChannelTypeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"sales_channel_type": {
-		Entity:  "sales_channel_type",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *SalesChannelTypeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "sales_channel_type")
 }
 
 type SalesChannelType struct {
-	ScreenshotUrls interface{} `json:"screenshotUrls,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	DescriptionLong      string  `json:"descriptionLong,omitempty"`
 
-	Manufacturer string `json:"manufacturer,omitempty"`
+	Translations      []SalesChannelTypeTranslation  `json:"translations,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translations []SalesChannelTypeTranslation `json:"translations,omitempty"`
+	CoverUrl      string  `json:"coverUrl,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	ScreenshotUrls      interface{}  `json:"screenshotUrls,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	DescriptionLong string `json:"descriptionLong,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CoverUrl string `json:"coverUrl,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	IconName string `json:"iconName,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Description string `json:"description,omitempty"`
-}
+	IconName      string  `json:"iconName,omitempty"`
 
-type SalesChannelTypeCollection struct {
-	EntityCollection
+	Manufacturer      string  `json:"manufacturer,omitempty"`
 
-	Data []SalesChannelType `json:"data"`
 }

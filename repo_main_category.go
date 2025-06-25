@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MainCategoryRepository ClientService
-
-func (t MainCategoryRepository) Search(ctx ApiContext, criteria Criteria) (*MainCategoryCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/main-category", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MainCategoryCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MainCategoryRepository struct {
+	*GenericRepository[MainCategory]
 }
 
-func (t MainCategoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MainCategoryCollection, *http.Response, error) {
+func NewMainCategoryRepository(client *Client) *MainCategoryRepository {
+	return &MainCategoryRepository{
+		GenericRepository: NewGenericRepository[MainCategory](client),
+	}
+}
+
+func (t *MainCategoryRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MainCategory], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "main-category")
+}
+
+func (t *MainCategoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MainCategory], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t MainCategoryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*M
 	return c, resp, err
 }
 
-func (t MainCategoryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/main-category", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MainCategoryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "main-category")
 }
 
-func (t MainCategoryRepository) Upsert(ctx ApiContext, entity []MainCategory) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"main_category": {
-		Entity:  "main_category",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MainCategoryRepository) Upsert(ctx ApiContext, entity []MainCategory) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "main_category")
 }
 
-func (t MainCategoryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"main_category": {
-		Entity:  "main_category",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MainCategoryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "main_category")
 }
 
 type MainCategory struct {
-	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	CategoryVersionId string `json:"categoryVersionId,omitempty"`
+	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	Category *Category `json:"category,omitempty"`
+	Category      *Category  `json:"category,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CategoryId string `json:"categoryId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
-}
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-type MainCategoryCollection struct {
-	EntityCollection
+	CategoryId      string  `json:"categoryId,omitempty"`
 
-	Data []MainCategory `json:"data"`
 }

@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type LandingPageSalesChannelRepository ClientService
-
-func (t LandingPageSalesChannelRepository) Search(ctx ApiContext, criteria Criteria) (*LandingPageSalesChannelCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/landing-page-sales-channel", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(LandingPageSalesChannelCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type LandingPageSalesChannelRepository struct {
+	*GenericRepository[LandingPageSalesChannel]
 }
 
-func (t LandingPageSalesChannelRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LandingPageSalesChannelCollection, *http.Response, error) {
+func NewLandingPageSalesChannelRepository(client *Client) *LandingPageSalesChannelRepository {
+	return &LandingPageSalesChannelRepository{
+		GenericRepository: NewGenericRepository[LandingPageSalesChannel](client),
+	}
+}
+
+func (t *LandingPageSalesChannelRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[LandingPageSalesChannel], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "landing-page-sales-channel")
+}
+
+func (t *LandingPageSalesChannelRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[LandingPageSalesChannel], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,58 +55,28 @@ func (t LandingPageSalesChannelRepository) SearchAll(ctx ApiContext, criteria Cr
 	return c, resp, err
 }
 
-func (t LandingPageSalesChannelRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/landing-page-sales-channel", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *LandingPageSalesChannelRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "landing-page-sales-channel")
 }
 
-func (t LandingPageSalesChannelRepository) Upsert(ctx ApiContext, entity []LandingPageSalesChannel) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"landing_page_sales_channel": {
-		Entity:  "landing_page_sales_channel",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *LandingPageSalesChannelRepository) Upsert(ctx ApiContext, entity []LandingPageSalesChannel) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "landing_page_sales_channel")
 }
 
-func (t LandingPageSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"landing_page_sales_channel": {
-		Entity:  "landing_page_sales_channel",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *LandingPageSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "landing_page_sales_channel")
 }
 
 type LandingPageSalesChannel struct {
-	LandingPageVersionId string `json:"landingPageVersionId,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	LandingPageVersionId      string  `json:"landingPageVersionId,omitempty"`
 
-	LandingPage *LandingPage `json:"landingPage,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	LandingPage      *LandingPage  `json:"landingPage,omitempty"`
 
-	LandingPageId string `json:"landingPageId,omitempty"`
-}
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-type LandingPageSalesChannelCollection struct {
-	EntityCollection
+	LandingPageId      string  `json:"landingPageId,omitempty"`
 
-	Data []LandingPageSalesChannel `json:"data"`
 }

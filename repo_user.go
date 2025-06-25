@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type UserRepository ClientService
-
-func (t UserRepository) Search(ctx ApiContext, criteria Criteria) (*UserCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/user", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(UserCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type UserRepository struct {
+	*GenericRepository[User]
 }
 
-func (t UserRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UserCollection, *http.Response, error) {
+func NewUserRepository(client *Client) *UserRepository {
+	return &UserRepository{
+		GenericRepository: NewGenericRepository[User](client),
+	}
+}
+
+func (t *UserRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[User], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "user")
+}
+
+func (t *UserRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[User], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,110 +57,80 @@ func (t UserRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UserColle
 	return c, resp, err
 }
 
-func (t UserRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/user", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *UserRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "user")
 }
 
-func (t UserRepository) Upsert(ctx ApiContext, entity []User) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"user": {
-		Entity:  "user",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *UserRepository) Upsert(ctx ApiContext, entity []User) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "user")
 }
 
-func (t UserRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"user": {
-		Entity:  "user",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *UserRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "user")
 }
 
 type User struct {
-	Id string `json:"id,omitempty"`
 
-	TimeZone string `json:"timeZone,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AvatarMedia *Media `json:"avatarMedia,omitempty"`
+	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
 
-	CreatedOrders []Order `json:"createdOrders,omitempty"`
+	Locale      *Locale  `json:"locale,omitempty"`
 
-	UpdatedOrders []Order `json:"updatedOrders,omitempty"`
+	ImportExportLogEntries      []ImportExportLog  `json:"importExportLogEntries,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LastUpdatedPasswordAt      time.Time  `json:"lastUpdatedPasswordAt,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	AvatarMedia      *Media  `json:"avatarMedia,omitempty"`
 
-	Email string `json:"email,omitempty"`
+	AclRoles      []AclRole  `json:"aclRoles,omitempty"`
 
-	ImportExportLogEntries []ImportExportLog `json:"importExportLogEntries,omitempty"`
+	RecoveryUser      *UserRecovery  `json:"recoveryUser,omitempty"`
 
-	CreatedCustomers []Customer `json:"createdCustomers,omitempty"`
+	CreatedOrders      []Order  `json:"createdOrders,omitempty"`
 
-	Admin bool `json:"admin,omitempty"`
+	Password      interface{}  `json:"password,omitempty"`
 
-	LastUpdatedPasswordAt time.Time `json:"lastUpdatedPasswordAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	StoreToken string `json:"storeToken,omitempty"`
+	AccessKeys      []UserAccessKey  `json:"accessKeys,omitempty"`
 
-	LocaleId string `json:"localeId,omitempty"`
+	LastName      string  `json:"lastName,omitempty"`
 
-	Username string `json:"username,omitempty"`
+	Media      []Media  `json:"media,omitempty"`
 
-	FirstName string `json:"firstName,omitempty"`
+	StateMachineHistoryEntries      []StateMachineHistory  `json:"stateMachineHistoryEntries,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Admin      bool  `json:"admin,omitempty"`
 
-	AvatarId string `json:"avatarId,omitempty"`
+	TimeZone      string  `json:"timeZone,omitempty"`
 
-	Media []Media `json:"media,omitempty"`
+	Configs      []UserConfig  `json:"configs,omitempty"`
 
-	AccessKeys []UserAccessKey `json:"accessKeys,omitempty"`
+	UpdatedCustomers      []Customer  `json:"updatedCustomers,omitempty"`
 
-	RecoveryUser *UserRecovery `json:"recoveryUser,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedCustomers []Customer `json:"updatedCustomers,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
 
-	CreatedNotifications []Notification `json:"createdNotifications,omitempty"`
+	Email      string  `json:"email,omitempty"`
 
-	Password interface{} `json:"password,omitempty"`
+	AvatarId      string  `json:"avatarId,omitempty"`
 
-	Configs []UserConfig `json:"configs,omitempty"`
+	StoreToken      string  `json:"storeToken,omitempty"`
 
-	AclRoles []AclRole `json:"aclRoles,omitempty"`
+	UpdatedOrders      []Order  `json:"updatedOrders,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	CreatedCustomers      []Customer  `json:"createdCustomers,omitempty"`
 
-	Locale *Locale `json:"locale,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	StateMachineHistoryEntries []StateMachineHistory `json:"stateMachineHistoryEntries,omitempty"`
-}
+	LocaleId      string  `json:"localeId,omitempty"`
 
-type UserCollection struct {
-	EntityCollection
+	Username      string  `json:"username,omitempty"`
 
-	Data []User `json:"data"`
 }

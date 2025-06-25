@@ -224,9 +224,10 @@ func NewApiContext(ctx context.Context) ApiContext {
 	}
 }
 
-type EntityCollection struct {
+type EntityCollection[T any] struct {
 	Total        int64       `json:"total"`
 	Aggregations interface{} `json:"aggregations"`
+	Data         []T         `json:"data"`
 }
 
 type SearchIdsResponse struct {

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MediaRepository ClientService
-
-func (t MediaRepository) Search(ctx ApiContext, criteria Criteria) (*MediaCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/media", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MediaCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MediaRepository struct {
+	*GenericRepository[Media]
 }
 
-func (t MediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaCollection, *http.Response, error) {
+func NewMediaRepository(client *Client) *MediaRepository {
+	return &MediaRepository{
+		GenericRepository: NewGenericRepository[Media](client),
+	}
+}
+
+func (t *MediaRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Media], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "media")
+}
+
+func (t *MediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Media], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,146 +57,118 @@ func (t MediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaCol
 	return c, resp, err
 }
 
-func (t MediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "media")
 }
 
-func (t MediaRepository) Upsert(ctx ApiContext, entity []Media) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media": {
-		Entity:  "media",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MediaRepository) Upsert(ctx ApiContext, entity []Media) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "media")
 }
 
-func (t MediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media": {
-		Entity:  "media",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "media")
 }
 
 type Media struct {
-	CmsPages []CmsPage `json:"cmsPages,omitempty"`
 
-	ProductMedia []ProductMedia `json:"productMedia,omitempty"`
+	AppShippingMethods      []AppShippingMethod  `json:"appShippingMethods,omitempty"`
 
-	AvatarUsers []User `json:"avatarUsers,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CmsSections []CmsSection `json:"cmsSections,omitempty"`
+	ProductManufacturers      []ProductManufacturer  `json:"productManufacturers,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	MailTemplateMedia      []MailTemplateMedia  `json:"mailTemplateMedia,omitempty"`
 
-	ThemeMedia []Theme `json:"themeMedia,omitempty"`
+	Themes      []Theme  `json:"themes,omitempty"`
 
-	MediaType interface{} `json:"mediaType,omitempty"`
+	MediaFolderId      string  `json:"mediaFolderId,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	FileSize      float64  `json:"fileSize,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	MetaData      interface{}  `json:"metaData,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	Alt      string  `json:"alt,omitempty"`
 
-	ProductConfiguratorSettings []ProductConfiguratorSetting `json:"productConfiguratorSettings,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	OrderLineItemDownloads []OrderLineItemDownload `json:"orderLineItemDownloads,omitempty"`
+	HasFile      bool  `json:"hasFile,omitempty"`
 
-	AppShippingMethods []AppShippingMethod `json:"appShippingMethods,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ThumbnailsRo      interface{}  `json:"thumbnailsRo,omitempty"`
 
-	HasFile bool `json:"hasFile,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Thumbnails []MediaThumbnail `json:"thumbnails,omitempty"`
+	Thumbnails      []MediaThumbnail  `json:"thumbnails,omitempty"`
 
-	Themes []Theme `json:"themes,omitempty"`
+	PropertyGroupOptions      []PropertyGroupOption  `json:"propertyGroupOptions,omitempty"`
 
-	MediaFolderId string `json:"mediaFolderId,omitempty"`
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
 
-	MediaFolder *MediaFolder `json:"mediaFolder,omitempty"`
+	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ProductConfiguratorSettings      []ProductConfiguratorSetting  `json:"productConfiguratorSettings,omitempty"`
 
-	MediaTypeRaw interface{} `json:"mediaTypeRaw,omitempty"`
+	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
 
-	Translations []MediaTranslation `json:"translations,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ProductDownloads []ProductDownload `json:"productDownloads,omitempty"`
+	FileName      string  `json:"fileName,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	FileExtension string `json:"fileExtension,omitempty"`
+	ProductDownloads      []ProductDownload  `json:"productDownloads,omitempty"`
 
-	UploadedAt time.Time `json:"uploadedAt,omitempty"`
+	OrderLineItemDownloads      []OrderLineItemDownload  `json:"orderLineItemDownloads,omitempty"`
 
-	DocumentBaseConfigs []DocumentBaseConfig `json:"documentBaseConfigs,omitempty"`
+	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
 
-	ThumbnailsRo interface{} `json:"thumbnailsRo,omitempty"`
+	CmsPages      []CmsPage  `json:"cmsPages,omitempty"`
 
-	MimeType string `json:"mimeType,omitempty"`
+	AppPaymentMethods      []AppPaymentMethod  `json:"appPaymentMethods,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	ThemeMedia      []Theme  `json:"themeMedia,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	MediaTypeRaw      interface{}  `json:"mediaTypeRaw,omitempty"`
 
-	AppPaymentMethods []AppPaymentMethod `json:"appPaymentMethods,omitempty"`
+	User      *User  `json:"user,omitempty"`
 
-	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
+	CmsBlocks      []CmsBlock  `json:"cmsBlocks,omitempty"`
 
-	OrderLineItems []OrderLineItem `json:"orderLineItems,omitempty"`
+	Documents      []Document  `json:"documents,omitempty"`
 
-	CmsBlocks []CmsBlock `json:"cmsBlocks,omitempty"`
+	UserId      string  `json:"userId,omitempty"`
 
-	FileName string `json:"fileName,omitempty"`
+	MediaType      interface{}  `json:"mediaType,omitempty"`
 
-	Alt string `json:"alt,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	Private bool `json:"private,omitempty"`
+	Private      bool  `json:"private,omitempty"`
 
-	Categories []Category `json:"categories,omitempty"`
+	Categories      []Category  `json:"categories,omitempty"`
 
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
+	ProductMedia      []ProductMedia  `json:"productMedia,omitempty"`
 
-	MetaData interface{} `json:"metaData,omitempty"`
+	AvatarUsers      []User  `json:"avatarUsers,omitempty"`
 
-	ProductManufacturers []ProductManufacturer `json:"productManufacturers,omitempty"`
+	MediaFolder      *MediaFolder  `json:"mediaFolder,omitempty"`
 
-	MailTemplateMedia []MailTemplateMedia `json:"mailTemplateMedia,omitempty"`
+	UploadedAt      time.Time  `json:"uploadedAt,omitempty"`
 
-	Documents []Document `json:"documents,omitempty"`
+	Translations      []MediaTranslation  `json:"translations,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	FileSize float64 `json:"fileSize,omitempty"`
+	CmsSections      []CmsSection  `json:"cmsSections,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	FileHash      string  `json:"fileHash,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	PropertyGroupOptions []PropertyGroupOption `json:"propertyGroupOptions,omitempty"`
-}
+	MimeType      string  `json:"mimeType,omitempty"`
 
-type MediaCollection struct {
-	EntityCollection
+	FileExtension      string  `json:"fileExtension,omitempty"`
 
-	Data []Media `json:"data"`
+	Title      string  `json:"title,omitempty"`
+
 }

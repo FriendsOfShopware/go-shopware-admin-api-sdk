@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CountryRepository ClientService
-
-func (t CountryRepository) Search(ctx ApiContext, criteria Criteria) (*CountryCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/country", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CountryCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CountryRepository struct {
+	*GenericRepository[Country]
 }
 
-func (t CountryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CountryCollection, *http.Response, error) {
+func NewCountryRepository(client *Client) *CountryRepository {
+	return &CountryRepository{
+		GenericRepository: NewGenericRepository[Country](client),
+	}
+}
+
+func (t *CountryRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Country], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "country")
+}
+
+func (t *CountryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Country], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,112 +57,84 @@ func (t CountryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Countr
 	return c, resp, err
 }
 
-func (t CountryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/country", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CountryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "country")
 }
 
-func (t CountryRepository) Upsert(ctx ApiContext, entity []Country) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"country": {
-		Entity:  "country",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CountryRepository) Upsert(ctx ApiContext, entity []Country) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "country")
 }
 
-func (t CountryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"country": {
-		Entity:  "country",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CountryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "country")
 }
 
 type Country struct {
-	Translations []CountryTranslation `json:"translations,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	DisplayStateInRegistration      bool  `json:"displayStateInRegistration,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	States      []CountryState  `json:"states,omitempty"`
 
-	VatIdPattern string `json:"vatIdPattern,omitempty"`
+	OrderAddresses      []OrderAddress  `json:"orderAddresses,omitempty"`
 
-	CustomerAddresses []CustomerAddress `json:"customerAddresses,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	CurrencyCountryRoundings []CurrencyCountryRounding `json:"currencyCountryRoundings,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	AddressFormat      interface{}  `json:"addressFormat,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	IsEu      bool  `json:"isEu,omitempty"`
 
-	Iso3 string `json:"iso3,omitempty"`
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
 
-	ForceStateInRegistration bool `json:"forceStateInRegistration,omitempty"`
+	Iso      string  `json:"iso,omitempty"`
 
-	CompanyTax interface{} `json:"companyTax,omitempty"`
+	ForceStateInRegistration      bool  `json:"forceStateInRegistration,omitempty"`
 
-	CheckPostalCodePattern bool `json:"checkPostalCodePattern,omitempty"`
+	CheckPostalCodePattern      bool  `json:"checkPostalCodePattern,omitempty"`
 
-	OrderAddresses []OrderAddress `json:"orderAddresses,omitempty"`
+	TaxRules      []TaxRule  `json:"taxRules,omitempty"`
 
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+	CompanyTax      interface{}  `json:"companyTax,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Translations      []CountryTranslation  `json:"translations,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	TaxRules []TaxRule `json:"taxRules,omitempty"`
+	CustomerTax      interface{}  `json:"customerTax,omitempty"`
 
-	AddressFormat interface{} `json:"addressFormat,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	DisplayStateInRegistration bool `json:"displayStateInRegistration,omitempty"`
+	DefaultPostalCodePattern      string  `json:"defaultPostalCodePattern,omitempty"`
 
-	PostalCodeRequired bool `json:"postalCodeRequired,omitempty"`
+	CurrencyCountryRoundings      []CurrencyCountryRounding  `json:"currencyCountryRoundings,omitempty"`
 
-	AdvancedPostalCodePattern string `json:"advancedPostalCodePattern,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Iso string `json:"iso,omitempty"`
+	CheckAdvancedPostalCodePattern      bool  `json:"checkAdvancedPostalCodePattern,omitempty"`
 
-	VatIdRequired bool `json:"vatIdRequired,omitempty"`
+	CustomerAddresses      []CustomerAddress  `json:"customerAddresses,omitempty"`
 
-	CustomerTax interface{} `json:"customerTax,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	DefaultPostalCodePattern string `json:"defaultPostalCodePattern,omitempty"`
+	VatIdPattern      string  `json:"vatIdPattern,omitempty"`
 
-	States []CountryState `json:"states,omitempty"`
+	ShippingAvailable      bool  `json:"shippingAvailable,omitempty"`
 
-	CheckVatIdPattern bool `json:"checkVatIdPattern,omitempty"`
+	Iso3      string  `json:"iso3,omitempty"`
 
-	CheckAdvancedPostalCodePattern bool `json:"checkAdvancedPostalCodePattern,omitempty"`
+	CheckVatIdPattern      bool  `json:"checkVatIdPattern,omitempty"`
 
-	ShippingAvailable bool `json:"shippingAvailable,omitempty"`
+	PostalCodeRequired      bool  `json:"postalCodeRequired,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	Id      string  `json:"id,omitempty"`
 
-type CountryCollection struct {
-	EntityCollection
+	AdvancedPostalCodePattern      string  `json:"advancedPostalCodePattern,omitempty"`
 
-	Data []Country `json:"data"`
+	VatIdRequired      bool  `json:"vatIdRequired,omitempty"`
+
 }

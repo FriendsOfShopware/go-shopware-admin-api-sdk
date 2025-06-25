@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CustomerGroupRegistrationSalesChannelsRepository ClientService
-
-func (t CustomerGroupRegistrationSalesChannelsRepository) Search(ctx ApiContext, criteria Criteria) (*CustomerGroupRegistrationSalesChannelsCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/customer-group-registration-sales-channels", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CustomerGroupRegistrationSalesChannelsCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CustomerGroupRegistrationSalesChannelsRepository struct {
+	*GenericRepository[CustomerGroupRegistrationSalesChannels]
 }
 
-func (t CustomerGroupRegistrationSalesChannelsRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomerGroupRegistrationSalesChannelsCollection, *http.Response, error) {
+func NewCustomerGroupRegistrationSalesChannelsRepository(client *Client) *CustomerGroupRegistrationSalesChannelsRepository {
+	return &CustomerGroupRegistrationSalesChannelsRepository{
+		GenericRepository: NewGenericRepository[CustomerGroupRegistrationSalesChannels](client),
+	}
+}
+
+func (t *CustomerGroupRegistrationSalesChannelsRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomerGroupRegistrationSalesChannels], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "customer-group-registration-sales-channels")
+}
+
+func (t *CustomerGroupRegistrationSalesChannelsRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomerGroupRegistrationSalesChannels], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,58 +57,28 @@ func (t CustomerGroupRegistrationSalesChannelsRepository) SearchAll(ctx ApiConte
 	return c, resp, err
 }
 
-func (t CustomerGroupRegistrationSalesChannelsRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/customer-group-registration-sales-channels", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CustomerGroupRegistrationSalesChannelsRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "customer-group-registration-sales-channels")
 }
 
-func (t CustomerGroupRegistrationSalesChannelsRepository) Upsert(ctx ApiContext, entity []CustomerGroupRegistrationSalesChannels) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"customer_group_registration_sales_channels": {
-		Entity:  "customer_group_registration_sales_channels",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CustomerGroupRegistrationSalesChannelsRepository) Upsert(ctx ApiContext, entity []CustomerGroupRegistrationSalesChannels) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "customer_group_registration_sales_channels")
 }
 
-func (t CustomerGroupRegistrationSalesChannelsRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"customer_group_registration_sales_channels": {
-		Entity:  "customer_group_registration_sales_channels",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CustomerGroupRegistrationSalesChannelsRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "customer_group_registration_sales_channels")
 }
 
 type CustomerGroupRegistrationSalesChannels struct {
-	SalesChannelId string `json:"salesChannelId,omitempty"`
 
-	CustomerGroup *CustomerGroup `json:"customerGroup,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	CustomerGroup      *CustomerGroup  `json:"customerGroup,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	CustomerGroupId string `json:"customerGroupId,omitempty"`
-}
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-type CustomerGroupRegistrationSalesChannelsCollection struct {
-	EntityCollection
+	CustomerGroupId      string  `json:"customerGroupId,omitempty"`
 
-	Data []CustomerGroupRegistrationSalesChannels `json:"data"`
 }

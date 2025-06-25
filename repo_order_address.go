@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type OrderAddressRepository ClientService
-
-func (t OrderAddressRepository) Search(ctx ApiContext, criteria Criteria) (*OrderAddressCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/order-address", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(OrderAddressCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type OrderAddressRepository struct {
+	*GenericRepository[OrderAddress]
 }
 
-func (t OrderAddressRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderAddressCollection, *http.Response, error) {
+func NewOrderAddressRepository(client *Client) *OrderAddressRepository {
+	return &OrderAddressRepository{
+		GenericRepository: NewGenericRepository[OrderAddress](client),
+	}
+}
+
+func (t *OrderAddressRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderAddress], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "order-address")
+}
+
+func (t *OrderAddressRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderAddress], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,102 +57,74 @@ func (t OrderAddressRepository) SearchAll(ctx ApiContext, criteria Criteria) (*O
 	return c, resp, err
 }
 
-func (t OrderAddressRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-address", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *OrderAddressRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "order-address")
 }
 
-func (t OrderAddressRepository) Upsert(ctx ApiContext, entity []OrderAddress) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_address": {
-		Entity:  "order_address",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *OrderAddressRepository) Upsert(ctx ApiContext, entity []OrderAddress) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "order_address")
 }
 
-func (t OrderAddressRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_address": {
-		Entity:  "order_address",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *OrderAddressRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "order_address")
 }
 
 type OrderAddress struct {
-	FirstName string `json:"firstName,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Zipcode      string  `json:"zipcode,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Company      string  `json:"company,omitempty"`
 
-	CountryId string `json:"countryId,omitempty"`
+	Department      string  `json:"department,omitempty"`
 
-	CountryStateId string `json:"countryStateId,omitempty"`
+	AdditionalAddressLine1      string  `json:"additionalAddressLine1,omitempty"`
 
-	VatId string `json:"vatId,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	AdditionalAddressLine1 string `json:"additionalAddressLine1,omitempty"`
+	CountryId      string  `json:"countryId,omitempty"`
 
-	Country *Country `json:"country,omitempty"`
+	City      string  `json:"city,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	VatId      string  `json:"vatId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	PhoneNumber      string  `json:"phoneNumber,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	Order      *Order  `json:"order,omitempty"`
 
-	OrderDeliveries []OrderDelivery `json:"orderDeliveries,omitempty"`
+	OrderDeliveries      []OrderDelivery  `json:"orderDeliveries,omitempty"`
 
-	PhoneNumber string `json:"phoneNumber,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
 
-	AdditionalAddressLine2 string `json:"additionalAddressLine2,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	CountryState *CountryState `json:"countryState,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
 
-	SalutationId string `json:"salutationId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	CountryStateId      string  `json:"countryStateId,omitempty"`
 
-	Street string `json:"street,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SalutationId      string  `json:"salutationId,omitempty"`
 
-	Company string `json:"company,omitempty"`
+	AdditionalAddressLine2      string  `json:"additionalAddressLine2,omitempty"`
 
-	Department string `json:"department,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	CountryState      *CountryState  `json:"countryState,omitempty"`
 
-	City string `json:"city,omitempty"`
+	Salutation      *Salutation  `json:"salutation,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Zipcode string `json:"zipcode,omitempty"`
-}
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
 
-type OrderAddressCollection struct {
-	EntityCollection
+	LastName      string  `json:"lastName,omitempty"`
 
-	Data []OrderAddress `json:"data"`
+	Street      string  `json:"street,omitempty"`
+
 }

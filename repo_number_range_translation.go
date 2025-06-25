@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type NumberRangeTranslationRepository ClientService
-
-func (t NumberRangeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*NumberRangeTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/number-range-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(NumberRangeTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type NumberRangeTranslationRepository struct {
+	*GenericRepository[NumberRangeTranslation]
 }
 
-func (t NumberRangeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NumberRangeTranslationCollection, *http.Response, error) {
+func NewNumberRangeTranslationRepository(client *Client) *NumberRangeTranslationRepository {
+	return &NumberRangeTranslationRepository{
+		GenericRepository: NewGenericRepository[NumberRangeTranslation](client),
+	}
+}
+
+func (t *NumberRangeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[NumberRangeTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "number-range-translation")
+}
+
+func (t *NumberRangeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[NumberRangeTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t NumberRangeTranslationRepository) SearchAll(ctx ApiContext, criteria Cri
 	return c, resp, err
 }
 
-func (t NumberRangeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/number-range-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *NumberRangeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "number-range-translation")
 }
 
-func (t NumberRangeTranslationRepository) Upsert(ctx ApiContext, entity []NumberRangeTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"number_range_translation": {
-		Entity:  "number_range_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *NumberRangeTranslationRepository) Upsert(ctx ApiContext, entity []NumberRangeTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "number_range_translation")
 }
 
-func (t NumberRangeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"number_range_translation": {
-		Entity:  "number_range_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *NumberRangeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "number_range_translation")
 }
 
 type NumberRangeTranslation struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	NumberRange *NumberRange `json:"numberRange,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	NumberRangeId      string  `json:"numberRangeId,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	NumberRange      *NumberRange  `json:"numberRange,omitempty"`
 
-	NumberRangeId string `json:"numberRangeId,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type NumberRangeTranslationCollection struct {
-	EntityCollection
+	Language      *Language  `json:"language,omitempty"`
 
-	Data []NumberRangeTranslation `json:"data"`
 }

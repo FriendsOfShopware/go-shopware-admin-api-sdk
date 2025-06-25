@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type TaxProviderRepository ClientService
-
-func (t TaxProviderRepository) Search(ctx ApiContext, criteria Criteria) (*TaxProviderCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/tax-provider", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(TaxProviderCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type TaxProviderRepository struct {
+	*GenericRepository[TaxProvider]
 }
 
-func (t TaxProviderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TaxProviderCollection, *http.Response, error) {
+func NewTaxProviderRepository(client *Client) *TaxProviderRepository {
+	return &TaxProviderRepository{
+		GenericRepository: NewGenericRepository[TaxProvider](client),
+	}
+}
+
+func (t *TaxProviderRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[TaxProvider], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "tax-provider")
+}
+
+func (t *TaxProviderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[TaxProvider], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,78 +57,48 @@ func (t TaxProviderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Ta
 	return c, resp, err
 }
 
-func (t TaxProviderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/tax-provider", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *TaxProviderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "tax-provider")
 }
 
-func (t TaxProviderRepository) Upsert(ctx ApiContext, entity []TaxProvider) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax_provider": {
-		Entity:  "tax_provider",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *TaxProviderRepository) Upsert(ctx ApiContext, entity []TaxProvider) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "tax_provider")
 }
 
-func (t TaxProviderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax_provider": {
-		Entity:  "tax_provider",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *TaxProviderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "tax_provider")
 }
 
 type TaxProvider struct {
-	Id string `json:"id,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
+	ProcessUrl      string  `json:"processUrl,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Identifier string `json:"identifier,omitempty"`
+	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ProcessUrl string `json:"processUrl,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
+	Identifier      string  `json:"identifier,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Translations      []TaxProviderTranslation  `json:"translations,omitempty"`
 
-	Translations []TaxProviderTranslation `json:"translations,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
-}
+	Active      bool  `json:"active,omitempty"`
 
-type TaxProviderCollection struct {
-	EntityCollection
+	Name      string  `json:"name,omitempty"`
 
-	Data []TaxProvider `json:"data"`
 }

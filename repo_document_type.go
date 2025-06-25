@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type DocumentTypeRepository ClientService
-
-func (t DocumentTypeRepository) Search(ctx ApiContext, criteria Criteria) (*DocumentTypeCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/document-type", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(DocumentTypeCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type DocumentTypeRepository struct {
+	*GenericRepository[DocumentType]
 }
 
-func (t DocumentTypeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*DocumentTypeCollection, *http.Response, error) {
+func NewDocumentTypeRepository(client *Client) *DocumentTypeRepository {
+	return &DocumentTypeRepository{
+		GenericRepository: NewGenericRepository[DocumentType](client),
+	}
+}
+
+func (t *DocumentTypeRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[DocumentType], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "document-type")
+}
+
+func (t *DocumentTypeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[DocumentType], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t DocumentTypeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*D
 	return c, resp, err
 }
 
-func (t DocumentTypeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/document-type", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *DocumentTypeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "document-type")
 }
 
-func (t DocumentTypeRepository) Upsert(ctx ApiContext, entity []DocumentType) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"document_type": {
-		Entity:  "document_type",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *DocumentTypeRepository) Upsert(ctx ApiContext, entity []DocumentType) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "document_type")
 }
 
-func (t DocumentTypeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"document_type": {
-		Entity:  "document_type",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *DocumentTypeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "document_type")
 }
 
 type DocumentType struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	Translations []DocumentTypeTranslation `json:"translations,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Documents []Document `json:"documents,omitempty"`
+	Translations      []DocumentTypeTranslation  `json:"translations,omitempty"`
 
-	DocumentBaseConfigs []DocumentBaseConfig `json:"documentBaseConfigs,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	Documents      []Document  `json:"documents,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	DocumentBaseConfigs      []DocumentBaseConfig  `json:"documentBaseConfigs,omitempty"`
 
-	DocumentBaseConfigSalesChannels []DocumentBaseConfigSalesChannel `json:"documentBaseConfigSalesChannels,omitempty"`
+	DocumentBaseConfigSalesChannels      []DocumentBaseConfigSalesChannel  `json:"documentBaseConfigSalesChannels,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-type DocumentTypeCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []DocumentType `json:"data"`
 }

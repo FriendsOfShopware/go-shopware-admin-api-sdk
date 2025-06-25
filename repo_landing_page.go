@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type LandingPageRepository ClientService
-
-func (t LandingPageRepository) Search(ctx ApiContext, criteria Criteria) (*LandingPageCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/landing-page", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(LandingPageCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type LandingPageRepository struct {
+	*GenericRepository[LandingPage]
 }
 
-func (t LandingPageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LandingPageCollection, *http.Response, error) {
+func NewLandingPageRepository(client *Client) *LandingPageRepository {
+	return &LandingPageRepository{
+		GenericRepository: NewGenericRepository[LandingPage](client),
+	}
+}
+
+func (t *LandingPageRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[LandingPage], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "landing-page")
+}
+
+func (t *LandingPageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[LandingPage], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,88 +57,58 @@ func (t LandingPageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*La
 	return c, resp, err
 }
 
-func (t LandingPageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/landing-page", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *LandingPageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "landing-page")
 }
 
-func (t LandingPageRepository) Upsert(ctx ApiContext, entity []LandingPage) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"landing_page": {
-		Entity:  "landing_page",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *LandingPageRepository) Upsert(ctx ApiContext, entity []LandingPage) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "landing_page")
 }
 
-func (t LandingPageRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"landing_page": {
-		Entity:  "landing_page",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *LandingPageRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "landing_page")
 }
 
 type LandingPage struct {
-	MetaTitle string `json:"metaTitle,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-	CmsPageId string `json:"cmsPageId,omitempty"`
+	Translations      []LandingPageTranslation  `json:"translations,omitempty"`
 
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CmsPage *CmsPage `json:"cmsPage,omitempty"`
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Url      string  `json:"url,omitempty"`
 
-	SeoUrls []SeoUrl `json:"seoUrls,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	Translations []LandingPageTranslation `json:"translations,omitempty"`
+	CmsPageId      string  `json:"cmsPageId,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	SeoUrls      []SeoUrl  `json:"seoUrls,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
-}
+	Tags      []Tag  `json:"tags,omitempty"`
 
-type LandingPageCollection struct {
-	EntityCollection
+	CmsPage      *CmsPage  `json:"cmsPage,omitempty"`
 
-	Data []LandingPage `json:"data"`
 }

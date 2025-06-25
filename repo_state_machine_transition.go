@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type StateMachineTransitionRepository ClientService
-
-func (t StateMachineTransitionRepository) Search(ctx ApiContext, criteria Criteria) (*StateMachineTransitionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/state-machine-transition", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(StateMachineTransitionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type StateMachineTransitionRepository struct {
+	*GenericRepository[StateMachineTransition]
 }
 
-func (t StateMachineTransitionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*StateMachineTransitionCollection, *http.Response, error) {
+func NewStateMachineTransitionRepository(client *Client) *StateMachineTransitionRepository {
+	return &StateMachineTransitionRepository{
+		GenericRepository: NewGenericRepository[StateMachineTransition](client),
+	}
+}
+
+func (t *StateMachineTransitionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[StateMachineTransition], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "state-machine-transition")
+}
+
+func (t *StateMachineTransitionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[StateMachineTransition], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t StateMachineTransitionRepository) SearchAll(ctx ApiContext, criteria Cri
 	return c, resp, err
 }
 
-func (t StateMachineTransitionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/state-machine-transition", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *StateMachineTransitionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "state-machine-transition")
 }
 
-func (t StateMachineTransitionRepository) Upsert(ctx ApiContext, entity []StateMachineTransition) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"state_machine_transition": {
-		Entity:  "state_machine_transition",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *StateMachineTransitionRepository) Upsert(ctx ApiContext, entity []StateMachineTransition) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "state_machine_transition")
 }
 
-func (t StateMachineTransitionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"state_machine_transition": {
-		Entity:  "state_machine_transition",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *StateMachineTransitionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "state_machine_transition")
 }
 
 type StateMachineTransition struct {
-	StateMachine *StateMachine `json:"stateMachine,omitempty"`
 
-	FromStateId string `json:"fromStateId,omitempty"`
+	ToStateMachineState      *StateMachineState  `json:"toStateMachineState,omitempty"`
 
-	ToStateId string `json:"toStateId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ToStateMachineState *StateMachineState `json:"toStateMachineState,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ActionName      string  `json:"actionName,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	StateMachineId      string  `json:"stateMachineId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	StateMachine      *StateMachine  `json:"stateMachine,omitempty"`
 
-	ActionName string `json:"actionName,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	StateMachineId string `json:"stateMachineId,omitempty"`
+	FromStateId      string  `json:"fromStateId,omitempty"`
 
-	FromStateMachineState *StateMachineState `json:"fromStateMachineState,omitempty"`
-}
+	FromStateMachineState      *StateMachineState  `json:"fromStateMachineState,omitempty"`
 
-type StateMachineTransitionCollection struct {
-	EntityCollection
+	ToStateId      string  `json:"toStateId,omitempty"`
 
-	Data []StateMachineTransition `json:"data"`
 }

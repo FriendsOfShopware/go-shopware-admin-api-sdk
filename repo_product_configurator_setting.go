@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductConfiguratorSettingRepository ClientService
-
-func (t ProductConfiguratorSettingRepository) Search(ctx ApiContext, criteria Criteria) (*ProductConfiguratorSettingCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-configurator-setting", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductConfiguratorSettingCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductConfiguratorSettingRepository struct {
+	*GenericRepository[ProductConfiguratorSetting]
 }
 
-func (t ProductConfiguratorSettingRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductConfiguratorSettingCollection, *http.Response, error) {
+func NewProductConfiguratorSettingRepository(client *Client) *ProductConfiguratorSettingRepository {
+	return &ProductConfiguratorSettingRepository{
+		GenericRepository: NewGenericRepository[ProductConfiguratorSetting](client),
+	}
+}
+
+func (t *ProductConfiguratorSettingRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductConfiguratorSetting], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-configurator-setting")
+}
+
+func (t *ProductConfiguratorSettingRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductConfiguratorSetting], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,76 +57,46 @@ func (t ProductConfiguratorSettingRepository) SearchAll(ctx ApiContext, criteria
 	return c, resp, err
 }
 
-func (t ProductConfiguratorSettingRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-configurator-setting", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductConfiguratorSettingRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-configurator-setting")
 }
 
-func (t ProductConfiguratorSettingRepository) Upsert(ctx ApiContext, entity []ProductConfiguratorSetting) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_configurator_setting": {
-		Entity:  "product_configurator_setting",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductConfiguratorSettingRepository) Upsert(ctx ApiContext, entity []ProductConfiguratorSetting) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_configurator_setting")
 }
 
-func (t ProductConfiguratorSettingRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_configurator_setting": {
-		Entity:  "product_configurator_setting",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductConfiguratorSettingRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_configurator_setting")
 }
 
 type ProductConfiguratorSetting struct {
-	Id string `json:"id,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Option      *PropertyGroupOption  `json:"option,omitempty"`
 
-	OptionId string `json:"optionId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	VersionId      string  `json:"versionId,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	OptionId      string  `json:"optionId,omitempty"`
 
-	Price interface{} `json:"price,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	Option *PropertyGroupOption `json:"option,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	ProductId      string  `json:"productId,omitempty"`
 
-type ProductConfiguratorSettingCollection struct {
-	EntityCollection
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Data []ProductConfiguratorSetting `json:"data"`
 }

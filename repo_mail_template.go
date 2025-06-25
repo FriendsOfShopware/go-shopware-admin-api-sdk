@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MailTemplateRepository ClientService
-
-func (t MailTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*MailTemplateCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/mail-template", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MailTemplateCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MailTemplateRepository struct {
+	*GenericRepository[MailTemplate]
 }
 
-func (t MailTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MailTemplateCollection, *http.Response, error) {
+func NewMailTemplateRepository(client *Client) *MailTemplateRepository {
+	return &MailTemplateRepository{
+		GenericRepository: NewGenericRepository[MailTemplate](client),
+	}
+}
+
+func (t *MailTemplateRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MailTemplate], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "mail-template")
+}
+
+func (t *MailTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MailTemplate], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,78 +57,48 @@ func (t MailTemplateRepository) SearchAll(ctx ApiContext, criteria Criteria) (*M
 	return c, resp, err
 }
 
-func (t MailTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/mail-template", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MailTemplateRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "mail-template")
 }
 
-func (t MailTemplateRepository) Upsert(ctx ApiContext, entity []MailTemplate) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"mail_template": {
-		Entity:  "mail_template",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MailTemplateRepository) Upsert(ctx ApiContext, entity []MailTemplate) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "mail_template")
 }
 
-func (t MailTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"mail_template": {
-		Entity:  "mail_template",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MailTemplateRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "mail_template")
 }
 
 type MailTemplate struct {
-	SenderName string `json:"senderName,omitempty"`
 
-	Translations []MailTemplateTranslation `json:"translations,omitempty"`
+	Translations      []MailTemplateTranslation  `json:"translations,omitempty"`
 
-	MailTemplateType *MailTemplateType `json:"mailTemplateType,omitempty"`
+	SystemDefault      bool  `json:"systemDefault,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SenderName      string  `json:"senderName,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	ContentPlain string `json:"contentPlain,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	MailTemplateTypeId      string  `json:"mailTemplateTypeId,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Subject      string  `json:"subject,omitempty"`
 
-	MailTemplateTypeId string `json:"mailTemplateTypeId,omitempty"`
+	Media      []MailTemplateMedia  `json:"media,omitempty"`
 
-	SystemDefault bool `json:"systemDefault,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Subject string `json:"subject,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	ContentHtml string `json:"contentHtml,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ContentHtml      string  `json:"contentHtml,omitempty"`
 
-	Media []MailTemplateMedia `json:"media,omitempty"`
+	MailTemplateType      *MailTemplateType  `json:"mailTemplateType,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	Id      string  `json:"id,omitempty"`
 
-type MailTemplateCollection struct {
-	EntityCollection
+	ContentPlain      string  `json:"contentPlain,omitempty"`
 
-	Data []MailTemplate `json:"data"`
 }

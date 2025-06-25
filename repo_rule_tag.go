@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type RuleTagRepository ClientService
-
-func (t RuleTagRepository) Search(ctx ApiContext, criteria Criteria) (*RuleTagCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/rule-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(RuleTagCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type RuleTagRepository struct {
+	*GenericRepository[RuleTag]
 }
 
-func (t RuleTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*RuleTagCollection, *http.Response, error) {
+func NewRuleTagRepository(client *Client) *RuleTagRepository {
+	return &RuleTagRepository{
+		GenericRepository: NewGenericRepository[RuleTag](client),
+	}
+}
+
+func (t *RuleTagRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[RuleTag], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "rule-tag")
+}
+
+func (t *RuleTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[RuleTag], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t RuleTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*RuleTa
 	return c, resp, err
 }
 
-func (t RuleTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/rule-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *RuleTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "rule-tag")
 }
 
-func (t RuleTagRepository) Upsert(ctx ApiContext, entity []RuleTag) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"rule_tag": {
-		Entity:  "rule_tag",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *RuleTagRepository) Upsert(ctx ApiContext, entity []RuleTag) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "rule_tag")
 }
 
-func (t RuleTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"rule_tag": {
-		Entity:  "rule_tag",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *RuleTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "rule_tag")
 }
 
 type RuleTag struct {
-	RuleId string `json:"ruleId,omitempty"`
 
-	TagId string `json:"tagId,omitempty"`
+	Tag      *Tag  `json:"tag,omitempty"`
 
-	Rule *Rule `json:"rule,omitempty"`
+	RuleId      string  `json:"ruleId,omitempty"`
 
-	Tag *Tag `json:"tag,omitempty"`
-}
+	TagId      string  `json:"tagId,omitempty"`
 
-type RuleTagCollection struct {
-	EntityCollection
+	Rule      *Rule  `json:"rule,omitempty"`
 
-	Data []RuleTag `json:"data"`
 }

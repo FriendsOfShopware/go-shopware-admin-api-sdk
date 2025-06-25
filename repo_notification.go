@@ -5,25 +5,21 @@ import (
 	"time"
 )
 
-type NotificationRepository ClientService
-
-func (t NotificationRepository) Search(ctx ApiContext, criteria Criteria) (*NotificationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/notification", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(NotificationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type NotificationRepository struct {
+	*GenericRepository[Notification]
 }
 
-func (t NotificationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NotificationCollection, *http.Response, error) {
+func NewNotificationRepository(client *Client) *NotificationRepository {
+	return &NotificationRepository{
+		GenericRepository: NewGenericRepository[Notification](client),
+	}
+}
+
+func (t *NotificationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Notification], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "notification")
+}
+
+func (t *NotificationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Notification], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -59,70 +55,26 @@ func (t NotificationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*N
 	return c, resp, err
 }
 
-func (t NotificationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/notification", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *NotificationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "notification")
 }
 
-func (t NotificationRepository) Upsert(ctx ApiContext, entity []Notification) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"notification": {
-		Entity:  "notification",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *NotificationRepository) Upsert(ctx ApiContext, entity []Notification) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "notification")
 }
 
-func (t NotificationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"notification": {
-		Entity:  "notification",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *NotificationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "notification")
 }
 
 type Notification struct {
-	CreatedByUser *User `json:"createdByUser,omitempty"`
-
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-
-	Status string `json:"status,omitempty"`
-
-	Message string `json:"message,omitempty"`
-
-	AdminOnly bool `json:"adminOnly,omitempty"`
-
-	CreatedByIntegrationId string `json:"createdByIntegrationId,omitempty"`
-
+	Id             string    `json:"id,omitempty"`
+	Status         string    `json:"status,omitempty"`
+	Message        string    `json:"message,omitempty"`
+	AdminOnly      bool      `json:"adminOnly,omitempty"`
+	RequiredPrivileges []string `json:"requiredPrivileges,omitempty"`
 	CreatedByIntegration *Integration `json:"createdByIntegration,omitempty"`
-
-	Id string `json:"id,omitempty"`
-
-	RequiredPrivileges interface{} `json:"requiredPrivileges,omitempty"`
-
-	CreatedByUserId string `json:"createdByUserId,omitempty"`
-
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
-
-type NotificationCollection struct {
-	EntityCollection
-
-	Data []Notification `json:"data"`
+	CreatedByUser *User `json:"createdByUser,omitempty"`
+	CreatedAt      time.Time `json:"createdAt,omitempty"`
+	UpdatedAt      time.Time `json:"updatedAt,omitempty"`
 }
