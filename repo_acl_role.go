@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AclRoleRepository ClientService
-
-func (t AclRoleRepository) Search(ctx ApiContext, criteria Criteria) (*AclRoleCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/acl-role", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AclRoleCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AclRoleRepository struct {
+	*GenericRepository[AclRole]
 }
 
-func (t AclRoleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AclRoleCollection, *http.Response, error) {
+func NewAclRoleRepository(client *Client) *AclRoleRepository {
+	return &AclRoleRepository{
+		GenericRepository: NewGenericRepository[AclRole](client),
+	}
+}
+
+func (t *AclRoleRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AclRole], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "acl-role")
+}
+
+func (t *AclRoleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AclRole], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,68 +57,38 @@ func (t AclRoleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AclRol
 	return c, resp, err
 }
 
-func (t AclRoleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/acl-role", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AclRoleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "acl-role")
 }
 
-func (t AclRoleRepository) Upsert(ctx ApiContext, entity []AclRole) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"acl_role": {
-		Entity:  "acl_role",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AclRoleRepository) Upsert(ctx ApiContext, entity []AclRole) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "acl_role")
 }
 
-func (t AclRoleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"acl_role": {
-		Entity:  "acl_role",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AclRoleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "acl_role")
 }
 
 type AclRole struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	DeletedAt time.Time `json:"deletedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Users []User `json:"users,omitempty"`
+	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Integrations []Integration `json:"integrations,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Integrations      []Integration  `json:"integrations,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Privileges interface{} `json:"privileges,omitempty"`
+	Privileges      interface{}  `json:"privileges,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type AclRoleCollection struct {
-	EntityCollection
+	Users      []User  `json:"users,omitempty"`
 
-	Data []AclRole `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PromotionSetgroupRepository ClientService
-
-func (t PromotionSetgroupRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionSetgroupCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion-setgroup", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionSetgroupCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionSetgroupRepository struct {
+	*GenericRepository[PromotionSetgroup]
 }
 
-func (t PromotionSetgroupRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionSetgroupCollection, *http.Response, error) {
+func NewPromotionSetgroupRepository(client *Client) *PromotionSetgroupRepository {
+	return &PromotionSetgroupRepository{
+		GenericRepository: NewGenericRepository[PromotionSetgroup](client),
+	}
+}
+
+func (t *PromotionSetgroupRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionSetgroup], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion-setgroup")
+}
+
+func (t *PromotionSetgroupRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionSetgroup], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t PromotionSetgroupRepository) SearchAll(ctx ApiContext, criteria Criteria
 	return c, resp, err
 }
 
-func (t PromotionSetgroupRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-setgroup", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionSetgroupRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion-setgroup")
 }
 
-func (t PromotionSetgroupRepository) Upsert(ctx ApiContext, entity []PromotionSetgroup) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_setgroup": {
-		Entity:  "promotion_setgroup",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionSetgroupRepository) Upsert(ctx ApiContext, entity []PromotionSetgroup) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion_setgroup")
 }
 
-func (t PromotionSetgroupRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_setgroup": {
-		Entity:  "promotion_setgroup",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionSetgroupRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion_setgroup")
 }
 
 type PromotionSetgroup struct {
-	SetGroupRules []Rule `json:"setGroupRules,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	PackagerKey string `json:"packagerKey,omitempty"`
+	PackagerKey      string  `json:"packagerKey,omitempty"`
 
-	SorterKey string `json:"sorterKey,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	Value float64 `json:"value,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SetGroupRules      []Rule  `json:"setGroupRules,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	SorterKey      string  `json:"sorterKey,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type PromotionSetgroupCollection struct {
-	EntityCollection
+	Value      float64  `json:"value,omitempty"`
 
-	Data []PromotionSetgroup `json:"data"`
 }

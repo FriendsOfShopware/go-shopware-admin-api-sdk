@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type PromotionDiscountRuleRepository ClientService
-
-func (t PromotionDiscountRuleRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionDiscountRuleCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion-discount-rule", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionDiscountRuleCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionDiscountRuleRepository struct {
+	*GenericRepository[PromotionDiscountRule]
 }
 
-func (t PromotionDiscountRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionDiscountRuleCollection, *http.Response, error) {
+func NewPromotionDiscountRuleRepository(client *Client) *PromotionDiscountRuleRepository {
+	return &PromotionDiscountRuleRepository{
+		GenericRepository: NewGenericRepository[PromotionDiscountRule](client),
+	}
+}
+
+func (t *PromotionDiscountRuleRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionDiscountRule], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion-discount-rule")
+}
+
+func (t *PromotionDiscountRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionDiscountRule], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t PromotionDiscountRuleRepository) SearchAll(ctx ApiContext, criteria Crit
 	return c, resp, err
 }
 
-func (t PromotionDiscountRuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-discount-rule", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionDiscountRuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion-discount-rule")
 }
 
-func (t PromotionDiscountRuleRepository) Upsert(ctx ApiContext, entity []PromotionDiscountRule) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_discount_rule": {
-		Entity:  "promotion_discount_rule",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionDiscountRuleRepository) Upsert(ctx ApiContext, entity []PromotionDiscountRule) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion_discount_rule")
 }
 
-func (t PromotionDiscountRuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_discount_rule": {
-		Entity:  "promotion_discount_rule",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionDiscountRuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion_discount_rule")
 }
 
 type PromotionDiscountRule struct {
-	DiscountId string `json:"discountId,omitempty"`
 
-	RuleId string `json:"ruleId,omitempty"`
+	Discount      *PromotionDiscount  `json:"discount,omitempty"`
 
-	Discount *PromotionDiscount `json:"discount,omitempty"`
+	DiscountId      string  `json:"discountId,omitempty"`
 
-	Rule *Rule `json:"rule,omitempty"`
-}
+	Rule      *Rule  `json:"rule,omitempty"`
 
-type PromotionDiscountRuleCollection struct {
-	EntityCollection
+	RuleId      string  `json:"ruleId,omitempty"`
 
-	Data []PromotionDiscountRule `json:"data"`
 }

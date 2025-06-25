@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PromotionTranslationRepository ClientService
-
-func (t PromotionTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionTranslationRepository struct {
+	*GenericRepository[PromotionTranslation]
 }
 
-func (t PromotionTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionTranslationCollection, *http.Response, error) {
+func NewPromotionTranslationRepository(client *Client) *PromotionTranslationRepository {
+	return &PromotionTranslationRepository{
+		GenericRepository: NewGenericRepository[PromotionTranslation](client),
+	}
+}
+
+func (t *PromotionTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion-translation")
+}
+
+func (t *PromotionTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,64 +57,34 @@ func (t PromotionTranslationRepository) SearchAll(ctx ApiContext, criteria Crite
 	return c, resp, err
 }
 
-func (t PromotionTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion-translation")
 }
 
-func (t PromotionTranslationRepository) Upsert(ctx ApiContext, entity []PromotionTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_translation": {
-		Entity:  "promotion_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionTranslationRepository) Upsert(ctx ApiContext, entity []PromotionTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion_translation")
 }
 
-func (t PromotionTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_translation": {
-		Entity:  "promotion_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion_translation")
 }
 
 type PromotionTranslation struct {
-	LanguageId string `json:"languageId,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
-}
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-type PromotionTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []PromotionTranslation `json:"data"`
 }

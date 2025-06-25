@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CmsSectionRepository ClientService
-
-func (t CmsSectionRepository) Search(ctx ApiContext, criteria Criteria) (*CmsSectionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/cms-section", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CmsSectionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CmsSectionRepository struct {
+	*GenericRepository[CmsSection]
 }
 
-func (t CmsSectionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsSectionCollection, *http.Response, error) {
+func NewCmsSectionRepository(client *Client) *CmsSectionRepository {
+	return &CmsSectionRepository{
+		GenericRepository: NewGenericRepository[CmsSection](client),
+	}
+}
+
+func (t *CmsSectionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CmsSection], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "cms-section")
+}
+
+func (t *CmsSectionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CmsSection], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,90 +57,60 @@ func (t CmsSectionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Cms
 	return c, resp, err
 }
 
-func (t CmsSectionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/cms-section", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CmsSectionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "cms-section")
 }
 
-func (t CmsSectionRepository) Upsert(ctx ApiContext, entity []CmsSection) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"cms_section": {
-		Entity:  "cms_section",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CmsSectionRepository) Upsert(ctx ApiContext, entity []CmsSection) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "cms_section")
 }
 
-func (t CmsSectionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"cms_section": {
-		Entity:  "cms_section",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CmsSectionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "cms_section")
 }
 
 type CmsSection struct {
-	Visibility interface{} `json:"visibility,omitempty"`
 
-	BackgroundMedia *Media `json:"backgroundMedia,omitempty"`
+	BackgroundColor      string  `json:"backgroundColor,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	BackgroundMedia      *Media  `json:"backgroundMedia,omitempty"`
 
-	MobileBehavior string `json:"mobileBehavior,omitempty"`
+	BackgroundMediaId      string  `json:"backgroundMediaId,omitempty"`
 
-	BackgroundMediaId string `json:"backgroundMediaId,omitempty"`
+	BackgroundMediaMode      string  `json:"backgroundMediaMode,omitempty"`
 
-	BackgroundMediaMode string `json:"backgroundMediaMode,omitempty"`
+	Blocks      []CmsBlock  `json:"blocks,omitempty"`
 
-	SizingMode string `json:"sizingMode,omitempty"`
+	CmsPageVersionId      string  `json:"cmsPageVersionId,omitempty"`
 
-	Blocks []CmsBlock `json:"blocks,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CmsPageVersionId string `json:"cmsPageVersionId,omitempty"`
+	CssClass      string  `json:"cssClass,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	Locked      bool  `json:"locked,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	MobileBehavior      string  `json:"mobileBehavior,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	PageId string `json:"pageId,omitempty"`
+	Page      *CmsPage  `json:"page,omitempty"`
 
-	Page *CmsPage `json:"page,omitempty"`
+	PageId      string  `json:"pageId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	SizingMode      string  `json:"sizingMode,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	BackgroundColor string `json:"backgroundColor,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CssClass string `json:"cssClass,omitempty"`
-}
+	VersionId      string  `json:"versionId,omitempty"`
 
-type CmsSectionCollection struct {
-	EntityCollection
+	Visibility      interface{}  `json:"visibility,omitempty"`
 
-	Data []CmsSection `json:"data"`
 }

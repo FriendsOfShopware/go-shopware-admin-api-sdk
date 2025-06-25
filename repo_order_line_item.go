@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type OrderLineItemRepository ClientService
-
-func (t OrderLineItemRepository) Search(ctx ApiContext, criteria Criteria) (*OrderLineItemCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/order-line-item", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(OrderLineItemCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type OrderLineItemRepository struct {
+	*GenericRepository[OrderLineItem]
 }
 
-func (t OrderLineItemRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderLineItemCollection, *http.Response, error) {
+func NewOrderLineItemRepository(client *Client) *OrderLineItemRepository {
+	return &OrderLineItemRepository{
+		GenericRepository: NewGenericRepository[OrderLineItem](client),
+	}
+}
+
+func (t *OrderLineItemRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderLineItem], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "order-line-item")
+}
+
+func (t *OrderLineItemRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderLineItem], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,124 +57,94 @@ func (t OrderLineItemRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t OrderLineItemRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-line-item", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *OrderLineItemRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "order-line-item")
 }
 
-func (t OrderLineItemRepository) Upsert(ctx ApiContext, entity []OrderLineItem) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_line_item": {
-		Entity:  "order_line_item",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *OrderLineItemRepository) Upsert(ctx ApiContext, entity []OrderLineItem) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "order_line_item")
 }
 
-func (t OrderLineItemRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_line_item": {
-		Entity:  "order_line_item",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *OrderLineItemRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "order_line_item")
 }
 
 type OrderLineItem struct {
-	CreatedAt time.Time `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Children      []OrderLineItem  `json:"children,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	Cover      *Media  `json:"cover,omitempty"`
 
-	UnitPrice float64 `json:"unitPrice,omitempty"`
+	CoverId      string  `json:"coverId,omitempty"`
 
-	OrderDeliveryPositions []OrderDeliveryPosition `json:"orderDeliveryPositions,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	PriceDefinition interface{} `json:"priceDefinition,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
+	Downloads      []OrderLineItemDownload  `json:"downloads,omitempty"`
 
-	Good bool `json:"good,omitempty"`
+	Good      bool  `json:"good,omitempty"`
 
-	ParentVersionId string `json:"parentVersionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Identifier      string  `json:"identifier,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Order      *Order  `json:"order,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	OrderDeliveryPositions      []OrderDeliveryPosition  `json:"orderDeliveryPositions,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	PromotionId string `json:"promotionId,omitempty"`
+	OrderTransactionCaptureRefundPositions      []OrderTransactionCaptureRefundPosition  `json:"orderTransactionCaptureRefundPositions,omitempty"`
 
-	Stackable bool `json:"stackable,omitempty"`
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
 
-	States interface{} `json:"states,omitempty"`
+	Parent      *OrderLineItem  `json:"parent,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	ParentVersionId      string  `json:"parentVersionId,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	CoverId string `json:"coverId,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	OrderTransactionCaptureRefundPositions []OrderTransactionCaptureRefundPosition `json:"orderTransactionCaptureRefundPositions,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	Children []OrderLineItem `json:"children,omitempty"`
+	PriceDefinition      interface{}  `json:"priceDefinition,omitempty"`
 
-	Cover *Media `json:"cover,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Identifier string `json:"identifier,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	ReferencedId string `json:"referencedId,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	Downloads []OrderLineItemDownload `json:"downloads,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Parent *OrderLineItem `json:"parent,omitempty"`
+	Quantity      float64  `json:"quantity,omitempty"`
 
-	Quantity float64 `json:"quantity,omitempty"`
+	ReferencedId      string  `json:"referencedId,omitempty"`
 
-	Removable bool `json:"removable,omitempty"`
+	Removable      bool  `json:"removable,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Stackable      bool  `json:"stackable,omitempty"`
 
-	Price interface{} `json:"price,omitempty"`
+	States      interface{}  `json:"states,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	TotalPrice      float64  `json:"totalPrice,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	UnitPrice      float64  `json:"unitPrice,omitempty"`
 
-	TotalPrice float64 `json:"totalPrice,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type OrderLineItemCollection struct {
-	EntityCollection
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Data []OrderLineItem `json:"data"`
 }

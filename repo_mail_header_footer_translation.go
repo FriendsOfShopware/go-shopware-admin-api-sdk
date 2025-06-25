@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MailHeaderFooterTranslationRepository ClientService
-
-func (t MailHeaderFooterTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*MailHeaderFooterTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/mail-header-footer-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MailHeaderFooterTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MailHeaderFooterTranslationRepository struct {
+	*GenericRepository[MailHeaderFooterTranslation]
 }
 
-func (t MailHeaderFooterTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MailHeaderFooterTranslationCollection, *http.Response, error) {
+func NewMailHeaderFooterTranslationRepository(client *Client) *MailHeaderFooterTranslationRepository {
+	return &MailHeaderFooterTranslationRepository{
+		GenericRepository: NewGenericRepository[MailHeaderFooterTranslation](client),
+	}
+}
+
+func (t *MailHeaderFooterTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MailHeaderFooterTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "mail-header-footer-translation")
+}
+
+func (t *MailHeaderFooterTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MailHeaderFooterTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,42 @@ func (t MailHeaderFooterTranslationRepository) SearchAll(ctx ApiContext, criteri
 	return c, resp, err
 }
 
-func (t MailHeaderFooterTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/mail-header-footer-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MailHeaderFooterTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "mail-header-footer-translation")
 }
 
-func (t MailHeaderFooterTranslationRepository) Upsert(ctx ApiContext, entity []MailHeaderFooterTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"mail_header_footer_translation": {
-		Entity:  "mail_header_footer_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MailHeaderFooterTranslationRepository) Upsert(ctx ApiContext, entity []MailHeaderFooterTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "mail_header_footer_translation")
 }
 
-func (t MailHeaderFooterTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"mail_header_footer_translation": {
-		Entity:  "mail_header_footer_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MailHeaderFooterTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "mail_header_footer_translation")
 }
 
 type MailHeaderFooterTranslation struct {
-	HeaderHtml string `json:"headerHtml,omitempty"`
 
-	HeaderPlain string `json:"headerPlain,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	FooterHtml string `json:"footerHtml,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	FooterPlain string `json:"footerPlain,omitempty"`
+	FooterHtml      string  `json:"footerHtml,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	FooterPlain      string  `json:"footerPlain,omitempty"`
 
-	MailHeaderFooterId string `json:"mailHeaderFooterId,omitempty"`
+	HeaderHtml      string  `json:"headerHtml,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	HeaderPlain      string  `json:"headerPlain,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	MailHeaderFooter      *MailHeaderFooter  `json:"mailHeaderFooter,omitempty"`
 
-	MailHeaderFooter *MailHeaderFooter `json:"mailHeaderFooter,omitempty"`
+	MailHeaderFooterId      string  `json:"mailHeaderFooterId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	Name      string  `json:"name,omitempty"`
 
-type MailHeaderFooterTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []MailHeaderFooterTranslation `json:"data"`
 }

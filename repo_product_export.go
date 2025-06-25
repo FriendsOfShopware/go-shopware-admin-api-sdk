@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductExportRepository ClientService
-
-func (t ProductExportRepository) Search(ctx ApiContext, criteria Criteria) (*ProductExportCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-export", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductExportCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductExportRepository struct {
+	*GenericRepository[ProductExport]
 }
 
-func (t ProductExportRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductExportCollection, *http.Response, error) {
+func NewProductExportRepository(client *Client) *ProductExportRepository {
+	return &ProductExportRepository{
+		GenericRepository: NewGenericRepository[ProductExport](client),
+	}
+}
+
+func (t *ProductExportRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductExport], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-export")
+}
+
+func (t *ProductExportRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductExport], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,100 +57,70 @@ func (t ProductExportRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t ProductExportRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-export", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductExportRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-export")
 }
 
-func (t ProductExportRepository) Upsert(ctx ApiContext, entity []ProductExport) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_export": {
-		Entity:  "product_export",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductExportRepository) Upsert(ctx ApiContext, entity []ProductExport) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_export")
 }
 
-func (t ProductExportRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_export": {
-		Entity:  "product_export",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductExportRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_export")
 }
 
 type ProductExport struct {
-	Id string `json:"id,omitempty"`
 
-	StorefrontSalesChannelId string `json:"storefrontSalesChannelId,omitempty"`
+	AccessKey      string  `json:"accessKey,omitempty"`
 
-	FooterTemplate string `json:"footerTemplate,omitempty"`
+	BodyTemplate      string  `json:"bodyTemplate,omitempty"`
 
-	Currency *Currency `json:"currency,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SalesChannelDomainId string `json:"salesChannelDomainId,omitempty"`
+	Currency      *Currency  `json:"currency,omitempty"`
 
-	Encoding string `json:"encoding,omitempty"`
+	CurrencyId      string  `json:"currencyId,omitempty"`
 
-	ProductStreamId string `json:"productStreamId,omitempty"`
+	Encoding      string  `json:"encoding,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	FileFormat      string  `json:"fileFormat,omitempty"`
 
-	AccessKey string `json:"accessKey,omitempty"`
+	FileName      string  `json:"fileName,omitempty"`
 
-	GeneratedAt time.Time `json:"generatedAt,omitempty"`
+	FooterTemplate      string  `json:"footerTemplate,omitempty"`
 
-	IsRunning bool `json:"isRunning,omitempty"`
+	GenerateByCronjob      bool  `json:"generateByCronjob,omitempty"`
 
-	BodyTemplate string `json:"bodyTemplate,omitempty"`
+	GeneratedAt      time.Time  `json:"generatedAt,omitempty"`
 
-	PausedSchedule bool `json:"pausedSchedule,omitempty"`
+	HeaderTemplate      string  `json:"headerTemplate,omitempty"`
 
-	ProductStream *ProductStream `json:"productStream,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	IncludeVariants      bool  `json:"includeVariants,omitempty"`
 
-	FileFormat string `json:"fileFormat,omitempty"`
+	Interval      float64  `json:"interval,omitempty"`
 
-	SalesChannelDomain *SalesChannelDomain `json:"salesChannelDomain,omitempty"`
+	IsRunning      bool  `json:"isRunning,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	PausedSchedule      bool  `json:"pausedSchedule,omitempty"`
 
-	CurrencyId string `json:"currencyId,omitempty"`
+	ProductStream      *ProductStream  `json:"productStream,omitempty"`
 
-	FileName string `json:"fileName,omitempty"`
+	ProductStreamId      string  `json:"productStreamId,omitempty"`
 
-	IncludeVariants bool `json:"includeVariants,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	GenerateByCronjob bool `json:"generateByCronjob,omitempty"`
+	SalesChannelDomain      *SalesChannelDomain  `json:"salesChannelDomain,omitempty"`
 
-	HeaderTemplate string `json:"headerTemplate,omitempty"`
+	SalesChannelDomainId      string  `json:"salesChannelDomainId,omitempty"`
 
-	StorefrontSalesChannel *SalesChannel `json:"storefrontSalesChannel,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	StorefrontSalesChannel      *SalesChannel  `json:"storefrontSalesChannel,omitempty"`
 
-	Interval float64 `json:"interval,omitempty"`
-}
+	StorefrontSalesChannelId      string  `json:"storefrontSalesChannelId,omitempty"`
 
-type ProductExportCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ProductExport `json:"data"`
 }

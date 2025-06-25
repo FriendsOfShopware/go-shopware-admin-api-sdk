@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type SalesChannelDomainRepository ClientService
-
-func (t SalesChannelDomainRepository) Search(ctx ApiContext, criteria Criteria) (*SalesChannelDomainCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/sales-channel-domain", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SalesChannelDomainCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type SalesChannelDomainRepository struct {
+	*GenericRepository[SalesChannelDomain]
 }
 
-func (t SalesChannelDomainRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SalesChannelDomainCollection, *http.Response, error) {
+func NewSalesChannelDomainRepository(client *Client) *SalesChannelDomainRepository {
+	return &SalesChannelDomainRepository{
+		GenericRepository: NewGenericRepository[SalesChannelDomain](client),
+	}
+}
+
+func (t *SalesChannelDomainRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[SalesChannelDomain], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "sales-channel-domain")
+}
+
+func (t *SalesChannelDomainRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[SalesChannelDomain], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,80 +57,50 @@ func (t SalesChannelDomainRepository) SearchAll(ctx ApiContext, criteria Criteri
 	return c, resp, err
 }
 
-func (t SalesChannelDomainRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/sales-channel-domain", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *SalesChannelDomainRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "sales-channel-domain")
 }
 
-func (t SalesChannelDomainRepository) Upsert(ctx ApiContext, entity []SalesChannelDomain) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"sales_channel_domain": {
-		Entity:  "sales_channel_domain",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *SalesChannelDomainRepository) Upsert(ctx ApiContext, entity []SalesChannelDomain) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "sales_channel_domain")
 }
 
-func (t SalesChannelDomainRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"sales_channel_domain": {
-		Entity:  "sales_channel_domain",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *SalesChannelDomainRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "sales_channel_domain")
 }
 
 type SalesChannelDomain struct {
-	LanguageId string `json:"languageId,omitempty"`
 
-	SalesChannelDefaultHreflang *SalesChannel `json:"salesChannelDefaultHreflang,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	HreflangUseOnlyLocale bool `json:"hreflangUseOnlyLocale,omitempty"`
+	Currency      *Currency  `json:"currency,omitempty"`
 
-	Currency *Currency `json:"currency,omitempty"`
+	CurrencyId      string  `json:"currencyId,omitempty"`
 
-	ProductExports []ProductExport `json:"productExports,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	HreflangUseOnlyLocale      bool  `json:"hreflangUseOnlyLocale,omitempty"`
 
-	CurrencyId string `json:"currencyId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SnippetSetId string `json:"snippetSetId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	ProductExports      []ProductExport  `json:"productExports,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SalesChannelDefaultHreflang      *SalesChannel  `json:"salesChannelDefaultHreflang,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SnippetSet      *SnippetSet  `json:"snippetSet,omitempty"`
 
-	SnippetSet *SnippetSet `json:"snippetSet,omitempty"`
+	SnippetSetId      string  `json:"snippetSetId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type SalesChannelDomainCollection struct {
-	EntityCollection
+	Url      string  `json:"url,omitempty"`
 
-	Data []SalesChannelDomain `json:"data"`
 }

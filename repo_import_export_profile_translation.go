@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ImportExportProfileTranslationRepository ClientService
-
-func (t ImportExportProfileTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*ImportExportProfileTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/import-export-profile-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ImportExportProfileTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ImportExportProfileTranslationRepository struct {
+	*GenericRepository[ImportExportProfileTranslation]
 }
 
-func (t ImportExportProfileTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ImportExportProfileTranslationCollection, *http.Response, error) {
+func NewImportExportProfileTranslationRepository(client *Client) *ImportExportProfileTranslationRepository {
+	return &ImportExportProfileTranslationRepository{
+		GenericRepository: NewGenericRepository[ImportExportProfileTranslation](client),
+	}
+}
+
+func (t *ImportExportProfileTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ImportExportProfileTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "import-export-profile-translation")
+}
+
+func (t *ImportExportProfileTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ImportExportProfileTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,62 +57,32 @@ func (t ImportExportProfileTranslationRepository) SearchAll(ctx ApiContext, crit
 	return c, resp, err
 }
 
-func (t ImportExportProfileTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/import-export-profile-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ImportExportProfileTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "import-export-profile-translation")
 }
 
-func (t ImportExportProfileTranslationRepository) Upsert(ctx ApiContext, entity []ImportExportProfileTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"import_export_profile_translation": {
-		Entity:  "import_export_profile_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ImportExportProfileTranslationRepository) Upsert(ctx ApiContext, entity []ImportExportProfileTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "import_export_profile_translation")
 }
 
-func (t ImportExportProfileTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"import_export_profile_translation": {
-		Entity:  "import_export_profile_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ImportExportProfileTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "import_export_profile_translation")
 }
 
 type ImportExportProfileTranslation struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ImportExportProfileId string `json:"importExportProfileId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	ImportExportProfile      *ImportExportProfile  `json:"importExportProfile,omitempty"`
 
-	ImportExportProfile *ImportExportProfile `json:"importExportProfile,omitempty"`
+	ImportExportProfileId      string  `json:"importExportProfileId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	LanguageId      string  `json:"languageId,omitempty"`
 
-type ImportExportProfileTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ImportExportProfileTranslation `json:"data"`
 }

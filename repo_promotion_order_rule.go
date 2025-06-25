@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type PromotionOrderRuleRepository ClientService
-
-func (t PromotionOrderRuleRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionOrderRuleCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion-order-rule", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionOrderRuleCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionOrderRuleRepository struct {
+	*GenericRepository[PromotionOrderRule]
 }
 
-func (t PromotionOrderRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionOrderRuleCollection, *http.Response, error) {
+func NewPromotionOrderRuleRepository(client *Client) *PromotionOrderRuleRepository {
+	return &PromotionOrderRuleRepository{
+		GenericRepository: NewGenericRepository[PromotionOrderRule](client),
+	}
+}
+
+func (t *PromotionOrderRuleRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionOrderRule], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion-order-rule")
+}
+
+func (t *PromotionOrderRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PromotionOrderRule], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t PromotionOrderRuleRepository) SearchAll(ctx ApiContext, criteria Criteri
 	return c, resp, err
 }
 
-func (t PromotionOrderRuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion-order-rule", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionOrderRuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion-order-rule")
 }
 
-func (t PromotionOrderRuleRepository) Upsert(ctx ApiContext, entity []PromotionOrderRule) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_order_rule": {
-		Entity:  "promotion_order_rule",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionOrderRuleRepository) Upsert(ctx ApiContext, entity []PromotionOrderRule) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion_order_rule")
 }
 
-func (t PromotionOrderRuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion_order_rule": {
-		Entity:  "promotion_order_rule",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionOrderRuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion_order_rule")
 }
 
 type PromotionOrderRule struct {
-	PromotionId string `json:"promotionId,omitempty"`
 
-	RuleId string `json:"ruleId,omitempty"`
+	Promotion      *Promotion  `json:"promotion,omitempty"`
 
-	Promotion *Promotion `json:"promotion,omitempty"`
+	PromotionId      string  `json:"promotionId,omitempty"`
 
-	Rule *Rule `json:"rule,omitempty"`
-}
+	Rule      *Rule  `json:"rule,omitempty"`
 
-type PromotionOrderRuleCollection struct {
-	EntityCollection
+	RuleId      string  `json:"ruleId,omitempty"`
 
-	Data []PromotionOrderRule `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type NumberRangeSalesChannelRepository ClientService
-
-func (t NumberRangeSalesChannelRepository) Search(ctx ApiContext, criteria Criteria) (*NumberRangeSalesChannelCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/number-range-sales-channel", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(NumberRangeSalesChannelCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type NumberRangeSalesChannelRepository struct {
+	*GenericRepository[NumberRangeSalesChannel]
 }
 
-func (t NumberRangeSalesChannelRepository) SearchAll(ctx ApiContext, criteria Criteria) (*NumberRangeSalesChannelCollection, *http.Response, error) {
+func NewNumberRangeSalesChannelRepository(client *Client) *NumberRangeSalesChannelRepository {
+	return &NumberRangeSalesChannelRepository{
+		GenericRepository: NewGenericRepository[NumberRangeSalesChannel](client),
+	}
+}
+
+func (t *NumberRangeSalesChannelRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[NumberRangeSalesChannel], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "number-range-sales-channel")
+}
+
+func (t *NumberRangeSalesChannelRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[NumberRangeSalesChannel], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t NumberRangeSalesChannelRepository) SearchAll(ctx ApiContext, criteria Cr
 	return c, resp, err
 }
 
-func (t NumberRangeSalesChannelRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/number-range-sales-channel", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *NumberRangeSalesChannelRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "number-range-sales-channel")
 }
 
-func (t NumberRangeSalesChannelRepository) Upsert(ctx ApiContext, entity []NumberRangeSalesChannel) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"number_range_sales_channel": {
-		Entity:  "number_range_sales_channel",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *NumberRangeSalesChannelRepository) Upsert(ctx ApiContext, entity []NumberRangeSalesChannel) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "number_range_sales_channel")
 }
 
-func (t NumberRangeSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"number_range_sales_channel": {
-		Entity:  "number_range_sales_channel",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *NumberRangeSalesChannelRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "number_range_sales_channel")
 }
 
 type NumberRangeSalesChannel struct {
-	NumberRangeTypeId string `json:"numberRangeTypeId,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	NumberRangeType *NumberRangeType `json:"numberRangeType,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	NumberRange      *NumberRange  `json:"numberRange,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	NumberRangeId      string  `json:"numberRangeId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	NumberRangeType      *NumberRangeType  `json:"numberRangeType,omitempty"`
 
-	NumberRangeId string `json:"numberRangeId,omitempty"`
+	NumberRangeTypeId      string  `json:"numberRangeTypeId,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	NumberRange *NumberRange `json:"numberRange,omitempty"`
-}
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-type NumberRangeSalesChannelCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []NumberRangeSalesChannel `json:"data"`
 }

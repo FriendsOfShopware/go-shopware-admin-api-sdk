@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type UnitRepository ClientService
-
-func (t UnitRepository) Search(ctx ApiContext, criteria Criteria) (*UnitCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/unit", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(UnitCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type UnitRepository struct {
+	*GenericRepository[Unit]
 }
 
-func (t UnitRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UnitCollection, *http.Response, error) {
+func NewUnitRepository(client *Client) *UnitRepository {
+	return &UnitRepository{
+		GenericRepository: NewGenericRepository[Unit](client),
+	}
+}
+
+func (t *UnitRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Unit], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "unit")
+}
+
+func (t *UnitRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Unit], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t UnitRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UnitColle
 	return c, resp, err
 }
 
-func (t UnitRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/unit", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *UnitRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "unit")
 }
 
-func (t UnitRepository) Upsert(ctx ApiContext, entity []Unit) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"unit": {
-		Entity:  "unit",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *UnitRepository) Upsert(ctx ApiContext, entity []Unit) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "unit")
 }
 
-func (t UnitRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"unit": {
-		Entity:  "unit",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *UnitRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "unit")
 }
 
 type Unit struct {
-	Id string `json:"id,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Translations []UnitTranslation `json:"translations,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	ShortCode string `json:"shortCode,omitempty"`
+	ShortCode      string  `json:"shortCode,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
-}
+	Translations      []UnitTranslation  `json:"translations,omitempty"`
 
-type UnitCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Unit `json:"data"`
 }

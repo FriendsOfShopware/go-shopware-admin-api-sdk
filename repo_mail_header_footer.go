@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MailHeaderFooterRepository ClientService
-
-func (t MailHeaderFooterRepository) Search(ctx ApiContext, criteria Criteria) (*MailHeaderFooterCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/mail-header-footer", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MailHeaderFooterCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MailHeaderFooterRepository struct {
+	*GenericRepository[MailHeaderFooter]
 }
 
-func (t MailHeaderFooterRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MailHeaderFooterCollection, *http.Response, error) {
+func NewMailHeaderFooterRepository(client *Client) *MailHeaderFooterRepository {
+	return &MailHeaderFooterRepository{
+		GenericRepository: NewGenericRepository[MailHeaderFooter](client),
+	}
+}
+
+func (t *MailHeaderFooterRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MailHeaderFooter], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "mail-header-footer")
+}
+
+func (t *MailHeaderFooterRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MailHeaderFooter], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,74 +57,44 @@ func (t MailHeaderFooterRepository) SearchAll(ctx ApiContext, criteria Criteria)
 	return c, resp, err
 }
 
-func (t MailHeaderFooterRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/mail-header-footer", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MailHeaderFooterRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "mail-header-footer")
 }
 
-func (t MailHeaderFooterRepository) Upsert(ctx ApiContext, entity []MailHeaderFooter) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"mail_header_footer": {
-		Entity:  "mail_header_footer",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MailHeaderFooterRepository) Upsert(ctx ApiContext, entity []MailHeaderFooter) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "mail_header_footer")
 }
 
-func (t MailHeaderFooterRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"mail_header_footer": {
-		Entity:  "mail_header_footer",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MailHeaderFooterRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "mail_header_footer")
 }
 
 type MailHeaderFooter struct {
-	Id string `json:"id,omitempty"`
 
-	HeaderHtml string `json:"headerHtml,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Translations []MailHeaderFooterTranslation `json:"translations,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	FooterHtml      string  `json:"footerHtml,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	FooterPlain      string  `json:"footerPlain,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	HeaderHtml      string  `json:"headerHtml,omitempty"`
 
-	HeaderPlain string `json:"headerPlain,omitempty"`
+	HeaderPlain      string  `json:"headerPlain,omitempty"`
 
-	FooterHtml string `json:"footerHtml,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	SystemDefault bool `json:"systemDefault,omitempty"`
+	SystemDefault      bool  `json:"systemDefault,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	FooterPlain string `json:"footerPlain,omitempty"`
-}
+	Translations      []MailHeaderFooterTranslation  `json:"translations,omitempty"`
 
-type MailHeaderFooterCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []MailHeaderFooter `json:"data"`
 }

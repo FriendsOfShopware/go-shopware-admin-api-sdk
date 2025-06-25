@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PromotionRepository ClientService
-
-func (t PromotionRepository) Search(ctx ApiContext, criteria Criteria) (*PromotionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/promotion", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PromotionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PromotionRepository struct {
+	*GenericRepository[Promotion]
 }
 
-func (t PromotionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PromotionCollection, *http.Response, error) {
+func NewPromotionRepository(client *Client) *PromotionRepository {
+	return &PromotionRepository{
+		GenericRepository: NewGenericRepository[Promotion](client),
+	}
+}
+
+func (t *PromotionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Promotion], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "promotion")
+}
+
+func (t *PromotionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Promotion], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,114 +57,84 @@ func (t PromotionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Prom
 	return c, resp, err
 }
 
-func (t PromotionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/promotion", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PromotionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "promotion")
 }
 
-func (t PromotionRepository) Upsert(ctx ApiContext, entity []Promotion) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion": {
-		Entity:  "promotion",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PromotionRepository) Upsert(ctx ApiContext, entity []Promotion) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "promotion")
 }
 
-func (t PromotionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"promotion": {
-		Entity:  "promotion",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PromotionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "promotion")
 }
 
 type Promotion struct {
-	ValidUntil time.Time `json:"validUntil,omitempty"`
 
-	UseIndividualCodes bool `json:"useIndividualCodes,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CartRules      []Rule  `json:"cartRules,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Code      string  `json:"code,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ValidFrom time.Time `json:"validFrom,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Discounts []PromotionDiscount `json:"discounts,omitempty"`
+	CustomerRestriction      bool  `json:"customerRestriction,omitempty"`
 
-	Exclusive bool `json:"exclusive,omitempty"`
+	Discounts      []PromotionDiscount  `json:"discounts,omitempty"`
 
-	UseSetGroups bool `json:"useSetGroups,omitempty"`
+	ExclusionIds      interface{}  `json:"exclusionIds,omitempty"`
 
-	PreventCombination bool `json:"preventCombination,omitempty"`
+	Exclusive      bool  `json:"exclusive,omitempty"`
 
-	Setgroups []PromotionSetgroup `json:"setgroups,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	IndividualCodePattern      string  `json:"individualCodePattern,omitempty"`
 
-	PersonaCustomers []Customer `json:"personaCustomers,omitempty"`
+	IndividualCodes      []PromotionIndividualCode  `json:"individualCodes,omitempty"`
 
-	MaxRedemptionsPerCustomer float64 `json:"maxRedemptionsPerCustomer,omitempty"`
+	MaxRedemptionsGlobal      float64  `json:"maxRedemptionsGlobal,omitempty"`
 
-	MaxRedemptionsGlobal float64 `json:"maxRedemptionsGlobal,omitempty"`
+	MaxRedemptionsPerCustomer      float64  `json:"maxRedemptionsPerCustomer,omitempty"`
 
-	Code string `json:"code,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	OrderRules []Rule `json:"orderRules,omitempty"`
+	OrderCount      float64  `json:"orderCount,omitempty"`
 
-	OrderLineItems []OrderLineItem `json:"orderLineItems,omitempty"`
+	OrderLineItems      []OrderLineItem  `json:"orderLineItems,omitempty"`
 
-	ExclusionIds interface{} `json:"exclusionIds,omitempty"`
+	OrderRules      []Rule  `json:"orderRules,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	OrdersPerCustomerCount      interface{}  `json:"ordersPerCustomerCount,omitempty"`
 
-	CustomerRestriction bool `json:"customerRestriction,omitempty"`
+	PersonaCustomers      []Customer  `json:"personaCustomers,omitempty"`
 
-	PersonaRules []Rule `json:"personaRules,omitempty"`
+	PersonaRules      []Rule  `json:"personaRules,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	PreventCombination      bool  `json:"preventCombination,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	IndividualCodePattern string `json:"individualCodePattern,omitempty"`
+	SalesChannels      []PromotionSalesChannel  `json:"salesChannels,omitempty"`
 
-	OrderCount float64 `json:"orderCount,omitempty"`
+	Setgroups      []PromotionSetgroup  `json:"setgroups,omitempty"`
 
-	OrdersPerCustomerCount interface{} `json:"ordersPerCustomerCount,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	IndividualCodes []PromotionIndividualCode `json:"individualCodes,omitempty"`
+	Translations      []PromotionTranslation  `json:"translations,omitempty"`
 
-	Translations []PromotionTranslation `json:"translations,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
+	UseCodes      bool  `json:"useCodes,omitempty"`
 
-	SalesChannels []PromotionSalesChannel `json:"salesChannels,omitempty"`
+	UseIndividualCodes      bool  `json:"useIndividualCodes,omitempty"`
 
-	CartRules []Rule `json:"cartRules,omitempty"`
+	UseSetGroups      bool  `json:"useSetGroups,omitempty"`
 
-	UseCodes bool `json:"useCodes,omitempty"`
-}
+	ValidFrom      time.Time  `json:"validFrom,omitempty"`
 
-type PromotionCollection struct {
-	EntityCollection
+	ValidUntil      time.Time  `json:"validUntil,omitempty"`
 
-	Data []Promotion `json:"data"`
 }

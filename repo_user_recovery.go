@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type UserRecoveryRepository ClientService
-
-func (t UserRecoveryRepository) Search(ctx ApiContext, criteria Criteria) (*UserRecoveryCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/user-recovery", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(UserRecoveryCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type UserRecoveryRepository struct {
+	*GenericRepository[UserRecovery]
 }
 
-func (t UserRecoveryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UserRecoveryCollection, *http.Response, error) {
+func NewUserRecoveryRepository(client *Client) *UserRecoveryRepository {
+	return &UserRecoveryRepository{
+		GenericRepository: NewGenericRepository[UserRecovery](client),
+	}
+}
+
+func (t *UserRecoveryRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[UserRecovery], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "user-recovery")
+}
+
+func (t *UserRecoveryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[UserRecovery], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,60 +57,30 @@ func (t UserRecoveryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*U
 	return c, resp, err
 }
 
-func (t UserRecoveryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/user-recovery", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *UserRecoveryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "user-recovery")
 }
 
-func (t UserRecoveryRepository) Upsert(ctx ApiContext, entity []UserRecovery) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"user_recovery": {
-		Entity:  "user_recovery",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *UserRecoveryRepository) Upsert(ctx ApiContext, entity []UserRecovery) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "user_recovery")
 }
 
-func (t UserRecoveryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"user_recovery": {
-		Entity:  "user_recovery",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *UserRecoveryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "user_recovery")
 }
 
 type UserRecovery struct {
-	UserId string `json:"userId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	Hash      string  `json:"hash,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Hash string `json:"hash,omitempty"`
-}
+	User      *User  `json:"user,omitempty"`
 
-type UserRecoveryCollection struct {
-	EntityCollection
+	UserId      string  `json:"userId,omitempty"`
 
-	Data []UserRecovery `json:"data"`
 }

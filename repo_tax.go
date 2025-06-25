@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type TaxRepository ClientService
-
-func (t TaxRepository) Search(ctx ApiContext, criteria Criteria) (*TaxCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/tax", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(TaxCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type TaxRepository struct {
+	*GenericRepository[Tax]
 }
 
-func (t TaxRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TaxCollection, *http.Response, error) {
+func NewTaxRepository(client *Client) *TaxRepository {
+	return &TaxRepository{
+		GenericRepository: NewGenericRepository[Tax](client),
+	}
+}
+
+func (t *TaxRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Tax], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "tax")
+}
+
+func (t *TaxRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Tax], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,68 +57,38 @@ func (t TaxRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TaxCollect
 	return c, resp, err
 }
 
-func (t TaxRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/tax", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *TaxRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "tax")
 }
 
-func (t TaxRepository) Upsert(ctx ApiContext, entity []Tax) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax": {
-		Entity:  "tax",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *TaxRepository) Upsert(ctx ApiContext, entity []Tax) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "tax")
 }
 
-func (t TaxRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax": {
-		Entity:  "tax",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *TaxRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "tax")
 }
 
 type Tax struct {
-	Id string `json:"id,omitempty"`
 
-	TaxRate float64 `json:"taxRate,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Rules []TaxRule `json:"rules,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	Rules      []TaxRule  `json:"rules,omitempty"`
 
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	TaxRate      float64  `json:"taxRate,omitempty"`
 
-type TaxCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Tax `json:"data"`
 }

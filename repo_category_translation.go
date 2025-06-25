@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CategoryTranslationRepository ClientService
-
-func (t CategoryTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*CategoryTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/category-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CategoryTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CategoryTranslationRepository struct {
+	*GenericRepository[CategoryTranslation]
 }
 
-func (t CategoryTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CategoryTranslationCollection, *http.Response, error) {
+func NewCategoryTranslationRepository(client *Client) *CategoryTranslationRepository {
+	return &CategoryTranslationRepository{
+		GenericRepository: NewGenericRepository[CategoryTranslation](client),
+	}
+}
+
+func (t *CategoryTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CategoryTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "category-translation")
+}
+
+func (t *CategoryTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CategoryTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,86 +57,56 @@ func (t CategoryTranslationRepository) SearchAll(ctx ApiContext, criteria Criter
 	return c, resp, err
 }
 
-func (t CategoryTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/category-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CategoryTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "category-translation")
 }
 
-func (t CategoryTranslationRepository) Upsert(ctx ApiContext, entity []CategoryTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"category_translation": {
-		Entity:  "category_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CategoryTranslationRepository) Upsert(ctx ApiContext, entity []CategoryTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "category_translation")
 }
 
-func (t CategoryTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"category_translation": {
-		Entity:  "category_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CategoryTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "category_translation")
 }
 
 type CategoryTranslation struct {
-	Description string `json:"description,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Breadcrumb      interface{}  `json:"breadcrumb,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Category      *Category  `json:"category,omitempty"`
 
-	Breadcrumb interface{} `json:"breadcrumb,omitempty"`
+	CategoryId      string  `json:"categoryId,omitempty"`
 
-	MetaTitle string `json:"metaTitle,omitempty"`
+	CategoryVersionId      string  `json:"categoryVersionId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CategoryId string `json:"categoryId,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Category *Category `json:"category,omitempty"`
+	ExternalLink      string  `json:"externalLink,omitempty"`
 
-	CategoryVersionId string `json:"categoryVersionId,omitempty"`
+	InternalLink      string  `json:"internalLink,omitempty"`
 
-	SlotConfig interface{} `json:"slotConfig,omitempty"`
+	Keywords      string  `json:"keywords,omitempty"`
 
-	LinkType string `json:"linkType,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Keywords string `json:"keywords,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	ExternalLink string `json:"externalLink,omitempty"`
+	LinkNewTab      bool  `json:"linkNewTab,omitempty"`
 
-	LinkNewTab bool `json:"linkNewTab,omitempty"`
+	LinkType      string  `json:"linkType,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	MetaDescription      string  `json:"metaDescription,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	MetaTitle      string  `json:"metaTitle,omitempty"`
 
-	InternalLink string `json:"internalLink,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	MetaDescription string `json:"metaDescription,omitempty"`
-}
+	SlotConfig      interface{}  `json:"slotConfig,omitempty"`
 
-type CategoryTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []CategoryTranslation `json:"data"`
 }

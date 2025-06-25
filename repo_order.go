@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type OrderRepository ClientService
-
-func (t OrderRepository) Search(ctx ApiContext, criteria Criteria) (*OrderCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/order", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(OrderCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type OrderRepository struct {
+	*GenericRepository[Order]
 }
 
-func (t OrderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderCollection, *http.Response, error) {
+func NewOrderRepository(client *Client) *OrderRepository {
+	return &OrderRepository{
+		GenericRepository: NewGenericRepository[Order](client),
+	}
+}
+
+func (t *OrderRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Order], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "order")
+}
+
+func (t *OrderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Order], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,142 +57,112 @@ func (t OrderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderCol
 	return c, resp, err
 }
 
-func (t OrderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *OrderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "order")
 }
 
-func (t OrderRepository) Upsert(ctx ApiContext, entity []Order) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order": {
-		Entity:  "order",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *OrderRepository) Upsert(ctx ApiContext, entity []Order) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "order")
 }
 
-func (t OrderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order": {
-		Entity:  "order",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *OrderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "order")
 }
 
 type Order struct {
-	AmountTotal float64 `json:"amountTotal,omitempty"`
 
-	AmountNet float64 `json:"amountNet,omitempty"`
+	Addresses      []OrderAddress  `json:"addresses,omitempty"`
 
-	ItemRounding interface{} `json:"itemRounding,omitempty"`
+	AffiliateCode      string  `json:"affiliateCode,omitempty"`
 
-	Price interface{} `json:"price,omitempty"`
+	AmountNet      float64  `json:"amountNet,omitempty"`
 
-	DeepLinkCode string `json:"deepLinkCode,omitempty"`
+	AmountTotal      float64  `json:"amountTotal,omitempty"`
 
-	CreatedBy *User `json:"createdBy,omitempty"`
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
 
-	CurrencyId string `json:"currencyId,omitempty"`
+	BillingAddress      *OrderAddress  `json:"billingAddress,omitempty"`
 
-	Currency *Currency `json:"currency,omitempty"`
+	BillingAddressId      string  `json:"billingAddressId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	BillingAddressVersionId      string  `json:"billingAddressVersionId,omitempty"`
 
-	Addresses []OrderAddress `json:"addresses,omitempty"`
+	CampaignCode      string  `json:"campaignCode,omitempty"`
 
-	UpdatedBy *User `json:"updatedBy,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	BillingAddressId string `json:"billingAddressId,omitempty"`
+	CreatedBy      *User  `json:"createdBy,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	CreatedById      string  `json:"createdById,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	Currency      *Currency  `json:"currency,omitempty"`
 
-	AffiliateCode string `json:"affiliateCode,omitempty"`
+	CurrencyFactor      float64  `json:"currencyFactor,omitempty"`
 
-	StateId string `json:"stateId,omitempty"`
+	CurrencyId      string  `json:"currencyId,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	OrderNumber string `json:"orderNumber,omitempty"`
+	CustomerComment      string  `json:"customerComment,omitempty"`
 
-	ShippingTotal float64 `json:"shippingTotal,omitempty"`
+	DeepLinkCode      string  `json:"deepLinkCode,omitempty"`
 
-	RuleIds interface{} `json:"ruleIds,omitempty"`
+	Deliveries      []OrderDelivery  `json:"deliveries,omitempty"`
 
-	BillingAddress *OrderAddress `json:"billingAddress,omitempty"`
+	Documents      []Document  `json:"documents,omitempty"`
 
-	Documents []Document `json:"documents,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	StateMachineState *StateMachineState `json:"stateMachineState,omitempty"`
+	ItemRounding      interface{}  `json:"itemRounding,omitempty"`
 
-	CreatedById string `json:"createdById,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Deliveries []OrderDelivery `json:"deliveries,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	LineItems      []OrderLineItem  `json:"lineItems,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	OrderCustomer      *OrderCustomer  `json:"orderCustomer,omitempty"`
 
-	OrderDateTime time.Time `json:"orderDateTime,omitempty"`
+	OrderDate      time.Time  `json:"orderDate,omitempty"`
 
-	PositionPrice float64 `json:"positionPrice,omitempty"`
+	OrderDateTime      time.Time  `json:"orderDateTime,omitempty"`
 
-	Source string `json:"source,omitempty"`
+	OrderNumber      string  `json:"orderNumber,omitempty"`
 
-	LineItems []OrderLineItem `json:"lineItems,omitempty"`
+	PositionPrice      float64  `json:"positionPrice,omitempty"`
 
-	Transactions []OrderTransaction `json:"transactions,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	TotalRounding interface{} `json:"totalRounding,omitempty"`
+	RuleIds      interface{}  `json:"ruleIds,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	ShippingCosts interface{} `json:"shippingCosts,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	CampaignCode string `json:"campaignCode,omitempty"`
+	ShippingCosts      interface{}  `json:"shippingCosts,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ShippingTotal      float64  `json:"shippingTotal,omitempty"`
 
-	OrderCustomer *OrderCustomer `json:"orderCustomer,omitempty"`
+	Source      string  `json:"source,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	StateId      string  `json:"stateId,omitempty"`
 
-	CustomerComment string `json:"customerComment,omitempty"`
+	StateMachineState      *StateMachineState  `json:"stateMachineState,omitempty"`
 
-	UpdatedById string `json:"updatedById,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	TaxStatus      string  `json:"taxStatus,omitempty"`
 
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+	TotalRounding      interface{}  `json:"totalRounding,omitempty"`
 
-	BillingAddressVersionId string `json:"billingAddressVersionId,omitempty"`
+	Transactions      []OrderTransaction  `json:"transactions,omitempty"`
 
-	OrderDate time.Time `json:"orderDate,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	TaxStatus string `json:"taxStatus,omitempty"`
+	UpdatedBy      *User  `json:"updatedBy,omitempty"`
 
-	CurrencyFactor float64 `json:"currencyFactor,omitempty"`
-}
+	UpdatedById      string  `json:"updatedById,omitempty"`
 
-type OrderCollection struct {
-	EntityCollection
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Data []Order `json:"data"`
 }

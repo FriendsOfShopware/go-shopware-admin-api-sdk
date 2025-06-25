@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductStreamRepository ClientService
-
-func (t ProductStreamRepository) Search(ctx ApiContext, criteria Criteria) (*ProductStreamCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-stream", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductStreamCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductStreamRepository struct {
+	*GenericRepository[ProductStream]
 }
 
-func (t ProductStreamRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductStreamCollection, *http.Response, error) {
+func NewProductStreamRepository(client *Client) *ProductStreamRepository {
+	return &ProductStreamRepository{
+		GenericRepository: NewGenericRepository[ProductStream](client),
+	}
+}
+
+func (t *ProductStreamRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductStream], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-stream")
+}
+
+func (t *ProductStreamRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductStream], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,76 +57,46 @@ func (t ProductStreamRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t ProductStreamRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-stream", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductStreamRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-stream")
 }
 
-func (t ProductStreamRepository) Upsert(ctx ApiContext, entity []ProductStream) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_stream": {
-		Entity:  "product_stream",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductStreamRepository) Upsert(ctx ApiContext, entity []ProductStream) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_stream")
 }
 
-func (t ProductStreamRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_stream": {
-		Entity:  "product_stream",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductStreamRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_stream")
 }
 
 type ProductStream struct {
-	Translations []ProductStreamTranslation `json:"translations,omitempty"`
 
-	ProductCrossSellings []ProductCrossSelling `json:"productCrossSellings,omitempty"`
+	ApiFilter      interface{}  `json:"apiFilter,omitempty"`
 
-	ProductExports []ProductExport `json:"productExports,omitempty"`
+	Categories      []Category  `json:"categories,omitempty"`
 
-	Categories []Category `json:"categories,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ApiFilter interface{} `json:"apiFilter,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Filters []ProductStreamFilter `json:"filters,omitempty"`
+	Filters      []ProductStreamFilter  `json:"filters,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Invalid      bool  `json:"invalid,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	ProductCrossSellings      []ProductCrossSelling  `json:"productCrossSellings,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	ProductExports      []ProductExport  `json:"productExports,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Invalid bool `json:"invalid,omitempty"`
-}
+	Translations      []ProductStreamTranslation  `json:"translations,omitempty"`
 
-type ProductStreamCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ProductStream `json:"data"`
 }

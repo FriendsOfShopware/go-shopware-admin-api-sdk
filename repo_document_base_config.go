@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type DocumentBaseConfigRepository ClientService
-
-func (t DocumentBaseConfigRepository) Search(ctx ApiContext, criteria Criteria) (*DocumentBaseConfigCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/document-base-config", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(DocumentBaseConfigCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type DocumentBaseConfigRepository struct {
+	*GenericRepository[DocumentBaseConfig]
 }
 
-func (t DocumentBaseConfigRepository) SearchAll(ctx ApiContext, criteria Criteria) (*DocumentBaseConfigCollection, *http.Response, error) {
+func NewDocumentBaseConfigRepository(client *Client) *DocumentBaseConfigRepository {
+	return &DocumentBaseConfigRepository{
+		GenericRepository: NewGenericRepository[DocumentBaseConfig](client),
+	}
+}
+
+func (t *DocumentBaseConfigRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[DocumentBaseConfig], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "document-base-config")
+}
+
+func (t *DocumentBaseConfigRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[DocumentBaseConfig], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,78 +57,48 @@ func (t DocumentBaseConfigRepository) SearchAll(ctx ApiContext, criteria Criteri
 	return c, resp, err
 }
 
-func (t DocumentBaseConfigRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/document-base-config", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *DocumentBaseConfigRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "document-base-config")
 }
 
-func (t DocumentBaseConfigRepository) Upsert(ctx ApiContext, entity []DocumentBaseConfig) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"document_base_config": {
-		Entity:  "document_base_config",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *DocumentBaseConfigRepository) Upsert(ctx ApiContext, entity []DocumentBaseConfig) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "document_base_config")
 }
 
-func (t DocumentBaseConfigRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"document_base_config": {
-		Entity:  "document_base_config",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *DocumentBaseConfigRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "document_base_config")
 }
 
 type DocumentBaseConfig struct {
-	Id string `json:"id,omitempty"`
 
-	DocumentTypeId string `json:"documentTypeId,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	FilenameSuffix string `json:"filenameSuffix,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	DocumentType *DocumentType `json:"documentType,omitempty"`
+	DocumentNumber      string  `json:"documentNumber,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	DocumentType      *DocumentType  `json:"documentType,omitempty"`
 
-	Global bool `json:"global,omitempty"`
+	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	FilenamePrefix      string  `json:"filenamePrefix,omitempty"`
 
-	DocumentNumber string `json:"documentNumber,omitempty"`
+	FilenameSuffix      string  `json:"filenameSuffix,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Global      bool  `json:"global,omitempty"`
 
-	LogoId string `json:"logoId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Logo      *Media  `json:"logo,omitempty"`
 
-	FilenamePrefix string `json:"filenamePrefix,omitempty"`
+	LogoId      string  `json:"logoId,omitempty"`
 
-	Logo *Media `json:"logo,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	SalesChannels []DocumentBaseConfigSalesChannel `json:"salesChannels,omitempty"`
-}
+	SalesChannels      []DocumentBaseConfigSalesChannel  `json:"salesChannels,omitempty"`
 
-type DocumentBaseConfigCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []DocumentBaseConfig `json:"data"`
 }

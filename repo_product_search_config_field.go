@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductSearchConfigFieldRepository ClientService
-
-func (t ProductSearchConfigFieldRepository) Search(ctx ApiContext, criteria Criteria) (*ProductSearchConfigFieldCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-search-config-field", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductSearchConfigFieldCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductSearchConfigFieldRepository struct {
+	*GenericRepository[ProductSearchConfigField]
 }
 
-func (t ProductSearchConfigFieldRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductSearchConfigFieldCollection, *http.Response, error) {
+func NewProductSearchConfigFieldRepository(client *Client) *ProductSearchConfigFieldRepository {
+	return &ProductSearchConfigFieldRepository{
+		GenericRepository: NewGenericRepository[ProductSearchConfigField](client),
+	}
+}
+
+func (t *ProductSearchConfigFieldRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductSearchConfigField], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-search-config-field")
+}
+
+func (t *ProductSearchConfigFieldRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductSearchConfigField], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t ProductSearchConfigFieldRepository) SearchAll(ctx ApiContext, criteria C
 	return c, resp, err
 }
 
-func (t ProductSearchConfigFieldRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-search-config-field", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductSearchConfigFieldRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-search-config-field")
 }
 
-func (t ProductSearchConfigFieldRepository) Upsert(ctx ApiContext, entity []ProductSearchConfigField) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_search_config_field": {
-		Entity:  "product_search_config_field",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductSearchConfigFieldRepository) Upsert(ctx ApiContext, entity []ProductSearchConfigField) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_search_config_field")
 }
 
-func (t ProductSearchConfigFieldRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_search_config_field": {
-		Entity:  "product_search_config_field",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductSearchConfigFieldRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_search_config_field")
 }
 
 type ProductSearchConfigField struct {
-	CustomField *CustomField `json:"customField,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFieldId string `json:"customFieldId,omitempty"`
+	CustomField      *CustomField  `json:"customField,omitempty"`
 
-	Tokenize bool `json:"tokenize,omitempty"`
+	CustomFieldId      string  `json:"customFieldId,omitempty"`
 
-	Searchable bool `json:"searchable,omitempty"`
+	Field      string  `json:"field,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Ranking      float64  `json:"ranking,omitempty"`
 
-	SearchConfigId string `json:"searchConfigId,omitempty"`
+	SearchConfig      *ProductSearchConfig  `json:"searchConfig,omitempty"`
 
-	Field string `json:"field,omitempty"`
+	SearchConfigId      string  `json:"searchConfigId,omitempty"`
 
-	Ranking float64 `json:"ranking,omitempty"`
+	Searchable      bool  `json:"searchable,omitempty"`
 
-	SearchConfig *ProductSearchConfig `json:"searchConfig,omitempty"`
-}
+	Tokenize      bool  `json:"tokenize,omitempty"`
 
-type ProductSearchConfigFieldCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ProductSearchConfigField `json:"data"`
 }

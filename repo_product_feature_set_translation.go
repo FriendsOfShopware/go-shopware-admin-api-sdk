@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductFeatureSetTranslationRepository ClientService
-
-func (t ProductFeatureSetTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*ProductFeatureSetTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-feature-set-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductFeatureSetTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductFeatureSetTranslationRepository struct {
+	*GenericRepository[ProductFeatureSetTranslation]
 }
 
-func (t ProductFeatureSetTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductFeatureSetTranslationCollection, *http.Response, error) {
+func NewProductFeatureSetTranslationRepository(client *Client) *ProductFeatureSetTranslationRepository {
+	return &ProductFeatureSetTranslationRepository{
+		GenericRepository: NewGenericRepository[ProductFeatureSetTranslation](client),
+	}
+}
+
+func (t *ProductFeatureSetTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductFeatureSetTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-feature-set-translation")
+}
+
+func (t *ProductFeatureSetTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductFeatureSetTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,64 +57,34 @@ func (t ProductFeatureSetTranslationRepository) SearchAll(ctx ApiContext, criter
 	return c, resp, err
 }
 
-func (t ProductFeatureSetTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-feature-set-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductFeatureSetTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-feature-set-translation")
 }
 
-func (t ProductFeatureSetTranslationRepository) Upsert(ctx ApiContext, entity []ProductFeatureSetTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_feature_set_translation": {
-		Entity:  "product_feature_set_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductFeatureSetTranslationRepository) Upsert(ctx ApiContext, entity []ProductFeatureSetTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_feature_set_translation")
 }
 
-func (t ProductFeatureSetTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_feature_set_translation": {
-		Entity:  "product_feature_set_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductFeatureSetTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_feature_set_translation")
 }
 
 type ProductFeatureSetTranslation struct {
-	ProductFeatureSet *ProductFeatureSet `json:"productFeatureSet,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	ProductFeatureSetId string `json:"productFeatureSetId,omitempty"`
+	ProductFeatureSet      *ProductFeatureSet  `json:"productFeatureSet,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
-}
+	ProductFeatureSetId      string  `json:"productFeatureSetId,omitempty"`
 
-type ProductFeatureSetTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ProductFeatureSetTranslation `json:"data"`
 }

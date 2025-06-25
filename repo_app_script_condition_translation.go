@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppScriptConditionTranslationRepository ClientService
-
-func (t AppScriptConditionTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*AppScriptConditionTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-script-condition-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppScriptConditionTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppScriptConditionTranslationRepository struct {
+	*GenericRepository[AppScriptConditionTranslation]
 }
 
-func (t AppScriptConditionTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppScriptConditionTranslationCollection, *http.Response, error) {
+func NewAppScriptConditionTranslationRepository(client *Client) *AppScriptConditionTranslationRepository {
+	return &AppScriptConditionTranslationRepository{
+		GenericRepository: NewGenericRepository[AppScriptConditionTranslation](client),
+	}
+}
+
+func (t *AppScriptConditionTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppScriptConditionTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-script-condition-translation")
+}
+
+func (t *AppScriptConditionTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppScriptConditionTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,62 +57,32 @@ func (t AppScriptConditionTranslationRepository) SearchAll(ctx ApiContext, crite
 	return c, resp, err
 }
 
-func (t AppScriptConditionTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-script-condition-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppScriptConditionTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-script-condition-translation")
 }
 
-func (t AppScriptConditionTranslationRepository) Upsert(ctx ApiContext, entity []AppScriptConditionTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_script_condition_translation": {
-		Entity:  "app_script_condition_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppScriptConditionTranslationRepository) Upsert(ctx ApiContext, entity []AppScriptConditionTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_script_condition_translation")
 }
 
-func (t AppScriptConditionTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_script_condition_translation": {
-		Entity:  "app_script_condition_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppScriptConditionTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_script_condition_translation")
 }
 
 type AppScriptConditionTranslation struct {
-	AppScriptConditionId string `json:"appScriptConditionId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
 
-	AppScriptCondition *AppScriptCondition `json:"appScriptCondition,omitempty"`
+	AppScriptConditionId      string  `json:"appScriptConditionId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	Name      string  `json:"name,omitempty"`
 
-type AppScriptConditionTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []AppScriptConditionTranslation `json:"data"`
 }

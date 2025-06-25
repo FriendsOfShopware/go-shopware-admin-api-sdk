@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppFlowActionRepository ClientService
-
-func (t AppFlowActionRepository) Search(ctx ApiContext, criteria Criteria) (*AppFlowActionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-flow-action", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppFlowActionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppFlowActionRepository struct {
+	*GenericRepository[AppFlowAction]
 }
 
-func (t AppFlowActionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppFlowActionCollection, *http.Response, error) {
+func NewAppFlowActionRepository(client *Client) *AppFlowActionRepository {
+	return &AppFlowActionRepository{
+		GenericRepository: NewGenericRepository[AppFlowAction](client),
+	}
+}
+
+func (t *AppFlowActionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppFlowAction], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-flow-action")
+}
+
+func (t *AppFlowActionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppFlowAction], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,94 +57,64 @@ func (t AppFlowActionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t AppFlowActionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-flow-action", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppFlowActionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-flow-action")
 }
 
-func (t AppFlowActionRepository) Upsert(ctx ApiContext, entity []AppFlowAction) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_flow_action": {
-		Entity:  "app_flow_action",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppFlowActionRepository) Upsert(ctx ApiContext, entity []AppFlowAction) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_flow_action")
 }
 
-func (t AppFlowActionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_flow_action": {
-		Entity:  "app_flow_action",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppFlowActionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_flow_action")
 }
 
 type AppFlowAction struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Badge string `json:"badge,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	IconRaw interface{} `json:"iconRaw,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	Badge      string  `json:"badge,omitempty"`
 
-	Delayable bool `json:"delayable,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	SwIcon string `json:"swIcon,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Headline string `json:"headline,omitempty"`
+	Delayable      bool  `json:"delayable,omitempty"`
 
-	Translations []AppFlowActionTranslation `json:"translations,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	FlowSequences      []FlowSequence  `json:"flowSequences,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Headers      interface{}  `json:"headers,omitempty"`
 
-	Headers interface{} `json:"headers,omitempty"`
+	Headline      string  `json:"headline,omitempty"`
 
-	Requirements interface{} `json:"requirements,omitempty"`
+	Icon      string  `json:"icon,omitempty"`
 
-	Icon string `json:"icon,omitempty"`
+	IconRaw      interface{}  `json:"iconRaw,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Parameters interface{} `json:"parameters,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Parameters      interface{}  `json:"parameters,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Requirements      interface{}  `json:"requirements,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	SwIcon      string  `json:"swIcon,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Translations      []AppFlowActionTranslation  `json:"translations,omitempty"`
 
-	FlowSequences []FlowSequence `json:"flowSequences,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type AppFlowActionCollection struct {
-	EntityCollection
+	Url      string  `json:"url,omitempty"`
 
-	Data []AppFlowAction `json:"data"`
 }

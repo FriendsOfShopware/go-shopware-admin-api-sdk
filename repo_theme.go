@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ThemeRepository ClientService
-
-func (t ThemeRepository) Search(ctx ApiContext, criteria Criteria) (*ThemeCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/theme", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ThemeCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ThemeRepository struct {
+	*GenericRepository[Theme]
 }
 
-func (t ThemeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ThemeCollection, *http.Response, error) {
+func NewThemeRepository(client *Client) *ThemeRepository {
+	return &ThemeRepository{
+		GenericRepository: NewGenericRepository[Theme](client),
+	}
+}
+
+func (t *ThemeRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Theme], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "theme")
+}
+
+func (t *ThemeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Theme], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,92 +57,62 @@ func (t ThemeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ThemeCol
 	return c, resp, err
 }
 
-func (t ThemeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/theme", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ThemeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "theme")
 }
 
-func (t ThemeRepository) Upsert(ctx ApiContext, entity []Theme) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"theme": {
-		Entity:  "theme",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ThemeRepository) Upsert(ctx ApiContext, entity []Theme) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "theme")
 }
 
-func (t ThemeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"theme": {
-		Entity:  "theme",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ThemeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "theme")
 }
 
 type Theme struct {
-	Name string `json:"name,omitempty"`
 
-	Author string `json:"author,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	ThemeJson interface{} `json:"themeJson,omitempty"`
+	Author      string  `json:"author,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	BaseConfig      interface{}  `json:"baseConfig,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ConfigValues      interface{}  `json:"configValues,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ParentThemeId string `json:"parentThemeId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ConfigValues interface{} `json:"configValues,omitempty"`
+	DependentThemes      []Theme  `json:"dependentThemes,omitempty"`
 
-	Media []Media `json:"media,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	HelpTexts      interface{}  `json:"helpTexts,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	BaseConfig interface{} `json:"baseConfig,omitempty"`
+	Labels      interface{}  `json:"labels,omitempty"`
 
-	DependentThemes []Theme `json:"dependentThemes,omitempty"`
+	Media      []Media  `json:"media,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Translations []ThemeTranslation `json:"translations,omitempty"`
+	ParentThemeId      string  `json:"parentThemeId,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	PreviewMedia      *Media  `json:"previewMedia,omitempty"`
 
-	PreviewMedia *Media `json:"previewMedia,omitempty"`
+	PreviewMediaId      string  `json:"previewMediaId,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	Labels interface{} `json:"labels,omitempty"`
+	ThemeJson      interface{}  `json:"themeJson,omitempty"`
 
-	HelpTexts interface{} `json:"helpTexts,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	PreviewMediaId string `json:"previewMediaId,omitempty"`
-}
+	Translations      []ThemeTranslation  `json:"translations,omitempty"`
 
-type ThemeCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Theme `json:"data"`
 }

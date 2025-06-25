@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ImportExportFileRepository ClientService
-
-func (t ImportExportFileRepository) Search(ctx ApiContext, criteria Criteria) (*ImportExportFileCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/import-export-file", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ImportExportFileCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ImportExportFileRepository struct {
+	*GenericRepository[ImportExportFile]
 }
 
-func (t ImportExportFileRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ImportExportFileCollection, *http.Response, error) {
+func NewImportExportFileRepository(client *Client) *ImportExportFileRepository {
+	return &ImportExportFileRepository{
+		GenericRepository: NewGenericRepository[ImportExportFile](client),
+	}
+}
+
+func (t *ImportExportFileRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ImportExportFile], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "import-export-file")
+}
+
+func (t *ImportExportFileRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ImportExportFile], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t ImportExportFileRepository) SearchAll(ctx ApiContext, criteria Criteria)
 	return c, resp, err
 }
 
-func (t ImportExportFileRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/import-export-file", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ImportExportFileRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "import-export-file")
 }
 
-func (t ImportExportFileRepository) Upsert(ctx ApiContext, entity []ImportExportFile) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"import_export_file": {
-		Entity:  "import_export_file",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ImportExportFileRepository) Upsert(ctx ApiContext, entity []ImportExportFile) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "import_export_file")
 }
 
-func (t ImportExportFileRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"import_export_file": {
-		Entity:  "import_export_file",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ImportExportFileRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "import_export_file")
 }
 
 type ImportExportFile struct {
-	Path string `json:"path,omitempty"`
 
-	ExpireDate time.Time `json:"expireDate,omitempty"`
+	AccessToken      string  `json:"accessToken,omitempty"`
 
-	Size float64 `json:"size,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Log *ImportExportLog `json:"log,omitempty"`
+	ExpireDate      time.Time  `json:"expireDate,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Log      *ImportExportLog  `json:"log,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	OriginalName      string  `json:"originalName,omitempty"`
 
-	OriginalName string `json:"originalName,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	AccessToken string `json:"accessToken,omitempty"`
-}
+	Size      float64  `json:"size,omitempty"`
 
-type ImportExportFileCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ImportExportFile `json:"data"`
 }

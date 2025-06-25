@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type LogEntryRepository ClientService
-
-func (t LogEntryRepository) Search(ctx ApiContext, criteria Criteria) (*LogEntryCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/log-entry", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(LogEntryCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type LogEntryRepository struct {
+	*GenericRepository[LogEntry]
 }
 
-func (t LogEntryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LogEntryCollection, *http.Response, error) {
+func NewLogEntryRepository(client *Client) *LogEntryRepository {
+	return &LogEntryRepository{
+		GenericRepository: NewGenericRepository[LogEntry](client),
+	}
+}
+
+func (t *LogEntryRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[LogEntry], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "log-entry")
+}
+
+func (t *LogEntryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[LogEntry], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,64 +57,34 @@ func (t LogEntryRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LogEn
 	return c, resp, err
 }
 
-func (t LogEntryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/log-entry", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *LogEntryRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "log-entry")
 }
 
-func (t LogEntryRepository) Upsert(ctx ApiContext, entity []LogEntry) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"log_entry": {
-		Entity:  "log_entry",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *LogEntryRepository) Upsert(ctx ApiContext, entity []LogEntry) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "log_entry")
 }
 
-func (t LogEntryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"log_entry": {
-		Entity:  "log_entry",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *LogEntryRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "log_entry")
 }
 
 type LogEntry struct {
-	Context interface{} `json:"context,omitempty"`
 
-	Extra interface{} `json:"extra,omitempty"`
+	Channel      string  `json:"channel,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Context      interface{}  `json:"context,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Extra      interface{}  `json:"extra,omitempty"`
 
-	Message string `json:"message,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Level float64 `json:"level,omitempty"`
+	Level      float64  `json:"level,omitempty"`
 
-	Channel string `json:"channel,omitempty"`
-}
+	Message      string  `json:"message,omitempty"`
 
-type LogEntryCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []LogEntry `json:"data"`
 }

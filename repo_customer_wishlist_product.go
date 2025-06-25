@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CustomerWishlistProductRepository ClientService
-
-func (t CustomerWishlistProductRepository) Search(ctx ApiContext, criteria Criteria) (*CustomerWishlistProductCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/customer-wishlist-product", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CustomerWishlistProductCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CustomerWishlistProductRepository struct {
+	*GenericRepository[CustomerWishlistProduct]
 }
 
-func (t CustomerWishlistProductRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomerWishlistProductCollection, *http.Response, error) {
+func NewCustomerWishlistProductRepository(client *Client) *CustomerWishlistProductRepository {
+	return &CustomerWishlistProductRepository{
+		GenericRepository: NewGenericRepository[CustomerWishlistProduct](client),
+	}
+}
+
+func (t *CustomerWishlistProductRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomerWishlistProduct], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "customer-wishlist-product")
+}
+
+func (t *CustomerWishlistProductRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomerWishlistProduct], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,64 +57,34 @@ func (t CustomerWishlistProductRepository) SearchAll(ctx ApiContext, criteria Cr
 	return c, resp, err
 }
 
-func (t CustomerWishlistProductRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/customer-wishlist-product", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CustomerWishlistProductRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "customer-wishlist-product")
 }
 
-func (t CustomerWishlistProductRepository) Upsert(ctx ApiContext, entity []CustomerWishlistProduct) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"customer_wishlist_product": {
-		Entity:  "customer_wishlist_product",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CustomerWishlistProductRepository) Upsert(ctx ApiContext, entity []CustomerWishlistProduct) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "customer_wishlist_product")
 }
 
-func (t CustomerWishlistProductRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"customer_wishlist_product": {
-		Entity:  "customer_wishlist_product",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CustomerWishlistProductRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "customer_wishlist_product")
 }
 
 type CustomerWishlistProduct struct {
-	Product *Product `json:"product,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	WishlistId string `json:"wishlistId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Wishlist *CustomerWishlist `json:"wishlist,omitempty"`
-}
+	Wishlist      *CustomerWishlist  `json:"wishlist,omitempty"`
 
-type CustomerWishlistProductCollection struct {
-	EntityCollection
+	WishlistId      string  `json:"wishlistId,omitempty"`
 
-	Data []CustomerWishlistProduct `json:"data"`
 }

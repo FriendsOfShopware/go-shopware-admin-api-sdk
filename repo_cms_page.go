@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CmsPageRepository ClientService
-
-func (t CmsPageRepository) Search(ctx ApiContext, criteria Criteria) (*CmsPageCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/cms-page", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CmsPageCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CmsPageRepository struct {
+	*GenericRepository[CmsPage]
 }
 
-func (t CmsPageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsPageCollection, *http.Response, error) {
+func NewCmsPageRepository(client *Client) *CmsPageRepository {
+	return &CmsPageRepository{
+		GenericRepository: NewGenericRepository[CmsPage](client),
+	}
+}
+
+func (t *CmsPageRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CmsPage], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "cms-page")
+}
+
+func (t *CmsPageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CmsPage], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,88 +57,58 @@ func (t CmsPageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CmsPag
 	return c, resp, err
 }
 
-func (t CmsPageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/cms-page", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CmsPageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "cms-page")
 }
 
-func (t CmsPageRepository) Upsert(ctx ApiContext, entity []CmsPage) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"cms_page": {
-		Entity:  "cms_page",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CmsPageRepository) Upsert(ctx ApiContext, entity []CmsPage) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "cms_page")
 }
 
-func (t CmsPageRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"cms_page": {
-		Entity:  "cms_page",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CmsPageRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "cms_page")
 }
 
 type CmsPage struct {
-	Config interface{} `json:"config,omitempty"`
 
-	Translations []CmsPageTranslation `json:"translations,omitempty"`
+	Categories      []Category  `json:"categories,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CssClass string `json:"cssClass,omitempty"`
+	CssClass      string  `json:"cssClass,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Entity      string  `json:"entity,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	HomeSalesChannels      []SalesChannel  `json:"homeSalesChannels,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	LandingPages      []LandingPage  `json:"landingPages,omitempty"`
 
-	PreviewMedia *Media `json:"previewMedia,omitempty"`
+	Locked      bool  `json:"locked,omitempty"`
 
-	Categories []Category `json:"categories,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	LandingPages []LandingPage `json:"landingPages,omitempty"`
+	PreviewMedia      *Media  `json:"previewMedia,omitempty"`
 
-	HomeSalesChannels []SalesChannel `json:"homeSalesChannels,omitempty"`
+	PreviewMediaId      string  `json:"previewMediaId,omitempty"`
 
-	Entity string `json:"entity,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	PreviewMediaId string `json:"previewMediaId,omitempty"`
+	Sections      []CmsSection  `json:"sections,omitempty"`
 
-	Products []Product `json:"products,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Translations      []CmsPageTranslation  `json:"translations,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	Sections []CmsSection `json:"sections,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type CmsPageCollection struct {
-	EntityCollection
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Data []CmsPage `json:"data"`
 }

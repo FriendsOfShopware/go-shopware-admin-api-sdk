@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type LocaleRepository ClientService
-
-func (t LocaleRepository) Search(ctx ApiContext, criteria Criteria) (*LocaleCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/locale", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(LocaleCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type LocaleRepository struct {
+	*GenericRepository[Locale]
 }
 
-func (t LocaleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LocaleCollection, *http.Response, error) {
+func NewLocaleRepository(client *Client) *LocaleRepository {
+	return &LocaleRepository{
+		GenericRepository: NewGenericRepository[Locale](client),
+	}
+}
+
+func (t *LocaleRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Locale], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "locale")
+}
+
+func (t *LocaleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Locale], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t LocaleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LocaleC
 	return c, resp, err
 }
 
-func (t LocaleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/locale", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *LocaleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "locale")
 }
 
-func (t LocaleRepository) Upsert(ctx ApiContext, entity []Locale) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"locale": {
-		Entity:  "locale",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *LocaleRepository) Upsert(ctx ApiContext, entity []Locale) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "locale")
 }
 
-func (t LocaleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"locale": {
-		Entity:  "locale",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *LocaleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "locale")
 }
 
 type Locale struct {
-	Territory string `json:"territory,omitempty"`
 
-	Languages []Language `json:"languages,omitempty"`
+	Code      string  `json:"code,omitempty"`
 
-	Translations []LocaleTranslation `json:"translations,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Users []User `json:"users,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Languages      []Language  `json:"languages,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Code string `json:"code,omitempty"`
+	Territory      string  `json:"territory,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Translations      []LocaleTranslation  `json:"translations,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type LocaleCollection struct {
-	EntityCollection
+	Users      []User  `json:"users,omitempty"`
 
-	Data []Locale `json:"data"`
 }

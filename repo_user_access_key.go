@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type UserAccessKeyRepository ClientService
-
-func (t UserAccessKeyRepository) Search(ctx ApiContext, criteria Criteria) (*UserAccessKeyCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/user-access-key", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(UserAccessKeyCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type UserAccessKeyRepository struct {
+	*GenericRepository[UserAccessKey]
 }
 
-func (t UserAccessKeyRepository) SearchAll(ctx ApiContext, criteria Criteria) (*UserAccessKeyCollection, *http.Response, error) {
+func NewUserAccessKeyRepository(client *Client) *UserAccessKeyRepository {
+	return &UserAccessKeyRepository{
+		GenericRepository: NewGenericRepository[UserAccessKey](client),
+	}
+}
+
+func (t *UserAccessKeyRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[UserAccessKey], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "user-access-key")
+}
+
+func (t *UserAccessKeyRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[UserAccessKey], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t UserAccessKeyRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t UserAccessKeyRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/user-access-key", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *UserAccessKeyRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "user-access-key")
 }
 
-func (t UserAccessKeyRepository) Upsert(ctx ApiContext, entity []UserAccessKey) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"user_access_key": {
-		Entity:  "user_access_key",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *UserAccessKeyRepository) Upsert(ctx ApiContext, entity []UserAccessKey) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "user_access_key")
 }
 
-func (t UserAccessKeyRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"user_access_key": {
-		Entity:  "user_access_key",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *UserAccessKeyRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "user_access_key")
 }
 
 type UserAccessKey struct {
-	Id string `json:"id,omitempty"`
 
-	AccessKey string `json:"accessKey,omitempty"`
+	AccessKey      string  `json:"accessKey,omitempty"`
 
-	SecretAccessKey interface{} `json:"secretAccessKey,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	LastUsageAt      time.Time  `json:"lastUsageAt,omitempty"`
 
-	LastUsageAt time.Time `json:"lastUsageAt,omitempty"`
+	SecretAccessKey      interface{}  `json:"secretAccessKey,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	User      *User  `json:"user,omitempty"`
 
-type UserAccessKeyCollection struct {
-	EntityCollection
+	UserId      string  `json:"userId,omitempty"`
 
-	Data []UserAccessKey `json:"data"`
 }

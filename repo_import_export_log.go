@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ImportExportLogRepository ClientService
-
-func (t ImportExportLogRepository) Search(ctx ApiContext, criteria Criteria) (*ImportExportLogCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/import-export-log", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ImportExportLogCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ImportExportLogRepository struct {
+	*GenericRepository[ImportExportLog]
 }
 
-func (t ImportExportLogRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ImportExportLogCollection, *http.Response, error) {
+func NewImportExportLogRepository(client *Client) *ImportExportLogRepository {
+	return &ImportExportLogRepository{
+		GenericRepository: NewGenericRepository[ImportExportLog](client),
+	}
+}
+
+func (t *ImportExportLogRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ImportExportLog], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "import-export-log")
+}
+
+func (t *ImportExportLogRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ImportExportLog], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,86 +57,56 @@ func (t ImportExportLogRepository) SearchAll(ctx ApiContext, criteria Criteria) 
 	return c, resp, err
 }
 
-func (t ImportExportLogRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/import-export-log", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ImportExportLogRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "import-export-log")
 }
 
-func (t ImportExportLogRepository) Upsert(ctx ApiContext, entity []ImportExportLog) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"import_export_log": {
-		Entity:  "import_export_log",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ImportExportLogRepository) Upsert(ctx ApiContext, entity []ImportExportLog) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "import_export_log")
 }
 
-func (t ImportExportLogRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"import_export_log": {
-		Entity:  "import_export_log",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ImportExportLogRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "import_export_log")
 }
 
 type ImportExportLog struct {
-	FailedImportLog *ImportExportLog `json:"failedImportLog,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Activity      string  `json:"activity,omitempty"`
 
-	State string `json:"state,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	FileId string `json:"fileId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	InvalidRecordsLogId string `json:"invalidRecordsLogId,omitempty"`
+	FailedImportLog      *ImportExportLog  `json:"failedImportLog,omitempty"`
 
-	Username string `json:"username,omitempty"`
+	File      *ImportExportFile  `json:"file,omitempty"`
 
-	Result interface{} `json:"result,omitempty"`
+	FileId      string  `json:"fileId,omitempty"`
 
-	Profile *ImportExportProfile `json:"profile,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Records float64 `json:"records,omitempty"`
+	InvalidRecordsLog      *ImportExportLog  `json:"invalidRecordsLog,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	InvalidRecordsLogId      string  `json:"invalidRecordsLogId,omitempty"`
 
-	ProfileId string `json:"profileId,omitempty"`
+	Profile      *ImportExportProfile  `json:"profile,omitempty"`
 
-	ProfileName string `json:"profileName,omitempty"`
+	ProfileId      string  `json:"profileId,omitempty"`
 
-	User *User `json:"user,omitempty"`
+	ProfileName      string  `json:"profileName,omitempty"`
 
-	Activity string `json:"activity,omitempty"`
+	Records      float64  `json:"records,omitempty"`
 
-	InvalidRecordsLog *ImportExportLog `json:"invalidRecordsLog,omitempty"`
+	Result      interface{}  `json:"result,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	State      string  `json:"state,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	File *ImportExportFile `json:"file,omitempty"`
+	User      *User  `json:"user,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	UserId      string  `json:"userId,omitempty"`
 
-type ImportExportLogCollection struct {
-	EntityCollection
+	Username      string  `json:"username,omitempty"`
 
-	Data []ImportExportLog `json:"data"`
 }

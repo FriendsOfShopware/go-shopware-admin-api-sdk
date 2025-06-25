@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type OrderLineItemDownloadRepository ClientService
-
-func (t OrderLineItemDownloadRepository) Search(ctx ApiContext, criteria Criteria) (*OrderLineItemDownloadCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/order-line-item-download", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(OrderLineItemDownloadCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type OrderLineItemDownloadRepository struct {
+	*GenericRepository[OrderLineItemDownload]
 }
 
-func (t OrderLineItemDownloadRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderLineItemDownloadCollection, *http.Response, error) {
+func NewOrderLineItemDownloadRepository(client *Client) *OrderLineItemDownloadRepository {
+	return &OrderLineItemDownloadRepository{
+		GenericRepository: NewGenericRepository[OrderLineItemDownload](client),
+	}
+}
+
+func (t *OrderLineItemDownloadRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderLineItemDownload], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "order-line-item-download")
+}
+
+func (t *OrderLineItemDownloadRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderLineItemDownload], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,42 @@ func (t OrderLineItemDownloadRepository) SearchAll(ctx ApiContext, criteria Crit
 	return c, resp, err
 }
 
-func (t OrderLineItemDownloadRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-line-item-download", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *OrderLineItemDownloadRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "order-line-item-download")
 }
 
-func (t OrderLineItemDownloadRepository) Upsert(ctx ApiContext, entity []OrderLineItemDownload) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_line_item_download": {
-		Entity:  "order_line_item_download",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *OrderLineItemDownloadRepository) Upsert(ctx ApiContext, entity []OrderLineItemDownload) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "order_line_item_download")
 }
 
-func (t OrderLineItemDownloadRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_line_item_download": {
-		Entity:  "order_line_item_download",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *OrderLineItemDownloadRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "order_line_item_download")
 }
 
 type OrderLineItemDownload struct {
-	Id string `json:"id,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	AccessGranted      bool  `json:"accessGranted,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	OrderLineItem *OrderLineItem `json:"orderLineItem,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	OrderLineItemId string `json:"orderLineItemId,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	OrderLineItemVersionId string `json:"orderLineItemVersionId,omitempty"`
+	OrderLineItem      *OrderLineItem  `json:"orderLineItem,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	OrderLineItemId      string  `json:"orderLineItemId,omitempty"`
 
-	AccessGranted bool `json:"accessGranted,omitempty"`
+	OrderLineItemVersionId      string  `json:"orderLineItemVersionId,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type OrderLineItemDownloadCollection struct {
-	EntityCollection
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Data []OrderLineItemDownload `json:"data"`
 }

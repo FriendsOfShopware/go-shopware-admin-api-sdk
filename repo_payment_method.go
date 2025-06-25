@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PaymentMethodRepository ClientService
-
-func (t PaymentMethodRepository) Search(ctx ApiContext, criteria Criteria) (*PaymentMethodCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/payment-method", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PaymentMethodCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PaymentMethodRepository struct {
+	*GenericRepository[PaymentMethod]
 }
 
-func (t PaymentMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PaymentMethodCollection, *http.Response, error) {
+func NewPaymentMethodRepository(client *Client) *PaymentMethodRepository {
+	return &PaymentMethodRepository{
+		GenericRepository: NewGenericRepository[PaymentMethod](client),
+	}
+}
+
+func (t *PaymentMethodRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PaymentMethod], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "payment-method")
+}
+
+func (t *PaymentMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PaymentMethod], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,112 +57,82 @@ func (t PaymentMethodRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t PaymentMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/payment-method", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PaymentMethodRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "payment-method")
 }
 
-func (t PaymentMethodRepository) Upsert(ctx ApiContext, entity []PaymentMethod) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"payment_method": {
-		Entity:  "payment_method",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PaymentMethodRepository) Upsert(ctx ApiContext, entity []PaymentMethod) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "payment_method")
 }
 
-func (t PaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"payment_method": {
-		Entity:  "payment_method",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PaymentMethodRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "payment_method")
 }
 
 type PaymentMethod struct {
-	Name string `json:"name,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	AppPaymentMethod *AppPaymentMethod `json:"appPaymentMethod,omitempty"`
+	AfterOrderEnabled      bool  `json:"afterOrderEnabled,omitempty"`
 
-	TechnicalName string `json:"technicalName,omitempty"`
+	AppPaymentMethod      *AppPaymentMethod  `json:"appPaymentMethod,omitempty"`
 
-	HandlerIdentifier string `json:"handlerIdentifier,omitempty"`
+	Asynchronous      bool  `json:"asynchronous,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	AvailabilityRule      *Rule  `json:"availabilityRule,omitempty"`
 
-	AvailabilityRuleId string `json:"availabilityRuleId,omitempty"`
+	AvailabilityRuleId      string  `json:"availabilityRuleId,omitempty"`
 
-	Synchronous bool `json:"synchronous,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Asynchronous bool `json:"asynchronous,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Customers      []Customer  `json:"customers,omitempty"`
 
-	AfterOrderEnabled bool `json:"afterOrderEnabled,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	DistinguishableName string `json:"distinguishableName,omitempty"`
+	DistinguishableName      string  `json:"distinguishableName,omitempty"`
 
-	Translations []PaymentMethodTranslation `json:"translations,omitempty"`
+	FormattedHandlerIdentifier      string  `json:"formattedHandlerIdentifier,omitempty"`
 
-	Plugin *Plugin `json:"plugin,omitempty"`
+	HandlerIdentifier      string  `json:"handlerIdentifier,omitempty"`
 
-	Customers []Customer `json:"customers,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	ShortName string `json:"shortName,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	OrderTransactions      []OrderTransaction  `json:"orderTransactions,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	Plugin      *Plugin  `json:"plugin,omitempty"`
 
-	Refundable bool `json:"refundable,omitempty"`
+	PluginId      string  `json:"pluginId,omitempty"`
 
-	OrderTransactions []OrderTransaction `json:"orderTransactions,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Prepared      bool  `json:"prepared,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Recurring      bool  `json:"recurring,omitempty"`
 
-	FormattedHandlerIdentifier string `json:"formattedHandlerIdentifier,omitempty"`
+	Refundable      bool  `json:"refundable,omitempty"`
 
-	Prepared bool `json:"prepared,omitempty"`
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
 
-	AvailabilityRule *Rule `json:"availabilityRule,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+	ShortName      string  `json:"shortName,omitempty"`
 
-	PluginId string `json:"pluginId,omitempty"`
+	Synchronous      bool  `json:"synchronous,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	TechnicalName      string  `json:"technicalName,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Recurring bool `json:"recurring,omitempty"`
-}
+	Translations      []PaymentMethodTranslation  `json:"translations,omitempty"`
 
-type PaymentMethodCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []PaymentMethod `json:"data"`
 }

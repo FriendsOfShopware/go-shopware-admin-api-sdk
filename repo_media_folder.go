@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MediaFolderRepository ClientService
-
-func (t MediaFolderRepository) Search(ctx ApiContext, criteria Criteria) (*MediaFolderCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/media-folder", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MediaFolderCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MediaFolderRepository struct {
+	*GenericRepository[MediaFolder]
 }
 
-func (t MediaFolderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaFolderCollection, *http.Response, error) {
+func NewMediaFolderRepository(client *Client) *MediaFolderRepository {
+	return &MediaFolderRepository{
+		GenericRepository: NewGenericRepository[MediaFolder](client),
+	}
+}
+
+func (t *MediaFolderRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaFolder], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "media-folder")
+}
+
+func (t *MediaFolderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaFolder], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,80 +57,50 @@ func (t MediaFolderRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Me
 	return c, resp, err
 }
 
-func (t MediaFolderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media-folder", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MediaFolderRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "media-folder")
 }
 
-func (t MediaFolderRepository) Upsert(ctx ApiContext, entity []MediaFolder) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_folder": {
-		Entity:  "media_folder",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MediaFolderRepository) Upsert(ctx ApiContext, entity []MediaFolder) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "media_folder")
 }
 
-func (t MediaFolderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_folder": {
-		Entity:  "media_folder",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MediaFolderRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "media_folder")
 }
 
 type MediaFolder struct {
-	Children []MediaFolder `json:"children,omitempty"`
 
-	ChildCount float64 `json:"childCount,omitempty"`
+	ChildCount      float64  `json:"childCount,omitempty"`
 
-	Media []Media `json:"media,omitempty"`
+	Children      []MediaFolder  `json:"children,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Configuration      *MediaFolderConfiguration  `json:"configuration,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	ConfigurationId      string  `json:"configurationId,omitempty"`
 
-	Path string `json:"path,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	DefaultFolder *MediaDefaultFolder `json:"defaultFolder,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	DefaultFolder      *MediaDefaultFolder  `json:"defaultFolder,omitempty"`
 
-	UseParentConfiguration bool `json:"useParentConfiguration,omitempty"`
+	DefaultFolderId      string  `json:"defaultFolderId,omitempty"`
 
-	ConfigurationId string `json:"configurationId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	DefaultFolderId string `json:"defaultFolderId,omitempty"`
+	Media      []Media  `json:"media,omitempty"`
 
-	Parent *MediaFolder `json:"parent,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Parent      *MediaFolder  `json:"parent,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	Configuration *MediaFolderConfiguration `json:"configuration,omitempty"`
+	Path      string  `json:"path,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type MediaFolderCollection struct {
-	EntityCollection
+	UseParentConfiguration      bool  `json:"useParentConfiguration,omitempty"`
 
-	Data []MediaFolder `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CustomFieldRepository ClientService
-
-func (t CustomFieldRepository) Search(ctx ApiContext, criteria Criteria) (*CustomFieldCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/custom-field", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CustomFieldCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CustomFieldRepository struct {
+	*GenericRepository[CustomField]
 }
 
-func (t CustomFieldRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomFieldCollection, *http.Response, error) {
+func NewCustomFieldRepository(client *Client) *CustomFieldRepository {
+	return &CustomFieldRepository{
+		GenericRepository: NewGenericRepository[CustomField](client),
+	}
+}
+
+func (t *CustomFieldRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomField], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "custom-field")
+}
+
+func (t *CustomFieldRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomField], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,44 @@ func (t CustomFieldRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Cu
 	return c, resp, err
 }
 
-func (t CustomFieldRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/custom-field", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CustomFieldRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "custom-field")
 }
 
-func (t CustomFieldRepository) Upsert(ctx ApiContext, entity []CustomField) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"custom_field": {
-		Entity:  "custom_field",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CustomFieldRepository) Upsert(ctx ApiContext, entity []CustomField) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "custom_field")
 }
 
-func (t CustomFieldRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"custom_field": {
-		Entity:  "custom_field",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CustomFieldRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "custom_field")
 }
 
 type CustomField struct {
-	AllowCustomerWrite bool `json:"allowCustomerWrite,omitempty"`
 
-	AllowCartExpose bool `json:"allowCartExpose,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	ProductSearchConfigFields []ProductSearchConfigField `json:"productSearchConfigFields,omitempty"`
+	AllowCartExpose      bool  `json:"allowCartExpose,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	AllowCustomerWrite      bool  `json:"allowCustomerWrite,omitempty"`
 
-	CustomFieldSetId string `json:"customFieldSetId,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
 
-	CustomFieldSet *CustomFieldSet `json:"customFieldSet,omitempty"`
+	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ProductSearchConfigFields      []ProductSearchConfigField  `json:"productSearchConfigFields,omitempty"`
 
-	Name string `json:"name,omitempty"`
-}
+	StoreApiAware      bool  `json:"storeApiAware,omitempty"`
 
-type CustomFieldCollection struct {
-	EntityCollection
+	Type      string  `json:"type,omitempty"`
 
-	Data []CustomField `json:"data"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
+
 }

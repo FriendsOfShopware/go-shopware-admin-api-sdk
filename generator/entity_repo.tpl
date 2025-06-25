@@ -7,25 +7,21 @@ import (
 {{end}}
 )
 
-type {{ .FormattedName }}Repository ClientService
-
-func (t {{ .FormattedName }}Repository) Search(ctx ApiContext, criteria Criteria) (*{{ .FormattedName }}Collection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/{{ .ApiPath }}", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new({{ .FormattedName }}Collection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type {{ .FormattedName }}Repository struct {
+	*GenericRepository[{{ .FormattedName }}]
 }
 
-func (t {{ .FormattedName }}Repository) SearchAll(ctx ApiContext, criteria Criteria) (*{{ .FormattedName }}Collection, *http.Response, error) {
+func New{{ .FormattedName }}Repository(client *Client) *{{ .FormattedName }}Repository {
+	return &{{ .FormattedName }}Repository{
+		GenericRepository: NewGenericRepository[{{ .FormattedName }}](client),
+	}
+}
+
+func (t *{{ .FormattedName }}Repository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[{{ .FormattedName }}], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "{{ .ApiPath }}")
+}
+
+func (t *{{ .FormattedName }}Repository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[{{ .FormattedName }}], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -61,52 +57,20 @@ func (t {{ .FormattedName }}Repository) SearchAll(ctx ApiContext, criteria Crite
 	return c, resp, err
 }
 
-func (t {{ .FormattedName }}Repository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/{{ .ApiPath }}", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *{{ .FormattedName }}Repository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "{{ .ApiPath }}")
 }
 
-func (t {{ .FormattedName }}Repository) Upsert(ctx ApiContext, entity []{{ .FormattedName }}) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"{{ .Name }}": {
-		Entity:  "{{ .Name }}",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *{{ .FormattedName }}Repository) Upsert(ctx ApiContext, entity []{{ .FormattedName }}) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "{{ .Name }}")
 }
 
-func (t {{ .FormattedName }}Repository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"{{ .Name }}": {
-		Entity:  "{{ .Name }}",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *{{ .FormattedName }}Repository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "{{ .Name }}")
 }
 
 type {{ .FormattedName }} struct {
 {{ range .Fields }}
 	{{ .Key }}      {{ .Type }}  `json:"{{ .Name }},omitempty"`
 {{ end }}
-}
-
-type {{ .FormattedName }}Collection struct {
-	EntityCollection
-
-	Data []{{ .FormattedName }} `json:"data"`
 }

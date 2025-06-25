@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PaymentMethodTranslationRepository ClientService
-
-func (t PaymentMethodTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*PaymentMethodTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/payment-method-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PaymentMethodTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PaymentMethodTranslationRepository struct {
+	*GenericRepository[PaymentMethodTranslation]
 }
 
-func (t PaymentMethodTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PaymentMethodTranslationCollection, *http.Response, error) {
+func NewPaymentMethodTranslationRepository(client *Client) *PaymentMethodTranslationRepository {
+	return &PaymentMethodTranslationRepository{
+		GenericRepository: NewGenericRepository[PaymentMethodTranslation](client),
+	}
+}
+
+func (t *PaymentMethodTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PaymentMethodTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "payment-method-translation")
+}
+
+func (t *PaymentMethodTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PaymentMethodTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,68 +57,38 @@ func (t PaymentMethodTranslationRepository) SearchAll(ctx ApiContext, criteria C
 	return c, resp, err
 }
 
-func (t PaymentMethodTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/payment-method-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PaymentMethodTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "payment-method-translation")
 }
 
-func (t PaymentMethodTranslationRepository) Upsert(ctx ApiContext, entity []PaymentMethodTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"payment_method_translation": {
-		Entity:  "payment_method_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PaymentMethodTranslationRepository) Upsert(ctx ApiContext, entity []PaymentMethodTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "payment_method_translation")
 }
 
-func (t PaymentMethodTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"payment_method_translation": {
-		Entity:  "payment_method_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PaymentMethodTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "payment_method_translation")
 }
 
 type PaymentMethodTranslation struct {
-	LanguageId string `json:"languageId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	PaymentMethodId string `json:"paymentMethodId,omitempty"`
+	DistinguishableName      string  `json:"distinguishableName,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	PaymentMethod *PaymentMethod `json:"paymentMethod,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	DistinguishableName string `json:"distinguishableName,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	PaymentMethod      *PaymentMethod  `json:"paymentMethod,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	PaymentMethodId      string  `json:"paymentMethodId,omitempty"`
 
-type PaymentMethodTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []PaymentMethodTranslation `json:"data"`
 }

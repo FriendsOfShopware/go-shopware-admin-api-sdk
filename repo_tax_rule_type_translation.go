@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type TaxRuleTypeTranslationRepository ClientService
-
-func (t TaxRuleTypeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*TaxRuleTypeTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/tax-rule-type-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(TaxRuleTypeTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type TaxRuleTypeTranslationRepository struct {
+	*GenericRepository[TaxRuleTypeTranslation]
 }
 
-func (t TaxRuleTypeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TaxRuleTypeTranslationCollection, *http.Response, error) {
+func NewTaxRuleTypeTranslationRepository(client *Client) *TaxRuleTypeTranslationRepository {
+	return &TaxRuleTypeTranslationRepository{
+		GenericRepository: NewGenericRepository[TaxRuleTypeTranslation](client),
+	}
+}
+
+func (t *TaxRuleTypeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[TaxRuleTypeTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "tax-rule-type-translation")
+}
+
+func (t *TaxRuleTypeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[TaxRuleTypeTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,62 +57,32 @@ func (t TaxRuleTypeTranslationRepository) SearchAll(ctx ApiContext, criteria Cri
 	return c, resp, err
 }
 
-func (t TaxRuleTypeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/tax-rule-type-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *TaxRuleTypeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "tax-rule-type-translation")
 }
 
-func (t TaxRuleTypeTranslationRepository) Upsert(ctx ApiContext, entity []TaxRuleTypeTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax_rule_type_translation": {
-		Entity:  "tax_rule_type_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *TaxRuleTypeTranslationRepository) Upsert(ctx ApiContext, entity []TaxRuleTypeTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "tax_rule_type_translation")
 }
 
-func (t TaxRuleTypeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax_rule_type_translation": {
-		Entity:  "tax_rule_type_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *TaxRuleTypeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "tax_rule_type_translation")
 }
 
 type TaxRuleTypeTranslation struct {
-	TaxRuleTypeId string `json:"taxRuleTypeId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	TaxRuleType *TaxRuleType `json:"taxRuleType,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	TypeName string `json:"typeName,omitempty"`
+	TaxRuleType      *TaxRuleType  `json:"taxRuleType,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	TaxRuleTypeId      string  `json:"taxRuleTypeId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	TypeName      string  `json:"typeName,omitempty"`
 
-type TaxRuleTypeTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []TaxRuleTypeTranslation `json:"data"`
 }

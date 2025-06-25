@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type ThemeChildRepository ClientService
-
-func (t ThemeChildRepository) Search(ctx ApiContext, criteria Criteria) (*ThemeChildCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/theme-child", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ThemeChildCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ThemeChildRepository struct {
+	*GenericRepository[ThemeChild]
 }
 
-func (t ThemeChildRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ThemeChildCollection, *http.Response, error) {
+func NewThemeChildRepository(client *Client) *ThemeChildRepository {
+	return &ThemeChildRepository{
+		GenericRepository: NewGenericRepository[ThemeChild](client),
+	}
+}
+
+func (t *ThemeChildRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ThemeChild], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "theme-child")
+}
+
+func (t *ThemeChildRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ThemeChild], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t ThemeChildRepository) SearchAll(ctx ApiContext, criteria Criteria) (*The
 	return c, resp, err
 }
 
-func (t ThemeChildRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/theme-child", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ThemeChildRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "theme-child")
 }
 
-func (t ThemeChildRepository) Upsert(ctx ApiContext, entity []ThemeChild) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"theme_child": {
-		Entity:  "theme_child",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ThemeChildRepository) Upsert(ctx ApiContext, entity []ThemeChild) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "theme_child")
 }
 
-func (t ThemeChildRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"theme_child": {
-		Entity:  "theme_child",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ThemeChildRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "theme_child")
 }
 
 type ThemeChild struct {
-	ChildId string `json:"childId,omitempty"`
 
-	ParentTheme *Theme `json:"parentTheme,omitempty"`
+	ChildId      string  `json:"childId,omitempty"`
 
-	ChildTheme *Theme `json:"childTheme,omitempty"`
+	ChildTheme      *Theme  `json:"childTheme,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
-}
+	ParentId      string  `json:"parentId,omitempty"`
 
-type ThemeChildCollection struct {
-	EntityCollection
+	ParentTheme      *Theme  `json:"parentTheme,omitempty"`
 
-	Data []ThemeChild `json:"data"`
 }

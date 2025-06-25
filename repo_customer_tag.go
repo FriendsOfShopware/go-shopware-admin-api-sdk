@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type CustomerTagRepository ClientService
-
-func (t CustomerTagRepository) Search(ctx ApiContext, criteria Criteria) (*CustomerTagCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/customer-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CustomerTagCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CustomerTagRepository struct {
+	*GenericRepository[CustomerTag]
 }
 
-func (t CustomerTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomerTagCollection, *http.Response, error) {
+func NewCustomerTagRepository(client *Client) *CustomerTagRepository {
+	return &CustomerTagRepository{
+		GenericRepository: NewGenericRepository[CustomerTag](client),
+	}
+}
+
+func (t *CustomerTagRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomerTag], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "customer-tag")
+}
+
+func (t *CustomerTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomerTag], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t CustomerTagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Cu
 	return c, resp, err
 }
 
-func (t CustomerTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/customer-tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CustomerTagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "customer-tag")
 }
 
-func (t CustomerTagRepository) Upsert(ctx ApiContext, entity []CustomerTag) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"customer_tag": {
-		Entity:  "customer_tag",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CustomerTagRepository) Upsert(ctx ApiContext, entity []CustomerTag) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "customer_tag")
 }
 
-func (t CustomerTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"customer_tag": {
-		Entity:  "customer_tag",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CustomerTagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "customer_tag")
 }
 
 type CustomerTag struct {
-	TagId string `json:"tagId,omitempty"`
 
-	Customer *Customer `json:"customer,omitempty"`
+	Customer      *Customer  `json:"customer,omitempty"`
 
-	Tag *Tag `json:"tag,omitempty"`
+	CustomerId      string  `json:"customerId,omitempty"`
 
-	CustomerId string `json:"customerId,omitempty"`
-}
+	Tag      *Tag  `json:"tag,omitempty"`
 
-type CustomerTagCollection struct {
-	EntityCollection
+	TagId      string  `json:"tagId,omitempty"`
 
-	Data []CustomerTag `json:"data"`
 }

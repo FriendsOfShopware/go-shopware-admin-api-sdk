@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type FlowRepository ClientService
-
-func (t FlowRepository) Search(ctx ApiContext, criteria Criteria) (*FlowCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/flow", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(FlowCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type FlowRepository struct {
+	*GenericRepository[Flow]
 }
 
-func (t FlowRepository) SearchAll(ctx ApiContext, criteria Criteria) (*FlowCollection, *http.Response, error) {
+func NewFlowRepository(client *Client) *FlowRepository {
+	return &FlowRepository{
+		GenericRepository: NewGenericRepository[Flow](client),
+	}
+}
+
+func (t *FlowRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Flow], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "flow")
+}
+
+func (t *FlowRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Flow], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,76 +57,46 @@ func (t FlowRepository) SearchAll(ctx ApiContext, criteria Criteria) (*FlowColle
 	return c, resp, err
 }
 
-func (t FlowRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/flow", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *FlowRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "flow")
 }
 
-func (t FlowRepository) Upsert(ctx ApiContext, entity []Flow) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"flow": {
-		Entity:  "flow",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *FlowRepository) Upsert(ctx ApiContext, entity []Flow) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "flow")
 }
 
-func (t FlowRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"flow": {
-		Entity:  "flow",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *FlowRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "flow")
 }
 
 type Flow struct {
-	Invalid bool `json:"invalid,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	AppFlowEvent      *AppFlowEvent  `json:"appFlowEvent,omitempty"`
 
-	EventName string `json:"eventName,omitempty"`
+	AppFlowEventId      string  `json:"appFlowEventId,omitempty"`
 
-	Sequences []FlowSequence `json:"sequences,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AppFlowEvent *AppFlowEvent `json:"appFlowEvent,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	EventName      string  `json:"eventName,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Invalid      bool  `json:"invalid,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	AppFlowEventId string `json:"appFlowEventId,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
-}
+	Sequences      []FlowSequence  `json:"sequences,omitempty"`
 
-type FlowCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Flow `json:"data"`
 }

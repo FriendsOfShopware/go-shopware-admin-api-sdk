@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ThemeTranslationRepository ClientService
-
-func (t ThemeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*ThemeTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/theme-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ThemeTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ThemeTranslationRepository struct {
+	*GenericRepository[ThemeTranslation]
 }
 
-func (t ThemeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ThemeTranslationCollection, *http.Response, error) {
+func NewThemeTranslationRepository(client *Client) *ThemeTranslationRepository {
+	return &ThemeTranslationRepository{
+		GenericRepository: NewGenericRepository[ThemeTranslation](client),
+	}
+}
+
+func (t *ThemeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ThemeTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "theme-translation")
+}
+
+func (t *ThemeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ThemeTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,68 +57,38 @@ func (t ThemeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria)
 	return c, resp, err
 }
 
-func (t ThemeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/theme-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ThemeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "theme-translation")
 }
 
-func (t ThemeTranslationRepository) Upsert(ctx ApiContext, entity []ThemeTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"theme_translation": {
-		Entity:  "theme_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ThemeTranslationRepository) Upsert(ctx ApiContext, entity []ThemeTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "theme_translation")
 }
 
-func (t ThemeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"theme_translation": {
-		Entity:  "theme_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ThemeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "theme_translation")
 }
 
 type ThemeTranslation struct {
-	ThemeId string `json:"themeId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Theme *Theme `json:"theme,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	HelpTexts      interface{}  `json:"helpTexts,omitempty"`
 
-	HelpTexts interface{} `json:"helpTexts,omitempty"`
+	Labels      interface{}  `json:"labels,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Labels interface{} `json:"labels,omitempty"`
+	Theme      *Theme  `json:"theme,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	ThemeId      string  `json:"themeId,omitempty"`
 
-type ThemeTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ThemeTranslation `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ShippingMethodTranslationRepository ClientService
-
-func (t ShippingMethodTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*ShippingMethodTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/shipping-method-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ShippingMethodTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ShippingMethodTranslationRepository struct {
+	*GenericRepository[ShippingMethodTranslation]
 }
 
-func (t ShippingMethodTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ShippingMethodTranslationCollection, *http.Response, error) {
+func NewShippingMethodTranslationRepository(client *Client) *ShippingMethodTranslationRepository {
+	return &ShippingMethodTranslationRepository{
+		GenericRepository: NewGenericRepository[ShippingMethodTranslation](client),
+	}
+}
+
+func (t *ShippingMethodTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ShippingMethodTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "shipping-method-translation")
+}
+
+func (t *ShippingMethodTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ShippingMethodTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,68 +57,38 @@ func (t ShippingMethodTranslationRepository) SearchAll(ctx ApiContext, criteria 
 	return c, resp, err
 }
 
-func (t ShippingMethodTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/shipping-method-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ShippingMethodTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "shipping-method-translation")
 }
 
-func (t ShippingMethodTranslationRepository) Upsert(ctx ApiContext, entity []ShippingMethodTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"shipping_method_translation": {
-		Entity:  "shipping_method_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ShippingMethodTranslationRepository) Upsert(ctx ApiContext, entity []ShippingMethodTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "shipping_method_translation")
 }
 
-func (t ShippingMethodTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"shipping_method_translation": {
-		Entity:  "shipping_method_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ShippingMethodTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "shipping_method_translation")
 }
 
 type ShippingMethodTranslation struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ShippingMethod *ShippingMethod `json:"shippingMethod,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	TrackingUrl string `json:"trackingUrl,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ShippingMethod      *ShippingMethod  `json:"shippingMethod,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ShippingMethodId      string  `json:"shippingMethodId,omitempty"`
 
-	ShippingMethodId string `json:"shippingMethodId,omitempty"`
-}
+	TrackingUrl      string  `json:"trackingUrl,omitempty"`
 
-type ShippingMethodTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ShippingMethodTranslation `json:"data"`
 }

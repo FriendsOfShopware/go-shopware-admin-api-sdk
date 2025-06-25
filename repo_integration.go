@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type IntegrationRepository ClientService
-
-func (t IntegrationRepository) Search(ctx ApiContext, criteria Criteria) (*IntegrationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/integration", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(IntegrationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type IntegrationRepository struct {
+	*GenericRepository[Integration]
 }
 
-func (t IntegrationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*IntegrationCollection, *http.Response, error) {
+func NewIntegrationRepository(client *Client) *IntegrationRepository {
+	return &IntegrationRepository{
+		GenericRepository: NewGenericRepository[Integration](client),
+	}
+}
+
+func (t *IntegrationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Integration], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "integration")
+}
+
+func (t *IntegrationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Integration], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,74 +57,44 @@ func (t IntegrationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*In
 	return c, resp, err
 }
 
-func (t IntegrationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/integration", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *IntegrationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "integration")
 }
 
-func (t IntegrationRepository) Upsert(ctx ApiContext, entity []Integration) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"integration": {
-		Entity:  "integration",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *IntegrationRepository) Upsert(ctx ApiContext, entity []Integration) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "integration")
 }
 
-func (t IntegrationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"integration": {
-		Entity:  "integration",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *IntegrationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "integration")
 }
 
 type Integration struct {
-	LastUsageAt time.Time `json:"lastUsageAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	AccessKey      string  `json:"accessKey,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	AclRoles      []AclRole  `json:"aclRoles,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Admin      bool  `json:"admin,omitempty"`
 
-	AccessKey string `json:"accessKey,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedNotifications []Notification `json:"createdNotifications,omitempty"`
+	CreatedNotifications      []Notification  `json:"createdNotifications,omitempty"`
 
-	SecretAccessKey interface{} `json:"secretAccessKey,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	DeletedAt      time.Time  `json:"deletedAt,omitempty"`
 
-	Admin bool `json:"admin,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	DeletedAt time.Time `json:"deletedAt,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	LastUsageAt      time.Time  `json:"lastUsageAt,omitempty"`
 
-	AclRoles []AclRole `json:"aclRoles,omitempty"`
-}
+	SecretAccessKey      interface{}  `json:"secretAccessKey,omitempty"`
 
-type IntegrationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Integration `json:"data"`
 }

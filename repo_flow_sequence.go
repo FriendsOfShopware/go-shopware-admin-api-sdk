@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type FlowSequenceRepository ClientService
-
-func (t FlowSequenceRepository) Search(ctx ApiContext, criteria Criteria) (*FlowSequenceCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/flow-sequence", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(FlowSequenceCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type FlowSequenceRepository struct {
+	*GenericRepository[FlowSequence]
 }
 
-func (t FlowSequenceRepository) SearchAll(ctx ApiContext, criteria Criteria) (*FlowSequenceCollection, *http.Response, error) {
+func NewFlowSequenceRepository(client *Client) *FlowSequenceRepository {
+	return &FlowSequenceRepository{
+		GenericRepository: NewGenericRepository[FlowSequence](client),
+	}
+}
+
+func (t *FlowSequenceRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[FlowSequence], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "flow-sequence")
+}
+
+func (t *FlowSequenceRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[FlowSequence], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,84 +57,54 @@ func (t FlowSequenceRepository) SearchAll(ctx ApiContext, criteria Criteria) (*F
 	return c, resp, err
 }
 
-func (t FlowSequenceRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/flow-sequence", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *FlowSequenceRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "flow-sequence")
 }
 
-func (t FlowSequenceRepository) Upsert(ctx ApiContext, entity []FlowSequence) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"flow_sequence": {
-		Entity:  "flow_sequence",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *FlowSequenceRepository) Upsert(ctx ApiContext, entity []FlowSequence) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "flow_sequence")
 }
 
-func (t FlowSequenceRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"flow_sequence": {
-		Entity:  "flow_sequence",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *FlowSequenceRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "flow_sequence")
 }
 
 type FlowSequence struct {
-	Position float64 `json:"position,omitempty"`
 
-	DisplayGroup float64 `json:"displayGroup,omitempty"`
+	ActionName      string  `json:"actionName,omitempty"`
 
-	AppFlowActionId string `json:"appFlowActionId,omitempty"`
+	AppFlowAction      *AppFlowAction  `json:"appFlowAction,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	AppFlowActionId      string  `json:"appFlowActionId,omitempty"`
 
-	FlowId string `json:"flowId,omitempty"`
+	Children      []FlowSequence  `json:"children,omitempty"`
 
-	Config interface{} `json:"config,omitempty"`
+	Config      interface{}  `json:"config,omitempty"`
 
-	Flow *Flow `json:"flow,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Rule *Rule `json:"rule,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Parent *FlowSequence `json:"parent,omitempty"`
+	DisplayGroup      float64  `json:"displayGroup,omitempty"`
 
-	Children []FlowSequence `json:"children,omitempty"`
+	Flow      *Flow  `json:"flow,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	FlowId      string  `json:"flowId,omitempty"`
 
-	AppFlowAction *AppFlowAction `json:"appFlowAction,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	RuleId string `json:"ruleId,omitempty"`
+	Parent      *FlowSequence  `json:"parent,omitempty"`
 
-	ActionName string `json:"actionName,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Rule      *Rule  `json:"rule,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	RuleId      string  `json:"ruleId,omitempty"`
 
-	TrueCase bool `json:"trueCase,omitempty"`
-}
+	TrueCase      bool  `json:"trueCase,omitempty"`
 
-type FlowSequenceCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []FlowSequence `json:"data"`
 }

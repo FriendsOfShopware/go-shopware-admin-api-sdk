@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductSearchKeywordRepository ClientService
-
-func (t ProductSearchKeywordRepository) Search(ctx ApiContext, criteria Criteria) (*ProductSearchKeywordCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-search-keyword", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductSearchKeywordCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductSearchKeywordRepository struct {
+	*GenericRepository[ProductSearchKeyword]
 }
 
-func (t ProductSearchKeywordRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductSearchKeywordCollection, *http.Response, error) {
+func NewProductSearchKeywordRepository(client *Client) *ProductSearchKeywordRepository {
+	return &ProductSearchKeywordRepository{
+		GenericRepository: NewGenericRepository[ProductSearchKeyword](client),
+	}
+}
+
+func (t *ProductSearchKeywordRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductSearchKeyword], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-search-keyword")
+}
+
+func (t *ProductSearchKeywordRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductSearchKeyword], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t ProductSearchKeywordRepository) SearchAll(ctx ApiContext, criteria Crite
 	return c, resp, err
 }
 
-func (t ProductSearchKeywordRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-search-keyword", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductSearchKeywordRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-search-keyword")
 }
 
-func (t ProductSearchKeywordRepository) Upsert(ctx ApiContext, entity []ProductSearchKeyword) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_search_keyword": {
-		Entity:  "product_search_keyword",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductSearchKeywordRepository) Upsert(ctx ApiContext, entity []ProductSearchKeyword) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_search_keyword")
 }
 
-func (t ProductSearchKeywordRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_search_keyword": {
-		Entity:  "product_search_keyword",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductSearchKeywordRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_search_keyword")
 }
 
 type ProductSearchKeyword struct {
-	LanguageId string `json:"languageId,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Keyword string `json:"keyword,omitempty"`
+	Keyword      string  `json:"keyword,omitempty"`
 
-	Ranking float64 `json:"ranking,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Ranking      float64  `json:"ranking,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type ProductSearchKeywordCollection struct {
-	EntityCollection
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Data []ProductSearchKeyword `json:"data"`
 }

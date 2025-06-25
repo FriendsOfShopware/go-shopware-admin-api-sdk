@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type WebhookRepository ClientService
-
-func (t WebhookRepository) Search(ctx ApiContext, criteria Criteria) (*WebhookCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/webhook", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(WebhookCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type WebhookRepository struct {
+	*GenericRepository[Webhook]
 }
 
-func (t WebhookRepository) SearchAll(ctx ApiContext, criteria Criteria) (*WebhookCollection, *http.Response, error) {
+func NewWebhookRepository(client *Client) *WebhookRepository {
+	return &WebhookRepository{
+		GenericRepository: NewGenericRepository[Webhook](client),
+	}
+}
+
+func (t *WebhookRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Webhook], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "webhook")
+}
+
+func (t *WebhookRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Webhook], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t WebhookRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Webhoo
 	return c, resp, err
 }
 
-func (t WebhookRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/webhook", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *WebhookRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "webhook")
 }
 
-func (t WebhookRepository) Upsert(ctx ApiContext, entity []Webhook) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"webhook": {
-		Entity:  "webhook",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *WebhookRepository) Upsert(ctx ApiContext, entity []Webhook) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "webhook")
 }
 
-func (t WebhookRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"webhook": {
-		Entity:  "webhook",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *WebhookRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "webhook")
 }
 
 type Webhook struct {
-	Url string `json:"url,omitempty"`
 
-	ErrorCount float64 `json:"errorCount,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ErrorCount      float64  `json:"errorCount,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	EventName      string  `json:"eventName,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	EventName string `json:"eventName,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	OnlyLiveVersion bool `json:"onlyLiveVersion,omitempty"`
+	OnlyLiveVersion      bool  `json:"onlyLiveVersion,omitempty"`
 
-	Active bool `json:"active,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type WebhookCollection struct {
-	EntityCollection
+	Url      string  `json:"url,omitempty"`
 
-	Data []Webhook `json:"data"`
 }

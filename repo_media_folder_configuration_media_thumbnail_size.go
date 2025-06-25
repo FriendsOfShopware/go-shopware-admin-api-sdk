@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type MediaFolderConfigurationMediaThumbnailSizeRepository ClientService
-
-func (t MediaFolderConfigurationMediaThumbnailSizeRepository) Search(ctx ApiContext, criteria Criteria) (*MediaFolderConfigurationMediaThumbnailSizeCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/media-folder-configuration-media-thumbnail-size", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MediaFolderConfigurationMediaThumbnailSizeCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MediaFolderConfigurationMediaThumbnailSizeRepository struct {
+	*GenericRepository[MediaFolderConfigurationMediaThumbnailSize]
 }
 
-func (t MediaFolderConfigurationMediaThumbnailSizeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaFolderConfigurationMediaThumbnailSizeCollection, *http.Response, error) {
+func NewMediaFolderConfigurationMediaThumbnailSizeRepository(client *Client) *MediaFolderConfigurationMediaThumbnailSizeRepository {
+	return &MediaFolderConfigurationMediaThumbnailSizeRepository{
+		GenericRepository: NewGenericRepository[MediaFolderConfigurationMediaThumbnailSize](client),
+	}
+}
+
+func (t *MediaFolderConfigurationMediaThumbnailSizeRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaFolderConfigurationMediaThumbnailSize], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "media-folder-configuration-media-thumbnail-size")
+}
+
+func (t *MediaFolderConfigurationMediaThumbnailSizeRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaFolderConfigurationMediaThumbnailSize], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,56 +55,26 @@ func (t MediaFolderConfigurationMediaThumbnailSizeRepository) SearchAll(ctx ApiC
 	return c, resp, err
 }
 
-func (t MediaFolderConfigurationMediaThumbnailSizeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media-folder-configuration-media-thumbnail-size", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MediaFolderConfigurationMediaThumbnailSizeRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "media-folder-configuration-media-thumbnail-size")
 }
 
-func (t MediaFolderConfigurationMediaThumbnailSizeRepository) Upsert(ctx ApiContext, entity []MediaFolderConfigurationMediaThumbnailSize) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_folder_configuration_media_thumbnail_size": {
-		Entity:  "media_folder_configuration_media_thumbnail_size",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MediaFolderConfigurationMediaThumbnailSizeRepository) Upsert(ctx ApiContext, entity []MediaFolderConfigurationMediaThumbnailSize) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "media_folder_configuration_media_thumbnail_size")
 }
 
-func (t MediaFolderConfigurationMediaThumbnailSizeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_folder_configuration_media_thumbnail_size": {
-		Entity:  "media_folder_configuration_media_thumbnail_size",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MediaFolderConfigurationMediaThumbnailSizeRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "media_folder_configuration_media_thumbnail_size")
 }
 
 type MediaFolderConfigurationMediaThumbnailSize struct {
-	MediaThumbnailSizeId string `json:"mediaThumbnailSizeId,omitempty"`
 
-	MediaFolderConfiguration *MediaFolderConfiguration `json:"mediaFolderConfiguration,omitempty"`
+	MediaFolderConfiguration      *MediaFolderConfiguration  `json:"mediaFolderConfiguration,omitempty"`
 
-	MediaThumbnailSize *MediaThumbnailSize `json:"mediaThumbnailSize,omitempty"`
+	MediaFolderConfigurationId      string  `json:"mediaFolderConfigurationId,omitempty"`
 
-	MediaFolderConfigurationId string `json:"mediaFolderConfigurationId,omitempty"`
-}
+	MediaThumbnailSize      *MediaThumbnailSize  `json:"mediaThumbnailSize,omitempty"`
 
-type MediaFolderConfigurationMediaThumbnailSizeCollection struct {
-	EntityCollection
+	MediaThumbnailSizeId      string  `json:"mediaThumbnailSizeId,omitempty"`
 
-	Data []MediaFolderConfigurationMediaThumbnailSize `json:"data"`
 }

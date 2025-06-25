@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductReviewRepository ClientService
-
-func (t ProductReviewRepository) Search(ctx ApiContext, criteria Criteria) (*ProductReviewCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-review", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductReviewCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductReviewRepository struct {
+	*GenericRepository[ProductReview]
 }
 
-func (t ProductReviewRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductReviewCollection, *http.Response, error) {
+func NewProductReviewRepository(client *Client) *ProductReviewRepository {
+	return &ProductReviewRepository{
+		GenericRepository: NewGenericRepository[ProductReview](client),
+	}
+}
+
+func (t *ProductReviewRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductReview], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-review")
+}
+
+func (t *ProductReviewRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductReview], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,88 +57,58 @@ func (t ProductReviewRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t ProductReviewRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-review", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductReviewRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-review")
 }
 
-func (t ProductReviewRepository) Upsert(ctx ApiContext, entity []ProductReview) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_review": {
-		Entity:  "product_review",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductReviewRepository) Upsert(ctx ApiContext, entity []ProductReview) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_review")
 }
 
-func (t ProductReviewRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_review": {
-		Entity:  "product_review",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductReviewRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_review")
 }
 
 type ProductReview struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	Comment      string  `json:"comment,omitempty"`
 
-	CustomerId string `json:"customerId,omitempty"`
+	Content      string  `json:"content,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ExternalEmail string `json:"externalEmail,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	Customer      *Customer  `json:"customer,omitempty"`
 
-	Points float64 `json:"points,omitempty"`
+	CustomerId      string  `json:"customerId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	ExternalEmail      string  `json:"externalEmail,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ExternalUser      string  `json:"externalUser,omitempty"`
 
-	ExternalUser string `json:"externalUser,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Content string `json:"content,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	Points      float64  `json:"points,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Status bool `json:"status,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	Comment string `json:"comment,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Customer *Customer `json:"customer,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Status      bool  `json:"status,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
-}
+	Title      string  `json:"title,omitempty"`
 
-type ProductReviewCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ProductReview `json:"data"`
 }

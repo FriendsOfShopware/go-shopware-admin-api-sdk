@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type PropertyGroupOptionTranslationRepository ClientService
-
-func (t PropertyGroupOptionTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*PropertyGroupOptionTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/property-group-option-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(PropertyGroupOptionTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type PropertyGroupOptionTranslationRepository struct {
+	*GenericRepository[PropertyGroupOptionTranslation]
 }
 
-func (t PropertyGroupOptionTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*PropertyGroupOptionTranslationCollection, *http.Response, error) {
+func NewPropertyGroupOptionTranslationRepository(client *Client) *PropertyGroupOptionTranslationRepository {
+	return &PropertyGroupOptionTranslationRepository{
+		GenericRepository: NewGenericRepository[PropertyGroupOptionTranslation](client),
+	}
+}
+
+func (t *PropertyGroupOptionTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[PropertyGroupOptionTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "property-group-option-translation")
+}
+
+func (t *PropertyGroupOptionTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[PropertyGroupOptionTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,66 +57,36 @@ func (t PropertyGroupOptionTranslationRepository) SearchAll(ctx ApiContext, crit
 	return c, resp, err
 }
 
-func (t PropertyGroupOptionTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/property-group-option-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *PropertyGroupOptionTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "property-group-option-translation")
 }
 
-func (t PropertyGroupOptionTranslationRepository) Upsert(ctx ApiContext, entity []PropertyGroupOptionTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"property_group_option_translation": {
-		Entity:  "property_group_option_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *PropertyGroupOptionTranslationRepository) Upsert(ctx ApiContext, entity []PropertyGroupOptionTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "property_group_option_translation")
 }
 
-func (t PropertyGroupOptionTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"property_group_option_translation": {
-		Entity:  "property_group_option_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *PropertyGroupOptionTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "property_group_option_translation")
 }
 
 type PropertyGroupOptionTranslation struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	PropertyGroupOptionId string `json:"propertyGroupOptionId,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	PropertyGroupOption *PropertyGroupOption `json:"propertyGroupOption,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
+	PropertyGroupOption      *PropertyGroupOption  `json:"propertyGroupOption,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
-}
+	PropertyGroupOptionId      string  `json:"propertyGroupOptionId,omitempty"`
 
-type PropertyGroupOptionTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []PropertyGroupOptionTranslation `json:"data"`
 }

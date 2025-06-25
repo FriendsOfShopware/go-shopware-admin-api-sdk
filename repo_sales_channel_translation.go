@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type SalesChannelTranslationRepository ClientService
-
-func (t SalesChannelTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*SalesChannelTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/sales-channel-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SalesChannelTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type SalesChannelTranslationRepository struct {
+	*GenericRepository[SalesChannelTranslation]
 }
 
-func (t SalesChannelTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*SalesChannelTranslationCollection, *http.Response, error) {
+func NewSalesChannelTranslationRepository(client *Client) *SalesChannelTranslationRepository {
+	return &SalesChannelTranslationRepository{
+		GenericRepository: NewGenericRepository[SalesChannelTranslation](client),
+	}
+}
+
+func (t *SalesChannelTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[SalesChannelTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "sales-channel-translation")
+}
+
+func (t *SalesChannelTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[SalesChannelTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,76 +57,46 @@ func (t SalesChannelTranslationRepository) SearchAll(ctx ApiContext, criteria Cr
 	return c, resp, err
 }
 
-func (t SalesChannelTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/sales-channel-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *SalesChannelTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "sales-channel-translation")
 }
 
-func (t SalesChannelTranslationRepository) Upsert(ctx ApiContext, entity []SalesChannelTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"sales_channel_translation": {
-		Entity:  "sales_channel_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *SalesChannelTranslationRepository) Upsert(ctx ApiContext, entity []SalesChannelTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "sales_channel_translation")
 }
 
-func (t SalesChannelTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"sales_channel_translation": {
-		Entity:  "sales_channel_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *SalesChannelTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "sales_channel_translation")
 }
 
 type SalesChannelTranslation struct {
-	HomeMetaTitle string `json:"homeMetaTitle,omitempty"`
 
-	HomeMetaDescription string `json:"homeMetaDescription,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	HomeEnabled      bool  `json:"homeEnabled,omitempty"`
 
-	HomeEnabled bool `json:"homeEnabled,omitempty"`
+	HomeKeywords      string  `json:"homeKeywords,omitempty"`
 
-	HomeName string `json:"homeName,omitempty"`
+	HomeMetaDescription      string  `json:"homeMetaDescription,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	HomeMetaTitle      string  `json:"homeMetaTitle,omitempty"`
 
-	SalesChannelId string `json:"salesChannelId,omitempty"`
+	HomeName      string  `json:"homeName,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	HomeSlotConfig      interface{}  `json:"homeSlotConfig,omitempty"`
 
-	HomeSlotConfig interface{} `json:"homeSlotConfig,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	SalesChannel *SalesChannel `json:"salesChannel,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	HomeKeywords string `json:"homeKeywords,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	SalesChannel      *SalesChannel  `json:"salesChannel,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
-}
+	SalesChannelId      string  `json:"salesChannelId,omitempty"`
 
-type SalesChannelTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []SalesChannelTranslation `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type LanguageRepository ClientService
-
-func (t LanguageRepository) Search(ctx ApiContext, criteria Criteria) (*LanguageCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/language", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(LanguageCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type LanguageRepository struct {
+	*GenericRepository[Language]
 }
 
-func (t LanguageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*LanguageCollection, *http.Response, error) {
+func NewLanguageRepository(client *Client) *LanguageRepository {
+	return &LanguageRepository{
+		GenericRepository: NewGenericRepository[Language](client),
+	}
+}
+
+func (t *LanguageRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Language], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "language")
+}
+
+func (t *LanguageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Language], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,182 +57,152 @@ func (t LanguageRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Langu
 	return c, resp, err
 }
 
-func (t LanguageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/language", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *LanguageRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "language")
 }
 
-func (t LanguageRepository) Upsert(ctx ApiContext, entity []Language) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"language": {
-		Entity:  "language",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *LanguageRepository) Upsert(ctx ApiContext, entity []Language) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "language")
 }
 
-func (t LanguageRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"language": {
-		Entity:  "language",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *LanguageRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "language")
 }
 
 type Language struct {
-	ProductSearchKeywords []ProductSearchKeyword `json:"productSearchKeywords,omitempty"`
 
-	AppTranslations []AppTranslation `json:"appTranslations,omitempty"`
+	ActionButtonTranslations      []AppActionButtonTranslation  `json:"actionButtonTranslations,omitempty"`
 
-	AppCmsBlockTranslations []AppCmsBlockTranslation `json:"appCmsBlockTranslations,omitempty"`
+	AppCmsBlockTranslations      []AppCmsBlockTranslation  `json:"appCmsBlockTranslations,omitempty"`
 
-	SalesChannelDefaultAssignments []SalesChannel `json:"salesChannelDefaultAssignments,omitempty"`
+	AppFlowActionTranslations      []AppFlowActionTranslation  `json:"appFlowActionTranslations,omitempty"`
 
-	ActionButtonTranslations []AppActionButtonTranslation `json:"actionButtonTranslations,omitempty"`
+	AppScriptConditionTranslations      []AppScriptConditionTranslation  `json:"appScriptConditionTranslations,omitempty"`
 
-	SalesChannels []SalesChannel `json:"salesChannels,omitempty"`
+	AppTranslations      []AppTranslation  `json:"appTranslations,omitempty"`
 
-	Parent *Language `json:"parent,omitempty"`
+	CategoryTranslations      []CategoryTranslation  `json:"categoryTranslations,omitempty"`
 
-	PropertyGroupOptionTranslations []PropertyGroupOptionTranslation `json:"propertyGroupOptionTranslations,omitempty"`
+	Children      []Language  `json:"children,omitempty"`
 
-	CmsPageTranslations []CmsPageTranslation `json:"cmsPageTranslations,omitempty"`
+	CmsPageTranslations      []CmsPageTranslation  `json:"cmsPageTranslations,omitempty"`
 
-	ProductSortingTranslations []ProductSortingTranslation `json:"productSortingTranslations,omitempty"`
+	CmsSlotTranslations      []CmsSlotTranslation  `json:"cmsSlotTranslations,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CountryStateTranslations      []CountryStateTranslation  `json:"countryStateTranslations,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CountryTranslations      []CountryTranslation  `json:"countryTranslations,omitempty"`
 
-	TranslationCode *Locale `json:"translationCode,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	NewsletterRecipients []NewsletterRecipient `json:"newsletterRecipients,omitempty"`
+	CurrencyTranslations      []CurrencyTranslation  `json:"currencyTranslations,omitempty"`
 
-	CountryTranslations []CountryTranslation `json:"countryTranslations,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	UnitTranslations []UnitTranslation `json:"unitTranslations,omitempty"`
+	CustomerGroupTranslations      []CustomerGroupTranslation  `json:"customerGroupTranslations,omitempty"`
 
-	ProductKeywordDictionaries []ProductKeywordDictionary `json:"productKeywordDictionaries,omitempty"`
+	Customers      []Customer  `json:"customers,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	DeliveryTimeTranslations      []DeliveryTimeTranslation  `json:"deliveryTimeTranslations,omitempty"`
 
-	NumberRangeTranslations []NumberRangeTranslation `json:"numberRangeTranslations,omitempty"`
+	DocumentTypeTranslations      []DocumentTypeTranslation  `json:"documentTypeTranslations,omitempty"`
 
-	Children []Language `json:"children,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	StateMachineStateTranslations []StateMachineStateTranslation `json:"stateMachineStateTranslations,omitempty"`
+	ImportExportProfileTranslations      []ImportExportProfileTranslation  `json:"importExportProfileTranslations,omitempty"`
 
-	CmsSlotTranslations []CmsSlotTranslation `json:"cmsSlotTranslations,omitempty"`
+	LandingPageTranslations      []LandingPageTranslation  `json:"landingPageTranslations,omitempty"`
 
-	LocaleTranslations []LocaleTranslation `json:"localeTranslations,omitempty"`
+	Locale      *Locale  `json:"locale,omitempty"`
 
-	ProductSearchConfig *ProductSearchConfig `json:"productSearchConfig,omitempty"`
+	LocaleId      string  `json:"localeId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LocaleTranslations      []LocaleTranslation  `json:"localeTranslations,omitempty"`
 
-	PromotionTranslations []PromotionTranslation `json:"promotionTranslations,omitempty"`
+	MailHeaderFooterTranslations      []MailHeaderFooterTranslation  `json:"mailHeaderFooterTranslations,omitempty"`
 
-	ProductManufacturerTranslations []ProductManufacturerTranslation `json:"productManufacturerTranslations,omitempty"`
+	MailTemplateTranslations      []MailTemplateTranslation  `json:"mailTemplateTranslations,omitempty"`
 
-	StateMachineTranslations []StateMachineTranslation `json:"stateMachineTranslations,omitempty"`
+	MailTemplateTypeTranslations      []MailTemplateTypeTranslation  `json:"mailTemplateTypeTranslations,omitempty"`
 
-	MailHeaderFooterTranslations []MailHeaderFooterTranslation `json:"mailHeaderFooterTranslations,omitempty"`
+	MediaTranslations      []MediaTranslation  `json:"mediaTranslations,omitempty"`
 
-	NumberRangeTypeTranslations []NumberRangeTypeTranslation `json:"numberRangeTypeTranslations,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	MailTemplateTypeTranslations []MailTemplateTypeTranslation `json:"mailTemplateTypeTranslations,omitempty"`
+	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
 
-	LocaleId string `json:"localeId,omitempty"`
+	NumberRangeTranslations      []NumberRangeTranslation  `json:"numberRangeTranslations,omitempty"`
 
-	CategoryTranslations []CategoryTranslation `json:"categoryTranslations,omitempty"`
+	NumberRangeTypeTranslations      []NumberRangeTypeTranslation  `json:"numberRangeTypeTranslations,omitempty"`
 
-	CountryStateTranslations []CountryStateTranslation `json:"countryStateTranslations,omitempty"`
+	Orders      []Order  `json:"orders,omitempty"`
 
-	MediaTranslations []MediaTranslation `json:"mediaTranslations,omitempty"`
+	Parent      *Language  `json:"parent,omitempty"`
 
-	PaymentMethodTranslations []PaymentMethodTranslation `json:"paymentMethodTranslations,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	ProductStreamTranslations []ProductStreamTranslation `json:"productStreamTranslations,omitempty"`
+	PaymentMethodTranslations      []PaymentMethodTranslation  `json:"paymentMethodTranslations,omitempty"`
 
-	TaxRuleTypeTranslations []TaxRuleTypeTranslation `json:"taxRuleTypeTranslations,omitempty"`
+	PluginTranslations      []PluginTranslation  `json:"pluginTranslations,omitempty"`
 
-	ImportExportProfileTranslations []ImportExportProfileTranslation `json:"importExportProfileTranslations,omitempty"`
+	ProductCrossSellingTranslations      []ProductCrossSellingTranslation  `json:"productCrossSellingTranslations,omitempty"`
 
-	TranslationCodeId string `json:"translationCodeId,omitempty"`
+	ProductFeatureSetTranslations      []ProductFeatureSetTranslation  `json:"productFeatureSetTranslations,omitempty"`
 
-	ProductFeatureSetTranslations []ProductFeatureSetTranslation `json:"productFeatureSetTranslations,omitempty"`
+	ProductKeywordDictionaries      []ProductKeywordDictionary  `json:"productKeywordDictionaries,omitempty"`
 
-	MailTemplateTranslations []MailTemplateTranslation `json:"mailTemplateTranslations,omitempty"`
+	ProductManufacturerTranslations      []ProductManufacturerTranslation  `json:"productManufacturerTranslations,omitempty"`
 
-	ProductCrossSellingTranslations []ProductCrossSellingTranslation `json:"productCrossSellingTranslations,omitempty"`
+	ProductReviews      []ProductReview  `json:"productReviews,omitempty"`
 
-	Orders []Order `json:"orders,omitempty"`
+	ProductSearchConfig      *ProductSearchConfig  `json:"productSearchConfig,omitempty"`
 
-	ShippingMethodTranslations []ShippingMethodTranslation `json:"shippingMethodTranslations,omitempty"`
+	ProductSearchKeywords      []ProductSearchKeyword  `json:"productSearchKeywords,omitempty"`
 
-	SalesChannelTypeTranslations []SalesChannelTypeTranslation `json:"salesChannelTypeTranslations,omitempty"`
+	ProductSortingTranslations      []ProductSortingTranslation  `json:"productSortingTranslations,omitempty"`
 
-	SalutationTranslations []SalutationTranslation `json:"salutationTranslations,omitempty"`
+	ProductStreamTranslations      []ProductStreamTranslation  `json:"productStreamTranslations,omitempty"`
 
-	TaxProviderTranslations []TaxProviderTranslation `json:"taxProviderTranslations,omitempty"`
+	ProductTranslations      []ProductTranslation  `json:"productTranslations,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	PromotionTranslations      []PromotionTranslation  `json:"promotionTranslations,omitempty"`
 
-	ProductReviews []ProductReview `json:"productReviews,omitempty"`
+	PropertyGroupOptionTranslations      []PropertyGroupOptionTranslation  `json:"propertyGroupOptionTranslations,omitempty"`
 
-	ThemeTranslations []ThemeTranslation `json:"themeTranslations,omitempty"`
+	PropertyGroupTranslations      []PropertyGroupTranslation  `json:"propertyGroupTranslations,omitempty"`
 
-	DeliveryTimeTranslations []DeliveryTimeTranslation `json:"deliveryTimeTranslations,omitempty"`
+	SalesChannelDefaultAssignments      []SalesChannel  `json:"salesChannelDefaultAssignments,omitempty"`
 
-	ProductTranslations []ProductTranslation `json:"productTranslations,omitempty"`
+	SalesChannelDomains      []SalesChannelDomain  `json:"salesChannelDomains,omitempty"`
 
-	DocumentTypeTranslations []DocumentTypeTranslation `json:"documentTypeTranslations,omitempty"`
+	SalesChannelTranslations      []SalesChannelTranslation  `json:"salesChannelTranslations,omitempty"`
 
-	LandingPageTranslations []LandingPageTranslation `json:"landingPageTranslations,omitempty"`
+	SalesChannelTypeTranslations      []SalesChannelTypeTranslation  `json:"salesChannelTypeTranslations,omitempty"`
 
-	AppFlowActionTranslations []AppFlowActionTranslation `json:"appFlowActionTranslations,omitempty"`
+	SalesChannels      []SalesChannel  `json:"salesChannels,omitempty"`
 
-	SalesChannelDomains []SalesChannelDomain `json:"salesChannelDomains,omitempty"`
+	SalutationTranslations      []SalutationTranslation  `json:"salutationTranslations,omitempty"`
 
-	PropertyGroupTranslations []PropertyGroupTranslation `json:"propertyGroupTranslations,omitempty"`
+	SeoUrlTranslations      []SeoUrl  `json:"seoUrlTranslations,omitempty"`
 
-	Customers []Customer `json:"customers,omitempty"`
+	ShippingMethodTranslations      []ShippingMethodTranslation  `json:"shippingMethodTranslations,omitempty"`
 
-	SalesChannelTranslations []SalesChannelTranslation `json:"salesChannelTranslations,omitempty"`
+	StateMachineStateTranslations      []StateMachineStateTranslation  `json:"stateMachineStateTranslations,omitempty"`
 
-	SeoUrlTranslations []SeoUrl `json:"seoUrlTranslations,omitempty"`
+	StateMachineTranslations      []StateMachineTranslation  `json:"stateMachineTranslations,omitempty"`
 
-	AppScriptConditionTranslations []AppScriptConditionTranslation `json:"appScriptConditionTranslations,omitempty"`
+	TaxProviderTranslations      []TaxProviderTranslation  `json:"taxProviderTranslations,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	TaxRuleTypeTranslations      []TaxRuleTypeTranslation  `json:"taxRuleTypeTranslations,omitempty"`
 
-	CurrencyTranslations []CurrencyTranslation `json:"currencyTranslations,omitempty"`
+	ThemeTranslations      []ThemeTranslation  `json:"themeTranslations,omitempty"`
 
-	CustomerGroupTranslations []CustomerGroupTranslation `json:"customerGroupTranslations,omitempty"`
+	TranslationCode      *Locale  `json:"translationCode,omitempty"`
 
-	PluginTranslations []PluginTranslation `json:"pluginTranslations,omitempty"`
+	TranslationCodeId      string  `json:"translationCodeId,omitempty"`
 
-	Locale *Locale `json:"locale,omitempty"`
-}
+	UnitTranslations      []UnitTranslation  `json:"unitTranslations,omitempty"`
 
-type LanguageCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Language `json:"data"`
 }

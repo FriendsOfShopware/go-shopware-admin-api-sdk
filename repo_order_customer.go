@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type OrderCustomerRepository ClientService
-
-func (t OrderCustomerRepository) Search(ctx ApiContext, criteria Criteria) (*OrderCustomerCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/order-customer", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(OrderCustomerCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type OrderCustomerRepository struct {
+	*GenericRepository[OrderCustomer]
 }
 
-func (t OrderCustomerRepository) SearchAll(ctx ApiContext, criteria Criteria) (*OrderCustomerCollection, *http.Response, error) {
+func NewOrderCustomerRepository(client *Client) *OrderCustomerRepository {
+	return &OrderCustomerRepository{
+		GenericRepository: NewGenericRepository[OrderCustomer](client),
+	}
+}
+
+func (t *OrderCustomerRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderCustomer], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "order-customer")
+}
+
+func (t *OrderCustomerRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[OrderCustomer], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,88 +57,58 @@ func (t OrderCustomerRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t OrderCustomerRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/order-customer", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *OrderCustomerRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "order-customer")
 }
 
-func (t OrderCustomerRepository) Upsert(ctx ApiContext, entity []OrderCustomer) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_customer": {
-		Entity:  "order_customer",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *OrderCustomerRepository) Upsert(ctx ApiContext, entity []OrderCustomer) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "order_customer")
 }
 
-func (t OrderCustomerRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"order_customer": {
-		Entity:  "order_customer",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *OrderCustomerRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "order_customer")
 }
 
 type OrderCustomer struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	OrderId string `json:"orderId,omitempty"`
+	Company      string  `json:"company,omitempty"`
 
-	Title string `json:"title,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	VatIds interface{} `json:"vatIds,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Customer *Customer `json:"customer,omitempty"`
+	Customer      *Customer  `json:"customer,omitempty"`
 
-	Salutation *Salutation `json:"salutation,omitempty"`
+	CustomerId      string  `json:"customerId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomerNumber      string  `json:"customerNumber,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Email      string  `json:"email,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	FirstName      string  `json:"firstName,omitempty"`
 
-	Email string `json:"email,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	SalutationId string `json:"salutationId,omitempty"`
+	LastName      string  `json:"lastName,omitempty"`
 
-	LastName string `json:"lastName,omitempty"`
+	Order      *Order  `json:"order,omitempty"`
 
-	CustomerNumber string `json:"customerNumber,omitempty"`
+	OrderId      string  `json:"orderId,omitempty"`
 
-	Order *Order `json:"order,omitempty"`
+	OrderVersionId      string  `json:"orderVersionId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	RemoteAddress      interface{}  `json:"remoteAddress,omitempty"`
 
-	CustomerId string `json:"customerId,omitempty"`
+	Salutation      *Salutation  `json:"salutation,omitempty"`
 
-	OrderVersionId string `json:"orderVersionId,omitempty"`
+	SalutationId      string  `json:"salutationId,omitempty"`
 
-	FirstName string `json:"firstName,omitempty"`
+	Title      string  `json:"title,omitempty"`
 
-	Company string `json:"company,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	RemoteAddress interface{} `json:"remoteAddress,omitempty"`
-}
+	VatIds      interface{}  `json:"vatIds,omitempty"`
 
-type OrderCustomerCollection struct {
-	EntityCollection
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Data []OrderCustomer `json:"data"`
 }

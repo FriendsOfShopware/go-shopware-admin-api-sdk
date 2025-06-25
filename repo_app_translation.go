@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppTranslationRepository ClientService
-
-func (t AppTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*AppTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppTranslationRepository struct {
+	*GenericRepository[AppTranslation]
 }
 
-func (t AppTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppTranslationCollection, *http.Response, error) {
+func NewAppTranslationRepository(client *Client) *AppTranslationRepository {
+	return &AppTranslationRepository{
+		GenericRepository: NewGenericRepository[AppTranslation](client),
+	}
+}
+
+func (t *AppTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-translation")
+}
+
+func (t *AppTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,68 +57,38 @@ func (t AppTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (
 	return c, resp, err
 }
 
-func (t AppTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-translation")
 }
 
-func (t AppTranslationRepository) Upsert(ctx ApiContext, entity []AppTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_translation": {
-		Entity:  "app_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppTranslationRepository) Upsert(ctx ApiContext, entity []AppTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_translation")
 }
 
-func (t AppTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_translation": {
-		Entity:  "app_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_translation")
 }
 
 type AppTranslation struct {
-	App *App `json:"app,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	PrivacyPolicyExtensions string `json:"privacyPolicyExtensions,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	Language *Language `json:"language,omitempty"`
-}
+	PrivacyPolicyExtensions      string  `json:"privacyPolicyExtensions,omitempty"`
 
-type AppTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []AppTranslation `json:"data"`
 }

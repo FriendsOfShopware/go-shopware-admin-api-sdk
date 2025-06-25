@@ -2,27 +2,24 @@ package go_shopware_admin_sdk
 
 import (
 	"net/http"
+
 )
 
-type MailTemplateMediaRepository ClientService
-
-func (t MailTemplateMediaRepository) Search(ctx ApiContext, criteria Criteria) (*MailTemplateMediaCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/mail-template-media", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MailTemplateMediaCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MailTemplateMediaRepository struct {
+	*GenericRepository[MailTemplateMedia]
 }
 
-func (t MailTemplateMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MailTemplateMediaCollection, *http.Response, error) {
+func NewMailTemplateMediaRepository(client *Client) *MailTemplateMediaRepository {
+	return &MailTemplateMediaRepository{
+		GenericRepository: NewGenericRepository[MailTemplateMedia](client),
+	}
+}
+
+func (t *MailTemplateMediaRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MailTemplateMedia], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "mail-template-media")
+}
+
+func (t *MailTemplateMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MailTemplateMedia], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -58,62 +55,32 @@ func (t MailTemplateMediaRepository) SearchAll(ctx ApiContext, criteria Criteria
 	return c, resp, err
 }
 
-func (t MailTemplateMediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/mail-template-media", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MailTemplateMediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "mail-template-media")
 }
 
-func (t MailTemplateMediaRepository) Upsert(ctx ApiContext, entity []MailTemplateMedia) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"mail_template_media": {
-		Entity:  "mail_template_media",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MailTemplateMediaRepository) Upsert(ctx ApiContext, entity []MailTemplateMedia) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "mail_template_media")
 }
 
-func (t MailTemplateMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"mail_template_media": {
-		Entity:  "mail_template_media",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MailTemplateMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "mail_template_media")
 }
 
 type MailTemplateMedia struct {
-	Media *Media `json:"media,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	MailTemplateId string `json:"mailTemplateId,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	MailTemplate      *MailTemplate  `json:"mailTemplate,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	MailTemplateId      string  `json:"mailTemplateId,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	MailTemplate *MailTemplate `json:"mailTemplate,omitempty"`
-}
+	MediaId      string  `json:"mediaId,omitempty"`
 
-type MailTemplateMediaCollection struct {
-	EntityCollection
+	Position      float64  `json:"position,omitempty"`
 
-	Data []MailTemplateMedia `json:"data"`
 }

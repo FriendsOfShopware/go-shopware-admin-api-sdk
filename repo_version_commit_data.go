@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type VersionCommitDataRepository ClientService
-
-func (t VersionCommitDataRepository) Search(ctx ApiContext, criteria Criteria) (*VersionCommitDataCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/version-commit-data", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(VersionCommitDataCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type VersionCommitDataRepository struct {
+	*GenericRepository[VersionCommitData]
 }
 
-func (t VersionCommitDataRepository) SearchAll(ctx ApiContext, criteria Criteria) (*VersionCommitDataCollection, *http.Response, error) {
+func NewVersionCommitDataRepository(client *Client) *VersionCommitDataRepository {
+	return &VersionCommitDataRepository{
+		GenericRepository: NewGenericRepository[VersionCommitData](client),
+	}
+}
+
+func (t *VersionCommitDataRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[VersionCommitData], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "version-commit-data")
+}
+
+func (t *VersionCommitDataRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[VersionCommitData], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,42 @@ func (t VersionCommitDataRepository) SearchAll(ctx ApiContext, criteria Criteria
 	return c, resp, err
 }
 
-func (t VersionCommitDataRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/version-commit-data", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *VersionCommitDataRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "version-commit-data")
 }
 
-func (t VersionCommitDataRepository) Upsert(ctx ApiContext, entity []VersionCommitData) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"version_commit_data": {
-		Entity:  "version_commit_data",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *VersionCommitDataRepository) Upsert(ctx ApiContext, entity []VersionCommitData) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "version_commit_data")
 }
 
-func (t VersionCommitDataRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"version_commit_data": {
-		Entity:  "version_commit_data",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *VersionCommitDataRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "version_commit_data")
 }
 
 type VersionCommitData struct {
-	Id string `json:"id,omitempty"`
 
-	VersionCommitId string `json:"versionCommitId,omitempty"`
+	Action      string  `json:"action,omitempty"`
 
-	Commit *VersionCommit `json:"commit,omitempty"`
+	AutoIncrement      float64  `json:"autoIncrement,omitempty"`
 
-	UserId string `json:"userId,omitempty"`
+	Commit      *VersionCommit  `json:"commit,omitempty"`
 
-	AutoIncrement float64 `json:"autoIncrement,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	EntityName string `json:"entityName,omitempty"`
+	EntityId      interface{}  `json:"entityId,omitempty"`
 
-	EntityId interface{} `json:"entityId,omitempty"`
+	EntityName      string  `json:"entityName,omitempty"`
 
-	Action string `json:"action,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
+	IntegrationId      string  `json:"integrationId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	IntegrationId string `json:"integrationId,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	UserId      string  `json:"userId,omitempty"`
 
-type VersionCommitDataCollection struct {
-	EntityCollection
+	VersionCommitId      string  `json:"versionCommitId,omitempty"`
 
-	Data []VersionCommitData `json:"data"`
 }

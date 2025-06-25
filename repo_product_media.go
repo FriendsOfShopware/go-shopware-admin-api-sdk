@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductMediaRepository ClientService
-
-func (t ProductMediaRepository) Search(ctx ApiContext, criteria Criteria) (*ProductMediaCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-media", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductMediaCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductMediaRepository struct {
+	*GenericRepository[ProductMedia]
 }
 
-func (t ProductMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductMediaCollection, *http.Response, error) {
+func NewProductMediaRepository(client *Client) *ProductMediaRepository {
+	return &ProductMediaRepository{
+		GenericRepository: NewGenericRepository[ProductMedia](client),
+	}
+}
+
+func (t *ProductMediaRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductMedia], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-media")
+}
+
+func (t *ProductMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductMedia], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,42 @@ func (t ProductMediaRepository) SearchAll(ctx ApiContext, criteria Criteria) (*P
 	return c, resp, err
 }
 
-func (t ProductMediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-media", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductMediaRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-media")
 }
 
-func (t ProductMediaRepository) Upsert(ctx ApiContext, entity []ProductMedia) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_media": {
-		Entity:  "product_media",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductMediaRepository) Upsert(ctx ApiContext, entity []ProductMedia) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_media")
 }
 
-func (t ProductMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_media": {
-		Entity:  "product_media",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductMediaRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_media")
 }
 
 type ProductMedia struct {
-	CustomFields interface{} `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CoverProducts      []Product  `json:"coverProducts,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	ProductVersionId string `json:"productVersionId,omitempty"`
+	Media      *Media  `json:"media,omitempty"`
 
-	MediaId string `json:"mediaId,omitempty"`
+	MediaId      string  `json:"mediaId,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	CoverProducts []Product `json:"coverProducts,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	Id string `json:"id,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type ProductMediaCollection struct {
-	EntityCollection
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Data []ProductMedia `json:"data"`
 }

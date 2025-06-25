@@ -153,6 +153,10 @@ func (c *Client) NewRawRequest(context ApiContext, method, urlStr string, body i
 		req.Header.Set("sw-skip-trigger-flow", "1")
 	}
 
+	if context.Inheritance {
+		req.Header.Set("sw-inheritance", "1")
+	}
+
 	req.Header.Set("Accept", "application/json")
 
 	return req, nil
@@ -223,24 +227,27 @@ func (r ErrorResponse) Error() string {
 }
 
 type ApiContext struct {
-	Context    context.Context
-	LanguageId string
-	VersionId  string
-	SkipFlows  bool
+	Context     context.Context
+	LanguageId  string
+	VersionId   string
+	SkipFlows   bool
+	Inheritance bool
 }
 
 func NewApiContext(ctx context.Context) ApiContext {
 	return ApiContext{
-		Context:    ctx,
-		LanguageId: "2fbb5fe2e29a4d70aa5854ce7ce3e20b",
-		VersionId:  "0fa91ce3e96a4bc2be4bd9ce752c3425",
-		SkipFlows:  false,
+		Context:     ctx,
+		LanguageId:  "2fbb5fe2e29a4d70aa5854ce7ce3e20b",
+		VersionId:   "0fa91ce3e96a4bc2be4bd9ce752c3425",
+		SkipFlows:   false,
+		Inheritance: false,
 	}
 }
 
-type EntityCollection struct {
+type EntityCollection[T any] struct {
 	Total        int64       `json:"total"`
 	Aggregations interface{} `json:"aggregations"`
+	Data         []T         `json:"data"`
 }
 
 type SearchIdsResponse struct {

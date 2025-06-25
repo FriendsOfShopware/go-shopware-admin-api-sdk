@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type TaxRuleRepository ClientService
-
-func (t TaxRuleRepository) Search(ctx ApiContext, criteria Criteria) (*TaxRuleCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/tax-rule", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(TaxRuleCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type TaxRuleRepository struct {
+	*GenericRepository[TaxRule]
 }
 
-func (t TaxRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TaxRuleCollection, *http.Response, error) {
+func NewTaxRuleRepository(client *Client) *TaxRuleRepository {
+	return &TaxRuleRepository{
+		GenericRepository: NewGenericRepository[TaxRule](client),
+	}
+}
+
+func (t *TaxRuleRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[TaxRule], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "tax-rule")
+}
+
+func (t *TaxRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[TaxRule], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,42 @@ func (t TaxRuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TaxRul
 	return c, resp, err
 }
 
-func (t TaxRuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/tax-rule", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *TaxRuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "tax-rule")
 }
 
-func (t TaxRuleRepository) Upsert(ctx ApiContext, entity []TaxRule) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax_rule": {
-		Entity:  "tax_rule",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *TaxRuleRepository) Upsert(ctx ApiContext, entity []TaxRule) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "tax_rule")
 }
 
-func (t TaxRuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tax_rule": {
-		Entity:  "tax_rule",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *TaxRuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "tax_rule")
 }
 
 type TaxRule struct {
-	CountryId string `json:"countryId,omitempty"`
 
-	TaxRate float64 `json:"taxRate,omitempty"`
+	ActiveFrom      time.Time  `json:"activeFrom,omitempty"`
 
-	Data interface{} `json:"data,omitempty"`
+	Country      *Country  `json:"country,omitempty"`
 
-	TaxId string `json:"taxId,omitempty"`
+	CountryId      string  `json:"countryId,omitempty"`
 
-	ActiveFrom time.Time `json:"activeFrom,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Type *TaxRuleType `json:"type,omitempty"`
+	Data      interface{}  `json:"data,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Tax      *Tax  `json:"tax,omitempty"`
 
-	TaxRuleTypeId string `json:"taxRuleTypeId,omitempty"`
+	TaxId      string  `json:"taxId,omitempty"`
 
-	Country *Country `json:"country,omitempty"`
+	TaxRate      float64  `json:"taxRate,omitempty"`
 
-	Tax *Tax `json:"tax,omitempty"`
+	TaxRuleTypeId      string  `json:"taxRuleTypeId,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	Type      *TaxRuleType  `json:"type,omitempty"`
 
-type TaxRuleCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []TaxRule `json:"data"`
 }

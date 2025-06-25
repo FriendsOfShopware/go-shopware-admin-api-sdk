@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type CustomFieldSetRelationRepository ClientService
-
-func (t CustomFieldSetRelationRepository) Search(ctx ApiContext, criteria Criteria) (*CustomFieldSetRelationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/custom-field-set-relation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(CustomFieldSetRelationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type CustomFieldSetRelationRepository struct {
+	*GenericRepository[CustomFieldSetRelation]
 }
 
-func (t CustomFieldSetRelationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*CustomFieldSetRelationCollection, *http.Response, error) {
+func NewCustomFieldSetRelationRepository(client *Client) *CustomFieldSetRelationRepository {
+	return &CustomFieldSetRelationRepository{
+		GenericRepository: NewGenericRepository[CustomFieldSetRelation](client),
+	}
+}
+
+func (t *CustomFieldSetRelationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomFieldSetRelation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "custom-field-set-relation")
+}
+
+func (t *CustomFieldSetRelationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[CustomFieldSetRelation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,60 +57,30 @@ func (t CustomFieldSetRelationRepository) SearchAll(ctx ApiContext, criteria Cri
 	return c, resp, err
 }
 
-func (t CustomFieldSetRelationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/custom-field-set-relation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *CustomFieldSetRelationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "custom-field-set-relation")
 }
 
-func (t CustomFieldSetRelationRepository) Upsert(ctx ApiContext, entity []CustomFieldSetRelation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"custom_field_set_relation": {
-		Entity:  "custom_field_set_relation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *CustomFieldSetRelationRepository) Upsert(ctx ApiContext, entity []CustomFieldSetRelation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "custom_field_set_relation")
 }
 
-func (t CustomFieldSetRelationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"custom_field_set_relation": {
-		Entity:  "custom_field_set_relation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *CustomFieldSetRelationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "custom_field_set_relation")
 }
 
 type CustomFieldSetRelation struct {
-	CustomFieldSet *CustomFieldSet `json:"customFieldSet,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	CustomFieldSet      *CustomFieldSet  `json:"customFieldSet,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CustomFieldSetId      string  `json:"customFieldSetId,omitempty"`
 
-	CustomFieldSetId string `json:"customFieldSetId,omitempty"`
+	EntityName      string  `json:"entityName,omitempty"`
 
-	EntityName string `json:"entityName,omitempty"`
-}
+	Id      string  `json:"id,omitempty"`
 
-type CustomFieldSetRelationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []CustomFieldSetRelation `json:"data"`
 }

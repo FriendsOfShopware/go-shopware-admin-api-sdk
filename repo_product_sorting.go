@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductSortingRepository ClientService
-
-func (t ProductSortingRepository) Search(ctx ApiContext, criteria Criteria) (*ProductSortingCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-sorting", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductSortingCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductSortingRepository struct {
+	*GenericRepository[ProductSorting]
 }
 
-func (t ProductSortingRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductSortingCollection, *http.Response, error) {
+func NewProductSortingRepository(client *Client) *ProductSortingRepository {
+	return &ProductSortingRepository{
+		GenericRepository: NewGenericRepository[ProductSorting](client),
+	}
+}
+
+func (t *ProductSortingRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductSorting], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-sorting")
+}
+
+func (t *ProductSortingRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductSorting], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,70 +57,40 @@ func (t ProductSortingRepository) SearchAll(ctx ApiContext, criteria Criteria) (
 	return c, resp, err
 }
 
-func (t ProductSortingRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-sorting", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductSortingRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-sorting")
 }
 
-func (t ProductSortingRepository) Upsert(ctx ApiContext, entity []ProductSorting) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_sorting": {
-		Entity:  "product_sorting",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductSortingRepository) Upsert(ctx ApiContext, entity []ProductSorting) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_sorting")
 }
 
-func (t ProductSortingRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_sorting": {
-		Entity:  "product_sorting",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductSortingRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_sorting")
 }
 
 type ProductSorting struct {
-	Id string `json:"id,omitempty"`
 
-	Key string `json:"key,omitempty"`
+	Active      bool  `json:"active,omitempty"`
 
-	Fields interface{} `json:"fields,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Fields      interface{}  `json:"fields,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	Key      string  `json:"key,omitempty"`
 
-	Locked bool `json:"locked,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
+	Locked      bool  `json:"locked,omitempty"`
 
-	Active bool `json:"active,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	Translations []ProductSortingTranslation `json:"translations,omitempty"`
-}
+	Translations      []ProductSortingTranslation  `json:"translations,omitempty"`
 
-type ProductSortingCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []ProductSorting `json:"data"`
 }

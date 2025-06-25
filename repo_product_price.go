@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type ProductPriceRepository ClientService
-
-func (t ProductPriceRepository) Search(ctx ApiContext, criteria Criteria) (*ProductPriceCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/product-price", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(ProductPriceCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type ProductPriceRepository struct {
+	*GenericRepository[ProductPrice]
 }
 
-func (t ProductPriceRepository) SearchAll(ctx ApiContext, criteria Criteria) (*ProductPriceCollection, *http.Response, error) {
+func NewProductPriceRepository(client *Client) *ProductPriceRepository {
+	return &ProductPriceRepository{
+		GenericRepository: NewGenericRepository[ProductPrice](client),
+	}
+}
+
+func (t *ProductPriceRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductPrice], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "product-price")
+}
+
+func (t *ProductPriceRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[ProductPrice], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,74 +57,44 @@ func (t ProductPriceRepository) SearchAll(ctx ApiContext, criteria Criteria) (*P
 	return c, resp, err
 }
 
-func (t ProductPriceRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/product-price", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *ProductPriceRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "product-price")
 }
 
-func (t ProductPriceRepository) Upsert(ctx ApiContext, entity []ProductPrice) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_price": {
-		Entity:  "product_price",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *ProductPriceRepository) Upsert(ctx ApiContext, entity []ProductPrice) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "product_price")
 }
 
-func (t ProductPriceRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"product_price": {
-		Entity:  "product_price",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *ProductPriceRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "product_price")
 }
 
 type ProductPrice struct {
-	ProductVersionId string `json:"productVersionId,omitempty"`
 
-	Price interface{} `json:"price,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	QuantityEnd float64 `json:"quantityEnd,omitempty"`
+	Price      interface{}  `json:"price,omitempty"`
 
-	RuleId string `json:"ruleId,omitempty"`
+	Product      *Product  `json:"product,omitempty"`
 
-	Rule *Rule `json:"rule,omitempty"`
+	ProductId      string  `json:"productId,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	ProductVersionId      string  `json:"productVersionId,omitempty"`
 
-	VersionId string `json:"versionId,omitempty"`
+	QuantityEnd      float64  `json:"quantityEnd,omitempty"`
 
-	ProductId string `json:"productId,omitempty"`
+	QuantityStart      float64  `json:"quantityStart,omitempty"`
 
-	QuantityStart float64 `json:"quantityStart,omitempty"`
+	Rule      *Rule  `json:"rule,omitempty"`
 
-	Product *Product `json:"product,omitempty"`
+	RuleId      string  `json:"ruleId,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type ProductPriceCollection struct {
-	EntityCollection
+	VersionId      string  `json:"versionId,omitempty"`
 
-	Data []ProductPrice `json:"data"`
 }

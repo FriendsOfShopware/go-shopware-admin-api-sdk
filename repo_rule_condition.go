@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type RuleConditionRepository ClientService
-
-func (t RuleConditionRepository) Search(ctx ApiContext, criteria Criteria) (*RuleConditionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/rule-condition", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(RuleConditionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type RuleConditionRepository struct {
+	*GenericRepository[RuleCondition]
 }
 
-func (t RuleConditionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*RuleConditionCollection, *http.Response, error) {
+func NewRuleConditionRepository(client *Client) *RuleConditionRepository {
+	return &RuleConditionRepository{
+		GenericRepository: NewGenericRepository[RuleCondition](client),
+	}
+}
+
+func (t *RuleConditionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[RuleCondition], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "rule-condition")
+}
+
+func (t *RuleConditionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[RuleCondition], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,76 +57,46 @@ func (t RuleConditionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*
 	return c, resp, err
 }
 
-func (t RuleConditionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/rule-condition", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *RuleConditionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "rule-condition")
 }
 
-func (t RuleConditionRepository) Upsert(ctx ApiContext, entity []RuleCondition) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"rule_condition": {
-		Entity:  "rule_condition",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *RuleConditionRepository) Upsert(ctx ApiContext, entity []RuleCondition) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "rule_condition")
 }
 
-func (t RuleConditionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"rule_condition": {
-		Entity:  "rule_condition",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *RuleConditionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "rule_condition")
 }
 
 type RuleCondition struct {
-	Value interface{} `json:"value,omitempty"`
 
-	Rule *Rule `json:"rule,omitempty"`
+	AppScriptCondition      *AppScriptCondition  `json:"appScriptCondition,omitempty"`
 
-	Parent *RuleCondition `json:"parent,omitempty"`
+	Children      []RuleCondition  `json:"children,omitempty"`
 
-	Position float64 `json:"position,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Type string `json:"type,omitempty"`
+	Parent      *RuleCondition  `json:"parent,omitempty"`
 
-	ScriptId string `json:"scriptId,omitempty"`
+	ParentId      string  `json:"parentId,omitempty"`
 
-	ParentId string `json:"parentId,omitempty"`
+	Position      float64  `json:"position,omitempty"`
 
-	RuleId string `json:"ruleId,omitempty"`
+	Rule      *Rule  `json:"rule,omitempty"`
 
-	Children []RuleCondition `json:"children,omitempty"`
+	RuleId      string  `json:"ruleId,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ScriptId      string  `json:"scriptId,omitempty"`
 
-	AppScriptCondition *AppScriptCondition `json:"appScriptCondition,omitempty"`
+	Type      string  `json:"type,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-type RuleConditionCollection struct {
-	EntityCollection
+	Value      interface{}  `json:"value,omitempty"`
 
-	Data []RuleCondition `json:"data"`
 }

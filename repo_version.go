@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type VersionRepository ClientService
-
-func (t VersionRepository) Search(ctx ApiContext, criteria Criteria) (*VersionCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/version", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(VersionCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type VersionRepository struct {
+	*GenericRepository[Version]
 }
 
-func (t VersionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*VersionCollection, *http.Response, error) {
+func NewVersionRepository(client *Client) *VersionRepository {
+	return &VersionRepository{
+		GenericRepository: NewGenericRepository[Version](client),
+	}
+}
+
+func (t *VersionRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Version], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "version")
+}
+
+func (t *VersionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Version], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,58 +57,28 @@ func (t VersionRepository) SearchAll(ctx ApiContext, criteria Criteria) (*Versio
 	return c, resp, err
 }
 
-func (t VersionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/version", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *VersionRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "version")
 }
 
-func (t VersionRepository) Upsert(ctx ApiContext, entity []Version) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"version": {
-		Entity:  "version",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *VersionRepository) Upsert(ctx ApiContext, entity []Version) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "version")
 }
 
-func (t VersionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"version": {
-		Entity:  "version",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *VersionRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "version")
 }
 
 type Version struct {
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Commits      []VersionCommit  `json:"commits,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	Commits []VersionCommit `json:"commits,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-}
+	Name      string  `json:"name,omitempty"`
 
-type VersionCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Version `json:"data"`
 }

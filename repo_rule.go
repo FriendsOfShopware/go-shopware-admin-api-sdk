@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type RuleRepository ClientService
-
-func (t RuleRepository) Search(ctx ApiContext, criteria Criteria) (*RuleCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/rule", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(RuleCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type RuleRepository struct {
+	*GenericRepository[Rule]
 }
 
-func (t RuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*RuleCollection, *http.Response, error) {
+func NewRuleRepository(client *Client) *RuleRepository {
+	return &RuleRepository{
+		GenericRepository: NewGenericRepository[Rule](client),
+	}
+}
+
+func (t *RuleRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Rule], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "rule")
+}
+
+func (t *RuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Rule], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,98 +57,68 @@ func (t RuleRepository) SearchAll(ctx ApiContext, criteria Criteria) (*RuleColle
 	return c, resp, err
 }
 
-func (t RuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/rule", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *RuleRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "rule")
 }
 
-func (t RuleRepository) Upsert(ctx ApiContext, entity []Rule) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"rule": {
-		Entity:  "rule",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *RuleRepository) Upsert(ctx ApiContext, entity []Rule) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "rule")
 }
 
-func (t RuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"rule": {
-		Entity:  "rule",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *RuleRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "rule")
 }
 
 type Rule struct {
-	ModuleTypes interface{} `json:"moduleTypes,omitempty"`
 
-	PersonaPromotions []Promotion `json:"personaPromotions,omitempty"`
+	Areas      interface{}  `json:"areas,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	CartPromotions      []Promotion  `json:"cartPromotions,omitempty"`
 
-	ShippingMethodPriceCalculations []ShippingMethodPrice `json:"shippingMethodPriceCalculations,omitempty"`
+	Conditions      []RuleCondition  `json:"conditions,omitempty"`
 
-	Priority float64 `json:"priority,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	FlowSequences []FlowSequence `json:"flowSequences,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ShippingMethodPrices []ShippingMethodPrice `json:"shippingMethodPrices,omitempty"`
+	Description      string  `json:"description,omitempty"`
 
-	Invalid bool `json:"invalid,omitempty"`
+	FlowSequences      []FlowSequence  `json:"flowSequences,omitempty"`
 
-	PaymentMethods []PaymentMethod `json:"paymentMethods,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	PromotionDiscounts []PromotionDiscount `json:"promotionDiscounts,omitempty"`
+	Invalid      bool  `json:"invalid,omitempty"`
 
-	PromotionSetGroups []PromotionSetgroup `json:"promotionSetGroups,omitempty"`
+	ModuleTypes      interface{}  `json:"moduleTypes,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	Description string `json:"description,omitempty"`
+	OrderPromotions      []Promotion  `json:"orderPromotions,omitempty"`
 
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
+	Payload      interface{}  `json:"payload,omitempty"`
 
-	Tags []Tag `json:"tags,omitempty"`
+	PaymentMethods      []PaymentMethod  `json:"paymentMethods,omitempty"`
 
-	OrderPromotions []Promotion `json:"orderPromotions,omitempty"`
+	PersonaPromotions      []Promotion  `json:"personaPromotions,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	Priority      float64  `json:"priority,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	ProductPrices      []ProductPrice  `json:"productPrices,omitempty"`
 
-	Areas interface{} `json:"areas,omitempty"`
+	PromotionDiscounts      []PromotionDiscount  `json:"promotionDiscounts,omitempty"`
 
-	ProductPrices []ProductPrice `json:"productPrices,omitempty"`
+	PromotionSetGroups      []PromotionSetgroup  `json:"promotionSetGroups,omitempty"`
 
-	Conditions []RuleCondition `json:"conditions,omitempty"`
+	ShippingMethodPriceCalculations      []ShippingMethodPrice  `json:"shippingMethodPriceCalculations,omitempty"`
 
-	TaxProviders []TaxProvider `json:"taxProviders,omitempty"`
+	ShippingMethodPrices      []ShippingMethodPrice  `json:"shippingMethodPrices,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
 
-	CartPromotions []Promotion `json:"cartPromotions,omitempty"`
+	Tags      []Tag  `json:"tags,omitempty"`
 
-	Payload interface{} `json:"payload,omitempty"`
-}
+	TaxProviders      []TaxProvider  `json:"taxProviders,omitempty"`
 
-type RuleCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Rule `json:"data"`
 }

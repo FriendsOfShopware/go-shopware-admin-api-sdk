@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type MediaFolderConfigurationRepository ClientService
-
-func (t MediaFolderConfigurationRepository) Search(ctx ApiContext, criteria Criteria) (*MediaFolderConfigurationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/media-folder-configuration", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(MediaFolderConfigurationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type MediaFolderConfigurationRepository struct {
+	*GenericRepository[MediaFolderConfiguration]
 }
 
-func (t MediaFolderConfigurationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*MediaFolderConfigurationCollection, *http.Response, error) {
+func NewMediaFolderConfigurationRepository(client *Client) *MediaFolderConfigurationRepository {
+	return &MediaFolderConfigurationRepository{
+		GenericRepository: NewGenericRepository[MediaFolderConfiguration](client),
+	}
+}
+
+func (t *MediaFolderConfigurationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaFolderConfiguration], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "media-folder-configuration")
+}
+
+func (t *MediaFolderConfigurationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[MediaFolderConfiguration], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,42 @@ func (t MediaFolderConfigurationRepository) SearchAll(ctx ApiContext, criteria C
 	return c, resp, err
 }
 
-func (t MediaFolderConfigurationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/media-folder-configuration", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *MediaFolderConfigurationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "media-folder-configuration")
 }
 
-func (t MediaFolderConfigurationRepository) Upsert(ctx ApiContext, entity []MediaFolderConfiguration) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_folder_configuration": {
-		Entity:  "media_folder_configuration",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *MediaFolderConfigurationRepository) Upsert(ctx ApiContext, entity []MediaFolderConfiguration) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "media_folder_configuration")
 }
 
-func (t MediaFolderConfigurationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"media_folder_configuration": {
-		Entity:  "media_folder_configuration",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *MediaFolderConfigurationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "media_folder_configuration")
 }
 
 type MediaFolderConfiguration struct {
-	CreateThumbnails bool `json:"createThumbnails,omitempty"`
 
-	KeepAspectRatio bool `json:"keepAspectRatio,omitempty"`
+	CreateThumbnails      bool  `json:"createThumbnails,omitempty"`
 
-	ThumbnailQuality float64 `json:"thumbnailQuality,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	NoAssociation bool `json:"noAssociation,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	MediaFolders []MediaFolder `json:"mediaFolders,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	KeepAspectRatio      bool  `json:"keepAspectRatio,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	MediaFolders      []MediaFolder  `json:"mediaFolders,omitempty"`
 
-	MediaThumbnailSizes []MediaThumbnailSize `json:"mediaThumbnailSizes,omitempty"`
+	MediaThumbnailSizes      []MediaThumbnailSize  `json:"mediaThumbnailSizes,omitempty"`
 
-	MediaThumbnailSizesRo interface{} `json:"mediaThumbnailSizesRo,omitempty"`
+	MediaThumbnailSizesRo      interface{}  `json:"mediaThumbnailSizesRo,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	NoAssociation      bool  `json:"noAssociation,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Private      bool  `json:"private,omitempty"`
 
-	Private bool `json:"private,omitempty"`
-}
+	ThumbnailQuality      float64  `json:"thumbnailQuality,omitempty"`
 
-type MediaFolderConfigurationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []MediaFolderConfiguration `json:"data"`
 }

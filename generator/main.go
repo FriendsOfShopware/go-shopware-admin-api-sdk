@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-
+	"sort"
 	"strings"
 	"text/template"
 
@@ -29,7 +29,14 @@ func main() {
 
 	names := make([]string, 0)
 
-	for _, entity := range schema {
+	entityNames := make([]string, 0, len(schema))
+	for name := range schema {
+		entityNames = append(entityNames, name)
+	}
+	sort.Strings(entityNames)
+
+	for _, entityName := range entityNames {
+		entity := schema[entityName]
 		t := template.Must(template.New("entity_repo.tpl").ParseFiles("entity_repo.tpl"))
 
 		file, _ := os.Create(fmt.Sprintf("../repo_%s.go", entity.Name))
@@ -44,7 +51,14 @@ func main() {
 			HasTimeField:  entity.HasTimeField(),
 		}
 
-		for name, property := range entity.Properties {
+				propertyNames := make([]string, 0, len(entity.Properties))
+		for name := range entity.Properties {
+			propertyNames = append(propertyNames, name)
+		}
+		sort.Strings(propertyNames)
+
+		for _, name := range propertyNames {
+			property := entity.Properties[name]
 			info.Fields = append(info.Fields, TplField{
 				Key:  strcase.ToCamel(name),
 				Name: name,

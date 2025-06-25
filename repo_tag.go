@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type TagRepository ClientService
-
-func (t TagRepository) Search(ctx ApiContext, criteria Criteria) (*TagCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(TagCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type TagRepository struct {
+	*GenericRepository[Tag]
 }
 
-func (t TagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TagCollection, *http.Response, error) {
+func NewTagRepository(client *Client) *TagRepository {
+	return &TagRepository{
+		GenericRepository: NewGenericRepository[Tag](client),
+	}
+}
+
+func (t *TagRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[Tag], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "tag")
+}
+
+func (t *TagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[Tag], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,74 +57,44 @@ func (t TagRepository) SearchAll(ctx ApiContext, criteria Criteria) (*TagCollect
 	return c, resp, err
 }
 
-func (t TagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/tag", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *TagRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "tag")
 }
 
-func (t TagRepository) Upsert(ctx ApiContext, entity []Tag) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tag": {
-		Entity:  "tag",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *TagRepository) Upsert(ctx ApiContext, entity []Tag) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "tag")
 }
 
-func (t TagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"tag": {
-		Entity:  "tag",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *TagRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "tag")
 }
 
 type Tag struct {
-	Products []Product `json:"products,omitempty"`
 
-	Categories []Category `json:"categories,omitempty"`
+	Categories      []Category  `json:"categories,omitempty"`
 
-	Orders []Order `json:"orders,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	ShippingMethods []ShippingMethod `json:"shippingMethods,omitempty"`
+	Customers      []Customer  `json:"customers,omitempty"`
 
-	LandingPages []LandingPage `json:"landingPages,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Rules []Rule `json:"rules,omitempty"`
+	LandingPages      []LandingPage  `json:"landingPages,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Media      []Media  `json:"media,omitempty"`
 
-	Media []Media `json:"media,omitempty"`
+	Name      string  `json:"name,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	NewsletterRecipients      []NewsletterRecipient  `json:"newsletterRecipients,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Orders      []Order  `json:"orders,omitempty"`
 
-	Customers []Customer `json:"customers,omitempty"`
+	Products      []Product  `json:"products,omitempty"`
 
-	NewsletterRecipients []NewsletterRecipient `json:"newsletterRecipients,omitempty"`
+	Rules      []Rule  `json:"rules,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	ShippingMethods      []ShippingMethod  `json:"shippingMethods,omitempty"`
 
-type TagCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []Tag `json:"data"`
 }

@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type DocumentTypeTranslationRepository ClientService
-
-func (t DocumentTypeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*DocumentTypeTranslationCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/document-type-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(DocumentTypeTranslationCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type DocumentTypeTranslationRepository struct {
+	*GenericRepository[DocumentTypeTranslation]
 }
 
-func (t DocumentTypeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*DocumentTypeTranslationCollection, *http.Response, error) {
+func NewDocumentTypeTranslationRepository(client *Client) *DocumentTypeTranslationRepository {
+	return &DocumentTypeTranslationRepository{
+		GenericRepository: NewGenericRepository[DocumentTypeTranslation](client),
+	}
+}
+
+func (t *DocumentTypeTranslationRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[DocumentTypeTranslation], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "document-type-translation")
+}
+
+func (t *DocumentTypeTranslationRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[DocumentTypeTranslation], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,64 +57,34 @@ func (t DocumentTypeTranslationRepository) SearchAll(ctx ApiContext, criteria Cr
 	return c, resp, err
 }
 
-func (t DocumentTypeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/document-type-translation", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *DocumentTypeTranslationRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "document-type-translation")
 }
 
-func (t DocumentTypeTranslationRepository) Upsert(ctx ApiContext, entity []DocumentTypeTranslation) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"document_type_translation": {
-		Entity:  "document_type_translation",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *DocumentTypeTranslationRepository) Upsert(ctx ApiContext, entity []DocumentTypeTranslation) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "document_type_translation")
 }
 
-func (t DocumentTypeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"document_type_translation": {
-		Entity:  "document_type_translation",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *DocumentTypeTranslationRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "document_type_translation")
 }
 
 type DocumentTypeTranslation struct {
-	Language *Language `json:"language,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	DocumentType      *DocumentType  `json:"documentType,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	DocumentTypeId      string  `json:"documentTypeId,omitempty"`
 
-	DocumentTypeId string `json:"documentTypeId,omitempty"`
+	Language      *Language  `json:"language,omitempty"`
 
-	LanguageId string `json:"languageId,omitempty"`
+	LanguageId      string  `json:"languageId,omitempty"`
 
-	DocumentType *DocumentType `json:"documentType,omitempty"`
-}
+	Name      string  `json:"name,omitempty"`
 
-type DocumentTypeTranslationCollection struct {
-	EntityCollection
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Data []DocumentTypeTranslation `json:"data"`
 }

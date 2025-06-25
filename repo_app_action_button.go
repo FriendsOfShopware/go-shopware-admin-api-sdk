@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type AppActionButtonRepository ClientService
-
-func (t AppActionButtonRepository) Search(ctx ApiContext, criteria Criteria) (*AppActionButtonCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/app-action-button", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(AppActionButtonCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type AppActionButtonRepository struct {
+	*GenericRepository[AppActionButton]
 }
 
-func (t AppActionButtonRepository) SearchAll(ctx ApiContext, criteria Criteria) (*AppActionButtonCollection, *http.Response, error) {
+func NewAppActionButtonRepository(client *Client) *AppActionButtonRepository {
+	return &AppActionButtonRepository{
+		GenericRepository: NewGenericRepository[AppActionButton](client),
+	}
+}
+
+func (t *AppActionButtonRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[AppActionButton], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "app-action-button")
+}
+
+func (t *AppActionButtonRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[AppActionButton], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,72 +57,42 @@ func (t AppActionButtonRepository) SearchAll(ctx ApiContext, criteria Criteria) 
 	return c, resp, err
 }
 
-func (t AppActionButtonRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/app-action-button", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *AppActionButtonRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "app-action-button")
 }
 
-func (t AppActionButtonRepository) Upsert(ctx ApiContext, entity []AppActionButton) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_action_button": {
-		Entity:  "app_action_button",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *AppActionButtonRepository) Upsert(ctx ApiContext, entity []AppActionButton) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "app_action_button")
 }
 
-func (t AppActionButtonRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"app_action_button": {
-		Entity:  "app_action_button",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *AppActionButtonRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "app_action_button")
 }
 
 type AppActionButton struct {
-	Entity string `json:"entity,omitempty"`
 
-	Translations []AppActionButtonTranslation `json:"translations,omitempty"`
+	Action      string  `json:"action,omitempty"`
 
-	Translated interface{} `json:"translated,omitempty"`
+	App      *App  `json:"app,omitempty"`
 
-	Action string `json:"action,omitempty"`
+	AppId      string  `json:"appId,omitempty"`
 
-	Label string `json:"label,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	AppId string `json:"appId,omitempty"`
+	Entity      string  `json:"entity,omitempty"`
 
-	App *App `json:"app,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	Label      string  `json:"label,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	Translated      interface{}  `json:"translated,omitempty"`
 
-	View string `json:"view,omitempty"`
+	Translations      []AppActionButtonTranslation  `json:"translations,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-}
+	Url      string  `json:"url,omitempty"`
 
-type AppActionButtonCollection struct {
-	EntityCollection
+	View      string  `json:"view,omitempty"`
 
-	Data []AppActionButton `json:"data"`
 }

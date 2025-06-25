@@ -4,27 +4,24 @@ import (
 	"net/http"
 
 	"time"
+
 )
 
-type WebhookEventLogRepository ClientService
-
-func (t WebhookEventLogRepository) Search(ctx ApiContext, criteria Criteria) (*WebhookEventLogCollection, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search/webhook-event-log", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(WebhookEventLogCollection)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+type WebhookEventLogRepository struct {
+	*GenericRepository[WebhookEventLog]
 }
 
-func (t WebhookEventLogRepository) SearchAll(ctx ApiContext, criteria Criteria) (*WebhookEventLogCollection, *http.Response, error) {
+func NewWebhookEventLogRepository(client *Client) *WebhookEventLogRepository {
+	return &WebhookEventLogRepository{
+		GenericRepository: NewGenericRepository[WebhookEventLog](client),
+	}
+}
+
+func (t *WebhookEventLogRepository) Search(ctx ApiContext, criteria Criteria) (*EntityCollection[WebhookEventLog], *http.Response, error) {
+	return t.GenericRepository.Search(ctx, criteria, "webhook-event-log")
+}
+
+func (t *WebhookEventLogRepository) SearchAll(ctx ApiContext, criteria Criteria) (*EntityCollection[WebhookEventLog], *http.Response, error) {
 	if criteria.Limit == 0 {
 		criteria.Limit = 50
 	}
@@ -60,84 +57,54 @@ func (t WebhookEventLogRepository) SearchAll(ctx ApiContext, criteria Criteria) 
 	return c, resp, err
 }
 
-func (t WebhookEventLogRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
-	req, err := t.Client.NewRequest(ctx, "POST", "/api/search-ids/webhook-event-log", criteria)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	uResp := new(SearchIdsResponse)
-	resp, err := t.Client.Do(ctx.Context, req, uResp)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return uResp, resp, nil
+func (t *WebhookEventLogRepository) SearchIds(ctx ApiContext, criteria Criteria) (*SearchIdsResponse, *http.Response, error) {
+	return t.GenericRepository.SearchIds(ctx, criteria, "webhook-event-log")
 }
 
-func (t WebhookEventLogRepository) Upsert(ctx ApiContext, entity []WebhookEventLog) (*http.Response, error) {
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"webhook_event_log": {
-		Entity:  "webhook_event_log",
-		Action:  "upsert",
-		Payload: entity,
-	}})
+func (t *WebhookEventLogRepository) Upsert(ctx ApiContext, entity []WebhookEventLog) (*http.Response, error) {
+	return t.GenericRepository.Upsert(ctx, entity, "webhook_event_log")
 }
 
-func (t WebhookEventLogRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
-	payload := make([]entityDelete, 0)
-
-	for _, id := range ids {
-		payload = append(payload, entityDelete{Id: id})
-	}
-
-	return t.Client.Bulk.Sync(ctx, map[string]SyncOperation{"webhook_event_log": {
-		Entity:  "webhook_event_log",
-		Action:  "delete",
-		Payload: payload,
-	}})
+func (t *WebhookEventLogRepository) Delete(ctx ApiContext, ids []string) (*http.Response, error) {
+	return t.GenericRepository.Delete(ctx, ids, "webhook_event_log")
 }
 
 type WebhookEventLog struct {
-	AppVersion string `json:"appVersion,omitempty"`
 
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	AppName      string  `json:"appName,omitempty"`
 
-	DeliveryStatus string `json:"deliveryStatus,omitempty"`
+	AppVersion      string  `json:"appVersion,omitempty"`
 
-	ProcessingTime float64 `json:"processingTime,omitempty"`
+	CreatedAt      time.Time  `json:"createdAt,omitempty"`
 
-	RequestContent interface{} `json:"requestContent,omitempty"`
+	CustomFields      interface{}  `json:"customFields,omitempty"`
 
-	ResponseContent interface{} `json:"responseContent,omitempty"`
+	DeliveryStatus      string  `json:"deliveryStatus,omitempty"`
 
-	ResponseReasonPhrase string `json:"responseReasonPhrase,omitempty"`
+	EventName      string  `json:"eventName,omitempty"`
 
-	SerializedWebhookMessage interface{} `json:"serializedWebhookMessage,omitempty"`
+	Id      string  `json:"id,omitempty"`
 
-	Id string `json:"id,omitempty"`
+	OnlyLiveVersion      bool  `json:"onlyLiveVersion,omitempty"`
 
-	WebhookName string `json:"webhookName,omitempty"`
+	ProcessingTime      float64  `json:"processingTime,omitempty"`
 
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	RequestContent      interface{}  `json:"requestContent,omitempty"`
 
-	ResponseStatusCode float64 `json:"responseStatusCode,omitempty"`
+	ResponseContent      interface{}  `json:"responseContent,omitempty"`
 
-	AppName string `json:"appName,omitempty"`
+	ResponseReasonPhrase      string  `json:"responseReasonPhrase,omitempty"`
 
-	Timestamp float64 `json:"timestamp,omitempty"`
+	ResponseStatusCode      float64  `json:"responseStatusCode,omitempty"`
 
-	OnlyLiveVersion bool `json:"onlyLiveVersion,omitempty"`
+	SerializedWebhookMessage      interface{}  `json:"serializedWebhookMessage,omitempty"`
 
-	CustomFields interface{} `json:"customFields,omitempty"`
+	Timestamp      float64  `json:"timestamp,omitempty"`
 
-	EventName string `json:"eventName,omitempty"`
+	UpdatedAt      time.Time  `json:"updatedAt,omitempty"`
 
-	Url string `json:"url,omitempty"`
-}
+	Url      string  `json:"url,omitempty"`
 
-type WebhookEventLogCollection struct {
-	EntityCollection
+	WebhookName      string  `json:"webhookName,omitempty"`
 
-	Data []WebhookEventLog `json:"data"`
 }
