@@ -1,2 +1,4 @@
+github.com/shyim/go-version v0.0.0-20250613124056-b64b21f007d8 h1:YYe5c28qVr4BeEmGYaHQZLKQ7l6eTG6wpGeYbDJQl0k=
+github.com/shyim/go-version v0.0.0-20250613124056-b64b21f007d8/go.mod h1:z47ygE4N7EC0H58FP5j5cXZtl1pSnfjwYJsHtiVtcwU=
 golang.org/x/oauth2 v0.30.0 h1:dnDm7JmhM45NNpd8FDDeLhK6FwqbOf4MLCM9zb1BOHI=
 golang.org/x/oauth2 v0.30.0/go.mod h1:B++QgG3ZKulg6sRPGD/mqlHQs5rB3Ml9erfeDY7xKlU=

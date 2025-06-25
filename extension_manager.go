@@ -7,6 +7,8 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
+
+	"github.com/shyim/go-version"
 )
 
 type ExtensionManagerService ClientService
@@ -73,6 +75,11 @@ func (e ExtensionManagerService) DeactivateExtension(ctx ApiContext, extType, na
 }
 
 func (e ExtensionManagerService) RemoveExtension(ctx ApiContext, extType, name string) (*http.Response, error) {
+	// Since 6.6.10.2 is it POST instead of DELETE
+	if version.MustConstraints(version.NewConstraint(">=6.6.10.2")).Check(e.Client.ShopwareVersion) {
+		return e.lifecycleUpdate("RemoveExtension", ctx, fmt.Sprintf("/api/_action/extension/remove/%s/%s", extType, name), http.MethodPost)
+	}
+
 	return e.lifecycleUpdate("RemoveExtension", ctx, fmt.Sprintf("/api/_action/extension/remove/%s/%s", extType, name), http.MethodDelete)
 }
 

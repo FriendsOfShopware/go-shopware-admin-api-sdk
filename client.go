@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/shyim/go-version"
 	"golang.org/x/oauth2"
 )
 
@@ -19,6 +20,9 @@ type Client struct {
 	url         string
 	client      *http.Client
 	tokenSource oauth2.TokenSource
+
+	info            *InfoResponse
+	ShopwareVersion *version.Version
 
 	common              ClientService
 	Repository          Repository
@@ -50,6 +54,20 @@ func NewApiClient(ctx context.Context, shopUrl string, credentials OAuthCredenti
 		return nil, err
 	}
 
+	infoResponse, _, err := shopClient.Info.Info(NewApiContext(ctx))
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch info: %w", err)
+	}
+
+	shopClient.info = infoResponse
+
+	if infoResponse.Version != "" {
+		shopClient.ShopwareVersion, err = version.NewVersion(infoResponse.Version)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse shopware version %q: %w", infoResponse.Version, err)
+		}
+	}
+
 	return shopClient, nil
 }
 
@@ -70,10 +88,6 @@ func (c *Client) authorize(ctx context.Context, url string, credentials OAuthCre
 
 func (c *Client) Token() oauth2.TokenSource {
 	return c.tokenSource
-}
-
-func (c *Client) newRequest(ctx context.Context, method, path string, body io.Reader) (*http.Request, error) {
-	return http.NewRequestWithContext(ctx, method, c.url+path, body)
 }
 
 func (c *Client) BareDo(ctx context.Context, req *http.Request) (*http.Response, error) {
