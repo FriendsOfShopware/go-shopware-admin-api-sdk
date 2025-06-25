@@ -6,11 +6,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"golang.org/x/oauth2"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"golang.org/x/oauth2"
 )
 
 var errNonNilContext = errors.New("context must be non-nil")
@@ -175,7 +175,7 @@ func checkResponse(r *http.Response) error {
 
 	errorResponse := &ErrorResponse{Response: r}
 
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	if err == nil && data != nil {
 		_ = json.Unmarshal(data, errorResponse)
 	}

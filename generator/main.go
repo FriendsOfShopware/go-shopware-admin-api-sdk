@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
+
 	"strings"
 	"text/template"
 
@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	content, err := ioutil.ReadFile("entity-schema.json")
+	content, err := os.ReadFile("entity-schema.json")
 
 	if err != nil {
 		log.Fatalln(err)
